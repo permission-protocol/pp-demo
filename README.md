@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+  <img src="assets/demo.gif" alt="Permission Protocol Demo" width="700">
+</p>
+
+<p align="center">
   <a href="https://github.com/permission-protocol/pp-demo/pull/1">
     <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-PR_%231_Blocked-critical?style=flat-square" alt="Live Demo">
   </a>
