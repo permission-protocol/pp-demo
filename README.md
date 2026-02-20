@@ -29,6 +29,22 @@
 
 ---
 
+## ⚡ Quickstart (3 minutes)
+
+<p align="center">
+  <a href="https://github.com/permission-protocol/pp-demo/generate">
+    <img src="https://img.shields.io/badge/Use_This_Template-→-green?style=for-the-badge" alt="Use Template">
+  </a>
+</p>
+
+1. Click **"Use this template"** above
+2. Add your `PP_API_KEY` secret ([get one here](https://app.permissionprotocol.com))
+3. Open a PR → Watch it fail → Approve → Merge
+
+**You're protected.** No setup files. No config. Just works.
+
+---
+
 ## 🎬 See It In Action
 
 ```
