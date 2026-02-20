@@ -1,0 +1,14 @@
+# Deploy Configuration
+# Changes to this file require Permission Protocol approval
+
+app:
+  name: pp-demo
+  environment: production
+
+deploy:
+  provider: render
+  auto_deploy: false  # PP controls this
+
+# Try changing this value and opening a PR
+# The merge will be blocked until you approve in PP
+version: 1.0.0
