@@ -1,21 +1,58 @@
-# Permission Protocol Demo
+<p align="center">
+  <img src="https://img.shields.io/badge/❌_No_Receipt-No_Merge-red?style=for-the-badge" alt="No Receipt → No Merge">
+</p>
 
-**Try to merge without approval. You can't.**
+<h1 align="center">Permission Protocol Demo</h1>
 
-> 🔴 **[See it live: PR #1](https://github.com/permission-protocol/pp-demo/pull/1)** — CI failed, waiting for approval
+<p align="center">
+  <strong>Try to merge without approval. You can't.</strong>
+</p>
 
-This repo demonstrates [Permission Protocol](https://permissionprotocol.com) — cryptographic authorization for autonomous deployments.
+<p align="center">
+  <a href="https://github.com/permission-protocol/pp-demo/pull/1">
+    <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-PR_%231_Blocked-critical?style=flat-square" alt="Live Demo">
+  </a>
+  <a href="https://github.com/permission-protocol/pp-demo/fork">
+    <img src="https://img.shields.io/github/forks/permission-protocol/pp-demo?style=flat-square&label=Repos%20Protected" alt="Forks">
+  </a>
+  <a href="https://permissionprotocol.com">
+    <img src="https://img.shields.io/badge/Permission_Protocol-Visit-blue?style=flat-square" alt="Permission Protocol">
+  </a>
+</p>
 
-## What Happens
+---
 
-1. **Open a PR** that touches `deploy/` or `.github/workflows/`
-2. **CI fails** with a link to approve
-3. **Approve** the deploy request in PP
-4. **CI passes** — merge unlocked
+## 🎬 See It In Action
 
-No receipt → No merge. That's it.
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PR #1: test: Trigger PP deploy gate                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ❌ Deploy Gate — FAILED                                    │
+│                                                             │
+│  ═══════════════════════════════════════════════════════   │
+│    🔐 PERMISSION PROTOCOL - Deploy Authorization Required   │
+│  ═══════════════════════════════════════════════════════   │
+│                                                             │
+│  ❌ NO RECEIPT - Approval required                          │
+│                                                             │
+│  This PR changes protected deployment files.                │
+│  A human must approve before merge.                         │
+│                                                             │
+│  👉 APPROVE HERE: https://app.permissionprotocol.com/...    │
+│                                                             │
+│  After approval, re-run this workflow.                      │
+│  ═══════════════════════════════════════════════════════   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## The Problem This Solves
+**[→ View the actual blocked PR](https://github.com/permission-protocol/pp-demo/pull/1)**
+
+---
+
+## The Problem
 
 Your AI agent just pushed to main.  
 It passed CI.  
@@ -23,38 +60,86 @@ It deployed to production.
 
 **Who approved it?**
 
-Not a human. Not a policy. Nobody.
+Not a human. Not a policy. **Nobody.**
 
-Permission Protocol closes that gap.
+---
 
-## Try It
+## The Solution
 
-1. Fork this repo
-2. [Connect it to PP](https://app.permissionprotocol.com)
-3. Open a PR touching `deploy/config.yml`
-4. Watch the gate block
-5. Approve in PP
-6. Watch the gate pass
+```
+No Receipt → No Merge
+```
+
+Every deploy requires a cryptographic receipt. Signed by a human. Auditable forever.
+
+---
 
 ## How It Works
 
 ```
-PR opened
-    ↓
-CI runs pp-verify action
-    ↓
-┌─────────────────────────────────┐
-│  Receipt exists?                │
-│  ├─ YES → ✅ Merge allowed      │
-│  └─ NO  → ❌ Blocked            │
-│           └─ Creates request    │
-│           └─ Shows approval URL │
-└─────────────────────────────────┘
-    ↓
-Human approves in PP dashboard
-    ↓
-Re-run CI → ✅ Pass
+   PR opened
+       │
+       ▼
+┌──────────────────┐
+│  CI runs check   │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐     ┌─────────────────────┐
+│ Receipt exists?  │────▶│  ✅ Merge allowed   │
+└────────┬─────────┘ YES └─────────────────────┘
+         │ NO
+         ▼
+┌──────────────────┐
+│  ❌ CI FAILS     │
+│  Shows approval  │
+│  link in logs    │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Human approves   │
+│ in PP dashboard  │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Re-run CI        │
+│ ✅ Now passes    │
+└──────────────────┘
 ```
+
+---
+
+## Try It Yourself
+
+### 1. Fork this repo
+[![Fork](https://img.shields.io/badge/Fork_This_Repo-→-green?style=for-the-badge)](https://github.com/permission-protocol/pp-demo/fork)
+
+### 2. Set up Permission Protocol
+See [SETUP.md](./SETUP.md) for full instructions.
+
+### 3. Open a PR touching `deploy/`
+```bash
+git checkout -b test-gate
+echo "# test" >> deploy/config.yml
+git commit -am "test: trigger gate"
+git push origin test-gate
+# Open PR → Watch it fail → Approve → Watch it pass
+```
+
+---
+
+## Protected Paths
+
+Any PR touching these paths requires PP approval:
+
+| Path | Why |
+|------|-----|
+| `deploy/*` | Production configuration |
+| `.github/workflows/*` | CI/CD pipeline |
+
+---
 
 ## The Receipt
 
@@ -70,8 +155,9 @@ Every approval generates a cryptographic receipt:
     "headSha": "abc123",
     "capability": "deploy:production"
   },
+  "approver": "you@company.com",
   "signature": "0x...",
-  "expiresAt": "2024-02-21T00:00:00Z"
+  "expiresAt": "2026-02-21T00:00:00Z"
 }
 ```
 
@@ -79,4 +165,12 @@ Immutable. Auditable. Cryptographically signed.
 
 ---
 
-**[Get Permission Protocol →](https://permissionprotocol.com)**
+<p align="center">
+  <a href="https://permissionprotocol.com/#waitlist">
+    <img src="https://img.shields.io/badge/Get_Permission_Protocol-Request_Access-black?style=for-the-badge" alt="Get Access">
+  </a>
+</p>
+
+<p align="center">
+  <sub>Built by <a href="https://permissionprotocol.com">Permission Protocol</a> · The Signer of Record for Autonomous Systems</sub>
+</p>
