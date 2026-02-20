@@ -2,6 +2,8 @@
 
 **Try to merge without approval. You can't.**
 
+> 🔴 **[See it live: PR #1](https://github.com/permission-protocol/pp-demo/pull/1)** — CI failed, waiting for approval
+
 This repo demonstrates [Permission Protocol](https://permissionprotocol.com) — cryptographic authorization for autonomous deployments.
 
 ## What Happens
