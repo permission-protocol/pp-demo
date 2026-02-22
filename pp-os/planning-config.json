@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "planning": {
+    "maxNewTasksPerDay": 3,
+    "taskTarget": "Backlog",
+    "duplicateCheck": true,
+    "staleThresholdDays": 5,
+    "alignmentMissAlert": 2,
+    "tasksMustReferenceObjective": true
+  },
+  "schedule": {
+    "dailyLogTime": "08:00",
+    "planningRunsAfter": "dailyLog",
+    "timezone": "America/Denver",
+    "weeklyReviewDay": "Sunday",
+    "weeklyReviewTime": "10:00"
+  },
+  "delivery": {
+    "announceTo": "telegram",
+    "includeLogLink": true,
+    "summaryFormat": "short"
+  },
+  "board": {
+    "projectNumber": 2,
+    "org": "Roca-Ventures",
+    "statusField": "Status",
+    "statuses": {
+      "backlog": "Backlog",
+      "ready": "Ready",
+      "inProgress": "In Progress",
+      "blocked": "Blocked (Human Input Required)",
+      "done": "Done"
+    }
+  }
+}
