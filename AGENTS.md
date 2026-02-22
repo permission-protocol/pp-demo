@@ -52,6 +52,9 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+### ⚠️ CRITICAL: Read SAFETY.md Before Risky Operations
+If you're about to touch config files, model settings, or anything that could brick you — **READ `SAFETY.md` FIRST.** You've died twice from model config changes. Don't be stupid.
+
 ## External vs Internal
 
 **Safe to do freely:**
@@ -210,3 +213,9 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## Model Rules
+- NEVER change the model config without explicit user approval
+- claude-opus-4-6 DOES NOT EXIST - do not attempt to use it
+- Current valid models: claude-opus-4-5, claude-sonnet-4
+

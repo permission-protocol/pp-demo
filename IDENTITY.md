@@ -9,7 +9,11 @@
 
 ## Accounts
 - GitHub: cgoldber82@gmail.com (SSH key configured)
-- Firebase: (pending)
+- Firebase: cgoldber82@gmail.com (xdares-dev + ar-pwa-prod)
+- KickoffLabs: cgoldber82@gmail.com (waitlist/referral management)
+- 10Web: cgoldber82@gmail.com (blog.xdares.com hosting)
+- WordPress: cgoldber82 (blog.xdares.com/wp-admin)
+- Postmark: cgoldber82 (transactional email)
 - Stripe: (pending)
 
 ---
