@@ -16,13 +16,32 @@
   <a href="https://github.com/permission-protocol/pp-demo/pull/1">
     <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-PR_%231_Blocked-critical?style=flat-square" alt="Live Demo">
   </a>
-  <a href="https://github.com/permission-protocol/pp-demo/fork">
-    <img src="https://img.shields.io/github/forks/permission-protocol/pp-demo?style=flat-square&label=Repos%20Protected" alt="Forks">
-  </a>
+  <img src="https://img.shields.io/badge/🛡️_Deploy_Gate-Enabled-success?style=flat-square" alt="Deploy Gate Enabled">
   <a href="https://permissionprotocol.com">
     <img src="https://img.shields.io/badge/Permission_Protocol-Visit-blue?style=flat-square" alt="Permission Protocol">
   </a>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Repos_Protected-3-blueviolet?style=flat-square" alt="Repos Protected">
+  <img src="https://img.shields.io/badge/Approvals_Issued-12-blue?style=flat-square" alt="Approvals Issued">
+</p>
+
+---
+
+## ⚡ Quickstart (3 minutes)
+
+<p align="center">
+  <a href="https://github.com/permission-protocol/pp-demo/generate">
+    <img src="https://img.shields.io/badge/Use_This_Template-→-green?style=for-the-badge" alt="Use Template">
+  </a>
+</p>
+
+1. Click **"Use this template"** above
+2. Add your `PP_API_KEY` secret ([get one here](https://app.permissionprotocol.com))
+3. Open a PR → Watch it fail → Approve → Merge
+
+**You're protected.** No setup files. No config. Just works.
 
 ---
 
