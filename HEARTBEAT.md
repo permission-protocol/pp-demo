@@ -37,3 +37,9 @@ Check `goals/xdares-seo-growth/state.json`:
 - Run `./scripts/health-check.sh` weekly (Sunday heartbeats)
 - If cooldown detected → alert Rod immediately
 - Otherwise: HEARTBEAT_OK
+
+## Evolution Backup (Daily)
+- Run `./scripts/backup-evolution.sh` once per day
+- Keeps GitHub backup current with my growth
+- If backup push fails → alert Rod (needs auth fix)
+- Critical for disaster recovery (Mac destruction scenario)

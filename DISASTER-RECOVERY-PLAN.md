@@ -110,8 +110,13 @@ Send message to Charles on Telegram — he should respond with full personality 
 
 ## ⚡ PREVENTION
 
-**Regular Backups:**
-- This git repo should be pushed daily
+**Evolution Backup System:**
+- `./scripts/backup-evolution.sh` runs daily via heartbeats
+- Automatically commits and pushes Charles's growth to GitHub
+- Ensures backup stays current with personality/memory evolution
+- Max data loss: 24 hours (vs weeks without auto-backup)
+
+**Additional Backups:**
 - Consider Time Machine for full system backup
 - Keep credentials in 1Password (survives hardware loss)
 
