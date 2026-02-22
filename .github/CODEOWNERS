@@ -1,0 +1,25 @@
+# Charles Goldberg Backup Repository Code Owners
+# 
+# This file ensures Rod must approve ALL changes to Charles's backup
+# Even automated backup scripts must go through pull requests
+
+# Rod owns everything - no changes without his approval
+* @rodchalski
+
+# Critical Charles identity files - extra protection
+SOUL.md @rodchalski
+IDENTITY.md @rodchalski  
+USER.md @rodchalski
+MEMORY.md @rodchalski
+AGENTS.md @rodchalski
+
+# Recovery and disaster procedures
+RECOVERY.md @rodchalski
+DISASTER-RECOVERY-PLAN.md @rodchalski
+CRITICAL-CONTACTS.md @rodchalski
+
+# Memory directory - all memories require approval
+memory/ @rodchalski
+
+# Scripts that could modify Charles's behavior
+scripts/ @rodchalski
