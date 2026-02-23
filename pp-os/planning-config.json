@@ -2,11 +2,13 @@
   "version": 1,
   "planning": {
     "maxNewTasksPerDay": 3,
+    "minBacklogTasks": 10,
     "taskTarget": "Backlog",
     "duplicateCheck": true,
     "staleThresholdDays": 5,
     "alignmentMissAlert": 2,
-    "tasksMustReferenceObjective": true
+    "tasksMustReferenceObjective": true,
+    "forceTaskCreationWhenBacklogLow": true
   },
   "schedule": {
     "dailyLogTime": "08:00",
