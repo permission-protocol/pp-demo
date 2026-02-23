@@ -39,14 +39,35 @@ Check `goals/xdares-seo-growth/state.json`:
 - Otherwise: HEARTBEAT_OK
 
 ## Xdares Metrics Review (Daily)
-Check Firebase Analytics for ar-pwa-prod:
-- Active users (30min, 24h, 7d trends)
-- Average engagement time 
-- User retention & session quality
-- Top events and user flows
-- Geographic distribution
-- Compare vs. previous period
-- **Key question:** What user behavior patterns should drive strategy adjustments?
+**Full analytics stack monitoring for ar-pwa-prod:**
+
+### Google Analytics (Web Traffic)
+- Active users, sessions, bounce rate (7d vs previous period)
+- Top traffic sources (Direct, Organic Search, Referral, Social)
+- Geographic breakdown (Singapore, US, China, etc.)
+- Page views and user flows
+- Conversion events and goals
+
+### Firebase Analytics (App Behavior) 
+- Real-time active users (30min window)
+- User engagement and retention cohorts
+- App events and feature usage
+- Session duration and quality metrics
+- Push notification performance
+
+### Kickofflabs (Waitlist Growth)
+- Total leads across campaigns (~19,725 baseline)
+- New signups in last 24h/7d
+- Referral performance and viral coefficient
+- Campaign-specific metrics (Active vs Old)
+
+### Google Search Console (SEO)
+- Search impressions, clicks, CTR
+- Average position for key queries 
+- Indexing status for blog.xdares.com
+- Core Web Vitals and technical issues
+
+**Key question:** What patterns across platforms suggest strategy adjustments for growth acceleration?
 
 ## Evolution Backup (Daily)
 - Run `./scripts/backup-evolution.sh` once per day
