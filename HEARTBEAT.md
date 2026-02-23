@@ -38,6 +38,16 @@ Check `goals/xdares-seo-growth/state.json`:
 - If cooldown detected → alert Rod immediately
 - Otherwise: HEARTBEAT_OK
 
+## Xdares Metrics Review (Daily)
+Check Firebase Analytics for ar-pwa-prod:
+- Active users (30min, 24h, 7d trends)
+- Average engagement time 
+- User retention & session quality
+- Top events and user flows
+- Geographic distribution
+- Compare vs. previous period
+- **Key question:** What user behavior patterns should drive strategy adjustments?
+
 ## Evolution Backup (Daily)
 - Run `./scripts/backup-evolution.sh` once per day
 - Keeps GitHub backup current with my growth
