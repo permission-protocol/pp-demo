@@ -47,7 +47,7 @@ if git remote get-url origin > /dev/null 2>&1; then
     fi
 else
     echo "❌ No remote origin configured"
-    echo "💡 Run: git remote add origin https://github.com/rodchalski/charles-goldberg-backup.git"
+    echo "💡 Run: git remote add origin https://github.com/my-ai-friends/charles-goldberg-backup.git"
     exit 1
 fi
 
