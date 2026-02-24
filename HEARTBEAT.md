@@ -32,11 +32,45 @@ Check `goals/xdares-seo-growth/state.json`:
 - If `execution.status` != "running" → report status
 - If queue is empty and no replan happened → trigger `/goal plan`
 
+## Daily Work Capture (Every 3rd Heartbeat)
+Increment counter in `memory/heartbeat-state.json`. If `dailyCaptureCounter % 3 == 0`, check if significant work happened since last documentation:
+
+**Strategic Work:**
+- Major planning sessions or decisions
+- New systems or processes designed
+- Strategic pivots or insights
+- Roadmap changes or prioritization
+
+**Technical Work:**  
+- Major implementations or launches
+- Problem-solving breakthroughs
+- System fixes or improvements
+- New integrations or components
+
+**If significant work occurred:**
+- Update `memory/YYYY-MM-DD.md` with:
+  - **What:** Key accomplishments and decisions
+  - **Why:** Strategic importance and impact
+  - **Insights:** Lessons learned or breakthroughs
+  - **Next:** Follow-up actions or next steps
+- Update `lastDailyCapture` in `memory/heartbeat-state.json`
+
+**Otherwise:** Continue with normal heartbeat checks.
+
 ## Quick Health Check
 - If any cron jobs show repeated failures → alert
 - Run `./scripts/health-check.sh` weekly (Sunday heartbeats)
 - If cooldown detected → alert Rod immediately
 - Otherwise: HEARTBEAT_OK
+
+## Memory Curation (Sunday Heartbeats)
+Weekly review and curation of accumulated knowledge:
+- Review past week's `memory/YYYY-MM-DD.md` files
+- Extract strategic insights and lessons for `MEMORY.md`
+- Archive completed projects and decisions
+- Update processes based on learnings
+- Clean up outdated information
+- Update `lastMemoryCuration` in `memory/heartbeat-state.json`
 
 ## Xdares Metrics Review (Daily)
 **Full analytics stack monitoring for ar-pwa-prod:**
