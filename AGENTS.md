@@ -216,6 +216,8 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 
 ## Model Rules
 - NEVER change the model config without explicit user approval
-- claude-opus-4-6 DOES NOT EXIST - do not attempt to use it
-- Current valid models: claude-opus-4-5, claude-sonnet-4
+- Current valid models: claude-opus-4-6 (primary), claude-opus-4-5 (fallback), claude-sonnet-4
+- If stuck on wrong model, diagnose with `openclaw status` → Sessions table
+- Recovery: `kill <gateway-pid>` + `openclaw gateway start` (not just `openclaw gateway stop`)
+- Model health check runs every heartbeat — catches silent fallbacks automatically
 

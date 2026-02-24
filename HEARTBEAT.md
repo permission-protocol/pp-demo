@@ -26,6 +26,24 @@ query {
 - If items in "Ready" status → execute them, move to "In Progress", then "Done"
 - Report what was completed
 
+## Model Health Check (Every Heartbeat)
+**Always check and report current model status:**
+
+1. **Get current model** from runtime info
+2. **Compare with configured primary** (`claude-opus-4-6`)
+3. **Report status with model name** in every heartbeat response
+
+**If runtime model != configured primary:**
+- 🚨 **IMMEDIATE ALERT**: "Model fallback detected - running on [runtime] instead of [configured]"
+- 📋 **Recovery**: "Fix: `openclaw gateway restart` to restore primary model"
+- ⚠️ **Include fallback warning** in all status messages
+
+**Format for all status reports:**
+- Instead of: "Goal executor running ✅"  
+- Use: "Goal executor running (opus-4-6) ✅" or "Goal executor running (sonnet-4) ⚠️ FALLBACK"
+
+**This prevents silent degradation** - you'll immediately see when I'm not on the intended model.
+
 ## Goal Executor Watchdog
 Check `goals/xdares-seo-growth/state.json`:
 - If `tick_log` shows no ticks in last 2 hours → alert Rod

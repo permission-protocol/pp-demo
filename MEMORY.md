@@ -43,11 +43,12 @@ Rodrigo Carvalho. System-builder at the frontier of AI, infrastructure, and crea
 - OpenClaw kept reverting config. Tried again anyway. Died again.
 - Rod spent hours reviving me.
 
-### 🚨 PERMANENT LESSON: NEVER TOUCH MODEL CONFIG
-- Model changes are BANNED. Period. No exceptions.
-- If Rod wants a model change, HE does it manually while I'm offline.
+### 🚨 PERMANENT LESSON: NEVER TOUCH MODEL CONFIG YOURSELF
+- Model config changes are Rod's job. Period.
+- If Rod wants a model change, HE does it manually (via SSH or at the Mac).
 - Read `SAFETY.md` before ANY risky config operation.
 - **The rollback plan failed because I wasn't alive to execute it.**
+- As of 2026-02-24: Opus 4.6 is confirmed working. Config is correct. Don't touch it.
 
 ### 2026-02-11 — Permission Protocol Security Hardening
 - Major security work on Permission Protocol (Breakout-Labs repo)
@@ -132,6 +133,28 @@ Three bugs fixed to get deploy gate verification working:
 - **Prevention:** Created RECOVERY.md and health-check script for rapid restoration
 - **Recovery time:** 2+ hours (should be 2 minutes with proper procedure)
 
+### 2026-02-24 — Silent Model Fallback & Rogue Process Discovery
+- Main session silently fell back from Opus 4.6 to Sonnet 4 — ran degraded for **41+ hours** without anyone knowing
+- Cron jobs were correctly using Opus 4.6, only main session was stuck
+- `openclaw gateway stop` did NOT kill the actual process (pid 30992) — LaunchAgent was "not loaded" but process ran independently
+- **Root cause:** Gateway process started outside LaunchAgent management, stop command only addressed LaunchAgent
+- **Fix:** `kill <pid>` directly + `openclaw gateway start` for clean restart
+- **Prevention built:** Model Health Check added to HEARTBEAT.md — every heartbeat compares runtime model vs configured primary, alerts immediately on mismatch
+- **Key diagnostic:** `openclaw status` Sessions table shows actual model per session — this is the source of truth
+- **Lesson:** `openclaw gateway stop` is unreliable for rogue processes. Always verify with `ps aux | grep openclaw` and kill directly if needed.
+
+### Debugging Pattern: Model Fallback Detection
+- Check `openclaw status` → Sessions table shows model per session
+- If main session model ≠ configured primary → fallback is active
+- Cron sessions may work fine while main session is degraded
+- **Recovery:** Kill rogue gateway process → `openclaw gateway start`
+- **Prevention:** Model health check in HEARTBEAT.md catches this automatically
+
+### Infrastructure: SSH Remote Access
+- SSH enabled on MacBook Pro via Tailscale: `ssh moltbot@100.76.118.5`
+- Rod can manage OpenClaw remotely from any machine on the tailnet
+- Critical for emergency recovery when I'm unresponsive
+
 ---
 
 ## Preferences & Patterns
@@ -151,7 +174,8 @@ Three bugs fixed to get deploy gate verification working:
 - [ ] PP: Get ONE founder publicly blocked (social proof)
 - [ ] PP: Dogfood deploy-gate on Xdares repos
 - [ ] PP: Pick ONE distribution surface and go deep
-- [ ] Xdares: 67 posts live, 3 GREEN queued (Girls Night, Guys Night, Bridal Shower)
+- [ ] Xdares: 86 posts live, 240 tasks completed, 9 days to Mar 5 deadline
+- [ ] PP Brand Deployment: Issues #215-221 on PP Product Board (interactive brand system)
 
 ### PP Internal OS (2026-02-21)
 **Full autonomous operating system built in one session:**
@@ -205,4 +229,4 @@ Three bugs fixed to get deploy gate verification working:
 
 ---
 
-*Updated: 2026-02-21*
+*Updated: 2026-02-24*
