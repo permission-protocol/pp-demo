@@ -1,6 +1,6 @@
 {
-  "dailyCaptureCounter": 2,
-  "lastDailyCapture": null,
+  "dailyCaptureCounter": 3,
+  "lastDailyCapture": "2026-02-24T15:28:00Z",
   "lastMemoryCuration": null,
   "description": "Tracks heartbeat-based daily work capture and memory curation cycles"
 }
