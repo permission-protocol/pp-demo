@@ -62,81 +62,60 @@ IMPORTANT: Respond with ONLY a JSON array, no other text. Format:
 Unproven criteria:
 $UNPROVEN"
 
-# Call R1 70B
+# Call R1 70B + parse response in single Python block (avoids bash variable mangling)
 PROMPT_FILE=$(mktemp)
 echo "$PROMPT" > "$PROMPT_FILE"
+export PROMPT_FILE SPARK_URL MODEL
 
-R1_RESPONSE=$(python3 -c "
-import json, urllib.request, sys
+python3 << 'PYEOF'
+import json, re, os, urllib.request, sys
 
-with open('$PROMPT_FILE') as f:
+prompt_file = os.environ['PROMPT_FILE']
+spark_url = os.environ['SPARK_URL']
+model = os.environ['MODEL']
+
+with open(prompt_file) as f:
     prompt = f.read()
 
-payload = json.dumps({
-    'model': '$MODEL',
-    'prompt': prompt,
-    'stream': False,
-    'options': {'temperature': 0.1, 'num_predict': 500}
-}).encode()
-
-req = urllib.request.Request('${SPARK_URL}/api/generate', data=payload, headers={'Content-Type': 'application/json'})
+# Call R1
 try:
+    payload = json.dumps({
+        'model': model,
+        'prompt': prompt,
+        'stream': False,
+        'options': {'temperature': 0.1, 'num_predict': 500}
+    }).encode()
+    req = urllib.request.Request(f'{spark_url}/api/generate', data=payload, headers={'Content-Type': 'application/json'})
     resp = urllib.request.urlopen(req, timeout=300)
     data = json.loads(resp.read())
-    print(data.get('response', 'ERROR: no response field'))
+    response = data.get('response', '')
 except Exception as e:
-    print(f'ERROR: {e}')
-" 2>/dev/null || echo "ERROR: Python call failed")
+    print(json.dumps({'verdict': 'system_error', 'error': f'R1 call failed: {e}', 'model': model}, indent=2))
+    sys.exit(2)
 
-rm -f "$PROMPT_FILE"
+# Strip markdown code fences
+response = re.sub(r'```(?:json)?\s*', '', response).strip()
 
-# Parse R1 response — extract JSON
-VERDICT=$(python3 -c "
-import json, re, sys
-
-response = '''$R1_RESPONSE'''
-
-# Try to find JSON array in response
+# Extract JSON array
 match = re.search(r'\[.*\]', response, re.DOTALL)
 if match:
     try:
         verdicts = json.loads(match.group())
-        # Validate structure
         for v in verdicts:
             if 'verdict' not in v or v['verdict'] not in ('pass', 'fail'):
                 raise ValueError(f'Invalid verdict: {v}')
         has_fail = any(v['verdict'] == 'fail' for v in verdicts)
-        print(json.dumps({
-            'verdict': 'fail' if has_fail else 'pass',
-            'criteria': verdicts,
-            'model': '$MODEL'
-        }, indent=2))
+        result = {'verdict': 'fail' if has_fail else 'pass', 'criteria': verdicts, 'model': model}
+        print(json.dumps(result, indent=2))
+        sys.exit(1 if has_fail else 0)
     except (json.JSONDecodeError, ValueError) as e:
-        print(json.dumps({
-            'verdict': 'system_error',
-            'error': f'Failed to parse R1 response: {str(e)}',
-            'raw_response': response[:500],
-            'model': '$MODEL'
-        }, indent=2))
+        print(json.dumps({'verdict': 'system_error', 'error': f'Parse error: {e}', 'raw_response': response[:500], 'model': model}, indent=2))
+        sys.exit(2)
 else:
-    print(json.dumps({
-        'verdict': 'system_error',
-        'error': 'No JSON array found in R1 response',
-        'raw_response': response[:500],
-        'model': '$MODEL'
-    }, indent=2))
-" 2>/dev/null)
+    print(json.dumps({'verdict': 'system_error', 'error': 'No JSON array found', 'raw_response': response[:500], 'model': model}, indent=2))
+    sys.exit(2)
+PYEOF
 
-echo "$VERDICT"
-
-# Determine exit code
-EXIT_CODE=$(echo "$VERDICT" | python3 -c "
-import json, sys
-d = json.load(sys.stdin)
-v = d.get('verdict', 'system_error')
-if v == 'pass': print(0)
-elif v == 'fail': print(1)
-else: print(2)
-" 2>/dev/null || echo 2)
-
+EXIT_CODE=$?
+rm -f "$PROMPT_FILE"
 exit "$EXIT_CODE"

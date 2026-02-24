@@ -19,14 +19,13 @@ Never use `gateway config.patch` or `config.apply` for experimental changes unle
 ### 3. Anything That Requires Me To Be Alive To Revert
 If the rollback plan is "I'll fix it after" — that's not a plan. I might be dead.
 
-### 4. LanceDB Memory Plugin
-**PROTECT THIS.** Gateway restarts and config validation can silently strip plugin entries.
-- Plugin: `memory-lancedb` in `plugins.entries` + `plugins.slots.memory = "memory-lancedb"`
-- Embedding: OpenAI `text-embedding-3-small` (key name: `charles-memory`)
-- DB path: `~/.openclaw/memory/lancedb`
-- If `openclaw status` shows `plugin memory-core` instead of `memory-lancedb` → config got wiped
-- **Recovery:** Re-add the entry to `openclaw.json` plugins section and restart gateway
-- OpenAI key is in Rod's OpenAI account under `charles-memory`
+### 4. Plugin Config Changes (LanceDB, etc.)
+**DO NOT modify openclaw.json plugin config without Rod's explicit approval.**
+- Feb 24, 2026: Crashed myself 3+ times trying to enable memory-lancedb
+- Gateway restarts kill the active session — if config is wrong, you're dead
+- The "I'll just restart real quick" pattern is a trap
+- **Rule:** If it requires `openclaw gateway restart`, Rod does it manually
+- OpenAI key `charles-memory` exists in Rod's account for future LanceDB setup
 
 ## ✅ Safe Practices
 

@@ -21,7 +21,7 @@ if [ -z "$ISSUE_NUM" ]; then
 fi
 
 # ─── Fetch issue ───
-ISSUE_JSON=$(GH_TOKEN="$GH_TOKEN" gh issue view "$ISSUE_NUM" -R "$REPO" --json title,body,labels 2>/dev/null)
+ISSUE_JSON=$(GH_TOKEN="$GH_TOKEN" gh issue view "$ISSUE_NUM" -R "$REPO" --json title,body,labels,state 2>/dev/null)
 if [ -z "$ISSUE_JSON" ]; then
     echo '{"error": "Could not fetch issue '$ISSUE_NUM'"}'
     exit 1
@@ -30,6 +30,7 @@ fi
 TITLE=$(echo "$ISSUE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['title'])")
 BODY=$(echo "$ISSUE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['body'])")
 LABELS=$(echo "$ISSUE_JSON" | python3 -c "import json,sys; print(','.join(l['name'] for l in json.load(sys.stdin)['labels']))")
+ISSUE_STATE=$(echo "$ISSUE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin).get('state','UNKNOWN'))")
 
 # ─── Parse AC block ───
 AC_BLOCK=$(echo "$BODY" | python3 -c "
@@ -143,6 +144,7 @@ issue_num = $ISSUE_NUM
 title = '''$TITLE'''
 template_type = "$TEMPLATE_TYPE"
 verify_url = "$VERIFY_URL"
+issue_state = "$ISSUE_STATE"
 ac_items = $(python3 -c "
 import sys
 items = []
@@ -301,6 +303,10 @@ proven = sum(1 for c in criteria if c['status'] == 'proven')
 unproven = sum(1 for c in criteria if c['status'] == 'unproven')
 false_count = sum(1 for c in criteria if c['status'] == 'false')
 
+warnings = []
+if issue_state == "OPEN":
+    warnings.append("Issue is still OPEN — suspicious for a Done item")
+
 if false_count > 0:
     result = "FAIL"
 elif unproven > 0:
@@ -312,6 +318,7 @@ proof_map = {
     "issue": issue_num,
     "title": title,
     "template": template_type,
+    "issue_state": issue_state,
     "timestamp": datetime.datetime.now().isoformat(),
     "result": result,
     "criteria": criteria,
@@ -321,6 +328,8 @@ proof_map = {
         "false": false_count
     }
 }
+if warnings:
+    proof_map["warnings"] = warnings
 
 print(json.dumps(proof_map, indent=2))
 
