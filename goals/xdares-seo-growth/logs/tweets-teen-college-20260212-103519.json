@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-12T10:35:19.119665Z",
+  "campaign": "teen_college_content_promo",
+  "tweets_attempted": 5,
+  "tweets_succeeded": 5,
+  "results": [
+    {
+      "index": 1,
+      "status": "success",
+      "tweet_id": "2021895830614016188",
+      "text_preview": "\ud83d\udcf1 Teen party? Skip the boring stuff.\n\n200+ Truth or Dare que..."
+    },
+    {
+      "index": 2,
+      "status": "success",
+      "tweet_id": "2021895844820128209",
+      "text_preview": "\ud83c\udf93 College parties hit different when you've got the games ri..."
+    },
+    {
+      "index": 3,
+      "status": "success",
+      "tweet_id": "2021895858879406327",
+      "text_preview": "Sleepover activities that AREN'T just \"let's watch Netflix a..."
+    },
+    {
+      "index": 4,
+      "status": "success",
+      "tweet_id": "2021895872888414583",
+      "text_preview": "Hot take: Flip Cup is the most underrated party game.\n\nEasy ..."
+    },
+    {
+      "index": 5,
+      "status": "success",
+      "tweet_id": "2021895886482063581",
+      "text_preview": "POV: You're hosting game night and everyone's phones are awa..."
+    }
+  ]
+}

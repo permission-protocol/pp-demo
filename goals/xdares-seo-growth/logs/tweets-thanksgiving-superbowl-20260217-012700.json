@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-02-17T08:29:40.743073Z",
+  "task": "task-164",
+  "description": "Thanksgiving + Super Bowl + seasonal content tweets",
+  "results": [
+    {
+      "index": 1,
+      "success": true,
+      "tweet_id": "2023675698561642621",
+      "text": "\ud83e\udd83 THANKSGIVING PARTY GAMES \u2014 58 games to make Turk..."
+    },
+    {
+      "index": 2,
+      "success": true,
+      "tweet_id": "2023675825875546475",
+      "text": "\ud83c\udfc8 SUPER BOWL PARTY GAMES \u2014 50+ ways to make game d..."
+    },
+    {
+      "index": 3,
+      "success": true,
+      "tweet_id": "2023675953042575386",
+      "text": "Planning a holiday party? Get ahead of the crowd! ..."
+    },
+    {
+      "index": 4,
+      "success": true,
+      "tweet_id": "2023676080394265087",
+      "text": "Pro tip: The best parties are planned MONTHS in ad..."
+    },
+    {
+      "index": 5,
+      "success": true,
+      "tweet_id": "2023676207519408325",
+      "text": "Every touchdown. Every commercial break. Every hal..."
+    }
+  ],
+  "success_count": 5,
+  "total": 5
+}

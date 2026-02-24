@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-02-15T03:49:00.109201",
+  "campaign": "Pool Party + Memorial Day Summer Content Promotion",
+  "tweets": [
+    {
+      "index": 1,
+      "status": "success",
+      "tweet_id": "2022986488778989707",
+      "preview": "\u2600\ufe0f Pool Party Drinking Games for epic summer vibes! \ud83c\udfca\u200d\u2642\ufe0f\n\n50+ games for poolside..."
+    },
+    {
+      "index": 2,
+      "status": "success",
+      "tweet_id": "2022986490066677891",
+      "preview": "\ud83c\uddfa\ud83c\uddf8 Memorial Day Party Games & BBQ Drinking Games \ud83c\udf56\n\nKick off summer the right wa..."
+    },
+    {
+      "index": 3,
+      "status": "success",
+      "tweet_id": "2022986491325030450",
+      "preview": "Summer party planning starts NOW! \u2600\ufe0f\ud83c\udf89\n\nOur most-requested seasonal guides:\n\n\ud83c\udfca Po..."
+    },
+    {
+      "index": 4,
+      "status": "success",
+      "tweet_id": "2022986492486791375",
+      "preview": "Hosting a pool party this summer? \ud83c\udf0a\n\nDon't just float around - turn it into a pa..."
+    },
+    {
+      "index": 5,
+      "status": "success",
+      "tweet_id": "2022986493879308402",
+      "preview": "Your summer BBQ needs these games \ud83d\udd25\n\n\u2022 Flip cup on the deck\n\u2022 Cornhole + drinkin..."
+    }
+  ],
+  "success_count": 5
+}

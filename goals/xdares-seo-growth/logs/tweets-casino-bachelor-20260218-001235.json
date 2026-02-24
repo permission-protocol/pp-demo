@@ -1,0 +1,35 @@
+{
+  "tweets": [
+    {
+      "index": 1,
+      "status": "success",
+      "tweet_id": "2024018687943118944",
+      "url": "https://twitter.com/xdares_/status/2024018687943118944"
+    },
+    {
+      "index": 2,
+      "status": "success",
+      "tweet_id": "2024018815139594443",
+      "url": "https://twitter.com/xdares_/status/2024018815139594443"
+    },
+    {
+      "index": 3,
+      "status": "success",
+      "tweet_id": "2024018942516482119",
+      "url": "https://twitter.com/xdares_/status/2024018942516482119"
+    },
+    {
+      "index": 4,
+      "status": "success",
+      "tweet_id": "2024019069620678703",
+      "url": "https://twitter.com/xdares_/status/2024019069620678703"
+    },
+    {
+      "index": 5,
+      "status": "success",
+      "tweet_id": "2024019196888465918",
+      "url": "https://twitter.com/xdares_/status/2024019196888465918"
+    }
+  ],
+  "timestamp": "2026-02-18T00:12:35.755996"
+}

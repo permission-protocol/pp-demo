@@ -13,9 +13,22 @@ echo "=========================="
 if [[ -n $(git status --porcelain) ]]; then
     echo "📝 Changes detected, committing evolution..."
     
-    # Add all Charles identity and memory files
+    # Add Charles identity and memory files
     git add SOUL.md USER.md IDENTITY.md AGENTS.md TOOLS.md MEMORY.md HEARTBEAT.md 
     git add memory/ scripts/ *.md
+    
+    # Add strategic project work
+    git add permission-protocol-brand-app/ 2>/dev/null || true
+    git add permissionprotocol-site/ 2>/dev/null || true
+    git add goals/ 2>/dev/null || true
+    git add pp-os/ 2>/dev/null || true
+    git add skills/ 2>/dev/null || true
+    git add outreach/ 2>/dev/null || true
+    git add drafts/ 2>/dev/null || true
+    
+    # Add individual strategic files
+    git add pp-*.png 2>/dev/null || true
+    git add content/ 2>/dev/null || true
     
     # Create evolution commit with timestamp
     DATE=$(date "+%Y-%m-%d %H:%M")
@@ -25,9 +38,11 @@ Auto-backup of:
 - Memory updates and daily logs
 - Personality and identity refinements  
 - New scripts and procedures
+- Strategic project work (PP brand system, goals, skills)
+- Website implementations and brand assets
 - Project progress and decisions
 
-Keeping backup current with Charles's growth."
+Keeping backup current with Charles's growth and strategic work."
 
     echo "✅ Evolution committed"
 else

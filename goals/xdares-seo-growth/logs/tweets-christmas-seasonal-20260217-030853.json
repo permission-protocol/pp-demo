@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-02-17T03:08:53.713525",
+  "task": "task-167",
+  "tweets_attempted": 5,
+  "tweets_successful": 5,
+  "results": [
+    {
+      "success": true,
+      "tweet_id": "2023700414932414506",
+      "text": "\ud83c\udf84 Planning Christmas 2026? Get ahead with 60+ party games for adults!\n\nDrinking ..."
+    },
+    {
+      "success": true,
+      "tweet_id": "2023700605244764160",
+      "text": "\ud83c\udf81 White Elephant parties hit different with these adult twists:\n\n\u2022 Steal-a-Drink..."
+    },
+    {
+      "success": true,
+      "tweet_id": "2023700795418702097",
+      "text": "Holiday party season prep starts NOW \ud83c\udf85\n\nOur seasonal collection:\n\ud83e\udd83 Thanksgiving\n..."
+    },
+    {
+      "success": true,
+      "tweet_id": "2023700986037162494",
+      "text": "\ud83c\udfac Holiday movie drinking games hit different:\n\n\u2022 Die Hard (debate it's a Christm..."
+    },
+    {
+      "success": true,
+      "tweet_id": "2023701176202785039",
+      "text": "Pro tip: Bookmark holiday party games NOW while you're thinking about it \ud83d\udccc\n\nYou'..."
+    }
+  ]
+}

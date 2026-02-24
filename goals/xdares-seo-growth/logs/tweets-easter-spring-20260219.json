@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-19T07:54:37.530540Z",
+  "campaign": "Easter + Spring Seasonal",
+  "results": [
+    {
+      "index": 1,
+      "status": "success",
+      "tweet_id": "2024392104978288940",
+      "text": "\ud83d\udc30 Easter party planning starts NOW! 57 games to make your celebration legendary\u2014..."
+    },
+    {
+      "index": 2,
+      "status": "success",
+      "tweet_id": "2024392119574528397",
+      "text": "Spring is coming and so are the parties \ud83c\udf37\n\nWhether you're hosting Easter brunch ..."
+    },
+    {
+      "index": 3,
+      "status": "success",
+      "tweet_id": "2024392133537308759",
+      "text": "\ud83d\udc23 Who else is ready to turn Easter brunch into a party?\n\nMimosa Trivia, Bunny Ea..."
+    },
+    {
+      "index": 4,
+      "status": "success",
+      "tweet_id": "2024392148095803602",
+      "text": "Your guide to spring party season is ready \ud83c\udf38\n\n\ud83d\udc30 Easter Games: https://blog.xdare..."
+    },
+    {
+      "index": 5,
+      "status": "success",
+      "tweet_id": "2024392161819492756",
+      "text": "PSA: Adult Easter Egg Hunts are a thing and they're AMAZING \ud83e\udd5a\ud83c\udf7a\n\nHide mini bottle..."
+    }
+  ],
+  "success_count": 5,
+  "fail_count": 0
+}

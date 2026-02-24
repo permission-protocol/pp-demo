@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-19T10:14:46.850399Z",
+  "campaign": "graduation-mothers-day-promo",
+  "total": 5,
+  "successful": 5,
+  "results": [
+    {
+      "index": 1,
+      "status": "success",
+      "tweet_id": "2024426923368337789",
+      "text": "\ud83c\udf93 Graduation season is coming! Planning a party for your grad?\n\nWe've got 61 gam..."
+    },
+    {
+      "index": 2,
+      "status": "success",
+      "tweet_id": "2024427050917114360",
+      "text": "Mother's Day 2026 is May 11th \u2014 and the best gift is quality time together \ud83d\udc9d\n\nOu..."
+    },
+    {
+      "index": 3,
+      "status": "success",
+      "tweet_id": "2024427178361036848",
+      "text": "Throwing a graduation party? Skip the awkward small talk! \ud83d\ude05\n\n\u2728 \"Roast the Gradua..."
+    },
+    {
+      "index": 4,
+      "status": "success",
+      "tweet_id": "2024427305695924289",
+      "text": "Hosting Mother's Day brunch this year? \ud83c\udf38\n\nTurn it into an event with:\n\u2022 Mimosa t..."
+    },
+    {
+      "index": 5,
+      "status": "success",
+      "tweet_id": "2024427433030799465",
+      "text": "PSA: It's never too early to plan graduation parties! \ud83c\udf89\n\nHigh school grads, coll..."
+    }
+  ]
+}
