@@ -111,6 +111,14 @@ model = "$MODEL_STATUS"
 if model == "unknown":
     warnings.append("model_check: could not confirm opus-4-6")
 
+# Memory plugin
+import subprocess
+mem_check = subprocess.run(["openclaw", "status"], capture_output=True, text=True, timeout=10)
+if "memory-lancedb" in mem_check.stdout:
+    pass  # good
+elif "memory-core" in mem_check.stdout:
+    alerts.append("memory_downgraded: LanceDB replaced by memory-core — config likely wiped, see SAFETY.md §4")
+
 status = "attention" if alerts else ("watch" if warnings else "clear")
 
 print(json.dumps({
