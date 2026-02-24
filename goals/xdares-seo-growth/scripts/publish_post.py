@@ -212,6 +212,25 @@ def main():
         print(f"❌ File not found: {html_path}")
         sys.exit(1)
     
+    # Quality gate check (Llama 8B on Spark — free)
+    gate_script = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts", "quality-gate.sh")
+    if os.path.exists(gate_script):
+        print("🔍 Running quality gate...")
+        gate_result = subprocess.run(["bash", gate_script, html_path], capture_output=True, text=True, timeout=180, errors='replace')
+        if gate_result.returncode == 1:
+            print(f"🚫 Quality gate REJECTED this post:")
+            print(gate_result.stdout)
+            # Read rejection report for notification
+            report_file = "/tmp/quality-gate-report.txt"
+            if os.path.exists(report_file):
+                with open(report_file) as f:
+                    print(f.read())
+            sys.exit(1)
+        elif gate_result.returncode == 0:
+            print("✅ Quality gate passed")
+        else:
+            print(f"⚠️ Quality gate error (code {gate_result.returncode}), proceeding anyway")
+    
     # Extract metadata
     meta = extract_metadata(html_path)
     print(f"\n{'='*60}")

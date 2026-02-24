@@ -1,5 +1,14 @@
 # HEARTBEAT.md
 
+## Step 0: Deterministic Health Check (ALWAYS RUN FIRST)
+```bash
+bash ~/.openclaw/workspace/scripts/heartbeat-check.sh
+```
+- If `status: "clear"` → skip to PP Board check, then HEARTBEAT_OK if nothing in Ready queue
+- If `status: "watch"` → note warnings but don't alert unless persistent (3+ consecutive)
+- If `status: "attention"` → alerts need action, report to Rod immediately
+- **This replaces manual model health checks, gateway checks, and cooldown checks**
+
 ## PP Product Board — Ready Queue
 Check `Ready` column in [PP Product](https://github.com/orgs/Roca-Ventures/projects/2):
 ```bash
@@ -25,24 +34,6 @@ query {
 ```
 - If items in "Ready" status → execute them, move to "In Progress", then "Done"
 - Report what was completed
-
-## Model Health Check (Every Heartbeat)
-**Always check and report current model status:**
-
-1. **Get current model** from runtime info
-2. **Compare with configured primary** (`claude-opus-4-6`)
-3. **Report status with model name** in every heartbeat response
-
-**If runtime model != configured primary:**
-- 🚨 **IMMEDIATE ALERT**: "Model fallback detected - running on [runtime] instead of [configured]"
-- 📋 **Recovery**: "Fix: `openclaw gateway restart` to restore primary model"
-- ⚠️ **Include fallback warning** in all status messages
-
-**Format for all status reports:**
-- Instead of: "Goal executor running ✅"  
-- Use: "Goal executor running (opus-4-6) ✅" or "Goal executor running (sonnet-4) ⚠️ FALLBACK"
-
-**This prevents silent degradation** - you'll immediately see when I'm not on the intended model.
 
 ## Goal Executor Watchdog
 Check `goals/xdares-seo-growth/state.json`:
