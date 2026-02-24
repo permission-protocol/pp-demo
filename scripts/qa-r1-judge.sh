@@ -51,6 +51,11 @@ PROMPT="You are a QA reviewer for a software project. Below are acceptance crite
 
 For each criterion, judge whether it PASSES or FAILS based on the evidence available.
 
+RULES:
+- If evidence shows the work was done but a specific detail can't be measured, that's a PASS (benefit of the doubt).
+- FAIL only when evidence suggests the criterion is actually NOT met, or when the work clearly wasn't done.
+- 'Cannot verify X deterministically' is NOT grounds for failure — it means the check is limited, not that the work is wrong.
+
 IMPORTANT: Respond with ONLY a JSON array, no other text. Format:
 [{\"ac\": \"criterion text\", \"verdict\": \"pass\" or \"fail\", \"reason\": \"one sentence\"}]
 
