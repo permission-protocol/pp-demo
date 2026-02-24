@@ -1,0 +1,14 @@
+{
+  "project_id": "PVT_kwDODLmkHM4BPp27",
+  "status_field_id": "PVTSSF_lADODLmkHM4BPp27zg-AEuE",
+  "statuses": {
+    "backlog": "5a9aa500",
+    "blocked": "30175b0d",
+    "ready": "85507c95",
+    "in_progress": "29ed67b0",
+    "done": "bc985766",
+    "qa_review": "4f12efed",
+    "verified": "f4fd478d",
+    "archive": "4ea9293b"
+  }
+}

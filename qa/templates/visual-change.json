@@ -1,0 +1,40 @@
+{
+  "type": "visual-change",
+  "labels": ["type:visual"],
+  "title_keywords": ["logo", "brand", "design", "UI", "CSS", "color", "font", "favicon", "layout", "visual"],
+  "checks": [
+    {
+      "id": "page_loads",
+      "name": "Page returns 200",
+      "method": "http_status",
+      "expect": 200
+    },
+    {
+      "id": "css_colors",
+      "name": "CSS variables match brand spec",
+      "method": "css_extract",
+      "variables": ["--void", "--ash", "--signal", "--permit", "--deny"],
+      "compare_to": "pp-brand-spec.json:brand.colors"
+    },
+    {
+      "id": "css_fonts",
+      "name": "Font families match brand spec",
+      "method": "css_extract",
+      "properties": ["font-family"],
+      "expect_contains": ["Space Grotesk"]
+    },
+    {
+      "id": "screenshot",
+      "name": "Screenshot captured",
+      "method": "screenshot",
+      "viewport": {"width": 1440, "height": 900}
+    },
+    {
+      "id": "favicon",
+      "name": "Favicon present",
+      "method": "http_status",
+      "path": "/favicon.ico",
+      "expect": 200
+    }
+  ]
+}

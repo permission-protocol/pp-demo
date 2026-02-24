@@ -1,0 +1,33 @@
+{
+  "type": "api-change",
+  "labels": ["type:api"],
+  "title_keywords": ["API", "endpoint", "route", "webhook", "REST"],
+  "checks": [
+    {
+      "id": "endpoint_responds",
+      "name": "Endpoint returns expected status",
+      "method": "http_status",
+      "expect": 200
+    },
+    {
+      "id": "response_shape",
+      "name": "Response body has expected fields",
+      "method": "json_schema",
+      "expect": "fields_present"
+    },
+    {
+      "id": "error_handling",
+      "name": "Bad input returns proper error",
+      "method": "http_status",
+      "bad_input": true,
+      "expect_one_of": [400, 401, 403, 422]
+    },
+    {
+      "id": "auth_required",
+      "name": "Unauthenticated request rejected",
+      "method": "http_status",
+      "no_auth": true,
+      "expect_one_of": [401, 403]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "type": "blog-post",
+  "labels": ["type:blog"],
+  "title_keywords": ["blog", "post", "article", "content", "SEO", "publish"],
+  "checks": [
+    {
+      "id": "page_loads",
+      "name": "Page returns 200",
+      "method": "http_status",
+      "expect": 200
+    },
+    {
+      "id": "quality_gate",
+      "name": "Quality gate pass",
+      "method": "script",
+      "command": "bash scripts/quality-gate.sh"
+    },
+    {
+      "id": "meta_tags",
+      "name": "Meta description present",
+      "method": "html_check",
+      "selector": "meta[name='description']",
+      "expect": "exists"
+    },
+    {
+      "id": "og_tags",
+      "name": "Open Graph tags present",
+      "method": "html_check",
+      "selector": "meta[property='og:title']",
+      "expect": "exists"
+    },
+    {
+      "id": "internal_links",
+      "name": "Internal links resolve (no 404s)",
+      "method": "link_check",
+      "domain_filter": ["xdares.com", "blog.xdares.com"]
+    }
+  ]
+}

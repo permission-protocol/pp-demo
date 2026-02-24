@@ -1,0 +1,31 @@
+{
+  "brand": {
+    "fonts": {
+      "primary": "Space Grotesk",
+      "mono": "Space Mono"
+    },
+    "colors": {
+      "void": "#0a0a0a",
+      "ash": "#1a1a1a",
+      "signal": "#c8c8c8",
+      "permit": "#44aa99",
+      "deny": "#aa4455"
+    },
+    "logo": {
+      "text_primary": "PERMISSION",
+      "text_secondary": "PROTOCOL",
+      "favicon_hash": null
+    }
+  },
+  "urls": {
+    "site": "https://permissionprotocol.com",
+    "demo_repo": "https://github.com/permission-protocol/pp-demo",
+    "github_action": "https://github.com/permission-protocol/deploy-gate"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "screenshot_diff_threshold_pct": 5,
+  "spec_version": "2026-02-24"
+}

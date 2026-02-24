@@ -1,0 +1,11 @@
+{
+  "urls": {
+    "blog": "https://blog.xdares.com",
+    "app": "https://xdares.com"
+  },
+  "seo": {
+    "min_word_count": 300,
+    "required_elements": ["h2", "meta_description", "internal_links", "title"]
+  },
+  "spec_version": "2026-02-24"
+}

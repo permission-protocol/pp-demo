@@ -1,0 +1,27 @@
+{
+  "type": "infra-config",
+  "labels": ["type:infra"],
+  "title_keywords": ["deploy", "infra", "config", "DNS", "SSL", "CI", "pipeline", "hosting", "server"],
+  "checks": [
+    {
+      "id": "deploy_succeeded",
+      "name": "Deploy/build succeeded",
+      "method": "gh_cli",
+      "command": "gh run list --limit 1 --json conclusion -q '.[0].conclusion'",
+      "expect": "success"
+    },
+    {
+      "id": "health_check",
+      "name": "Health endpoint returns OK",
+      "method": "http_status",
+      "path": "/",
+      "expect": 200
+    },
+    {
+      "id": "ssl_valid",
+      "name": "SSL certificate valid",
+      "method": "ssl_check",
+      "expect": "valid"
+    }
+  ]
+}

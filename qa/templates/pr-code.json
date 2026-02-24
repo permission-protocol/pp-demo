@@ -1,0 +1,28 @@
+{
+  "type": "pr-code",
+  "labels": ["type:pr"],
+  "title_keywords": ["PR", "pull request", "merge", "fix", "implement", "refactor", "update"],
+  "checks": [
+    {
+      "id": "pr_merged",
+      "name": "PR is merged",
+      "method": "gh_cli",
+      "command": "gh pr view --json state -q '.state'",
+      "expect": "MERGED"
+    },
+    {
+      "id": "ci_passed",
+      "name": "CI checks passed",
+      "method": "gh_cli",
+      "command": "gh pr checks",
+      "expect": "all_pass"
+    },
+    {
+      "id": "reviews_resolved",
+      "name": "No unresolved review comments",
+      "method": "gh_cli",
+      "command": "gh pr view --json reviewDecision -q '.reviewDecision'",
+      "expect_one_of": ["APPROVED", ""]
+    }
+  ]
+}
