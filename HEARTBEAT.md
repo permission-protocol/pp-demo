@@ -81,6 +81,16 @@ Increment counter in `memory/heartbeat-state.json`. If `dailyCaptureCounter % 3 
 - If cooldown detected → alert Rod immediately
 - Otherwise: HEARTBEAT_OK
 
+## Transcript Archive (Sunday Heartbeats)
+Archive new session transcripts and clean orphans:
+```bash
+./scripts/archive-transcripts.sh --clean
+```
+- Incrementally archives only NEW transcripts since last run
+- Pushes compressed archive to GitHub backup repo
+- Cleans orphan transcripts from disk (frees space)
+- If push fails → alert Rod
+
 ## Memory Curation (Sunday Heartbeats)
 Weekly review and curation of accumulated knowledge:
 - Review past week's `memory/YYYY-MM-DD.md` files
