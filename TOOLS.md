@@ -111,6 +111,38 @@ curl http://100.111.31.56:11434/api/generate -d '{"model":"llama3.1:8b", "prompt
 
 ---
 
+## Coding Agent Workflow
+
+**Always use this flow for coding tasks:**
+
+### 1. Launch with codex-run.sh (not raw codex)
+```bash
+bash pty:true background:true workdir:/tmp/pp-XXX command:"bash ~/.openclaw/workspace/scripts/codex-run.sh <issue> /tmp/pp-XXX '<prompt>'"
+```
+
+### 2. Monitor with agent-status.sh
+```bash
+bash scripts/agent-status.sh          # all agents
+bash scripts/agent-status.sh 216      # specific issue
+```
+Status file at `/tmp/agent-status-<issue>.json` shows phase + detail + files changed.
+
+### 3. Pre-merge visual review (BEFORE merging)
+```bash
+bash scripts/pre-merge-review.sh Roca-Ventures/permissionprotocol-site 42
+```
+Then screenshot with browser tool:
+- Desktop viewport of each changed page
+- Check nav, colors, responsiveness
+- **Only merge after visual confirmation**
+
+### Rules
+- **Codex first, always.** Claude Code only for single complex tasks where Codex fails.
+- **Screenshot before merge**, not after.
+- **Never move to Done** — executor moves to QA Review, pipeline verifies.
+
+---
+
 ## Why Separate?
 
 Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
