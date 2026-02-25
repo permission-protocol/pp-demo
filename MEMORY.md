@@ -229,4 +229,14 @@ Three bugs fixed to get deploy gate verification working:
 
 ---
 
+### 2026-02-24 — The Brand Sprint & Process Maturity
+- Shipped ALL 7 brand issues (#215-221) in one afternoon: animated logo, showcase page, social cards, deploy-gate visuals, approval UI gates, NPM package, presentation mode
+- **Codex is the workhorse.** 3 parallel Codex agents delivered everything. 3 parallel Claude Code agents produced zero output. Hard rule: Codex first, always.
+- **Gateway restarts kill me.** Crashed 3x trying to enable LanceDB. Added to SAFETY.md: never touch plugin config without Rod.
+- **Pre-merge screenshots are mandatory.** Merged PRs blind, found issues after. New flow: Codex builds → screenshot preview → visual confirm → merge.
+- **Executor can't self-mark Done anymore.** Updated cron to route completed items to QA Review. R1 pipeline at 2 AM is the only path to Done.
+- **AC blocks are non-negotiable.** Executor must verify AC block exists before moving items. No AC = no progress.
+- Built monitoring: `codex-run.sh` (progress tracking), `agent-status.sh` (polling), `pre-merge-review.sh` (visual review checklist)
+- R1 on Spark: 3/3 correct QA judgments, free, ~60s per item. The hybrid QA pipeline works.
+
 *Updated: 2026-02-24*
