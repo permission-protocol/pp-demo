@@ -1,0 +1,27 @@
+{
+  "date": "2026-02-25",
+  "accessRequests": {
+    "today": 0,
+    "yesterday": 0,
+    "change": 0,
+    "changePercent": "0%",
+    "weeklyTrend": "flat",
+    "historicalBaseline": {
+      "feb21": 0,
+      "feb22": 0,
+      "feb23": 0,
+      "feb24": 0,
+      "feb25": 0
+    },
+    "formStatus": "functional_since_2026-02-23",
+    "notes": "Request Access form was broken prior to PR #32 (fixed Feb 23). Zero inbound organic demand detected. Funnel entry point is functional but no traffic converting."
+  },
+  "context": {
+    "objectiveDeadlineDaysRemaining": 24,
+    "nistRfiDeadlineDaysRemaining": 12,
+    "posthogSpike": "92 pageviews on Feb 23 (23x baseline) — source TBD",
+    "outreachStatus": "blocked_day5",
+    "designPartnersActive": 0
+  },
+  "lastUpdated": "2026-02-25T09:00:00-07:00"
+}
