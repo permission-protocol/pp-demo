@@ -92,35 +92,28 @@ Weekly review and curation of accumulated knowledge:
 - Update `lastMemoryCuration` in `memory/heartbeat-state.json`
 
 ## Xdares Metrics Review (Daily)
-**Full analytics stack monitoring for ar-pwa-prod:**
+Run the metrics collection pipeline once per day:
+```bash
+bash ~/.openclaw/workspace/scripts/xdares-metrics-collect.sh
+```
+Then read `goals/xdares-seo-growth/metrics/latest.json` and compare against `history.jsonl` for trends.
 
-### Google Analytics (Web Traffic)
-- Active users, sessions, bounce rate (7d vs previous period)
-- Top traffic sources (Direct, Organic Search, Referral, Social)
-- Geographic breakdown (Singapore, US, China, etc.)
-- Page views and user flows
-- Conversion events and goals
+**Report to Rod if:**
+- Traffic drops >20% week-over-week
+- Organic search sessions spike or crash
+- Engagement metrics shift significantly
+- Any data source fails to collect
 
-### Firebase Analytics (App Behavior) 
-- Real-time active users (30min window)
-- User engagement and retention cohorts
-- App events and feature usage
-- Session duration and quality metrics
-- Push notification performance
+Then run the strategy engine and goal auto-updater:
+```bash
+bash ~/.openclaw/workspace/scripts/xdares-strategy-recommend.sh
+bash ~/.openclaw/workspace/scripts/xdares-goal-auto-update.sh
+```
+- Review `metrics/recommendations.json` for signals worth reporting
+- Auto-updater injects new tasks into goal executor queue (idempotent, won't duplicate)
+- All auto-generated tasks tagged with `"source": "metrics-engine"` for tracking
 
-### Kickofflabs (Waitlist Growth)
-- Total leads across campaigns (~19,725 baseline)
-- New signups in last 24h/7d
-- Referral performance and viral coefficient
-- Campaign-specific metrics (Active vs Old)
-
-### Google Search Console (SEO)
-- Search impressions, clicks, CTR
-- Average position for key queries 
-- Indexing status for blog.xdares.com
-- Core Web Vitals and technical issues
-
-**Key question:** What patterns across platforms suggest strategy adjustments for growth acceleration?
+**Report to Rod if:** recommendations contain HIGH priority items or goal_adjustments changed the queue
 
 ## Evolution Backup (Daily)
 - Run `./scripts/backup-evolution.sh` once per day

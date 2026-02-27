@@ -1,20 +1,20 @@
 {
   "date": "2026-02-27",
-  "timestamp": "2026-02-27T06:49:45.091697Z",
+  "timestamp": "2026-02-27T15:04:46.057588Z",
   "ga4": {
     "overview": {
-      "activeUsers_thisWeek": 53.0,
-      "activeUsers_lastWeek": 51.0,
-      "sessions_thisWeek": 58.0,
-      "sessions_lastWeek": 60.0,
-      "engagedSessions_thisWeek": 17.0,
-      "engagedSessions_lastWeek": 12.0,
-      "avgSessionDuration_thisWeek": 47.67716094827586,
-      "avgSessionDuration_lastWeek": 40.80856465,
+      "activeUsers_thisWeek": 54.0,
+      "activeUsers_lastWeek": 53.0,
+      "sessions_thisWeek": 64.0,
+      "sessions_lastWeek": 58.0,
+      "engagedSessions_thisWeek": 14.0,
+      "engagedSessions_lastWeek": 17.0,
+      "avgSessionDuration_thisWeek": 78.700354953125,
+      "avgSessionDuration_lastWeek": 47.67716094827586,
       "newUsers_thisWeek": 53.0,
-      "newUsers_lastWeek": 51.0,
-      "pageViews_thisWeek": 79.0,
-      "pageViews_lastWeek": 66.0
+      "newUsers_lastWeek": 53.0,
+      "pageViews_thisWeek": 72.0,
+      "pageViews_lastWeek": 79.0
     },
     "sources": [
       {
@@ -25,24 +25,24 @@
       },
       {
         "channel": "Organic Search",
-        "sessions": 13,
-        "activeUsers": 7,
-        "engagedSessions": 5
+        "sessions": 14,
+        "activeUsers": 8,
+        "engagedSessions": 6
       },
       {
-        "channel": "Organic Social",
-        "sessions": 1,
-        "activeUsers": 1,
+        "channel": "Unassigned",
+        "sessions": 3,
+        "activeUsers": 2,
         "engagedSessions": 0
       },
       {
         "channel": "Referral",
-        "sessions": 1,
-        "activeUsers": 1,
-        "engagedSessions": 1
+        "sessions": 2,
+        "activeUsers": 2,
+        "engagedSessions": 2
       },
       {
-        "channel": "Unassigned",
+        "channel": "Organic Social",
         "sessions": 1,
         "activeUsers": 1,
         "engagedSessions": 0
@@ -56,8 +56,8 @@
       },
       {
         "country": "United States",
-        "sessions": 8,
-        "activeUsers": 11
+        "sessions": 11,
+        "activeUsers": 15
       },
       {
         "country": "China",
@@ -83,14 +83,14 @@
   },
   "searchConsole": {
     "queries": {
-      "totalClicks": 5,
-      "totalImpressions": 42,
+      "totalClicks": 7,
+      "totalImpressions": 52,
       "top": [
         {
           "key": "xdares",
-          "clicks": 4,
-          "impressions": 17,
-          "ctr": 23.5,
+          "clicks": 6,
+          "impressions": 20,
+          "ctr": 30.0,
           "position": 1
         },
         {
@@ -110,9 +110,9 @@
         {
           "key": "18+ dare latest",
           "clicks": 0,
-          "impressions": 1,
+          "impressions": 2,
           "ctr": 0,
-          "position": 15
+          "position": 17.5
         },
         {
           "key": "darares",
@@ -120,6 +120,13 @@
           "impressions": 1,
           "ctr": 0,
           "position": 12
+        },
+        {
+          "key": "dares for money",
+          "clicks": 0,
+          "impressions": 1,
+          "ctr": 0,
+          "position": 5
         },
         {
           "key": "dirty dares latest",
@@ -138,9 +145,9 @@
         {
           "key": "get dare",
           "clicks": 0,
-          "impressions": 2,
+          "impressions": 4,
           "ctr": 0,
-          "position": 8.5
+          "position": 8.2
         },
         {
           "key": "get dare website",
@@ -148,40 +155,33 @@
           "impressions": 1,
           "ctr": 0,
           "position": 10
-        },
-        {
-          "key": "getdares",
-          "clicks": 0,
-          "impressions": 2,
-          "ctr": 0,
-          "position": 7.5
         }
       ]
     },
     "pages": {
-      "totalClicks": 22,
-      "totalImpressions": 322,
+      "totalClicks": 27,
+      "totalImpressions": 389,
       "top": [
         {
           "key": "https://blog.xdares.com/truth-or-dare-adults/",
           "clicks": 10,
-          "impressions": 128,
-          "ctr": 7.8,
+          "impressions": 168,
+          "ctr": 6.0,
           "position": 11.6
+        },
+        {
+          "key": "https://xdares.com/",
+          "clicks": 10,
+          "impressions": 97,
+          "ctr": 10.3,
+          "position": 4.8
         },
         {
           "key": "https://blog.xdares.com/best-platforms-to-make-money-doing-challenges/",
           "clicks": 5,
-          "impressions": 39,
-          "ctr": 12.8,
-          "position": 6.2
-        },
-        {
-          "key": "https://xdares.com/",
-          "clicks": 5,
-          "impressions": 74,
-          "ctr": 6.8,
-          "position": 5
+          "impressions": 55,
+          "ctr": 9.1,
+          "position": 5.8
         },
         {
           "key": "https://xdares.com/auraoddesy",
@@ -193,9 +193,16 @@
         {
           "key": "https://xdares.com/faqs/",
           "clicks": 1,
-          "impressions": 9,
-          "ctr": 11.1,
+          "impressions": 11,
+          "ctr": 9.1,
           "position": 1
+        },
+        {
+          "key": "https://blog.xdares.com/",
+          "clicks": 0,
+          "impressions": 1,
+          "ctr": 0,
+          "position": 7
         },
         {
           "key": "https://waitlist.xdares.com/",
@@ -203,6 +210,13 @@
           "impressions": 3,
           "ctr": 0,
           "position": 1
+        },
+        {
+          "key": "https://xdares.com/about",
+          "clicks": 0,
+          "impressions": 1,
+          "ctr": 0,
+          "position": 7
         },
         {
           "key": "https://xdares.com/blog/",
@@ -217,20 +231,6 @@
           "impressions": 2,
           "ctr": 0,
           "position": 9.5
-        },
-        {
-          "key": "https://xdares.com/blog/truth-or-dare-adults/",
-          "clicks": 0,
-          "impressions": 1,
-          "ctr": 0,
-          "position": 116
-        },
-        {
-          "key": "https://xdares.com/blog/truth-or-dare-parties/",
-          "clicks": 0,
-          "impressions": 1,
-          "ctr": 0,
-          "position": 9
         }
       ]
     }

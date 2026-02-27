@@ -25,9 +25,45 @@ def get_gemini_key():
     with open(GEMINI_KEY_FILE) as f:
         return json.load(f)['api_key']
 
-def generate_image(prompt: str, output_path: str) -> bool:
-    """Generate image using Imagen 4.0"""
-    print(f"🎨 Generating image: {prompt[:50]}...")
+def generate_image_nb2(prompt: str, output_path: str) -> str:
+    """Generate image using Nano Banana 2 (Gemini 3.1 Flash Image)"""
+    print(f"🎨 Generating image (Nano Banana 2): {prompt[:50]}...")
+    
+    key = get_gemini_key()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key={key}"
+    
+    payload = {
+        "contents": [{"parts": [{"text": prompt + ", professional photography, cinematic lighting, no watermarks"}]}],
+        "generationConfig": {"responseModalities": ["TEXT", "IMAGE"]}
+    }
+    
+    result = subprocess.run([
+        "curl", "-s", url,
+        "-H", "Content-Type: application/json",
+        "-d", json.dumps(payload)
+    ], capture_output=True, text=True, timeout=120)
+    
+    try:
+        data = json.loads(result.stdout)
+        parts = data['candidates'][0]['content']['parts']
+        for part in parts:
+            if 'inlineData' in part:
+                img_data = base64.b64decode(part['inlineData']['data'])
+                raw_path = output_path.replace('.jpg', '_raw.png')
+                with open(raw_path, 'wb') as f:
+                    f.write(img_data)
+                print(f"   Raw image: {len(img_data)/1024:.0f}KB")
+                return raw_path
+        print("   ❌ No image in response, falling back to Imagen 4.0")
+        return generate_image_imagen(prompt, output_path)
+    except Exception as e:
+        print(f"   ❌ Nano Banana 2 failed: {e}, falling back to Imagen 4.0")
+        return generate_image_imagen(prompt, output_path)
+
+
+def generate_image_imagen(prompt: str, output_path: str) -> str:
+    """Generate image using Imagen 4.0 (fallback)"""
+    print(f"🎨 Generating image (Imagen 4.0 fallback): {prompt[:50]}...")
     
     key = get_gemini_key()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict?key={key}"
@@ -48,7 +84,6 @@ def generate_image(prompt: str, output_path: str) -> bool:
         b64 = data['predictions'][0]['bytesBase64Encoded']
         img_data = base64.b64decode(b64)
         
-        # Save raw image
         raw_path = output_path.replace('.jpg', '_raw.png')
         with open(raw_path, 'wb') as f:
             f.write(img_data)
@@ -58,6 +93,11 @@ def generate_image(prompt: str, output_path: str) -> bool:
     except Exception as e:
         print(f"   ❌ Image generation failed: {e}")
         return None
+
+
+def generate_image(prompt: str, output_path: str) -> str:
+    """Generate image — tries Nano Banana 2 first, falls back to Imagen 4.0"""
+    return generate_image_nb2(prompt, output_path)
 
 def compress_image(input_path: str, output_path: str) -> str:
     """Compress image to optimized JPEG"""

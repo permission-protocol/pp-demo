@@ -1,0 +1,51 @@
+{
+  "date": "2026-02-27",
+  "trends": {
+    "traffic": "flat",
+    "traffic_pct_change": 3.23,
+    "engagement": "flat",
+    "engagement_pct_change": 4.23,
+    "organic": "up",
+    "organic_pct_change": 100.0,
+    "search_visibility": "up"
+  },
+  "signals": [
+    "Traffic is flat (3.23% vs last 3 snapshots baseline).",
+    "Engagement is flat (4.23% combined change from engaged sessions and avg session duration).",
+    "Organic sessions are up (100.0% vs baseline).",
+    "Search visibility is up (impressions/clicks/position composite).",
+    "Geographic concentration detected: Singapore accounts for 55.56% of tracked sessions.",
+    "Current monthly traffic run-rate is ~274.3 sessions (5.5% of 5000/month target) with 6 day(s) until 2026-03-05."
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "Double down on SEO by publishing 2 high-intent pages this week targeting top converting query themes and refreshing titles/meta on existing ranking pages.",
+      "reasoning": "Organic search is trending up; increasing output while momentum is positive typically compounds impressions and clicks.",
+      "metric_trigger": "organic_pct_change=100.0%"
+    },
+    {
+      "priority": "medium",
+      "action": "Diversify acquisition beyond Singapore: launch one geo-targeted campaign and localize high-traffic pages for the next top 1-2 countries.",
+      "reasoning": "Over-concentration increases growth risk and makes performance sensitive to one market.",
+      "metric_trigger": "geo_top_country_share=55.56%"
+    },
+    {
+      "priority": "high",
+      "action": "Activate short-cycle traffic boosts this week: publish one launch post, run one referral push, and increase social distribution cadence with tracked links.",
+      "reasoning": "Current session run-rate is materially below the 5000/month goal, requiring immediate top-of-funnel acceleration.",
+      "metric_trigger": "monthly_run_rate=274.3 vs goal=5000"
+    },
+    {
+      "priority": "low",
+      "action": "Instrument weekly KPI review automation to track channel mix, engagement depth, and query movement from a single dashboard.",
+      "reasoning": "Consistent instrumentation reduces reaction time when trend direction changes.",
+      "metric_trigger": "monitoring_gap"
+    }
+  ],
+  "goal_adjustments": [
+    "Increase SEO executor allocation: add at least 2 content tasks and 1 on-page refresh task in the next 7 days.",
+    "Add geo-diversification tasks: country-specific campaigns and localized landing page experiments.",
+    "Shift executor plan toward growth loops and distribution tasks until run-rate exceeds 70% of monthly target."
+  ]
+}
