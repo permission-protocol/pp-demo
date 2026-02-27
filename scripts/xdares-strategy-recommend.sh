@@ -386,8 +386,16 @@ if page_rows:
     top_page_impr = int(as_float(top_page.get("impressions"), 0.0) or 0)
     top_page_pos = safe_round(as_float(top_page.get("position"), 0.0) or 0.0, 1)
 
+    # Filter out branded queries (site name, domain, hashtags)
+    BRANDED = {"xdares", "x dares", "xdares.com", "#xdares", "#spicydares"}
+    def is_branded(q_key):
+        k = str(q_key).strip().lower()
+        return any(b in k for b in BRANDED)
+
+    non_branded_queries = [q for q in query_rows if not is_branded(q.get("key", ""))]
+
     support_queries = [
-        q for q in query_rows
+        q for q in non_branded_queries
         if (as_float(q.get("position"), 0.0) or 0.0) >= 8.0 and (as_float(q.get("impressions"), 0.0) or 0.0) >= 1.0
     ]
     support_terms = [str(q.get("key", "")).strip() for q in support_queries[:3] if str(q.get("key", "")).strip()]
@@ -414,9 +422,18 @@ if page_rows and query_rows:
         cctr = safe_round(as_float(candidate_page.get("ctr"), 0.0) or 0.0, 1)
         cpos = safe_round(as_float(candidate_page.get("position"), 0.0) or 0.0, 1)
 
-        top_query = query_rows[0]
-        qkey = str(top_query.get("key", "")).strip() or "core keyword"
-        qimpr = int(as_float(top_query.get("impressions"), 0.0) or 0)
+        # Pick top non-branded query for retitle suggestion
+        retitle_query = None
+        for q in non_branded_queries:
+            if (as_float(q.get("impressions"), 0.0) or 0.0) >= 1.0:
+                retitle_query = q
+                break
+        if retitle_query is None and non_branded_queries:
+            retitle_query = non_branded_queries[0]
+        if retitle_query is None:
+            retitle_query = query_rows[0]  # fallback to branded if nothing else
+        qkey = str(retitle_query.get("key", "")).strip() or "core keyword"
+        qimpr = int(as_float(retitle_query.get("impressions"), 0.0) or 0)
 
         action = (
             f"Retitle {cslug} to include '{qkey}' and tighten meta description for click intent; page is at {cimpr} impressions, {cctr}% CTR, position {cpos}."

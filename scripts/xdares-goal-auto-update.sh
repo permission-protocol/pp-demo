@@ -57,7 +57,7 @@ def is_duplicate(new_text, existing_text):
         return False
     ratio_new = overlap_ratio(new_kw, existing_kw)
     ratio_existing = overlap_ratio(existing_kw, new_kw)
-    return ratio_new > 0.5 or ratio_existing > 0.5
+    return ratio_new > 0.35 or ratio_existing > 0.35
 
 
 def parse_task_num(task_id):
