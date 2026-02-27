@@ -1,0 +1,50 @@
+{
+  "issue": 218,
+  "title": "\ud83c\udfa8 P1: Enhance deploy-gate repo with interactive brand components",
+  "template": "visual-change",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:17.151194",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "README has hero section with gate symbol (SVG or image)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Blocked vs Approved states shown visually in README",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "At least one SVG asset in repo (gate-blocked, gate-signed, or flow-diagram)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Status badge present in README (e.g. \"No Receipt \u2192 No Merge\")",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "README renders correctly on GitHub mobile app",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 5,
+    "false": 0
+  }
+}

@@ -27,5 +27,29 @@
     "height": 900
   },
   "screenshot_diff_threshold_pct": 5,
-  "spec_version": "2026-02-24"
+  "spec_version": "2026-02-24",
+  "gate_symbol": {
+    "description": "Square boundary + horizontal barrier + vertical channel with gap",
+    "default_state": "blocked",
+    "default_state_rule": "The gate is always closed. Gate symbol ALWAYS shows blocked/severed state (gap in vertical channel) by default. Continuous channel only appears when actively demonstrating signed/permitted transition.",
+    "blocked": {
+      "vertical_top_y2": "5.5",
+      "vertical_bottom_y1": "10.5",
+      "note": "Gap between 5.5 and 10.5 \u2014 channel severed at barrier"
+    },
+    "signed": {
+      "vertical_y1": "1.5",
+      "vertical_y2": "14.5",
+      "note": "Continuous line \u2014 channel crosses barrier"
+    },
+    "stroke_width": {
+      "small": "1.5 (<=20px)",
+      "medium": "1.4 (<=40px)",
+      "large": "1.2 (>40px)"
+    },
+    "rendering": {
+      "small": "crispEdges (<=20px)",
+      "large": "geometricPrecision (>20px)"
+    }
+  }
 }

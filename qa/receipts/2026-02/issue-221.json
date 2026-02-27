@@ -1,0 +1,64 @@
+{
+  "issue": 221,
+  "title": "\ud83c\udfa8 P2: Build interactive presentation mode for demos",
+  "template": "pr-code",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:28.091335",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "/present page returns HTTP 200",
+      "status": "proven",
+      "evidence": [
+        "HTTP 200 from https://permissionprotocol.com/present"
+      ]
+    },
+    {
+      "ac": "Keyboard navigation works (\u2190 \u2192 arrows and spacebar)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "At least 5 slides render",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Slide indicator dots visible and track current position",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Full-screen mode works (F11 or button)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Gate symbol animation plays on demo slide",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Text is legible at 1080p (min 24px body text)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 1,
+    "unproven": 6,
+    "false": 0
+  }
+}

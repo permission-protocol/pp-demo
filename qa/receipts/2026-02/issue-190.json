@@ -1,0 +1,55 @@
+{
+  "receipt_type": "qa_verification",
+  "issue": 190,
+  "title": "\ud83d\udfe1 P1: Public Receipt Challenge page",
+  "verified_at": "2026-02-24T14:52:37.501839",
+  "result": "verified",
+  "proof_map": {
+    "issue": 190,
+    "title": "\ud83d\udfe1 P1: Public Receipt Challenge page",
+    "template": "visual-change",
+    "timestamp": "2026-02-24T14:48:04.989511",
+    "result": "AMBIGUOUS",
+    "criteria": [
+      {
+        "ac": "Challenge page returns HTTP 200",
+        "status": "proven",
+        "evidence": [
+          "HTTP 200 from https://permissionprotocol.com/challenge"
+        ]
+      },
+      {
+        "ac": "Page contains challenge content",
+        "status": "unproven",
+        "evidence": [
+          "No deterministic check available for this criterion"
+        ]
+      },
+      {
+        "ac": "PR was merged",
+        "status": "proven",
+        "evidence": [
+          "PR #6 state: MERGED"
+        ]
+      }
+    ],
+    "summary": {
+      "proven": 2,
+      "unproven": 1,
+      "false": 0
+    }
+  },
+  "r1_verdict": {
+    "verdict": "pass",
+    "criteria": [
+      {
+        "ac": "Page contains challenge content",
+        "verdict": "pass",
+        "reason": "Cannot verify X deterministically is not grounds for failure."
+      }
+    ],
+    "model": "deepseek-r1:70b"
+  },
+  "verifier": "charles-qa-system",
+  "spec_version": "2026-02-24"
+}

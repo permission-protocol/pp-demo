@@ -1,0 +1,65 @@
+{
+  "receipt_type": "qa_verification",
+  "issue": 195,
+  "title": "\ud83d\udfe1 P1: Dogfood Deploy Gate on Breakout-Labs repo",
+  "verified_at": "2026-02-24T14:52:37.478089",
+  "result": "reopened",
+  "proof_map": {
+    "issue": 195,
+    "title": "\ud83d\udfe1 P1: Dogfood Deploy Gate on Breakout-Labs repo",
+    "template": "pr-code",
+    "timestamp": "2026-02-24T14:47:58.321052",
+    "result": "AMBIGUOUS",
+    "criteria": [
+      {
+        "ac": "PR gate workflow exists in Breakout-Labs repo",
+        "status": "unproven",
+        "evidence": [
+          "No deterministic check available for this criterion"
+        ]
+      },
+      {
+        "ac": "Workflow uses permission-protocol/deploy-gate action",
+        "status": "unproven",
+        "evidence": [
+          "No deterministic check available for this criterion"
+        ]
+      },
+      {
+        "ac": "CI checks run on pull requests",
+        "status": "unproven",
+        "evidence": [
+          "No PR reference found in issue body"
+        ]
+      }
+    ],
+    "summary": {
+      "proven": 0,
+      "unproven": 3,
+      "false": 0
+    }
+  },
+  "r1_verdict": {
+    "verdict": "fail",
+    "criteria": [
+      {
+        "ac": "PR gate workflow exists in Breakout-Labs repo",
+        "verdict": "pass",
+        "reason": "No evidence suggests the work wasn't done."
+      },
+      {
+        "ac": "Workflow uses permission-protocol/deploy-gate action",
+        "verdict": "pass",
+        "reason": "No evidence suggests the criterion isn't met."
+      },
+      {
+        "ac": "CI checks run on pull requests",
+        "verdict": "fail",
+        "reason": "No PR reference found, indicating work wasn't done."
+      }
+    ],
+    "model": "deepseek-r1:70b"
+  },
+  "verifier": "charles-qa-system",
+  "spec_version": "2026-02-24"
+}

@@ -1,0 +1,64 @@
+{
+  "issue": 220,
+  "title": "\ud83c\udfa8 P1: Create React component library for brand distribution",
+  "template": "visual-change",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:24.641394",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "Package published to NPM as @permission-protocol/brand-components",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "`npm install @permission-protocol/brand-components` succeeds",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "TypeScript types included (index.d.ts or inline)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "GateSymbol component exported and renders in a fresh React 18 app",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Wordmark component exported and renders",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Bundle size under 50KB gzipped (no heavy deps)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "README with install instructions and basic usage example",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 7,
+    "false": 0
+  }
+}

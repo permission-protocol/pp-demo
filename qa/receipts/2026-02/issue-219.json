@@ -1,0 +1,57 @@
+{
+  "issue": 219,
+  "title": "\ud83c\udfa8 P1: Add live status integration to approval flows",
+  "template": "pr-code",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:21.276545",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "Pending approval pages show blocked gate symbol",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Approved state shows signed gate symbol",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Transition animates blocked\u2192signed on approval action",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Animation completes in under 1 second",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Gate symbols match brand spec colors (#0A0A0A background, #E5FF00 accent)",
+      "status": "unproven",
+      "evidence": [
+        "Found: --signal: #c8c8c8, --permit: #44aa99, --deny: #aa4455. Missing: --void: #0a0a0a, --ash: #1a1a1a"
+      ]
+    },
+    {
+      "ac": "Screen reader can identify approval state (aria-label or sr-only text)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 6,
+    "false": 0
+  }
+}

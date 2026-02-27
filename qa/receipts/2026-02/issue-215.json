@@ -1,0 +1,57 @@
+{
+  "issue": 215,
+  "title": "\ud83c\udfa8 P0: Replace static logo with animated brand lockup",
+  "template": "visual-change",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:05.334809",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "Logo visible in nav on homepage (permissionprotocol.com)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Logo visible in nav on /blog, /deploy-gate, /brand pages",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Hover triggers CSS animation (blocked\u2192signed transition)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Animation is CSS-only (no JS required)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Text hierarchy: PERMISSION bold, PROTOCOL light weight",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Renders correctly on viewport < 768px (mobile)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 6,
+    "false": 0
+  }
+}

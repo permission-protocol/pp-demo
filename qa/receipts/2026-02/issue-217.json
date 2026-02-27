@@ -1,0 +1,64 @@
+{
+  "issue": 217,
+  "title": "\ud83c\udfa8 P0: Generate social proof GIFs and assets",
+  "template": "pr-code",
+  "issue_state": "CLOSED",
+  "timestamp": "2026-02-27T02:00:13.172066",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "GitHub hero image exists (1280x640px) in repo assets",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Twitter/X card image exists (1200x628px)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Square format exists (1080x1080px)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Story format exists (1080x1920px)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Both blocked and signed variants for each format",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "All files under 5MB each",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Gate symbol transition visible in at least one animated asset",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 7,
+    "false": 0
+  }
+}
