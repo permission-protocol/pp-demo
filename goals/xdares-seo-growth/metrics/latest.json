@@ -1,19 +1,19 @@
 {
   "date": "2026-02-27",
-  "timestamp": "2026-02-27T15:04:46.057588Z",
+  "timestamp": "2026-02-27T16:35:34.664063Z",
   "ga4": {
     "overview": {
       "activeUsers_thisWeek": 54.0,
       "activeUsers_lastWeek": 53.0,
-      "sessions_thisWeek": 64.0,
+      "sessions_thisWeek": 65.0,
       "sessions_lastWeek": 58.0,
       "engagedSessions_thisWeek": 14.0,
       "engagedSessions_lastWeek": 17.0,
-      "avgSessionDuration_thisWeek": 78.700354953125,
+      "avgSessionDuration_thisWeek": 77.56544955384615,
       "avgSessionDuration_lastWeek": 47.67716094827586,
       "newUsers_thisWeek": 53.0,
       "newUsers_lastWeek": 53.0,
-      "pageViews_thisWeek": 72.0,
+      "pageViews_thisWeek": 73.0,
       "pageViews_lastWeek": 79.0
     },
     "sources": [
@@ -25,7 +25,7 @@
       },
       {
         "channel": "Organic Search",
-        "sessions": 14,
+        "sessions": 15,
         "activeUsers": 8,
         "engagedSessions": 6
       },
@@ -67,7 +67,7 @@
       {
         "country": "Brazil",
         "sessions": 3,
-        "activeUsers": 9
+        "activeUsers": 10
       },
       {
         "country": "India",
