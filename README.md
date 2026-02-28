@@ -1,15 +1,20 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/❌_No_Receipt-No_Merge-red?style=for-the-badge" alt="No Receipt → No Merge">
+  <img src="https://img.shields.io/badge/❌_No_Receipt_→_No_Merge-ENFORCED-ef4444?style=for-the-badge" alt="No Receipt → No Merge">
+  <img src="https://img.shields.io/github/forks/permission-protocol/pp-demo?style=for-the-badge&label=Forks&color=0ea5e9" alt="Fork count">
 </p>
 
 <h1 align="center">Permission Protocol Demo</h1>
 
 <p align="center">
-  <strong>Try to merge without approval. You can't.</strong>
+  <strong>Merge blocked by default until a human signs the receipt.</strong>
 </p>
 
 <p align="center">
-  <img src="assets/demo.gif" alt="Permission Protocol Demo" width="700">
+  <a href="#-see-it-in-action"><img src="https://img.shields.io/badge/🎥_45s_Demo-Record_and_Drop_GIF-111827?style=flat-square" alt="45-second demo placeholder"></a>
+</p>
+
+<p align="center">
+  <img src="assets/demo.gif" alt="45-second demo GIF placeholder (replace with fresh recording)" width="760">
 </p>
 
 <p align="center">
