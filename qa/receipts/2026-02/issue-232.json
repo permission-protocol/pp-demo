@@ -1,0 +1,9 @@
+{
+  "issue": 232,
+  "title": "\ud83d\udfe1 P1: Blog Post \u2014 Amazon Q Developer incident (Week 3 Distribution Engine)",
+  "template": "none",
+  "timestamp": "2026-02-28T02:09:36.389606",
+  "result": "FAIL",
+  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
+  "criteria": []
+}

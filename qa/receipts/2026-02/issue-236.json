@@ -1,0 +1,9 @@
+{
+  "issue": 236,
+  "title": "\ud83d\udd0d P1: Audit landing page conversion funnel \u2014 100+ daily views, 0 form submissions",
+  "template": "unknown",
+  "timestamp": "2026-02-28T02:09:29.989177",
+  "result": "AMBIGUOUS",
+  "reason": "Could not determine template type from labels or title. Add a type:* label.",
+  "criteria": []
+}

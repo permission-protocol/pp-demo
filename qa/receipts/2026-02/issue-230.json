@@ -1,0 +1,9 @@
+{
+  "issue": 230,
+  "title": "\ud83d\udcc8 Investigate Feb 25 traffic spike \u2014 98 pageviews by 8am (new high)",
+  "template": "none",
+  "timestamp": "2026-02-28T02:09:27.867611",
+  "result": "FAIL",
+  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
+  "criteria": []
+}

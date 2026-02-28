@@ -1,0 +1,9 @@
+{
+  "issue": 229,
+  "title": "\ud83d\udd34 P0: Draft NIST RFI skeleton \u2014 structure and key arguments for PP positioning",
+  "template": "none",
+  "timestamp": "2026-02-28T02:09:26.063191",
+  "result": "FAIL",
+  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
+  "criteria": []
+}

@@ -81,7 +81,7 @@ items = data['data']['organization']['projectV2']['items']['nodes']
 done = []
 for item in items:
     fv = item.get('fieldValueByName')
-    if not fv or fv.get('name') != 'Done':
+    if not fv or fv.get('name') != 'QA Review':
         continue
     content = item.get('content', {})
     num = content.get('number')
@@ -100,15 +100,16 @@ if [ "$COUNT" = "0" ]; then
 fi
 
 # Process each item
+# Write items to temp file to avoid subshell counter issues
+ITEM_LIST=$(mktemp)
 echo "$ITEMS" | python3 -c "
 import json, sys
 for item in json.load(sys.stdin):
     print(f\"{item['item_id']}|{item['number']}|{item['title']}\")
-" | head -20 | while IFS='|' read -r ITEM_ID ISSUE_NUM TITLE; do
-  echo "$(date '+%H:%M:%S') 📋 Reviewing #$ISSUE_NUM: $TITLE"
+" | head -20 > "$ITEM_LIST"
 
-  # Move to QA Review first
-  move_item "$ITEM_ID" "$QA_REVIEW_ID"
+while IFS='|' read -r ITEM_ID ISSUE_NUM TITLE; do
+  echo "$(date '+%H:%M:%S') 📋 Reviewing #$ISSUE_NUM: $TITLE"
 
   # Run deterministic tests
   PROOF_MAP=$(bash "$SCRIPTS/qa-test-runner.sh" "$ISSUE_NUM" auto 2>/dev/null)
@@ -205,7 +206,8 @@ $R1_VERDICT
   RECEIPT_DIR="$QA_DIR/receipts/$(date '+%Y-%m')"
   mkdir -p "$RECEIPT_DIR"
   echo "$PROOF_MAP" > "$RECEIPT_DIR/issue-${ISSUE_NUM}.json"
-done
+done < "$ITEM_LIST"
+rm -f "$ITEM_LIST"
 
 echo ""
 echo "========================================="

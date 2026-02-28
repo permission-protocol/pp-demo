@@ -1,0 +1,9 @@
+{
+  "issue": 238,
+  "title": "\ud83d\udcdd P0: Draft NIST RFI supporting blog post \u2014 PP as the reference implementation for AI agent authorization",
+  "template": "none",
+  "timestamp": "2026-02-28T02:09:32.095145",
+  "result": "FAIL",
+  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
+  "criteria": []
+}

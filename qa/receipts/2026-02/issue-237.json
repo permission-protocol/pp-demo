@@ -1,0 +1,46 @@
+{
+  "issue": 237,
+  "title": "\ud83d\udd0e P1: Scan AI code incident news this week \u2014 compile outreach hook list for #194",
+  "template": "infra-config",
+  "issue_state": "OPEN",
+  "timestamp": "2026-02-28T02:09:34.125783",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "Hook list posted as comment on this issue with 5+ incidents",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "Each incident has: company, summary, PP hook",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "List saved to workspace at pp-os/outreach-hook-list-feb26.md",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    },
+    {
+      "ac": "At least one incident from the past 7 days (verified by source date)",
+      "status": "unproven",
+      "evidence": [
+        "No deterministic check available for this criterion"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 0,
+    "unproven": 4,
+    "false": 0
+  },
+  "warnings": [
+    "Issue is still OPEN \u2014 suspicious for a Done item"
+  ]
+}
