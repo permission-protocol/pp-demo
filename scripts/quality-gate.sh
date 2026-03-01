@@ -1,17 +1,19 @@
 #!/bin/bash
-# Quality gate for blog posts using Llama 8B on DGX Spark (free).
-# Runs structural checks + LLM review. Exits 0 = pass, 1 = reject.
-# On reject, sends Telegram notification via OpenClaw.
+# Quality gate for blog posts — Structural checks + R1 deep review.
+# Phase 1: Fast deterministic structural checks (no LLM)
+# Phase 2: DeepSeek R1 70B on Spark for readability/SEO/thin content scoring
 #
-# Usage: quality-gate.sh <html-file-or-url>
-# Environment: SPARK_HOST (default: 100.111.31.56), SPARK_PORT (default: 11434)
+# Exits: 0 = pass, 1 = reject, 2 = system error
+# On reject, writes report to /tmp/quality-gate-report.txt
+#
+# Usage: quality-gate.sh <html-file>
+# Environment: SPARK_HOST, SPARK_PORT, SPARK_MODEL
 
 set -uo pipefail
 
 SPARK_HOST="${SPARK_HOST:-100.111.31.56}"
 SPARK_PORT="${SPARK_PORT:-11434}"
 SPARK_URL="http://${SPARK_HOST}:${SPARK_PORT}"
-MODEL="${SPARK_MODEL:-llama3.1:8b}"
 
 INPUT="${1:-}"
 if [ -z "$INPUT" ]; then
@@ -30,15 +32,12 @@ FILENAME=$(basename "$INPUT")
 echo "=== Structural Checks ==="
 ISSUES=()
 
-# Extract text content
 TEXT=$(python3 -c "
 import html, re, sys
 with open('$INPUT') as f:
     content = f.read()
-# Strip HTML tags
 text = re.sub(r'<[^>]+>', ' ', content)
 text = html.unescape(text)
-# Collapse whitespace
 text = re.sub(r'\s+', ' ', text).strip()
 print(text)
 " 2>/dev/null)
@@ -46,40 +45,23 @@ print(text)
 WORD_COUNT=$(echo "$TEXT" | wc -w | tr -d ' ')
 CONTENT=$(cat "$INPUT")
 
-# Check word count
 if [ "$WORD_COUNT" -lt 300 ]; then
     ISSUES+=("FAIL:word_count — Only $WORD_COUNT words (minimum 300)")
 fi
 
-# Check for H2 headings
 H2_COUNT=$(echo "$CONTENT" | grep -ci '<h2' || true)
 if [ "$H2_COUNT" -eq 0 ]; then
     ISSUES+=("FAIL:no_h2 — No H2 headings found")
 fi
 
-# Check for internal links
 INTERNAL_LINKS=$(echo "$CONTENT" | grep -ci 'href=.*xdares\|href=.*blog\.xdares\|href="/' || true)
 if [ "$INTERNAL_LINKS" -eq 0 ]; then
     ISSUES+=("WARN:no_internal_links — No internal links to xdares.com")
 fi
 
-# Check for meta description
-META_DESC=$(echo "$CONTENT" | grep -ci 'meta.*description\|"description"' || true)
-if [ "$META_DESC" -eq 0 ]; then
-    ISSUES+=("WARN:no_meta_desc — No meta description found")
-fi
-
-# Check for title
 TITLE=$(echo "$CONTENT" | grep -oi '<title>[^<]*</title>\|<h1[^>]*>[^<]*</h1>' | head -1 || true)
 if [ -z "$TITLE" ]; then
     ISSUES+=("FAIL:no_title — No title or H1 found")
-fi
-
-# Check for images with alt text
-IMG_COUNT=$(echo "$CONTENT" | grep -ci '<img' || true)
-IMG_ALT_COUNT=$(echo "$CONTENT" | grep -ci '<img[^>]*alt=' || true)
-if [ "$IMG_COUNT" -gt 0 ] && [ "$IMG_ALT_COUNT" -eq 0 ]; then
-    ISSUES+=("WARN:img_no_alt — Images found but none have alt text")
 fi
 
 STRUCTURAL_FAILS=$(printf '%s\n' "${ISSUES[@]:-}" | grep -c "^FAIL:" || true)
@@ -87,7 +69,6 @@ STRUCTURAL_FAILS=$(printf '%s\n' "${ISSUES[@]:-}" | grep -c "^FAIL:" || true)
 echo "Word count: $WORD_COUNT"
 echo "H2 headings: $H2_COUNT"
 echo "Internal links: $INTERNAL_LINKS"
-echo "Images: $IMG_COUNT (with alt: $IMG_ALT_COUNT)"
 echo "Structural issues: ${#ISSUES[@]}"
 
 if [ "$STRUCTURAL_FAILS" -gt 0 ]; then
@@ -95,7 +76,6 @@ if [ "$STRUCTURAL_FAILS" -gt 0 ]; then
     echo "=== REJECTED (structural) ==="
     printf '%s\n' "${ISSUES[@]}"
     
-    # Build rejection report
     REPORT="🚫 **Quality Gate REJECTED**: \`$FILENAME\`\n\n**Structural failures:**\n"
     for issue in "${ISSUES[@]}"; do
         REPORT="$REPORT• $issue\n"
@@ -105,65 +85,44 @@ if [ "$STRUCTURAL_FAILS" -gt 0 ]; then
     exit 1
 fi
 
-# ─── Phase 2: LLM quality check via Llama 8B ───
+# ─── Phase 2: R1 Deep Review ───
 echo ""
-echo "=== LLM Quality Check (Llama 8B) ==="
+echo "=== R1 Deep Review (DeepSeek R1 70B) ==="
 
-# Check Spark is reachable
-if ! curl -sf "${SPARK_URL}/api/tags" >/dev/null 2>&1; then
-    echo "WARN: Spark unreachable at $SPARK_URL — skipping LLM check, passing on structural only"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export CONTENT_FILE="$INPUT"
+R1_RESULT=$("$SCRIPT_DIR/content-quality-gate.sh" "$INPUT" 2>&1)
+R1_EXIT=$?
+
+if [ "$R1_EXIT" -eq 2 ]; then
+    # System error (Spark down, etc.) — pass on structural only
+    echo "WARN: R1 review unavailable — passing on structural checks only"
+    echo "R1 error: $R1_RESULT"
     exit 0
 fi
 
-# Truncate to ~2000 words for Llama context
-TRUNCATED=$(echo "$TEXT" | head -c 8000)
+echo "$R1_RESULT"
 
-# Build prompt — ask for specific, actionable checks
-PROMPT="You are a blog post quality reviewer. Review this post and check for:
-1. Does it read like AI-generated slop? (repetitive phrases, generic filler, no specific examples)
-2. Is the opening hook engaging or generic?
-3. Does it have a clear structure with logical flow?
-4. Would a reader learn something specific and actionable?
-
-Rate: PASS or REJECT with brief reasons (2-3 sentences max).
-
-Post excerpt:
-$TRUNCATED"
-
-# Call Llama 8B
-PROMPT_FILE=$(mktemp)
-echo "$PROMPT" > "$PROMPT_FILE"
-LLM_RESPONSE=$(python3 -c "
-import json, urllib.request, sys
-
-with open('$PROMPT_FILE') as f:
-    prompt = f.read()
-
-payload = json.dumps({
-    'model': '$MODEL',
-    'prompt': prompt,
-    'stream': False,
-    'options': {'temperature': 0.1, 'num_predict': 200}
-}).encode()
-
-req = urllib.request.Request('${SPARK_URL}/api/generate', data=payload, headers={'Content-Type': 'application/json'})
-try:
-    resp = urllib.request.urlopen(req, timeout=120)
-    data = json.loads(resp.read())
-    print(data.get('response', 'ERROR: no response field'))
-except Exception as e:
-    print(f'ERROR: {e}')
-" 2>/dev/null || echo "ERROR: Python call failed")
-rm -f "$PROMPT_FILE"
-
-echo "LLM says: $LLM_RESPONSE"
-
-# Check if LLM rejected
-if echo "$LLM_RESPONSE" | grep -qi "REJECT"; then
+if [ "$R1_EXIT" -eq 1 ]; then
     echo ""
-    echo "=== REJECTED (LLM) ==="
+    echo "=== REJECTED (R1) ==="
     
-    REPORT="🚫 **Quality Gate REJECTED**: \`$FILENAME\`\n\n**LLM Review (Llama 8B):**\n$LLM_RESPONSE\n\n**Structural:**\nWord count: $WORD_COUNT | H2s: $H2_COUNT | Links: $INTERNAL_LINKS"
+    # Extract summary and suggestions from JSON
+    SUMMARY=$(echo "$R1_RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('summary','No summary'))" 2>/dev/null || echo "Review failed")
+    SUGGESTIONS=$(echo "$R1_RESULT" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+for s in d.get('suggestions',[]):
+    print(f'• {s}')
+" 2>/dev/null || echo "No suggestions")
+    SCORES=$(echo "$R1_RESULT" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+s=d.get('scores',{})
+print(f\"Readability: {s.get('readability','?')}/10 | SEO: {s.get('seo','?')}/10 | Depth: {s.get('thin_content','?')}/10 | Engagement: {s.get('engagement','?')}/10 | Links: {s.get('internal_linking','?')}/10\")
+" 2>/dev/null || echo "No scores")
+    
+    REPORT="🚫 **Quality Gate REJECTED**: \`$FILENAME\`\n\n**R1 Review:**\n$SUMMARY\n\n**Scores:** $SCORES\n\n**Suggestions:**\n$SUGGESTIONS\n\n**Structural:** Word count: $WORD_COUNT | H2s: $H2_COUNT | Links: $INTERNAL_LINKS"
     echo "$REPORT" > /tmp/quality-gate-report.txt
     exit 1
 fi

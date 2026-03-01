@@ -83,7 +83,7 @@ try:
         'model': model,
         'prompt': prompt,
         'stream': False,
-        'options': {'temperature': 0.1, 'num_predict': 500}
+        'options': {'temperature': 0.1, 'num_predict': 1000}
     }).encode()
     req = urllib.request.Request(f'{spark_url}/api/generate', data=payload, headers={'Content-Type': 'application/json'})
     resp = urllib.request.urlopen(req, timeout=300)

@@ -8,6 +8,7 @@
 set -uo pipefail
 
 WORKSPACE="$HOME/.openclaw/workspace"
+SCRIPTS="$WORKSPACE/scripts"
 QA_DIR="$WORKSPACE/qa"
 GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt 2>/dev/null || echo "")
 REPO="Roca-Ventures/Breakout-Labs"
@@ -37,9 +38,9 @@ AC_BLOCK=$(echo "$BODY" | python3 -c "
 import sys, re
 body = sys.stdin.read()
 # Find AC: section
-match = re.search(r'## AC:?\s*\n(.*?)(?=\n## |\Z)', body, re.DOTALL)
+match = re.search(r'## AC[:\s].*?\n(.*?)(?=\n## |\Z)', body, re.DOTALL)
 if not match:
-    match = re.search(r'(?:Acceptance Criteria|AC):\s*\n(.*?)(?=\n## |\Z)', body, re.DOTALL | re.IGNORECASE)
+    match = re.search(r'(?:Acceptance Criteria|AC)[:\s].*?\n(.*?)(?=\n## |\Z)', body, re.DOTALL | re.IGNORECASE)
 if match:
     criteria = re.findall(r'- \[[ x]\] (.+)', match.group(1))
     for c in criteria:
@@ -288,7 +289,31 @@ for ac in ac_items:
             except Exception as e:
                 evidence.append(f"Link check error: {str(e)[:100]}")
     
-    # ── Fallback: unproven ──
+    # ── Evidence gathering for unproven items ──
+    # This runs as a separate Python script to avoid bash heredoc escaping issues
+    if status == "unproven":
+        # Write context to temp file, run evidence gatherer
+        _ctx = json.dumps({"ac": ac, "ac_lower": ac_lower, "verify_url": verify_url, "workspace": "$WORKSPACE", "body": '''$BODY'''})
+        _ctx_file = f"/tmp/qa-evidence-ctx-{issue_num}.json"
+        with open(_ctx_file, 'w') as _f:
+            _f.write(_ctx)
+        try:
+            _result = subprocess.run(
+                [sys.executable, "$SCRIPTS/qa-evidence-gatherer.py", _ctx_file],
+                capture_output=True, text=True, timeout=30
+            )
+            if _result.returncode == 0 and _result.stdout.strip():
+                _ev = json.loads(_result.stdout)
+                if _ev.get("status"):
+                    status = _ev["status"]
+                evidence.extend(_ev.get("evidence", []))
+        except Exception as _e:
+            evidence.append(f"Evidence gatherer error: {str(_e)[:100]}")
+        finally:
+            try: os.remove(_ctx_file)
+            except: pass
+    
+    # ── Final fallback ──
     if not evidence:
         evidence.append("No deterministic check available for this criterion")
     
@@ -343,5 +368,15 @@ else:
 PYEOF
 )
 
+# Extract exit code from the proof map result field (Python exit code lost in $() capture)
+RESULT_CODE=$(echo "$PROOF_MAP" | python3 -c "
+import json,sys
+data = json.load(sys.stdin)
+r = data.get('result','')
+if r == 'FAIL': print(1)
+elif r == 'AMBIGUOUS': print(2)
+else: print(0)
+" 2>/dev/null || echo 2)
+
 echo "$PROOF_MAP"
-exit ${PIPESTATUS[0]}
+exit "$RESULT_CODE"
