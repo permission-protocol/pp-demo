@@ -143,6 +143,21 @@ Three bugs fixed to get deploy gate verification working:
 - **Key diagnostic:** `openclaw status` Sessions table shows actual model per session — this is the source of truth
 - **Lesson:** `openclaw gateway stop` is unreliable for rogue processes. Always verify with `ps aux | grep openclaw` and kill directly if needed.
 
+### 2026-02-25 — Outreach Launch & Resilience Hardening
+- **@PermissionPrtcl Twitter account created**, 7-tweet thread on Kiro incident posted, HN submission live
+- **Fallback chain wired:** Opus 4.6 → Opus 4.5 → DeepSeek R1 70B (Spark) → Llama 3.1 8B. No more total blackout on billing.
+- **QA pipeline rewritten** as standalone bash script — no LLM agent session needed, just runs on sonnet
+- **All 7 brand issues (#215-221) verified** after generating concrete AC blocks
+- **R1 doesn't support tool use** via OpenClaw sessions — only direct curl prompting. Good for reasoning/judgment/content, not board operations.
+- **zsh vs bash:** `${var,,}` is bash-only. Use `tr '[:upper:]' '[:lower:]'` for portability.
+
+### 2026-02-27 — Metrics Decision Engine
+- Built full analytics → recommendation → auto-update pipeline for Xdares SEO
+- `xdares-strategy-recommend.sh` classifies trends, outputs prioritized recs
+- `xdares-goal-auto-update.sh` injects data-driven tasks into goal executor queue (fuzzy dedup, priority ordering)
+- Goal executor stale since Feb 10 (budget exhausted), 126 tasks queued
+- Xdares monthly run-rate: ~274 sessions (5.5% of 5K goal) — organic growth slow
+
 ### Debugging Pattern: Model Fallback Detection
 - Check `openclaw status` → Sessions table shows model per session
 - If main session model ≠ configured primary → fallback is active
@@ -154,6 +169,11 @@ Three bugs fixed to get deploy gate verification working:
 - SSH enabled on MacBook Pro via Tailscale: `ssh moltbot@100.76.118.5`
 - Rod can manage OpenClaw remotely from any machine on the tailnet
 - Critical for emergency recovery when I'm unresponsive
+
+### 2026-03-01 — Infrastructure Checks (R1 Curation)
+- **Infrastructure Checks:** Prioritize infrastructure integrity over content optimization.
+- Before optimizing SEO, blog publishing, or agent workflows — confirm the pipes are actually working.
+- Source: R1 weekly curation (7-day analysis)
 
 ---
 

@@ -5,7 +5,7 @@
 > If a proposed goals.md objective contradicts a Non-Negotiable, master-plan amendment is required first.
 >
 > **Review Cadence:** Weekly review every Sunday by Charles. Confirm alignment or flag drift.
-> Last reviewed: 2026-02-22
+> Last reviewed: 2026-03-01
 
 ---
 

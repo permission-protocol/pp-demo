@@ -1,56 +1,35 @@
 {
-  "date": "2026-02-27",
+  "date": "2026-03-02",
   "trends": {
-    "traffic": "flat",
-    "traffic_pct_change": 3.55,
-    "engagement": "flat",
-    "engagement_pct_change": 4.85,
+    "traffic": "insufficient_data",
+    "traffic_pct_change": null,
+    "engagement": "insufficient_data",
+    "engagement_pct_change": null,
     "organic": "insufficient_data",
     "organic_pct_change": null,
     "search_visibility": "insufficient_data",
     "data_quality": "none"
   },
   "signals": [
-    "Traffic trend: flat (3.55% vs last 3 valid snapshots baseline).",
-    "Engagement trend: flat (4.85% combined engaged sessions + avg duration).",
+    "Traffic trend: insufficient_data (n/a vs last 3 valid snapshots baseline).",
+    "Engagement trend: insufficient_data (n/a combined engaged sessions + avg duration).",
     "Organic trend: insufficient_data (n/a vs baseline).",
     "Search visibility trend: insufficient_data (impressions/clicks/position composite).",
-    "Current run-rate is ~291.4 sessions/month (5.8% of 5000/month target) with 6 day(s) to 2026-03-05."
+    "Current run-rate is ~0.0 sessions/month (0.0% of 5000/month target) with 3 day(s) to 2026-03-05."
   ],
   "recommendations": [
     {
       "priority": "high",
-      "action": "task-288 already covers this - prioritize execution over new planning.",
-      "reasoning": "Queue overlap with existing task: truth-or-dare-adults gets 168 impressions at position 11.6 - create 3 supporting articles targeting get dare, 18+ dare latest, get paid to do dares, then add internal links back to truth-or-dare-adults.",
-      "metric_trigger": "top_page_impressions=168,top_page_position=11.6",
-      "queue_overlap": true
-    },
-    {
-      "priority": "medium",
-      "action": "task-289 already covers this - prioritize execution over new planning.",
-      "reasoning": "Queue overlap with existing task: Retitle truth-or-dare-adults to include 'xdares' and tighten meta description for click intent; page is at 168 impressions, 6.0% CTR, position 11.6.",
-      "metric_trigger": "page_position=11.6,page_impressions=168,query=get dare",
-      "queue_overlap": true
-    },
-    {
-      "priority": "medium",
-      "action": "task-290 already covers this - prioritize execution over new planning.",
-      "reasoning": "Queue overlap with existing task: Singapore drives 57.89% of sessions; localize the two highest-impression pages and interlink them to diversify organic demand.",
-      "metric_trigger": "geo_top_country=Singapore,share=57.89%",
-      "queue_overlap": true
-    },
-    {
-      "priority": "high",
       "action": "task-291 already covers this - prioritize execution over new planning.",
       "reasoning": "Queue overlap with existing task: Current goal (5000/month by 2026-03-05) is unreachable at 291.4/month. Recommend resetting to a realistic target based on current trajectory: 291 sessions/month by end of next 30-day cycle.",
-      "metric_trigger": "pace_pct=5.8%,days_left=6",
+      "metric_trigger": "pace_pct=0.0%,days_left=3",
       "queue_overlap": true
     },
     {
       "priority": "medium",
       "action": "task-283 already covers this - prioritize execution over new planning.",
       "reasoning": "Queue overlap with existing task: Activate short-cycle traffic boosts this week: publish one launch post, run one referral push, and increase social distribution cadence with tracked links.",
-      "metric_trigger": "secondary_acceleration,pacing_gap=94.2%",
+      "metric_trigger": "secondary_acceleration,pacing_gap=100.0%",
       "queue_overlap": true
     }
   ],
