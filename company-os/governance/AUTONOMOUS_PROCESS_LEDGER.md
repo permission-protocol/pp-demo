@@ -2,6 +2,8 @@
 
 > **Rule:** No new autonomous process without a ledger entry + Rod review date.
 >
+> **Authority C Rule:** Any process with Authority C requires **explicit human approval** before executing the external/public action. No exceptions. Approval can be async (Telegram confirm, PR review) but must exist.
+>
 > **Governance hook:** Any process with Authority C must either produce a signed PP receipt for the action, or be hard-blocked from the action path. This is not a diary. This is governance.
 
 **Purpose:** Single source of truth for every autonomous process that can act (cron, timers, services, GitHub Actions, long-running agents).
@@ -37,10 +39,10 @@
 | PP-002 | pp-os-daily-log-and-plan | B | None | Low | Mac/OpenClaw | 3 8 * * * | ok | 2026-03-02 |
 | PP-003 | pp-os-qa-review | B | None | Low | Mac/OpenClaw | 0 2 * * * | ok | 2026-03-02 |
 | PP-004 | pp-os-weekly-review | A | None | Low | Mac/OpenClaw | 0 10 * * 0 (Denver) | ok | 2026-03-02 |
-| PP-005 | pp-os-incident-scanner | A | None | Low | Mac/OpenClaw | 2 7 * * * | error | 2026-03-02 |
-| PP-006 | pr-prescreen-auto | B | None | Low | Mac/OpenClaw | */30 9-18 * * 1-6 (Denver) | ok | 2026-03-02 |
-| PP-007 | pp-daily-metrics | A | None | Low | Mac/OpenClaw | 0 9 * * * | error | 2026-03-02 |
-| PP-008 | pp-linkedin-weekly | C | None (auto-posts) | Med | Mac/OpenClaw | 0 8 * * 0 (Denver) | idle | 2026-03-02 |
+| PP-005 | pp-os-incident-scanner | A | None | Low | Mac/OpenClaw | 2 7 * * * | **disabled** | 2026-03-02 |
+| PP-006 | pr-prescreen-auto | B | None | Low | Mac/OpenClaw | 0 9,11,13,15,17 * * 1-6 (Denver) | ok | 2026-03-02 |
+| PP-007 | pp-daily-metrics | A | None | Low | Mac/OpenClaw | 0 9 * * * | **disabled** | 2026-03-02 |
+| PP-008 | pp-linkedin-weekly | C | Telegram approval | Med | Mac/OpenClaw | 0 8 * * 0 (Denver) | idle | 2026-03-02 |
 | XD-001 | goal-xdares-seo-daily | B | None | Low | Mac/OpenClaw | 0 18 * * * (Denver) | ok | 2026-03-02 |
 | XD-002 | goal-xdares-seo-weekly | A | None | Low | Mac/OpenClaw | 0 19 * * 0 (Denver) | ok | 2026-03-02 |
 | SYS-001 | memory-curation-r1 | B | None | Low | Mac/OpenClaw | 0 11 * * 0 (Denver) | ok | 2026-03-02 |
@@ -307,9 +309,8 @@
 
 ### Authority & Gates
 - **Authority level:** C — **posts to public social media automatically**
-- **Human gate:** ⚠️ **NONE currently.** Posts schedule directly without Rod approval.
-- **Fail-closed behavior:** If Buffer API fails → drafts saved locally, no posts go out
-- **⚠️ GAP:** Should require Rod approval before posts are scheduled. Currently fully autonomous.
+- **Human gate:** ✅ Rod must approve via Telegram before posts are scheduled to Buffer. Cron generates drafts + images, sends for review, waits for explicit "schedule" command.
+- **Fail-closed behavior:** If no approval received → drafts saved locally, nothing posts. If Buffer API fails → drafts saved locally, Rod notified.
 
 ### Model
 - **Model:** sonnet
@@ -327,7 +328,7 @@
 
 ### Last reviewed
 - **Date:** 2026-03-02
-- **Decision:** Keep running. **TODO: Add human gate — send drafts for approval before scheduling.**
+- **Decision:** Keep running. Human gate added 2026-03-02.
 
 ---
 
@@ -532,13 +533,13 @@
 # Known Gaps & Action Items
 
 ## 🔴 Critical
-1. **PP-008 (LinkedIn weekly) has no human gate** — auto-posts to public social media. Needs approval step before scheduling.
+1. ~~**PP-008 (LinkedIn weekly) has no human gate**~~ — ✅ FIXED 2026-03-02. Telegram approval required before scheduling.
 2. **PP-001 (Board executor) can create PRs without PP receipt** — dogfooding gap.
 
 ## 🟡 Warnings
-3. **PP-005 (Incident scanner) in error state** — timing out consistently. Investigate.
-4. **PP-007 (Daily metrics) in error state** — message delivery failures. Investigate.
-5. **PP-006 (PR prescreen) runs 17x/day** — high frequency, low utility when no new PRs. Consider event-driven trigger.
+3. ~~**PP-005 (Incident scanner) in error state**~~ — ✅ DISABLED 2026-03-02. Re-enable after fix.
+4. ~~**PP-007 (Daily metrics) in error state**~~ — ✅ DISABLED 2026-03-02. Re-enable after fix.
+5. ~~**PP-006 (PR prescreen) runs 17x/day**~~ — ✅ REDUCED to 5x/day (9,11,1,3,5 Denver) 2026-03-02.
 6. **PP-007 secrets unknown** — needs credential audit for Formspree access.
 
 ## 🟢 Improvements
