@@ -4,7 +4,11 @@
 
 ---
 
-> **Status:** Draft skeleton — pre-filled with technical content and PP positioning.
+> **Status:** ✅ SKELETON SUPERSEDED — Full polished draft exists at `pp-os/nist-rfi-response.md`
+> Full draft completed: March 2, 2026 (Issue #242). Rod: review that file, not this one.
+> This skeleton is preserved for reference only.
+>
+> Original skeleton notes:
 > Rod: please review [TODO-ROD] sections and add strategic/policy judgments.
 > Priority questions per NIST guidance: 1(a), 1(d), 2(a), 2(e), 3(a), 3(b), 4(a), 4(b), 4(d)
 
