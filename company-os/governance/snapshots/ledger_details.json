@@ -1,0 +1,214 @@
+{
+  "pp-os-execute-ready": {
+    "ledger_id": "PP-001",
+    "what": "Executes up to 3 items from the PP Product Board \"Ready\" column per run. Moves items through board statuses, creates PRs, writes code, comments on issues.",
+    "scope": [
+      "- **Repos:** Roca-Ventures/Breakout-Labs (write), Roca-Ventures/permissionprotocol-site (write)",
+      "- **External services:** GitHub API (issues, PRs, project board)",
+      "- **Accounts:** GitHub PAT (projects scope)",
+      "- **Secrets used:** `github-pat-projects.txt`"
+    ],
+    "model": "claude-sonnet-4-6",
+    "risk_detail": "High | Bad PRs, incorrect board state, stale items stuck in progress",
+    "fail_closed": "If blocked \u2192 moves to \"Blocked (Need Human)\" with description",
+    "raw_section": "**What it does:** Executes up to 3 items from the PP Product Board \"Ready\" column per run. Moves items through board statuses, creates PRs, writes code, comments on issues.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 5 9,11,13,15,17 * * *` (exact \u2014 5x daily Mon-Sat)\n\n### Scope: what it can touch\n- **Repos:** Roca-Ventures/Breakout-Labs (write), Roca-Ventures/permissionprotocol-site (write)\n- **External services:** GitHub API (issues, PRs, project board)\n- **Accounts:** GitHub PAT (projects scope)\n- **Secrets used:** `github-pat-projects.txt`\n\n### Authority & Gates\n- **Authority level:** C\n- **Human gate:** Items must be in \"Ready\" column (Rod reviews Backlog \u2192 Ready). Can create PRs but should route to QA Review, not merge directly.\n- **Fail-closed behavior:** If blocked \u2192 moves to \"Blocked (Need Human)\" with description\n- **\u26a0\ufe0f GAP:** No PP receipt required for PR creation or board mutations. Should it be?\n\n### Model\n- **Model:** claude-sonnet-4-6\n- **Timeout:** 900s\n- **Reasoning constraints:** Must announce what it's starting before doing work\n\n### Risk if it breaks\n- **Risk level:** High\n- **Primary failure modes:** Bad PRs, incorrect board state, stale items stuck in progress\n- **Blast radius:** Repo history + board integrity\n\n### Observability\n- **Logs:** OpenClaw cron run logs\n- **Heartbeat:** Board Ready queue checked every heartbeat\n- **Alerting:** Announces results to Telegram\n\n### Last reviewed\n- **Reviewed by:** Rod\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n- **Notes:** Initial ledger entry\n\n---"
+  },
+  "pp-os-daily-log-and-plan": {
+    "ledger_id": "PP-002",
+    "what": "Generates daily PP OS log entry with metrics (PP API, GitHub, PostHog). Plans up to 3 tasks and moves them to Backlog.",
+    "scope": [
+      "- **Repos:** Reads Breakout-Labs (no writes)",
+      "- **External services:** GitHub API, PostHog API, PP API",
+      "- **Secrets used:** `github-pat-projects.txt`, `posthog-api-key.txt`, `pp-cli-api-key.txt`"
+    ],
+    "model": "opus",
+    "risk_detail": "Low",
+    "fail_closed": "**Fail-closed:** If APIs unreachable \u2192 logs partial data, continues",
+    "raw_section": "**What it does:** Generates daily PP OS log entry with metrics (PP API, GitHub, PostHog). Plans up to 3 tasks and moves them to Backlog.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 3 8 * * *` (exact \u2014 daily 8:03 AM UTC)\n\n### Scope\n- **Repos:** Reads Breakout-Labs (no writes)\n- **External services:** GitHub API, PostHog API, PP API\n- **Secrets used:** `github-pat-projects.txt`, `posthog-api-key.txt`, `pp-cli-api-key.txt`\n\n### Authority & Gates\n- **Authority level:** B\n- **Human gate:** Plans go to Backlog only (Rod reviews \u2192 Ready)\n- **Fail-closed:** If APIs unreachable \u2192 logs partial data, continues\n\n### Model\n- **Model:** opus\n- **Timeout:** 600s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Failure modes:** Missing daily log, bad planning recommendations\n- **Blast radius:** Planning quality only\n\n### Observability\n- **Logs:** Daily logs at `pp-os/master-log/YYYY-MM-DD.md`\n- **Alerting:** Announces to Telegram\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n\n---"
+  },
+  "pp-os-qa-review": {
+    "ledger_id": "PP-003",
+    "what": "Runs standalone QA review script. Checks items in \"QA Review\" column, verifies acceptance criteria, uses R1 70B on DGX Spark for judgment calls. Moves items to Verified or bounces back.",
+    "scope": [
+      "- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)",
+      "- **External services:** GitHub API, DGX Spark (R1 70B via Ollama)",
+      "- **Secrets used:** `github-pat-projects.txt`"
+    ],
+    "model": "claude-sonnet-4-6 (orchestrator), deepseek-r1:70b (judge)",
+    "risk_detail": "Low",
+    "fail_closed": "**Fail-closed:** If R1/Spark unreachable \u2192 flags items, doesn't auto-verify",
+    "raw_section": "**What it does:** Runs standalone QA review script. Checks items in \"QA Review\" column, verifies acceptance criteria, uses R1 70B on DGX Spark for judgment calls. Moves items to Verified or bounces back.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 2 * * *` (exact \u2014 daily 2 AM UTC)\n\n### Scope\n- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)\n- **External services:** GitHub API, DGX Spark (R1 70B via Ollama)\n- **Secrets used:** `github-pat-projects.txt`\n\n### Authority & Gates\n- **Authority level:** B\n- **Human gate:** None \u2014 autonomous verification, but can only move to Verified (not Done)\n- **Fail-closed:** If R1/Spark unreachable \u2192 flags items, doesn't auto-verify\n\n### Model\n- **Model:** claude-sonnet-4-6 (orchestrator), deepseek-r1:70b (judge)\n- **Timeout:** 600s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Failure modes:** False positive verification, items stuck in QA Review\n- **Blast radius:** Board state accuracy\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n\n---"
+  },
+  "pp-os-weekly-review": {
+    "ledger_id": "PP-004",
+    "what": "Weekly master-plan alignment review. Reads all daily logs for the week, evaluates objective progress, checks Non-Negotiables, may recommend pivots.",
+    "scope": [
+      "- **Repos:** None (reads local files only)",
+      "- **External services:** None",
+      "- **Secrets used:** None"
+    ],
+    "model": "claude-opus-4-6",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Weekly master-plan alignment review. Reads all daily logs for the week, evaluates objective progress, checks Non-Negotiables, may recommend pivots.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 10 * * 0` (Sundays 10 AM Denver)\n\n### Scope\n- **Repos:** None (reads local files only)\n- **External services:** None\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** A (read-only analysis)\n- **Human gate:** Recommendations only \u2014 Rod decides\n\n### Model\n- **Model:** claude-opus-4-6\n- **Timeout:** 120s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Blast radius:** Missing weekly review\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n\n---"
+  },
+  "pp-os-incident-scanner": {
+    "ledger_id": "PP-005",
+    "what": "Scans for AI agent incidents and security news for PP outreach hooks. Runs blogwatcher for monitored feeds. Compiles market intelligence.",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** Web search, RSS feeds (blogwatcher)",
+      "- **Secrets used:** None"
+    ],
+    "model": "claude-sonnet-4-6",
+    "risk_detail": "Low",
+    "fail_closed": "**Fail-closed:** If feeds unreachable \u2192 reports partial scan",
+    "raw_section": "**What it does:** Scans for AI agent incidents and security news for PP outreach hooks. Runs blogwatcher for monitored feeds. Compiles market intelligence.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 2 7 * * *` (exact \u2014 daily 7:02 AM UTC)\n\n### Scope\n- **Repos:** None\n- **External services:** Web search, RSS feeds (blogwatcher)\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** A (read/scan only)\n- **Fail-closed:** If feeds unreachable \u2192 reports partial scan\n\n### Model\n- **Model:** claude-sonnet-4-6\n- **Timeout:** 120s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Current status:** ERROR \u2014 timing out. Needs investigation.\n- **Blast radius:** Missing market intel\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running, investigate timeouts\n\n---"
+  },
+  "pr-prescreen-auto": {
+    "ledger_id": "PP-006",
+    "what": "Pre-screens open PRs on Breakout-Labs. Runs every 30 min during business hours. Skips already-screened PRs.",
+    "scope": [
+      "- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)",
+      "- **External services:** GitHub API",
+      "- **Secrets used:** `github-pat-projects.txt`"
+    ],
+    "model": "sonnet",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Pre-screens open PRs on Breakout-Labs. Runs every 30 min during business hours. Skips already-screened PRs.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron */30 9-18 * * 1-6` (Denver, Mon-Sat business hours)\n\n### Scope\n- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)\n- **External services:** GitHub API\n- **Secrets used:** `github-pat-projects.txt`\n\n### Authority & Gates\n- **Authority level:** B (comments on PRs, no merges)\n- **Human gate:** None \u2014 advisory comments only\n\n### Model\n- **Model:** sonnet\n- **Timeout:** 600s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Blast radius:** Missing PR reviews, noisy comments at worst\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running. Note: high frequency (17 runs/day) with low utility when no new PRs. Consider reducing.\n\n---"
+  },
+  "pp-daily-metrics": {
+    "ledger_id": "PP-007",
+    "what": "Generates daily PP metrics report from Formspree access requests and other sources. Feeds data into PP-OS planning.",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** Formspree API",
+      "- **Secrets used:** Unknown \u2014 needs audit"
+    ],
+    "model": "sonnet",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Generates daily PP metrics report from Formspree access requests and other sources. Feeds data into PP-OS planning.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 9 * * *` (exact \u2014 daily 9 AM UTC)\n\n### Scope\n- **Repos:** None\n- **External services:** Formspree API\n- **Secrets used:** Unknown \u2014 needs audit\n\n### Authority & Gates\n- **Authority level:** A (read metrics only)\n\n### Model\n- **Model:** sonnet\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Current status:** ERROR \u2014 message failures\n- **Blast radius:** Missing daily metrics\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Investigate errors\n\n---"
+  },
+  "pp-linkedin-weekly": {
+    "ledger_id": "PP-008",
+    "what": "Generates 5 LinkedIn/Twitter posts weekly for PP authority positioning. Creates quote card images. Uploads to imgur. Schedules 3 posts to Buffer (LinkedIn + Twitter).",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** Buffer API (post scheduling), imgur API (image hosting), Brave Search (incident scanning)",
+      "- **Accounts:** Buffer (rodchalski LinkedIn + RodChalski Twitter), imgur (anonymous)",
+      "- **Secrets used:** `buffer-api-key.txt`"
+    ],
+    "model": "sonnet",
+    "risk_detail": "Medium | Off-brand posts, embarrassing content, wrong account",
+    "fail_closed": "If no approval received \u2192 drafts saved locally, nothing posts. If Buffer API fails \u2192 drafts saved locally, Rod notified.",
+    "raw_section": "**What it does:** Generates 5 LinkedIn/Twitter posts weekly for PP authority positioning. Creates quote card images. Uploads to imgur. Schedules 3 posts to Buffer (LinkedIn + Twitter).\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 8 * * 0` (Sundays 8 AM Denver)\n\n### Scope\n- **Repos:** None\n- **External services:** Buffer API (post scheduling), imgur API (image hosting), Brave Search (incident scanning)\n- **Accounts:** Buffer (rodchalski LinkedIn + RodChalski Twitter), imgur (anonymous)\n- **Secrets used:** `buffer-api-key.txt`\n\n### Authority & Gates\n- **Authority level:** C \u2014 **posts to public social media automatically**\n- **Human gate:** \u2705 Rod must approve via Telegram before posts are scheduled to Buffer. Cron generates drafts + images, sends for review, waits for explicit \"schedule\" command.\n- **Fail-closed behavior:** If no approval received \u2192 drafts saved locally, nothing posts. If Buffer API fails \u2192 drafts saved locally, Rod notified.\n\n### Model\n- **Model:** sonnet\n- **Timeout:** 120s\n\n### Risk if it breaks\n- **Risk level:** Medium\n- **Primary failure modes:** Off-brand posts, embarrassing content, wrong account\n- **Blast radius:** Public brand reputation (LinkedIn + Twitter)\n\n### Observability\n- **Drafts:** `goals/pp-linkedin/drafts/week-of-YYYY-MM-DD.md`\n- **Published log:** `goals/pp-linkedin/published.md`\n- **Alerting:** Announces to Telegram\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running. Human gate added 2026-03-02.\n\n---"
+  },
+  "goal-xdares-seo-daily": {
+    "ledger_id": "XD-001",
+    "what": "Daily summary of Xdares SEO growth goal executor. Reports progress, queue status, completed tasks.",
+    "scope": [
+      "- **Repos:** None (reads local state files)",
+      "- **External services:** None",
+      "- **Secrets used:** None"
+    ],
+    "model": "claude-sonnet-4-6",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Daily summary of Xdares SEO growth goal executor. Reports progress, queue status, completed tasks.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 18 * * *` (daily 6 PM Denver)\n\n### Scope\n- **Repos:** None (reads local state files)\n- **External services:** None\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** B (writes to local state files)\n- **Note:** Goal executor itself has been stale since Feb 10 (budget exhausted)\n\n### Model\n- **Model:** claude-sonnet-4-6\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Blast radius:** Missing daily report\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running. Executor is dormant but summary is still useful.\n\n---"
+  },
+  "goal-xdares-seo-weekly": {
+    "ledger_id": "XD-002",
+    "what": "Comprehensive weekly review of Xdares SEO growth with metrics, wins, failures, and recommendations.",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** None",
+      "- **Secrets used:** None"
+    ],
+    "model": "claude-sonnet-4-6",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Comprehensive weekly review of Xdares SEO growth with metrics, wins, failures, and recommendations.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 19 * * 0` (Sundays 7 PM Denver)\n\n### Scope\n- **Repos:** None\n- **External services:** None\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** A (read + report)\n\n### Model\n- **Model:** claude-sonnet-4-6\n\n### Risk if it breaks\n- **Risk level:** Low\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n\n---"
+  },
+  "memory-curation-r1": {
+    "ledger_id": "SYS-001",
+    "what": "Weekly memory curation via R1 on DGX Spark. Reviews recent daily memory files, extracts insights for long-term MEMORY.md.",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** DGX Spark (R1 70B)",
+      "- **Files written:** `MEMORY.md`, `memory/*.md`",
+      "- **Secrets used:** None"
+    ],
+    "model": "sonnet (orchestrator), deepseek-r1:70b (curator)",
+    "risk_detail": "Low",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Weekly memory curation via R1 on DGX Spark. Reviews recent daily memory files, extracts insights for long-term MEMORY.md.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 11 * * 0` (Sundays 11 AM Denver)\n\n### Scope\n- **Repos:** None\n- **External services:** DGX Spark (R1 70B)\n- **Files written:** `MEMORY.md`, `memory/*.md`\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** B (writes to memory files)\n- **Human gate:** None \u2014 autonomous memory updates\n- **\u26a0\ufe0f Note:** Can modify MEMORY.md which influences all future sessions\n\n### Model\n- **Model:** sonnet (orchestrator), deepseek-r1:70b (curator)\n- **Timeout:** 600s\n\n### Risk if it breaks\n- **Risk level:** Low\n- **Failure modes:** Bad memory curation, losing important context\n- **Blast radius:** Session quality degradation over time\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running\n\n---"
+  },
+  "qa-workload1-review": {
+    "ledger_id": "SYS-002",
+    "what": "One-shot review of QA pipeline effectiveness after 1 week of operation.",
+    "scope": [],
+    "model": "",
+    "risk_detail": "",
+    "fail_closed": "",
+    "raw_section": "**What it does:** One-shot review of QA pipeline effectiveness after 1 week of operation.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `at 2026-03-07 10:00Z` (one-time)\n\n### Authority & Gates\n- **Authority level:** A (read-only analysis)\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep (one-shot, auto-cleans)\n\n---"
+  },
+  "Bootstrap Receipt Reminder": {
+    "ledger_id": "SYS-003",
+    "what": "Reminder related to bootstrap receipt. Dormant.",
+    "scope": [],
+    "model": "",
+    "risk_detail": "",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Reminder related to bootstrap receipt. Dormant.\n\n**Where it runs:** Mac / OpenClaw main session\n\n**Trigger:** `cron 30 9 12 2 *` (Denver) \u2014 runs once/year\n\n### Authority & Gates\n- **Authority level:** A\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep (minimal resource use)\n\n---"
+  },
+  "openclaw-gateway": {
+    "ledger_id": "SYS-004",
+    "what": "Core OpenClaw gateway daemon. Routes all LLM API calls, manages sessions, handles Telegram integration.",
+    "scope": [
+      "- **External services:** Anthropic API, Telegram Bot API",
+      "- **Secrets used:** Anthropic API key, Telegram bot token (via OpenClaw config)"
+    ],
+    "model": "",
+    "risk_detail": "High \u2014 **all autonomous processes stop**",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Core OpenClaw gateway daemon. Routes all LLM API calls, manages sessions, handles Telegram integration.\n\n**Where it runs:** Mac / LaunchAgent (`ai.openclaw.gateway`, PID 87628)\n\n**Trigger:** Always-on service\n\n### Scope\n- **External services:** Anthropic API, Telegram Bot API\n- **Secrets used:** Anthropic API key, Telegram bot token (via OpenClaw config)\n\n### Authority & Gates\n- **Authority level:** Infrastructure \u2014 enables all other processes\n- **Human gate:** Rod manages via SSH/local access\n\n### Risk if it breaks\n- **Risk level:** High \u2014 **all autonomous processes stop**\n- **Blast radius:** Total system outage\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Keep running. Recovery procedure in RECOVERY.md.\n\n---"
+  },
+  "openclaw-node": {
+    "ledger_id": "SYS-005",
+    "what": "OpenClaw node agent for paired device communication.",
+    "scope": [
+      "- **External services:** OpenClaw cloud relay"
+    ],
+    "model": "",
+    "risk_detail": "Medium \u2014 loses remote node capabilities",
+    "fail_closed": "",
+    "raw_section": "**What it does:** OpenClaw node agent for paired device communication.\n\n**Where it runs:** Mac / LaunchAgent (`ai.openclaw.node`, PID 21282, since Feb 22)\n\n**Trigger:** Always-on service\n\n### Scope\n- **External services:** OpenClaw cloud relay\n\n### Authority & Gates\n- **Authority level:** Infrastructure\n\n### Risk if it breaks\n- **Risk level:** Medium \u2014 loses remote node capabilities\n\n### Last reviewed\n- **Date:** 2026-03-02\n\n---"
+  },
+  "pp-prod-postgres": {
+    "ledger_id": "SYS-006",
+    "what": "PostgreSQL 15 database for Permission Protocol production data.",
+    "scope": [
+      "- **Data:** PP production database",
+      "- **Port:** 5434 (mapped from 5432)"
+    ],
+    "model": "",
+    "risk_detail": "High \u2014 PP data loss",
+    "fail_closed": "",
+    "raw_section": "**What it does:** PostgreSQL 15 database for Permission Protocol production data.\n\n**Where it runs:** Mac / Docker (`pp-prod-postgres`, port 5434)\n\n**Trigger:** Always-on container (2 weeks uptime)\n\n### Scope\n- **Data:** PP production database\n- **Port:** 5434 (mapped from 5432)\n\n### Authority & Gates\n- **Authority level:** Infrastructure \u2014 data store, not an actor\n\n### Risk if it breaks\n- **Risk level:** High \u2014 PP data loss\n- **Blast radius:** All PP functionality\n\n### Last reviewed\n- **Date:** 2026-03-02\n\n---"
+  },
+  "governance-integrity-check": {
+    "ledger_id": "GOV-001",
+    "what": "Daily governance integrity check. Runs drift detection (live crons vs ledger), review SLA enforcement (auto-disables stale Authority B/C processes), and expired approval token cleanup.",
+    "scope": [
+      "- **Repos:** None",
+      "- **External services:** OpenClaw cron API (read + disable)",
+      "- **Secrets used:** None"
+    ],
+    "model": "sonnet",
+    "risk_detail": "Low \u2014 if this breaks, governance degrades silently",
+    "fail_closed": "",
+    "raw_section": "**What it does:** Daily governance integrity check. Runs drift detection (live crons vs ledger), review SLA enforcement (auto-disables stale Authority B/C processes), and expired approval token cleanup.\n\n**Where it runs:** Mac / OpenClaw isolated session\n\n**Trigger:** `cron 0 7 * * *` (daily 7 AM Denver)\n\n### Scope\n- **Repos:** None\n- **External services:** OpenClaw cron API (read + disable)\n- **Secrets used:** None\n\n### Authority & Gates\n- **Authority level:** A (read-only analysis + auto-disable of SLA-breached processes)\n- **Note:** Can disable other crons. This is by design \u2014 fail-closed enforcement.\n\n### Model\n- **Model:** sonnet\n- **Timeout:** 60s\n\n### Risk if it breaks\n- **Risk level:** Low \u2014 if this breaks, governance degrades silently\n- **Mitigation:** Heartbeat checks for drift-log.jsonl freshness\n\n### Last reviewed\n- **Date:** 2026-03-02\n- **Decision:** Created\n\n---"
+  }
+}

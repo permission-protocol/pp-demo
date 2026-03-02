@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8"><title>Governance Dashboard</title><meta name="viewport" content="width=device-width">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#151520;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;padding:24px}
+body{background:#151520;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;padding:24px;font-size:13px}
 h1{color:#fff;font-size:20px;margin-bottom:4px}
 .ts{color:#8a8a9a;font-size:13px;margin-bottom:20px}
 .stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
@@ -11,17 +11,40 @@ h1{color:#fff;font-size:20px;margin-bottom:4px}
 .stat .l{font-size:11px;color:#8a8a9a;text-transform:uppercase;letter-spacing:.5px}
 .findings{background:#2a1a1a;border:1px solid #ff6b5b44;border-radius:6px;padding:12px 16px;margin-bottom:20px}
 .findings h3{color:#ff6b5b;font-size:13px;margin-bottom:8px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;color:#8a8a9a;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid #2a2a40}
-td{padding:8px 10px;border-bottom:1px solid #1e1e30}
-tr:hover{background:#1a1a2e}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;color:#8a8a9a;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid #2a2a40;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:#fff}
+th .arrow{font-size:9px;margin-left:4px;opacity:0.4}
+th.sorted .arrow{opacity:1;color:#ff6b5b}
+td{padding:8px 10px;border-bottom:1px solid #1e1e30;white-space:nowrap}
+tr.row{cursor:pointer}
+tr.row:hover{background:#1a1a2e}
+tr.row.selected{background:#1a1a2e;border-left:3px solid #ff6b5b}
 .ok,.running{color:#4ade80}.disabled{color:#666}.shadow{color:#ff6b5b;font-weight:700}.missing{color:#ff6b5b}
 .auth-C{color:#ff6b5b;font-weight:700}.auth-B{color:#f0ad4e}.auth-A{color:#8a8a9a}
 .drift{color:#ff6b5b}.sla-ok{color:#4ade80}.sla-warn{color:#f0ad4e}.sla-breach{color:#ff6b5b}
+.dim{color:#555}
 .bar{height:4px;background:#ff6b5b;border-radius:2px;margin-top:20px}
+
+.detail{display:none;background:#1a1a2e;border-left:3px solid #ff6b5b}
+.detail td{white-space:normal;padding:0}
+.detail-inner{padding:16px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.detail-section{}
+.detail-section h3{color:#ff6b5b;font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.detail-section .label{color:#8a8a9a;font-size:11px;text-transform:uppercase;margin-top:10px}
+.detail-section .value{color:#e0e0e0;margin-top:2px;line-height:1.5}
+.detail-section .value.dim{color:#666}
+.scope-item{color:#e0e0e0;font-size:12px;padding:2px 0}
+.run-entry{background:#151520;border-radius:4px;padding:10px 12px;margin-top:6px}
+.run-header{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.run-status{display:inline-block;width:8px;height:8px;border-radius:50%}
+.run-status.ok{background:#4ade80}.run-status.error{background:#ff6b5b}
+.run-summary{color:#aaa;font-size:12px;line-height:1.5;white-space:pre-wrap}
+.run-meta{color:#666;font-size:11px}
+.prompt-box{background:#151520;border-radius:4px;padding:10px 12px;color:#aaa;font-size:12px;line-height:1.5;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-top:4px}
 </style></head><body>
 <h1>Governance Dashboard</h1>
-<div class="ts">2026-03-02T21:01:21Z · moltbot-macbook-pro</div>
+<div class="ts">Mon 3/2 2:15p (Denver) · moltbot-macbook-pro</div>
 <div class="stats">
 <div class="stat"><div class="n">17</div><div class="l">Processes</div></div>
 <div class="stat"><div class="n" style="color:#4ade80">15</div><div class="l">OK</div></div>
@@ -31,4 +54,330 @@ tr:hover{background:#1a1a2e}
 <div class="stat"><div class="n">2</div><div class="l">Auth C</div></div>
 <div class="stat"><div class="n">5</div><div class="l">Auth B</div></div>
 <div class="stat"><div class="n">7</div><div class="l">Auth A</div></div>
-</div><table><tr><th>●</th><th>ID</th><th>Name</th><th>Auth</th><th>Gate</th><th>Status</th><th>Schedule</th><th>Next Run</th><th>SLA</th><th>Drift</th></tr><tr><td class="ok">●</td><td>PP-008</td><td>pp-linkedin-weekly</td><td class="auth-C">C</td><td>Telegram approval</td><td class="ok">ok</td><td>0 8 * * 0</td><td>03-08 14:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-001</td><td>pp-os-execute-ready</td><td class="auth-C">C</td><td>Approval for merges</td><td class="ok">ok</td><td>5 9,11,13,15,17 * * *</td><td>03-02 22:05</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>XD-001</td><td>goal-xdares-seo-daily</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 18 * * *</td><td>03-03 01:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-001</td><td>memory-curation-r1</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 11 * * 0</td><td>03-08 17:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-002</td><td>pp-os-daily-log-and-plan</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>3 8 * * *</td><td>03-03 15:03</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-003</td><td>pp-os-qa-review</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 2 * * *</td><td>03-03 09:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-006</td><td>pr-prescreen-auto</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 9,11,13,15,17 * * 1-6</td><td>03-02 22:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-003</td><td>Bootstrap Receipt Reminder</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>30 9 12 2 *</td><td>02-12 16:30</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>XD-002</td><td>goal-xdares-seo-weekly</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 19 * * 0</td><td>03-09 01:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>GOV-001</td><td>governance-integrity-check</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 7 * * *</td><td>03-03 14:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-004</td><td>pp-os-weekly-review</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 10 * * 0</td><td>03-08 16:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-002</td><td>qa-workload1-review</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>at 2026-03-07 10:00Z</td><td>03-07 10:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="disabled">○</td><td>PP-007</td><td>pp-daily-metrics</td><td class="auth-A">A</td><td>None</td><td class="disabled">disabled</td><td>0 9 * * *</td><td>—</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="disabled">○</td><td>PP-005</td><td>pp-os-incident-scanner</td><td class="auth-A">A</td><td>None</td><td class="disabled">disabled</td><td>2 7 * * *</td><td>—</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-004</td><td>openclaw-gateway</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-005</td><td>openclaw-node</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-006</td><td>pp-prod-postgres</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr></table><div class="bar"></div></body></html>
+</div><table id="gov"><thead><tr><th onclick="sortTable(0)">●<span class="arrow">▼</span></th><th onclick="sortTable(1)">ID<span class="arrow">▼</span></th><th onclick="sortTable(2)">Name<span class="arrow">▼</span></th><th onclick="sortTable(3)">Auth<span class="arrow">▼</span></th><th onclick="sortTable(4)">Gate<span class="arrow">▼</span></th><th onclick="sortTable(5)">Status<span class="arrow">▼</span></th><th onclick="sortTable(6)">Schedule<span class="arrow">▼</span></th><th onclick="sortTable(7)">Last Run<span class="arrow">▼</span></th><th onclick="sortTable(8)">Next Run<span class="arrow">▼</span></th><th onclick="sortTable(9)">SLA<span class="arrow">▼</span></th><th onclick="sortTable(10)">Drift<span class="arrow">▼</span></th></tr></thead><tbody><tr class="row" onclick="toggleDetail(0)"><td class="ok" data-sort="2">●</td><td data-sort="PP-008">PP-008</td><td data-sort="pp-linkedin-weekly">pp-linkedin-weekly</td><td class="auth-C" data-sort="0">C</td><td data-sort="Telegram approval">Telegram approval</td><td class="ok" data-sort="2">ok</td><td data-sort="0 8 * * 0">0 8 * * 0</td><td data-sort="0000">—</td><td data-sort="2026-03-08T14:00:00Z">Sun 3/8 7a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-0"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Generates 5 LinkedIn/Twitter posts weekly for PP authority positioning. Creates quote card images. Uploads to imgur. Schedules 3 posts to Buffer (LinkedIn + Twitter).</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: sonnet · Timeout: 120s</div><div class="value">Fail-closed: If no approval received → drafts saved locally, nothing posts. If Buffer API fails → drafts saved locally, Rod notified.</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** Buffer API (post scheduling), imgur API (image hosting), Brave Search (incident scanning)</div><div class="scope-item">- **Accounts:** Buffer (rodchalski LinkedIn + RodChalski Twitter), imgur (anonymous)</div><div class="scope-item">- **Secrets used:** `buffer-api-key.txt`</div><div class="label">Why It Exists</div><div class="value">Authority: C · Risk: Medium | Off-brand posts, embarrassing content, wrong account · Gate: Telegram approval</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">You are generating weekly LinkedIn + Twitter posts for Permission Protocol authority positioning.
+
+1. Read goals/pp-linkedin/scripts/weekly-drafts-prompt.md (voice guide and format)
+2. Read goals/pp-linkedin/scripts/humanize-prompt.md (humanize rules)
+3. Read goals/pp-linkedin/raw-ideas.md for fragm</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(1)"><td class="ok" data-sort="2">●</td><td data-sort="PP-001">PP-001</td><td data-sort="pp-os-execute-ready">pp-os-execute-ready</td><td class="auth-C" data-sort="0">C</td><td data-sort="Approval for merges">Approval for merges</td><td class="ok" data-sort="2">ok</td><td data-sort="5 9,11,13,15,17 * * *">5 9,11,13,15,17 * * *</td><td data-sort="2026-03-02T20:05:00Z">Mon 3/2 1:05p</td><td data-sort="2026-03-02T22:05:00Z">Mon 3/2 3:05p</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-1"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Executes up to 3 items from the PP Product Board &quot;Ready&quot; column per run. Moves items through board statuses, creates PRs, writes code, comments on issues.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: UTC</div><div class="value">Model: claude-sonnet-4-6 · Timeout: 900s</div><div class="value">Fail-closed: If blocked → moves to &quot;Blocked (Need Human)&quot; with description</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** Roca-Ventures/Breakout-Labs (write), Roca-Ventures/permissionprotocol-site (write)</div><div class="scope-item">- **External services:** GitHub API (issues, PRs, project board)</div><div class="scope-item">- **Accounts:** GitHub PAT (projects scope)</div><div class="scope-item">- **Secrets used:** `github-pat-projects.txt`</div><div class="label">Why It Exists</div><div class="value">Authority: C · Risk: High | Bad PRs, incorrect board state, stale items stuck in progress · Gate: Approval for merges</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">You are Charles, executing the PP Product Board Ready queue.
+
+## RULES
+- Execute UP TO 3 items per run
+- Always announce what you are starting before doing work
+- If blocked, move task to &quot;Blocked (Human Input Required)&quot; with a clear description of what is needed, then pick next Ready item
+- When do</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 1:05p</strong><span class="run-meta">9s · claude-sonnet-4-6 · 14,131 tokens</span></div><div class="run-summary">No Ready items found on the PP Product Board.
+
+**Summary:**
+- Tasks completed: 0
+- Tasks blocked: 0
+- Remaining Ready count: 0
+
+The Ready queue is empty — nothing to execute this run.</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 11:05a</strong><span class="run-meta">5m17s · claude-sonnet-4-6 · 41,194 tokens</span></div><div class="run-summary">---
+
+**PP Product Board Run — March 2, 2026 @ 11:05 AM**
+
+**Tasks processed: 3**
+
+---
+
+**✅ #186 — 🟡 P1: Create og-image.png for social previews → QA Review**
+Already complete before this run. PR #5 merged 2026-02-22. Verified:
+- `https://permissionprotocol.com/assets/og-image.png` → 200 ✓
+- og:image + twitter:image meta tags present ✓
+- PNG, 1200×630 ✓
+
+---
+
+**✅ #188 — 🟡 P1: Deploy Request Page Mobile UX Revamp → QA Review**
+Already complete before this run. PR #145 in Breakout-Labs merged 2026-</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 9:09a</strong><span class="run-meta">3m7s · claude-sonnet-4-6 · 36,439 tokens</span></div><div class="run-summary">---
+
+**PP Product Board Run — Summary**
+
+**✅ Tasks completed: 3**
+
+All three P0 items had deliverables already drafted in the workspace from prior work. This run verified the work, added required AC blocks, and promoted all three to QA Review.
+
+1. **#241 — Design Partner Quick-Start Guide** → QA Review
+   - Deliverable: `pp-os/design-partner-quickstart.md` — full 6-step guide (Prerequisites → Secrets → Action → Branch Protection → Approve → Verify Receipt), troubleshooting section, links to dash</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(2)"><td class="ok" data-sort="2">●</td><td data-sort="XD-001">XD-001</td><td data-sort="goal-xdares-seo-daily">goal-xdares-seo-daily</td><td class="auth-B" data-sort="1">B</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 18 * * *">0 18 * * *</td><td data-sort="2026-03-02T01:00:00Z">Sun 3/1 6p</td><td data-sort="2026-03-03T01:00:00Z">Mon 3/2 6p</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-2"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Daily summary of Xdares SEO growth goal executor. Reports progress, queue status, completed tasks.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: claude-sonnet-4-6 · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None (reads local state files)</div><div class="scope-item">- **External services:** None</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: B · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">GOAL_EXECUTOR_DAILY_SUMMARY: Goal ID &#x27;xdares-seo-growth&#x27;. Generate and send daily summary. Load state from ~/.openclaw/workspace/goals/xdares-seo-growth/state.json.</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 6p</strong><span class="run-meta">52s · claude-sonnet-4-6 · 58,579 tokens</span></div><div class="run-summary">📊 **xDares SEO Growth — Daily Summary**
+**Sunday, March 1, 2026 · 6:00 PM MT**
+
+---
+
+## 🎯 Goal Status
+
+| | |
+|---|---|
+| **Target** | 5,000 sessions/month by March 5, 2026 |
+| **Current pace** | ~291 sessions/month |
+| **Progress** | ~5.8% of goal |
+| **Deadline** | **4 days away** ⚠️ |
+| **Verdict** | Goal is unreachable at current trajectory |
+
+---
+
+## 📝 Blog Content
+
+- **91 posts live** on blog.xdares.com
+- **250 total tasks completed** across the campaign
+- No new posts published since **Feb</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sat 2/28 6p</strong><span class="run-meta">53s · claude-sonnet-4-6 · 58,576 tokens</span></div><div class="run-summary">📊 **xdares-seo-growth Daily Summary — Saturday, Feb 28, 2026**
+
+---
+
+**Goal:** Grow blog.xdares.com organic traffic from ~100 → 5,000 visits/month by March 5, 2026
+**Status:** 🔴 Goal will not be met — but significant progress made
+
+---
+
+**Traffic Progress**
+- Current run-rate: ~291 sessions/month (per last metrics engine read, Feb 27)
+- Target: 5,000/month
+- Attainment: ~5.8% of goal
+- Deadline: 5 days away (March 5)
+- **Verdict:** The 5,000/month target in 30 days was not reached. The metrics e</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Fri 2/27 6p</strong><span class="run-meta">58s · claude-sonnet-4-6 · 61,261 tokens</span></div><div class="run-summary">---
+
+**📊 xDares SEO Daily Summary — Friday, Feb 27, 2026**
+
+**Goal:** blog.xdares.com organic traffic → 5,000 sessions/month by March 5
+**Status:** 🔴 Goal unreachable. Deadline in 6 days.
+
+---
+
+### Traffic (week ending Feb 27)
+| Metric | This Week | Last Week |
+|---|---|---|
+| Sessions | 68 | 58 |
+| Active Users | 57 | 53 |
+| Page Views | 76 | 79 |
+| Avg. Session Duration | 1m 19s | 0m 48s |
+
+**Projected monthly run rate:** ~291 sessions/month — **5.8% of the 5,000 target.**
+
+---
+
+### Traffic So</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(3)"><td class="ok" data-sort="2">●</td><td data-sort="SYS-001">SYS-001</td><td data-sort="memory-curation-r1">memory-curation-r1</td><td class="auth-B" data-sort="1">B</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 11 * * 0">0 11 * * 0</td><td data-sort="2026-03-01T18:00:00Z">Sun 3/1 11a</td><td data-sort="2026-03-08T17:00:00Z">Sun 3/8 10a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-3"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Weekly memory curation via R1 on DGX Spark. Reviews recent daily memory files, extracts insights for long-term MEMORY.md.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: sonnet (orchestrator), deepseek-r1:70b (curator) · Timeout: 600s</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** DGX Spark (R1 70B)</div><div class="scope-item">- **Files written:** `MEMORY.md`, `memory/*.md`</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: B · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">Run the weekly memory curation via R1. Execute:
+
+```bash
+bash ~/.openclaw/workspace/scripts/memory-curate-r1.sh --days 7
+```
+
+Read the output from /tmp/memory-curation-result.json. If verdict is &quot;curate&quot;:
+1. For each addition: append the content to the appropriate section of ~/.openclaw/workspace/ME</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 11a</strong><span class="run-meta">2m34s · claude-sonnet-4-6 · 20,130 tokens</span></div><div class="run-summary">**Weekly Memory Curation — March 1, 2026**
+
+R1 analyzed 4 daily log files from the past 7 days. Verdict: **curate**.
+
+**Changes applied to MEMORY.md:**
+
+✅ **1 addition** — New entry added to *Lessons Learned*:
+
+&gt; **2026-03-01 — Infrastructure Checks**
+&gt; Prioritize infrastructure integrity over content optimization. Before diving into SEO, blog publishing, or agent workflows — confirm the pipes are actually working first.
+
+No updates or removals were flagged. MEMORY.md is current.</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(4)"><td class="ok" data-sort="2">●</td><td data-sort="PP-002">PP-002</td><td data-sort="pp-os-daily-log-and-plan">pp-os-daily-log-and-plan</td><td class="auth-B" data-sort="1">B</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="3 8 * * *">3 8 * * *</td><td data-sort="2026-03-02T15:03:00Z">Mon 3/2 8:03a</td><td data-sort="2026-03-03T15:03:00Z">Tue 3/3 8:03a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-4"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Generates daily PP OS log entry with metrics (PP API, GitHub, PostHog). Plans up to 3 tasks and moves them to Backlog.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: UTC</div><div class="value">Model: opus · Timeout: 600s</div><div class="value">Fail-closed: **Fail-closed:** If APIs unreachable → logs partial data, continues</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** Reads Breakout-Labs (no writes)</div><div class="scope-item">- **External services:** GitHub API, PostHog API, PP API</div><div class="scope-item">- **Secrets used:** `github-pat-projects.txt`, `posthog-api-key.txt`, `pp-cli-api-key.txt`</div><div class="label">Why It Exists</div><div class="value">Authority: B · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">You are Charles, running the daily PP OS log and planning cycle.
+
+## STEP 1: Read Context
+Read these files for full context:
+- pp-os/planning-config.json (tunable parameters)
+- pp-os/goals.md (active objective + deadline)
+- pp-os/market-intel.md (competitive landscape, incidents, outreach angles, de</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 8:03a</strong><span class="run-meta">2m32s · claude-opus-4-6 · 53,743 tokens</span></div><div class="run-summary">Now let me check backlog count and decide on new tasks. Current backlog: #212, #207 (only 2, min is 10). Let me check existing items more carefully before creating tasks, then write the log.</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 8:03a</strong><span class="run-meta">3m37s · claude-opus-4-6 · 41,224 tokens</span></div><div class="run-summary">Done. Here&#x27;s the summary:
+
+**PP OS Daily Log — March 1, 2026 (Sunday)**
+
+📋 **Board Hygiene:** No auto-fixes needed. Flagged major issue: 27 items in Verified including many OPEN issues — board integrity needs Rod&#x27;s review.
+
+✅ **Tasks Created (#247-#249):**
+1. Audit Verified column — close/move OPEN issues in wrong status
+2. Resolve 3 stale In Progress items (7 days, over threshold)
+3. Draft cold DM templates for Twitter/LinkedIn (parallel outreach channel)
+
+🚨 **Flags:**
+- **NIST RFI: 8 days** — </div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sat 2/28 8:03a</strong><span class="run-meta">4m9s · claude-opus-4-6 · 56,372 tokens</span></div><div class="run-summary">**PP OS Daily — Feb 28 (Saturday)**
+
+📋 **Board Hygiene:** Moved #226, #210 to Done (closed issues in wrong status). Added #241-243 to project board (were missing).
+
+🆕 **Created:** #244 — Execute NIST RFI skeleton into full draft
+
+🚨 **Flags:**
+- **NIST RFI: 9 days** — entering single digits
+- **Outreach: Day 8 at zero** — 21 days to design partner deadline, zero pipeline
+- **3 In Progress items stale** (#186, #188, #183 at 6 days)
+
+📊 **Metrics (vs yesterday):**
+- Traffic 7d: 256 (flat)
+- Receipts</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(5)"><td class="ok" data-sort="2">●</td><td data-sort="PP-003">PP-003</td><td data-sort="pp-os-qa-review">pp-os-qa-review</td><td class="auth-B" data-sort="1">B</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 2 * * *">0 2 * * *</td><td data-sort="2026-03-02T09:00:00Z">Mon 3/2 2a</td><td data-sort="2026-03-03T09:00:00Z">Tue 3/3 2a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-5"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Runs standalone QA review script. Checks items in &quot;QA Review&quot; column, verifies acceptance criteria, uses R1 70B on DGX Spark for judgment calls. Moves items to Verified or bounces back.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: UTC</div><div class="value">Model: claude-sonnet-4-6 (orchestrator), deepseek-r1:70b (judge) · Timeout: 600s</div><div class="value">Fail-closed: **Fail-closed:** If R1/Spark unreachable → flags items, doesn&#x27;t auto-verify</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)</div><div class="scope-item">- **External services:** GitHub API, DGX Spark (R1 70B via Ollama)</div><div class="scope-item">- **Secrets used:** `github-pat-projects.txt`</div><div class="label">Why It Exists</div><div class="value">Authority: B · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">Run the standalone QA review script and report results:
+
+```bash
+bash ~/.openclaw/workspace/scripts/qa-cron-standalone.sh
+```
+
+Report the final summary line. If any items were verified, reopened, or bounced for missing AC, list them by issue number and title. If R1/Spark was unreachable, flag it.</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 2a</strong><span class="run-meta">10s · claude-sonnet-4-6 · 16,691 tokens</span></div><div class="run-summary">**QA Review — Mon Mar 2, 2026 @ 2:00 AM MT**
+
+&gt; `QA reviewed 0 items. Board is clean.`
+
+No items were in the Done column — nothing to verify, reopen, or bounce. R1/Spark was not needed. Board is clean. ✅</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 2a</strong><span class="run-meta">1m57s · claude-sonnet-4-6 · 17,604 tokens</span></div><div class="run-summary">**QA Review — Sun Mar 1, 2026 @ 2:00 AM MT**
+
+`QA reviewed 2 items: 2 verified, 0 reopened, 0 need AC, 0 awaiting Spark`
+
+**Items reviewed (both PASSED):**
+- **#228** — 🔴 P0: Scan Greptile and CodeRabbit customer lists for design partner leads → ✅ Verified (R1 confirmed)
+- **#229** — 🔴 P0: Draft NIST RFI skeleton — structure and key arguments for PP positioning → ✅ Verified (R1 confirmed)
+
+**R1/Spark:** Reachable and responsive. Both items were ambiguous on initial heuristic check but R1 confirm</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sat 2/28 2a</strong><span class="run-meta">12s · claude-sonnet-4-6 · 16,650 tokens</span></div><div class="run-summary">QA reviewed 0 items. Board is clean.</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(6)"><td class="ok" data-sort="2">●</td><td data-sort="PP-006">PP-006</td><td data-sort="pr-prescreen-auto">pr-prescreen-auto</td><td class="auth-B" data-sort="1">B</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 9,11,13,15,17 * * 1-6">0 9,11,13,15,17 * * 1-6</td><td data-sort="2026-03-02T20:30:00Z">Mon 3/2 1:30p</td><td data-sort="2026-03-02T22:00:00Z">Mon 3/2 3p</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-6"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Pre-screens open PRs on Breakout-Labs. Runs every 30 min during business hours. Skips already-screened PRs.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: sonnet · Timeout: 600s</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)</div><div class="scope-item">- **External services:** GitHub API</div><div class="scope-item">- **Secrets used:** `github-pat-projects.txt`</div><div class="label">Why It Exists</div><div class="value">Authority: B · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">Run the PR pre-screen cron and report results:
+
+```bash
+export GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt)
+bash ~/.openclaw/workspace/scripts/pr-prescreen-cron.sh Roca-Ventures/Breakout-Labs
+```
+
+Report: how many PRs were reviewed, how many skipped (already screened), and any errors.</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 1:30p</strong><span class="run-meta">26s · claude-sonnet-4-6 · 16,742 tokens</span></div><div class="run-summary">PR pre-screen cron completed for **Roca-Ventures/Breakout-Labs** at 2026-03-02T20:30:10Z.
+
+- ✅ **Reviewed:** 0 (no new PRs needing screening)
+- ⏭️ **Skipped (already screened):** 5
+- ❌ **Errors:** None
+
+All open PRs are already pre-screened — nothing new to process.</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 1p</strong><span class="run-meta">15s · claude-sonnet-4-6 · 16,743 tokens</span></div><div class="run-summary">PR Pre-Screen Cron — Roca-Ventures/Breakout-Labs
+Run time: 2026-03-02 20:00 UTC (1:00 PM Denver)
+
+- **Reviewed:** 0
+- **Already screened (skipped):** 5
+- **Errors:** None
+
+All 5 open PRs had already been pre-screened in a prior run — nothing new to process.</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Mon 3/2 12:30p</strong><span class="run-meta">15s · claude-sonnet-4-6 · 16,743 tokens</span></div><div class="run-summary">PR Pre-Screen Cron — Roca-Ventures/Breakout-Labs
+Run time: 2026-03-02 19:30 UTC
+
+- **Reviewed (new):** 0
+- **Skipped (already screened):** 5
+- **Errors:** None
+
+All open PRs have already been pre-screened. Nothing new to process.</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(7)"><td class="ok" data-sort="2">●</td><td data-sort="SYS-003">SYS-003</td><td data-sort="Bootstrap Receipt Reminder">Bootstrap Receipt Reminder</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="30 9 12 2 *">30 9 12 2 *</td><td data-sort="0000">—</td><td data-sort="2027-02-12T16:30:00Z">Fri 2/12 9:30a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-7"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Reminder related to bootstrap receipt. Dormant.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: main · Timezone: America/Denver</div><div class="value">Model:  · Timeout: —</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk:  · Gate: None</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(8)"><td class="ok" data-sort="2">●</td><td data-sort="XD-002">XD-002</td><td data-sort="goal-xdares-seo-weekly">goal-xdares-seo-weekly</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 19 * * 0">0 19 * * 0</td><td data-sort="2026-03-02T02:00:00Z">Sun 3/1 7p</td><td data-sort="2026-03-09T01:00:00Z">Sun 3/8 6p</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-8"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Comprehensive weekly review of Xdares SEO growth with metrics, wins, failures, and recommendations.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: claude-sonnet-4-6 · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** None</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">GOAL_EXECUTOR_WEEKLY_REVIEW: Goal ID &#x27;xdares-seo-growth&#x27;. Generate comprehensive weekly review with metrics, wins, failures, and recommendations. Load state from ~/.openclaw/workspace/goals/xdares-seo-growth/state.json.</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 7p</strong><span class="run-meta">1m32s · claude-sonnet-4-6 · 62,952 tokens</span></div><div class="run-summary">---
+
+# xDares SEO Weekly Review
+**Goal:** xdares-seo-growth | **Period:** Week ending March 1, 2026 | **Deadline:** March 5, 2026
+
+---
+
+## 📊 Traffic Metrics (This Week vs Last Week)
+
+| Metric | This Week | Last Week | Change |
+|---|---|---|---|
+| Sessions | 76 | 49 | +55% ✅ |
+| Active Users | 62 | 45 | +38% ✅ |
+| Engaged Sessions | 19 | 9 | +111% ✅ |
+| Avg Session Duration | 72s | 12.6s | +472% ✅ |
+| New Users | 59 | 45 | +31% ✅ |
+| Page Views | 85 | 61 | +39% ✅ |
+| Organic Search (SC Clicks) | </div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 2/22 7p</strong><span class="run-meta">47s · claude-opus-4-6 · 58,190 tokens</span></div><div class="run-summary">📊 **Xdares SEO Growth — Weekly Review (Feb 16–22, 2026)**
+
+---
+
+**Goal:** Grow blog.xdares.com from ~100 to 5,000 organic visitors/month in 30 days
+**Deadline:** March 5, 2026 (11 days remaining)
+**Status:** Running | 210 tasks completed | 72 posts live
+
+---
+
+### 📈 This Week&#x27;s Output
+
+**Content Published (34 posts this week!):**
+- Posts 39–72 went live, covering: Pool Party, Memorial Day, 4th of July, Labor Day, Halloween, New Year&#x27;s Eve, Thanksgiving, Super Bowl, Christmas, Mardi Gras, Casino N</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(9)"><td class="ok" data-sort="2">●</td><td data-sort="GOV-001">GOV-001</td><td data-sort="governance-integrity-check">governance-integrity-check</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 7 * * *">0 7 * * *</td><td data-sort="0000">—</td><td data-sort="2026-03-03T14:00:00Z">Tue 3/3 7a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-9"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Daily governance integrity check. Runs drift detection (live crons vs ledger), review SLA enforcement (auto-disables stale Authority B/C processes), and expired approval token cleanup.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: sonnet · Timeout: 60s</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** OpenClaw cron API (read + disable)</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk: Low — if this breaks, governance degrades silently · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">Run the daily governance integrity check:
+
+```bash
+bash ~/.openclaw/workspace/company-os/governance/scripts/governance-check.sh
+```
+
+Report the full output. If any drift or SLA breaches were found, explain what happened and what was auto-disabled. If clean, report &quot;Governance check passed.&quot;</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(10)"><td class="ok" data-sort="2">●</td><td data-sort="PP-004">PP-004</td><td data-sort="pp-os-weekly-review">pp-os-weekly-review</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="0 10 * * 0">0 10 * * 0</td><td data-sort="2026-03-01T17:00:00Z">Sun 3/1 10a</td><td data-sort="2026-03-08T16:00:00Z">Sun 3/8 9a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-10"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Weekly master-plan alignment review. Reads all daily logs for the week, evaluates objective progress, checks Non-Negotiables, may recommend pivots.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: America/Denver</div><div class="value">Model: claude-opus-4-6 · Timeout: 120s</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None (reads local files only)</div><div class="scope-item">- **External services:** None</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk: Low · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">You are Charles, doing the weekly PP OS master-plan review. Do the following:
+
+1. Read pp-os/master-plan.md
+2. Read pp-os/goals.md
+3. Read the last 7 daily logs from pp-os/master-log/
+4. Evaluate:
+   - Is the active objective still the right one? Are we making progress?
+   - Do any Non-Negotiables n</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 3/1 10a</strong><span class="run-meta">57s · claude-opus-4-6 · 37,623 tokens</span></div><div class="run-summary">Here&#x27;s the weekly review:
+
+---
+
+**PP OS Weekly Review — March 1, 2026**
+
+**Active Objective: Get first external design partner by March 21.**
+20 days remain. Zero pipeline. Zero outreach sent. Zero inbound requests. This objective is at serious risk.
+
+---
+
+**What&#x27;s working:**
+- **Product is built.** Deploy Gate works end-to-end. 111+ receipts generated. GitHub Action published. The technical foundation is solid.
+- **Content/traffic is possible.** Feb 23 (92 views) and Feb 25 (102 views) showed r</div></div><div class="run-entry"><div class="run-header"><span class="run-status ok"></span><strong>Sun 2/22 10a</strong><span class="run-meta">45s · claude-opus-4-6 · 16,408 tokens</span></div><div class="run-summary">---
+
+**PP OS Weekly Review — Sunday, February 22, 2026**
+
+---
+
+**TL;DR: The plan is sound. The objective is right. Execution is critically stalled. We have 27 days to deadline and zero pipeline.**
+
+---
+
+**1. Is the active objective still the right one?**
+
+Yes. &quot;Get first external design partner by March 21&quot; is exactly the right next step. The MVP is built, the demo repo works, the GitHub Action is published. The only thing that validates PP now is someone outside our walls using it. No change ne</div></div></div></div></td></tr><tr class="row" onclick="toggleDetail(11)"><td class="ok" data-sort="2">●</td><td data-sort="SYS-002">SYS-002</td><td data-sort="qa-workload1-review">qa-workload1-review</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="ok" data-sort="2">ok</td><td data-sort="at 2026-03-07 10:00Z">at 2026-03-07 10:00Z</td><td data-sort="0000">—</td><td data-sort="2026-03-07T10:00:00Z">Sat 3/7 3a</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-11"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">One-shot review of QA pipeline effectiveness after 1 week of operation.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: isolated · Timezone: UTC</div><div class="value">Model:  · Timeout: 300s</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk:  · Gate: None</div><div class="label">Cron Prompt (first 300 chars)</div><div class="prompt-box">QA Workload 1 has been running for 1 week. Review its effectiveness:
+
+1. Read QA receipts from ~/.openclaw/workspace/qa/receipts/2026-03/ to see all judgments made
+2. Count: total items reviewed, verified, reopened, bounced for missing AC, R1 invocations
+3. Check for false positives: items bounced t</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(12)"><td class="disabled" data-sort="4">○</td><td data-sort="PP-007">PP-007</td><td data-sort="pp-daily-metrics">pp-daily-metrics</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="disabled" data-sort="4">disabled</td><td data-sort="0 9 * * *">0 9 * * *</td><td data-sort="0000">—</td><td data-sort="9999">—</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-12"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Generates daily PP metrics report from Formspree access requests and other sources. Feeds data into PP-OS planning.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: None · Timezone: UTC</div><div class="value">Model: sonnet · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** Formspree API</div><div class="scope-item">- **Secrets used:** Unknown — needs audit</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk: Low · Gate: None</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(13)"><td class="disabled" data-sort="4">○</td><td data-sort="PP-005">PP-005</td><td data-sort="pp-os-incident-scanner">pp-os-incident-scanner</td><td class="auth-A" data-sort="2">A</td><td data-sort="None">None</td><td class="disabled" data-sort="4">disabled</td><td data-sort="2 7 * * *">2 7 * * *</td><td data-sort="0000">—</td><td data-sort="9999">—</td><td class="sla-ok" data-sort="30">30d</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-13"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Scans for AI agent incidents and security news for PP outreach hooks. Runs blogwatcher for monitored feeds. Compiles market intelligence.</div><div class="label">How It Works</div><div class="value">Runtime: openclaw-cron · Session: None · Timezone: UTC</div><div class="value">Model: claude-sonnet-4-6 · Timeout: —</div><div class="value">Fail-closed: **Fail-closed:** If feeds unreachable → reports partial scan</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Repos:** None</div><div class="scope-item">- **External services:** Web search, RSS feeds (blogwatcher)</div><div class="scope-item">- **Secrets used:** None</div><div class="label">Why It Exists</div><div class="value">Authority: A · Risk: Low · Gate: None</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(14)"><td class="running" data-sort="3">●</td><td data-sort="SYS-004">SYS-004</td><td data-sort="openclaw-gateway">openclaw-gateway</td><td class="auth-—" data-sort="4">—</td><td data-sort="—">—</td><td class="running" data-sort="3">running</td><td data-sort="always-on">always-on</td><td data-sort="0000">—</td><td data-sort="9999">—</td><td class="dim" data-sort="999">—</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-14"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">Core OpenClaw gateway daemon. Routes all LLM API calls, manages sessions, handles Telegram integration.</div><div class="label">How It Works</div><div class="value">Runtime: launchd · Session: — · Timezone: —</div><div class="value">Model:  · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **External services:** Anthropic API, Telegram Bot API</div><div class="scope-item">- **Secrets used:** Anthropic API key, Telegram bot token (via OpenClaw config)</div><div class="label">Why It Exists</div><div class="value">Authority: — · Risk: High — **all autonomous processes stop** · Gate: —</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(15)"><td class="running" data-sort="3">●</td><td data-sort="SYS-005">SYS-005</td><td data-sort="openclaw-node">openclaw-node</td><td class="auth-—" data-sort="4">—</td><td data-sort="—">—</td><td class="running" data-sort="3">running</td><td data-sort="always-on">always-on</td><td data-sort="0000">—</td><td data-sort="9999">—</td><td class="dim" data-sort="999">—</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-15"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">OpenClaw node agent for paired device communication.</div><div class="label">How It Works</div><div class="value">Runtime: launchd · Session: — · Timezone: —</div><div class="value">Model:  · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **External services:** OpenClaw cloud relay</div><div class="label">Why It Exists</div><div class="value">Authority: — · Risk: Medium — loses remote node capabilities · Gate: —</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr><tr class="row" onclick="toggleDetail(16)"><td class="running" data-sort="3">●</td><td data-sort="SYS-006">SYS-006</td><td data-sort="pp-prod-postgres">pp-prod-postgres</td><td class="auth-—" data-sort="4">—</td><td data-sort="—">—</td><td class="running" data-sort="3">running</td><td data-sort="always-on">always-on</td><td data-sort="0000">—</td><td data-sort="9999">—</td><td class="dim" data-sort="999">—</td><td class="dim" data-sort="1">—</td></tr><tr class="detail" id="detail-16"><td colspan="11"><div class="detail-inner"><div class="detail-section"><h3>What It Does</h3><div class="value">PostgreSQL 15 database for Permission Protocol production data.</div><div class="label">How It Works</div><div class="value">Runtime: docker · Session: — · Timezone: —</div><div class="value">Model:  · Timeout: —</div><div class="label">Scope (What It Can Touch)</div><div class="scope-item">- **Data:** PP production database</div><div class="scope-item">- **Port:** 5434 (mapped from 5432)</div><div class="label">Why It Exists</div><div class="value">Authority: — · Risk: High — PP data loss · Gate: —</div></div><div class="detail-section"><h3>Recent Runs</h3><div class="value dim">No run history available</div></div></div></td></tr></tbody></table>
+<div class="bar"></div>
+
+<script>
+function toggleDetail(idx) {
+  const detail = document.getElementById("detail-" + idx);
+  const row = detail.previousElementSibling;
+  const wasOpen = detail.style.display === "table-row";
+  
+  // Close all
+  document.querySelectorAll(".detail").forEach(d => d.style.display = "none");
+  document.querySelectorAll(".row").forEach(r => r.classList.remove("selected"));
+  
+  if (!wasOpen) {
+    detail.style.display = "table-row";
+    row.classList.add("selected");
+  }
+}
+
+let sortDir = {};
+function sortTable(col) {
+  const table = document.getElementById("gov");
+  const tbody = table.querySelector("tbody");
+  const headers = table.querySelectorAll("th");
+  
+  // Collect row pairs (data row + detail row)
+  const pairs = [];
+  const rows = Array.from(tbody.children);
+  for (let i = 0; i < rows.length; i += 2) {
+    pairs.push([rows[i], rows[i+1]]);
+  }
+  
+  sortDir[col] = sortDir[col] === "asc" ? "desc" : "asc";
+  const dir = sortDir[col];
+  
+  headers.forEach((h, i) => {
+    h.classList.toggle("sorted", i === col);
+    const arrow = h.querySelector(".arrow");
+    if (i === col) arrow.textContent = dir === "asc" ? "▲" : "▼";
+    else arrow.textContent = "▼";
+  });
+  
+  pairs.sort((a, b) => {
+    let aVal = a[0].cells[col].getAttribute("data-sort") || a[0].cells[col].textContent;
+    let bVal = b[0].cells[col].getAttribute("data-sort") || b[0].cells[col].textContent;
+    let aNum = parseFloat(aVal), bNum = parseFloat(bVal);
+    if (!isNaN(aNum) && !isNaN(bNum))
+      return dir === "asc" ? aNum - bNum : bNum - aNum;
+    return dir === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+  });
+  
+  // Close all details
+  document.querySelectorAll(".detail").forEach(d => d.style.display = "none");
+  document.querySelectorAll(".row").forEach(r => r.classList.remove("selected"));
+  
+  pairs.forEach(([row, detail]) => {
+    tbody.appendChild(row);
+    tbody.appendChild(detail);
+  });
+}
+</script>
+</body></html>

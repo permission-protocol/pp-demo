@@ -1,0 +1,86 @@
+{
+  "pr-prescreen-auto": {
+    "last_run_ms": 1772483400028,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "pp-os-execute-ready": {
+    "last_run_ms": 1772481900025,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "goal-xdares-seo-daily": {
+    "last_run_ms": 1772413200020,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "pp-os-qa-review": {
+    "last_run_ms": 1772442000052,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "governance-integrity-check": {
+    "last_run_ms": null,
+    "last_status": null,
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "pp-os-daily-log-and-plan": {
+    "last_run_ms": 1772463780022,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "qa-workload1-review": {
+    "last_run_ms": null,
+    "last_status": null,
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "pp-linkedin-weekly": {
+    "last_run_ms": null,
+    "last_status": null,
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "pp-os-weekly-review": {
+    "last_run_ms": 1772384400034,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "memory-curation-r1": {
+    "last_run_ms": 1772388000020,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "goal-xdares-seo-weekly": {
+    "last_run_ms": 1772416800016,
+    "last_status": "ok",
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  },
+  "Bootstrap Receipt Reminder": {
+    "last_run_ms": null,
+    "last_status": null,
+    "last_error": null,
+    "last_duration_ms": null,
+    "last_summary": null
+  }
+}
