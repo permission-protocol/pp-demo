@@ -1,0 +1,17 @@
+{
+  "buffer": {
+    "orgId": "69a5e1e0e5fe4a0d07d46bff",
+    "channels": {
+      "linkedin_personal": "69a5e30b3f3b94a1210b8114",
+      "linkedin_company": "69a5e30b3f3b94a1210b8115",
+      "twitter": "69a5e3d83f3b94a1210b8490"
+    },
+    "postTo": ["linkedin_personal", "twitter"],
+    "schedule": {
+      "monday": "09:00",
+      "wednesday": "09:00",
+      "friday": "09:00"
+    },
+    "timezone": "America/Denver"
+  }
+}

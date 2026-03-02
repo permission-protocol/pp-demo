@@ -1,9 +1,66 @@
 {
   "issue": 235,
   "title": "Check challenge page design",
-  "template": "none",
-  "timestamp": "2026-02-28T02:09:23.919705",
-  "result": "FAIL",
-  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
-  "criteria": []
+  "template": "visual-change",
+  "issue_state": "OPEN",
+  "timestamp": "2026-02-28T13:48:08.151140",
+  "result": "AMBIGUOUS",
+  "criteria": [
+    {
+      "ac": "`/challenge` \u2014 challenge box renders dark (#111111 bg) with white text visible",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/challenge: HTTP 200, 10348B",
+        "Page text (500 chars): The Receipt Challenge \u2014 Permission Protocol .challenge-page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; } .challenge-page h1 { font-size: 2.75rem; margin-bottom: 0.75rem; letter-spacing: -0.03em; } .challenge-page .subtitle { color: var(--gray-500); font-size: 1.25rem; margin-bottom: 3rem; line-height: 1.5; } .challenge-box { background: #111111; color: #e0e0e0; border-radius: 12px; padding: 2.5rem; margin-bottom: 3rem; text-align: center; } .challenge-box .dare { font-size: 1.5rem",
+        "Color #111111 found in page source"
+      ]
+    },
+    {
+      "ac": "`/challenge` \u2014 result blocks (NO RECEIPT / RECEIPT VERIFIED) render dark terminal-style",
+      "status": "unproven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/challenge: HTTP 200, 10348B",
+        "Page text (500 chars): The Receipt Challenge \u2014 Permission Protocol .challenge-page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; } .challenge-page h1 { font-size: 2.75rem; margin-bottom: 0.75rem; letter-spacing: -0.03em; } .challenge-page .subtitle { color: var(--gray-500); font-size: 1.25rem; margin-bottom: 3rem; line-height: 1.5; } .challenge-box { background: #111111; color: #e0e0e0; border-radius: 12px; padding: 2.5rem; margin-bottom: 3rem; text-align: center; } .challenge-box .dare { font-size: 1.5rem",
+        "Background colors found: #111111, #ffffff, #f0f0f0, #111111",
+        "curl verify: HTTP 200 from https://www.permissionprotocol.com/challenge"
+      ]
+    },
+    {
+      "ac": "`/challenge` \u2014 back link meets #9a9a9a minimum contrast",
+      "status": "proven",
+      "evidence": [
+        "Link check error: HTTP Error 404: Not Found",
+        "Fetched https://www.permissionprotocol.com/challenge: HTTP 200, 10348B",
+        "Page text (500 chars): The Receipt Challenge \u2014 Permission Protocol .challenge-page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; } .challenge-page h1 { font-size: 2.75rem; margin-bottom: 0.75rem; letter-spacing: -0.03em; } .challenge-page .subtitle { color: var(--gray-500); font-size: 1.25rem; margin-bottom: 3rem; line-height: 1.5; } .challenge-box { background: #111111; color: #e0e0e0; border-radius: 12px; padding: 2.5rem; margin-bottom: 3rem; text-align: center; } .challenge-box .dare { font-size: 1.5rem",
+        "Color #9a9a9a found in page source"
+      ]
+    },
+    {
+      "ac": "`/challenge` \u2014 \"View the repo \u2192\" button has dark text on white background",
+      "status": "unproven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/challenge: HTTP 200, 10348B",
+        "Page text (500 chars): The Receipt Challenge \u2014 Permission Protocol .challenge-page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; } .challenge-page h1 { font-size: 2.75rem; margin-bottom: 0.75rem; letter-spacing: -0.03em; } .challenge-page .subtitle { color: var(--gray-500); font-size: 1.25rem; margin-bottom: 3rem; line-height: 1.5; } .challenge-box { background: #111111; color: #e0e0e0; border-radius: 12px; padding: 2.5rem; margin-bottom: 3rem; text-align: center; } .challenge-box .dare { font-size: 1.5rem",
+        "Background colors found: #111111, #ffffff, #f0f0f0, #111111",
+        "curl verify: HTTP 200 from https://www.permissionprotocol.com/challenge"
+      ]
+    },
+    {
+      "ac": "`/install` \u2014 code blocks render dark (#111111) with light monospace text",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/install: HTTP 200, 14555B",
+        "Page text (500 chars): Install Deploy Gate \u2014 Permission Protocol !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(\".\");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement(\"script\")).type=\"text/javascript\",p.async=!0,p.src=s.api_host+\"/static/array.js\",(r=t.getElementsByTagName(\"script\")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a=\"posthog\",u.people=u.peopl",
+        "Color #111111 found in page source"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 3,
+    "unproven": 2,
+    "false": 0
+  },
+  "warnings": [
+    "Issue is still OPEN \u2014 suspicious for a Done item"
+  ]
 }

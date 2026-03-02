@@ -2,7 +2,11 @@
 
 > **Rule:** No new autonomous process without a ledger entry + Rod review date.
 >
-> **Authority C Rule:** Any process with Authority C requires **explicit human approval** before executing the external/public action. No exceptions. Approval can be async (Telegram confirm, PR review) but must exist.
+> **Authority C Rule:** Any process with Authority C requires **explicit human approval** before executing the external/public action. No exceptions. Approval must be verified programmatically (approval token with content hash, expiry, and approver identity). Prompt-level instructions are not enforcement.
+>
+> **Review SLA:** Every Authority B/C process must be reviewed every 30 days. If `Last Reviewed` > 30 days → **auto-disabled** by governance check. Warning at 21 days. To re-enable: review the process, update Last Reviewed, then `openclaw cron edit <id> --enable`.
+>
+> **Drift Detection:** Daily governance check (7 AM Denver) compares live cron state vs ledger. Alerts on: unregistered processes, disabled-but-running, schedule drift, SLA breaches. Log: `company-os/governance/drift-log.jsonl`.
 >
 > **Governance hook:** Any process with Authority C must either produce a signed PP receipt for the action, or be hard-blocked from the action path. This is not a diary. This is governance.
 
@@ -48,6 +52,7 @@
 | SYS-001 | memory-curation-r1 | B | None | Low | Mac/OpenClaw | 0 11 * * 0 (Denver) | ok | 2026-03-02 |
 | SYS-002 | qa-workload1-review | A | None | Low | Mac/OpenClaw | at 2026-03-07 10:00Z | idle | 2026-03-02 |
 | SYS-003 | Bootstrap Receipt Reminder | A | None | Low | Mac/OpenClaw | 30 9 12 2 * (Denver) | idle | 2026-03-02 |
+| GOV-001 | governance-integrity-check | A | None | Low | Mac/OpenClaw | 0 7 * * * (Denver) | ok | 2026-03-02 |
 | SYS-004 | openclaw-gateway | — | — | High | Mac/LaunchAgent | always-on | running | 2026-03-02 |
 | SYS-005 | openclaw-node | — | — | Med | Mac/LaunchAgent | always-on | running | 2026-03-02 |
 | SYS-006 | pp-prod-postgres | — | — | High | Mac/Docker | always-on | running | 2026-03-02 |
@@ -527,6 +532,37 @@
 
 ### Last reviewed
 - **Date:** 2026-03-02
+
+---
+
+## GOV-001 — governance-integrity-check
+
+**What it does:** Daily governance integrity check. Runs drift detection (live crons vs ledger), review SLA enforcement (auto-disables stale Authority B/C processes), and expired approval token cleanup.
+
+**Where it runs:** Mac / OpenClaw isolated session
+
+**Trigger:** `cron 0 7 * * *` (daily 7 AM Denver)
+
+### Scope
+- **Repos:** None
+- **External services:** OpenClaw cron API (read + disable)
+- **Secrets used:** None
+
+### Authority & Gates
+- **Authority level:** A (read-only analysis + auto-disable of SLA-breached processes)
+- **Note:** Can disable other crons. This is by design — fail-closed enforcement.
+
+### Model
+- **Model:** sonnet
+- **Timeout:** 60s
+
+### Risk if it breaks
+- **Risk level:** Low — if this breaks, governance degrades silently
+- **Mitigation:** Heartbeat checks for drift-log.jsonl freshness
+
+### Last reviewed
+- **Date:** 2026-03-02
+- **Decision:** Created
 
 ---
 

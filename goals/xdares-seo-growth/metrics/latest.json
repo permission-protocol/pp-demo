@@ -1,6 +1,6 @@
 {
   "date": "2026-03-02",
-  "timestamp": "2026-03-02T15:04:50.623280Z",
+  "timestamp": "2026-03-02T17:13:28.646883Z",
   "ga4": {
     "overview": {
       "error": "no_token"
@@ -19,9 +19,9 @@
     }
   },
   "posthog": {
-    "type": "authentication_error",
-    "code": "permission_denied",
-    "detail": "Legacy insight endpoints are not available for this user.",
+    "type": "server_error",
+    "code": "error",
+    "detail": "A server error occurred.",
     "attr": null
   },
   "kickofflabs": {

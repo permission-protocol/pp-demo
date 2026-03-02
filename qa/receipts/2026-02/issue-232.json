@@ -1,9 +1,69 @@
 {
   "issue": 232,
   "title": "\ud83d\udfe1 P1: Blog Post \u2014 Amazon Q Developer incident (Week 3 Distribution Engine)",
-  "template": "none",
-  "timestamp": "2026-02-28T02:09:36.389606",
-  "result": "FAIL",
-  "reason": "No AC block found. Add ## AC: section with checkboxes and verification targets.",
-  "criteria": []
+  "template": "infra-config",
+  "issue_state": "OPEN",
+  "timestamp": "2026-02-28T13:49:10.705929",
+  "result": "PASS",
+  "criteria": [
+    {
+      "ac": "Blog post published at `/blog/amazon-q-developer-deploy-incident`",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident: HTTP 200, 7941B",
+        "Page text (500 chars): [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident | Permission Protocol PERMISSION / PROTOCOL Deploy Gate Install Brand Blog Present Request Access Request Access \u2190 Back to Blog [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident February 2026 Permission Protocol blog post \u2014 weekly AI Deploy Incident Thread template. 1. What happened The Financial Times reported a production incident linked to Amazon Q Developer and described it as \"s",
+        "Published page found with title: [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident"
+      ]
+    },
+    {
+      "ac": "`curl -I https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident` returns HTTP 200",
+      "status": "proven",
+      "evidence": [
+        "HTTP 200 from https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident"
+      ]
+    },
+    {
+      "ac": "Post follows 5-section engine template",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident: HTTP 200, 7941B",
+        "Page text (500 chars): [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident | Permission Protocol PERMISSION / PROTOCOL Deploy Gate Install Brand Blog Present Request Access Request Access \u2190 Back to Blog [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident February 2026 Permission Protocol blog post \u2014 weekly AI Deploy Incident Thread template. 1. What happened The Financial Times reported a production incident linked to Amazon Q Developer and described it as \"s",
+        "Found 5 H2 sections: 1. What happened, 2. Root cause, 3. What a deploy gate would have done, 4. The receipt, 5. CTA",
+        "Has 5 sections (meets 5-section requirement)"
+      ]
+    },
+    {
+      "ac": "Includes PP receipt example (inline JSON or code block)",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident: HTTP 200, 7941B",
+        "Page text (500 chars): [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident | Permission Protocol PERMISSION / PROTOCOL Deploy Gate Install Brand Blog Present Request Access Request Access \u2190 Back to Blog [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident February 2026 Permission Protocol blog post \u2014 weekly AI Deploy Incident Thread template. 1. What happened The Financial Times reported a production incident linked to Amazon Q Developer and described it as \"s",
+        "Found 1 receipt-like code blocks. First: <code>{\n  \"version\": \"1.0\",\n  \"status\": \"APPROVED\",\n  \"requestId\": \"req_01JV7Q4M4T7Z9X4P9G8N2D6R1A\",\n  \"issuedAt\": \"2026-02-28T16:00:00Z\",\n  \"expiresAt\": \"2026-02-28T18:00:00Z\",\n  \"scope\": {\n    \"repo"
+      ]
+    },
+    {
+      "ac": "CTA links to `/install`",
+      "status": "proven",
+      "evidence": [
+        "Found 10 internal links"
+      ]
+    },
+    {
+      "ac": "OG/Twitter meta tags present",
+      "status": "proven",
+      "evidence": [
+        "Fetched https://www.permissionprotocol.com/blog/amazon-q-developer-deploy-incident: HTTP 200, 7941B",
+        "Page text (500 chars): [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident | Permission Protocol PERMISSION / PROTOCOL Deploy Gate Install Brand Blog Present Request Access Request Access \u2190 Back to Blog [AI Deploy Incident] Amazon Q Developer Small but Foreseeable Production Incident February 2026 Permission Protocol blog post \u2014 weekly AI Deploy Incident Thread template. 1. What happened The Financial Times reported a production incident linked to Amazon Q Developer and described it as \"s",
+        "Found 9 OG/Twitter meta tags: og:title=[AI Deploy Incident] Amazon Q , og:description=Weekly AI Deploy Incident Thre, og:type=article, og:url=https://permissionprotocol.com, og:image=https://permissionprotocol.com"
+      ]
+    }
+  ],
+  "summary": {
+    "proven": 6,
+    "unproven": 0,
+    "false": 0
+  },
+  "warnings": [
+    "Issue is still OPEN \u2014 suspicious for a Done item"
+  ]
 }
