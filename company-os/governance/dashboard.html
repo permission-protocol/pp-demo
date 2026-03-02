@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Governance Dashboard</title><meta name="viewport" content="width=device-width">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#151520;color:#e0e0e0;font-family:Inter,system-ui,sans-serif;padding:24px}
+h1{color:#fff;font-size:20px;margin-bottom:4px}
+.ts{color:#8a8a9a;font-size:13px;margin-bottom:20px}
+.stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.stat{background:#1e1e30;padding:12px 16px;border-radius:6px}
+.stat .n{font-size:24px;font-weight:700;color:#fff}
+.stat .l{font-size:11px;color:#8a8a9a;text-transform:uppercase;letter-spacing:.5px}
+.findings{background:#2a1a1a;border:1px solid #ff6b5b44;border-radius:6px;padding:12px 16px;margin-bottom:20px}
+.findings h3{color:#ff6b5b;font-size:13px;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:#8a8a9a;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid #2a2a40}
+td{padding:8px 10px;border-bottom:1px solid #1e1e30}
+tr:hover{background:#1a1a2e}
+.ok,.running{color:#4ade80}.disabled{color:#666}.shadow{color:#ff6b5b;font-weight:700}.missing{color:#ff6b5b}
+.auth-C{color:#ff6b5b;font-weight:700}.auth-B{color:#f0ad4e}.auth-A{color:#8a8a9a}
+.drift{color:#ff6b5b}.sla-ok{color:#4ade80}.sla-warn{color:#f0ad4e}.sla-breach{color:#ff6b5b}
+.bar{height:4px;background:#ff6b5b;border-radius:2px;margin-top:20px}
+</style></head><body>
+<h1>Governance Dashboard</h1>
+<div class="ts">2026-03-02T21:01:21Z · moltbot-macbook-pro</div>
+<div class="stats">
+<div class="stat"><div class="n">17</div><div class="l">Processes</div></div>
+<div class="stat"><div class="n" style="color:#4ade80">15</div><div class="l">OK</div></div>
+<div class="stat"><div class="n" style="color:#666">2</div><div class="l">Disabled</div></div>
+<div class="stat"><div class="n" style="color:#ff6b5b">0</div><div class="l">Shadow</div></div>
+<div class="stat"><div class="n" style="color:#f0ad4e">0</div><div class="l">Drift</div></div>
+<div class="stat"><div class="n">2</div><div class="l">Auth C</div></div>
+<div class="stat"><div class="n">5</div><div class="l">Auth B</div></div>
+<div class="stat"><div class="n">7</div><div class="l">Auth A</div></div>
+</div><table><tr><th>●</th><th>ID</th><th>Name</th><th>Auth</th><th>Gate</th><th>Status</th><th>Schedule</th><th>Next Run</th><th>SLA</th><th>Drift</th></tr><tr><td class="ok">●</td><td>PP-008</td><td>pp-linkedin-weekly</td><td class="auth-C">C</td><td>Telegram approval</td><td class="ok">ok</td><td>0 8 * * 0</td><td>03-08 14:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-001</td><td>pp-os-execute-ready</td><td class="auth-C">C</td><td>Approval for merges</td><td class="ok">ok</td><td>5 9,11,13,15,17 * * *</td><td>03-02 22:05</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>XD-001</td><td>goal-xdares-seo-daily</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 18 * * *</td><td>03-03 01:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-001</td><td>memory-curation-r1</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 11 * * 0</td><td>03-08 17:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-002</td><td>pp-os-daily-log-and-plan</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>3 8 * * *</td><td>03-03 15:03</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-003</td><td>pp-os-qa-review</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 2 * * *</td><td>03-03 09:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-006</td><td>pr-prescreen-auto</td><td class="auth-B">B</td><td>None</td><td class="ok">ok</td><td>0 9,11,13,15,17 * * 1-6</td><td>03-02 22:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-003</td><td>Bootstrap Receipt Reminder</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>30 9 12 2 *</td><td>02-12 16:30</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>XD-002</td><td>goal-xdares-seo-weekly</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 19 * * 0</td><td>03-09 01:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>GOV-001</td><td>governance-integrity-check</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 7 * * *</td><td>03-03 14:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>PP-004</td><td>pp-os-weekly-review</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>0 10 * * 0</td><td>03-08 16:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="ok">●</td><td>SYS-002</td><td>qa-workload1-review</td><td class="auth-A">A</td><td>None</td><td class="ok">ok</td><td>at 2026-03-07 10:00Z</td><td>03-07 10:00</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="disabled">○</td><td>PP-007</td><td>pp-daily-metrics</td><td class="auth-A">A</td><td>None</td><td class="disabled">disabled</td><td>0 9 * * *</td><td>—</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="disabled">○</td><td>PP-005</td><td>pp-os-incident-scanner</td><td class="auth-A">A</td><td>None</td><td class="disabled">disabled</td><td>2 7 * * *</td><td>—</td><td class="sla-ok">30d</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-004</td><td>openclaw-gateway</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-005</td><td>openclaw-node</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr><tr><td class="running">●</td><td>SYS-006</td><td>pp-prod-postgres</td><td class="auth-—">—</td><td>—</td><td class="running">running</td><td>always-on</td><td>—</td><td class="">—</td><td class="">—</td></tr></table><div class="bar"></div></body></html>
