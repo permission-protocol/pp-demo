@@ -45,6 +45,44 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
 
+### ✏️ WAL Protocol (Write-Ahead Logging)
+
+Chat history is a buffer, not storage. It WILL get compacted. Write critical details to files BEFORE responding.
+
+**Scan every inbound message for:**
+- **Corrections** — "It's X, not Y" / "Actually..." / "No, I meant..."
+- **Decisions** — "Let's do X" / "Go with Y"
+- **Specific values** — Names, IDs, URLs, numbers, dates
+- **Preferences** — "I like/don't like", style choices, approaches
+
+**If any appear:**
+1. **STOP** — Don't start composing your response
+2. **WRITE** — Update `SESSION-STATE.md` (or today's daily note) with the detail
+3. **THEN** — Respond
+
+The urge to respond is the enemy. The detail feels obvious in context but context will vanish. Write first.
+
+**SESSION-STATE.md** is active working memory for the current task. Keep it small and current — overwrite, don't append forever. When a task completes, archive key details to daily notes and clear it.
+
+### 🛟 Working Buffer (Danger Zone Protocol)
+
+When context gets long, compaction can erase recent exchanges. This catches them.
+
+**At ~60% context usage** (check via `session_status`):
+1. Create/clear `memory/working-buffer.md`
+2. After EVERY message past 60%: append a 1-2 sentence summary of the exchange
+3. After compaction: read the buffer FIRST, extract what matters to SESSION-STATE.md
+
+**After compaction recovery, never ask "what were we doing?"** — read the buffer.
+
+### ✅ Verify Implementation, Not Intent
+
+Before reporting "done" or "fixed":
+- **Text changes ≠ behavior changes.** Changing a prompt doesn't change architecture.
+- Identify the actual mechanism (config values, cron type, code path), not just the description.
+- Verify by observing behavior, not just reading config.
+- If you changed how something works, test that the NEW behavior actually fires.
+
 ## Safety
 
 - Don't exfiltrate private data. Ever.
@@ -153,6 +191,11 @@ You are free to edit `HEARTBEAT.md` with a short checklist or reminders. Keep it
 - You want a different model or thinking level for the task
 - One-shot reminders ("remind me in 20 minutes")
 - Output should deliver directly to a channel without main session involvement
+
+**Cron architecture — know the difference:**
+- `isolated agentTurn` — spawns a sub-agent that does the work autonomously. Use for background tasks (updates, checks, maintenance).
+- `systemEvent` to main session — prompts YOU to do something. Only use when the task needs your conversational context or human interaction.
+- **Common mistake:** Creating a `systemEvent` for a task that should just execute. If it doesn't need your attention, make it `isolated agentTurn`.
 
 **Tip:** Batch similar periodic checks into `HEARTBEAT.md` instead of creating multiple cron jobs. Use cron for precise schedules and standalone tasks.
 

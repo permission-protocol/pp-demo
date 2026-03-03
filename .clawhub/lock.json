@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving-agent": {
+      "version": "1.0.11",
+      "installedAt": 1772570586103
+    },
+    "humanizer": {
+      "version": "1.0.0",
+      "installedAt": 1772570782490
+    },
+    "auto-updater": {
+      "version": "1.0.0",
+      "installedAt": 1772570886967
+    },
+    "proactive-agent": {
+      "version": "3.1.0",
+      "installedAt": 1772571492143
+    }
+  }
+}
