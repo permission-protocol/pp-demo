@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="tiny-ps"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100">
+  <title>Permission Protocol</title>
+  <desc>Permission Protocol gate symbol — the primitive gate for autonomous systems.</desc>
+  <!-- Dark background (BIMI recommends solid bg, not transparent) -->
+  <rect width="100" height="100" fill="#0a0a0a"/>
+  <!-- Gate frame -->
+  <rect x="25" y="30" width="50" height="40" stroke="#c8c8c8" stroke-width="4" fill="none"/>
+  <!-- Horizontal bar (gate) -->
+  <line x1="25" y1="50" x2="75" y2="50" stroke="#c8c8c8" stroke-width="4"/>
+  <!-- Vertical bars (authority) -->
+  <line x1="50" y1="30" x2="50" y2="42" stroke="#c8c8c8" stroke-width="4"/>
+  <line x1="50" y1="58" x2="50" y2="70" stroke="#c8c8c8" stroke-width="4"/>
+</svg>

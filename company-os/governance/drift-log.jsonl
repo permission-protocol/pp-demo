@@ -1,2 +1,3 @@
 {"timestamp": "2026-03-02T20:41:11Z", "drift_found": false, "finding_count": 0, "findings": []}
 {"timestamp": "2026-03-02T20:43:14Z", "drift_found": false, "finding_count": 0, "findings": []}
+{"timestamp": "2026-03-03T14:00:07Z", "drift_found": true, "finding_count": 1, "findings": [{"severity": "HIGH", "type": "unregistered_process", "detail": "Live cron 'governance-integrity-check' not found in ledger"}]}

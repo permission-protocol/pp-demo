@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-02T21:15:58Z",
+  "generated_at": "2026-03-03T14:00:06Z",
   "host": "moltbot-macbook-pro",
   "stats": {
     "total": 17,
@@ -34,16 +34,9 @@
       "session_target": "main",
       "next_run": "2027-02-12T16:30:00Z",
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "6d3da517-dbd3-4cc6-a9bb-ca6674252a91",
-      "what": "Reminder related to bootstrap receipt. Dormant.",
-      "scope": [],
-      "model_detail": "",
-      "risk_detail": "",
-      "fail_closed": "",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": "6d3da517-dbd3-4cc6-a9bb-ca6674252a91"
     },
     {
       "name": "goal-xdares-seo-daily",
@@ -62,47 +55,11 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-03-03T01:00:00Z",
-      "last_run": "2026-03-02T01:00:00Z",
-      "sla_days_left": 30,
+      "next_run": "2026-03-04T01:00:00Z",
+      "last_run": "2026-03-03T01:00:00Z",
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "84b4bf2a-717d-464d-af94-830556e5bfbc",
-      "what": "Daily summary of Xdares SEO growth goal executor. Reports progress, queue status, completed tasks.",
-      "scope": [
-        "- **Repos:** None (reads local state files)",
-        "- **External services:** None",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "claude-sonnet-4-6",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "GOAL_EXECUTOR_DAILY_SUMMARY: Goal ID 'xdares-seo-growth'. Generate and send daily summary. Load state from ~/.openclaw/workspace/goals/xdares-seo-growth/state.json.",
-      "recent_runs": [
-        {
-          "timestamp": 1772240400023,
-          "status": "ok",
-          "summary": "---\n\n**\ud83d\udcca xDares SEO Daily Summary \u2014 Friday, Feb 27, 2026**\n\n**Goal:** blog.xdares.com organic traffic \u2192 5,000 sessions/month by March 5\n**Status:** \ud83d\udd34 Goal unreachable. Deadline in 6 days.\n\n---\n\n### Traffic (week ending Feb 27)\n| Metric | This Week | Last Week |\n|---|---|---|\n| Sessions | 68 | 58 |\n| Active Users | 57 | 53 |\n| Page Views | 76 | 79 |\n| Avg. Session Duration | 1m 19s | 0m 48s |\n\n**Projected monthly run rate:** ~291 sessions/month \u2014 **5.8% of the 5,000 target.**\n\n---\n\n### Traffic So",
-          "duration_ms": 58016,
-          "model": "claude-sonnet-4-6",
-          "tokens": 61261
-        },
-        {
-          "timestamp": 1772326800026,
-          "status": "ok",
-          "summary": "\ud83d\udcca **xdares-seo-growth Daily Summary \u2014 Saturday, Feb 28, 2026**\n\n---\n\n**Goal:** Grow blog.xdares.com organic traffic from ~100 \u2192 5,000 visits/month by March 5, 2026\n**Status:** \ud83d\udd34 Goal will not be met \u2014 but significant progress made\n\n---\n\n**Traffic Progress**\n- Current run-rate: ~291 sessions/month (per last metrics engine read, Feb 27)\n- Target: 5,000/month\n- Attainment: ~5.8% of goal\n- Deadline: 5 days away (March 5)\n- **Verdict:** The 5,000/month target in 30 days was not reached. The metrics e",
-          "duration_ms": 53264,
-          "model": "claude-sonnet-4-6",
-          "tokens": 58576
-        },
-        {
-          "timestamp": 1772413200020,
-          "status": "ok",
-          "summary": "\ud83d\udcca **xDares SEO Growth \u2014 Daily Summary**\n**Sunday, March 1, 2026 \u00b7 6:00 PM MT**\n\n---\n\n## \ud83c\udfaf Goal Status\n\n| | |\n|---|---|\n| **Target** | 5,000 sessions/month by March 5, 2026 |\n| **Current pace** | ~291 sessions/month |\n| **Progress** | ~5.8% of goal |\n| **Deadline** | **4 days away** \u26a0\ufe0f |\n| **Verdict** | Goal is unreachable at current trajectory |\n\n---\n\n## \ud83d\udcdd Blog Content\n\n- **91 posts live** on blog.xdares.com\n- **250 total tasks completed** across the campaign\n- No new posts published since **Feb",
-          "duration_ms": 52739,
-          "model": "claude-sonnet-4-6",
-          "tokens": 58579
-        }
-      ]
+      "cron_id": "84b4bf2a-717d-464d-af94-830556e5bfbc"
     },
     {
       "name": "goal-xdares-seo-weekly",
@@ -123,37 +80,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-09T01:00:00Z",
       "last_run": "2026-03-02T02:00:00Z",
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "78a53c7c-9bc4-4075-b7bd-eddb63ddcc96",
-      "what": "Comprehensive weekly review of Xdares SEO growth with metrics, wins, failures, and recommendations.",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** None",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "claude-sonnet-4-6",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "GOAL_EXECUTOR_WEEKLY_REVIEW: Goal ID 'xdares-seo-growth'. Generate comprehensive weekly review with metrics, wins, failures, and recommendations. Load state from ~/.openclaw/workspace/goals/xdares-seo-growth/state.json.",
-      "recent_runs": [
-        {
-          "timestamp": 1771812000018,
-          "status": "ok",
-          "summary": "\ud83d\udcca **Xdares SEO Growth \u2014 Weekly Review (Feb 16\u201322, 2026)**\n\n---\n\n**Goal:** Grow blog.xdares.com from ~100 to 5,000 organic visitors/month in 30 days\n**Deadline:** March 5, 2026 (11 days remaining)\n**Status:** Running | 210 tasks completed | 72 posts live\n\n---\n\n### \ud83d\udcc8 This Week's Output\n\n**Content Published (34 posts this week!):**\n- Posts 39\u201372 went live, covering: Pool Party, Memorial Day, 4th of July, Labor Day, Halloween, New Year's Eve, Thanksgiving, Super Bowl, Christmas, Mardi Gras, Casino N",
-          "duration_ms": 47631,
-          "model": "claude-opus-4-6",
-          "tokens": 58190
-        },
-        {
-          "timestamp": 1772416800016,
-          "status": "ok",
-          "summary": "---\n\n# xDares SEO Weekly Review\n**Goal:** xdares-seo-growth | **Period:** Week ending March 1, 2026 | **Deadline:** March 5, 2026\n\n---\n\n## \ud83d\udcca Traffic Metrics (This Week vs Last Week)\n\n| Metric | This Week | Last Week | Change |\n|---|---|---|---|\n| Sessions | 76 | 49 | +55% \u2705 |\n| Active Users | 62 | 45 | +38% \u2705 |\n| Engaged Sessions | 19 | 9 | +111% \u2705 |\n| Avg Session Duration | 72s | 12.6s | +472% \u2705 |\n| New Users | 59 | 45 | +31% \u2705 |\n| Page Views | 85 | 61 | +39% \u2705 |\n| Organic Search (SC Clicks) | ",
-          "duration_ms": 92808,
-          "model": "claude-sonnet-4-6",
-          "tokens": 62952
-        }
-      ]
+      "cron_id": "78a53c7c-9bc4-4075-b7bd-eddb63ddcc96"
     },
     {
       "name": "governance-integrity-check",
@@ -174,20 +103,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-03T14:00:00Z",
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "60a9e179-3d6b-4051-8124-255b9f40cda0",
-      "what": "Daily governance integrity check. Runs drift detection (live crons vs ledger), review SLA enforcement (auto-disables stale Authority B/C processes), and expired approval token cleanup.",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** OpenClaw cron API (read + disable)",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "sonnet",
-      "risk_detail": "Low \u2014 if this breaks, governance degrades silently",
-      "fail_closed": "",
-      "cron_message": "Run the daily governance integrity check:\n\n```bash\nbash ~/.openclaw/workspace/company-os/governance/scripts/governance-check.sh\n```\n\nReport the full output. If any drift or SLA breaches were found, explain what happened and what was auto-disabled. If clean, report \"Governance check passed.\"",
-      "recent_runs": []
+      "cron_id": "60a9e179-3d6b-4051-8124-255b9f40cda0"
     },
     {
       "name": "memory-curation-r1",
@@ -208,30 +126,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T17:00:00Z",
       "last_run": "2026-03-01T18:00:00Z",
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "ef54b92a-4584-4d49-8dd1-150970dfc65a",
-      "what": "Weekly memory curation via R1 on DGX Spark. Reviews recent daily memory files, extracts insights for long-term MEMORY.md.",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** DGX Spark (R1 70B)",
-        "- **Files written:** `MEMORY.md`, `memory/*.md`",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "sonnet (orchestrator), deepseek-r1:70b (curator)",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "Run the weekly memory curation via R1. Execute:\n\n```bash\nbash ~/.openclaw/workspace/scripts/memory-curate-r1.sh --days 7\n```\n\nRead the output from /tmp/memory-curation-result.json. If verdict is \"curate\":\n1. For each addition: append the content to the appropriate section of ~/.openclaw/workspace/ME",
-      "recent_runs": [
-        {
-          "timestamp": 1772388000020,
-          "status": "ok",
-          "summary": "**Weekly Memory Curation \u2014 March 1, 2026**\n\nR1 analyzed 4 daily log files from the past 7 days. Verdict: **curate**.\n\n**Changes applied to MEMORY.md:**\n\n\u2705 **1 addition** \u2014 New entry added to *Lessons Learned*:\n\n> **2026-03-01 \u2014 Infrastructure Checks**\n> Prioritize infrastructure integrity over content optimization. Before diving into SEO, blog publishing, or agent workflows \u2014 confirm the pipes are actually working first.\n\nNo updates or removals were flagged. MEMORY.md is current.",
-          "duration_ms": 154080,
-          "model": "claude-sonnet-4-6",
-          "tokens": 20130
-        }
-      ]
+      "cron_id": "ef54b92a-4584-4d49-8dd1-150970dfc65a"
     },
     {
       "name": "pp-daily-metrics",
@@ -252,20 +149,9 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": null,
-      "what": "Generates daily PP metrics report from Formspree access requests and other sources. Feeds data into PP-OS planning.",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** Formspree API",
-        "- **Secrets used:** Unknown \u2014 needs audit"
-      ],
-      "model_detail": "sonnet",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": null
     },
     {
       "name": "pp-linkedin-weekly",
@@ -286,21 +172,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T14:00:00Z",
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "8c0d1fb0-0464-444c-9543-049ee4098691",
-      "what": "Generates 5 LinkedIn/Twitter posts weekly for PP authority positioning. Creates quote card images. Uploads to imgur. Schedules 3 posts to Buffer (LinkedIn + Twitter).",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** Buffer API (post scheduling), imgur API (image hosting), Brave Search (incident scanning)",
-        "- **Accounts:** Buffer (rodchalski LinkedIn + RodChalski Twitter), imgur (anonymous)",
-        "- **Secrets used:** `buffer-api-key.txt`"
-      ],
-      "model_detail": "sonnet",
-      "risk_detail": "Medium | Off-brand posts, embarrassing content, wrong account",
-      "fail_closed": "If no approval received \u2192 drafts saved locally, nothing posts. If Buffer API fails \u2192 drafts saved locally, Rod notified.",
-      "cron_message": "You are generating weekly LinkedIn + Twitter posts for Permission Protocol authority positioning.\n\n1. Read goals/pp-linkedin/scripts/weekly-drafts-prompt.md (voice guide and format)\n2. Read goals/pp-linkedin/scripts/humanize-prompt.md (humanize rules)\n3. Read goals/pp-linkedin/raw-ideas.md for fragm",
-      "recent_runs": []
+      "cron_id": "8c0d1fb0-0464-444c-9543-049ee4098691"
     },
     {
       "name": "pp-os-daily-log-and-plan",
@@ -321,45 +195,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-03T15:03:00Z",
       "last_run": "2026-03-02T15:03:00Z",
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "f9d08ca6-2067-4644-ac08-323314acc834",
-      "what": "Generates daily PP OS log entry with metrics (PP API, GitHub, PostHog). Plans up to 3 tasks and moves them to Backlog.",
-      "scope": [
-        "- **Repos:** Reads Breakout-Labs (no writes)",
-        "- **External services:** GitHub API, PostHog API, PP API",
-        "- **Secrets used:** `github-pat-projects.txt`, `posthog-api-key.txt`, `pp-cli-api-key.txt`"
-      ],
-      "model_detail": "opus",
-      "risk_detail": "Low",
-      "fail_closed": "**Fail-closed:** If APIs unreachable \u2192 logs partial data, continues",
-      "cron_message": "You are Charles, running the daily PP OS log and planning cycle.\n\n## STEP 1: Read Context\nRead these files for full context:\n- pp-os/planning-config.json (tunable parameters)\n- pp-os/goals.md (active objective + deadline)\n- pp-os/market-intel.md (competitive landscape, incidents, outreach angles, de",
-      "recent_runs": [
-        {
-          "timestamp": 1772290980027,
-          "status": "ok",
-          "summary": "**PP OS Daily \u2014 Feb 28 (Saturday)**\n\n\ud83d\udccb **Board Hygiene:** Moved #226, #210 to Done (closed issues in wrong status). Added #241-243 to project board (were missing).\n\n\ud83c\udd95 **Created:** #244 \u2014 Execute NIST RFI skeleton into full draft\n\n\ud83d\udea8 **Flags:**\n- **NIST RFI: 9 days** \u2014 entering single digits\n- **Outreach: Day 8 at zero** \u2014 21 days to design partner deadline, zero pipeline\n- **3 In Progress items stale** (#186, #188, #183 at 6 days)\n\n\ud83d\udcca **Metrics (vs yesterday):**\n- Traffic 7d: 256 (flat)\n- Receipts",
-          "duration_ms": 249083,
-          "model": "claude-opus-4-6",
-          "tokens": 56372
-        },
-        {
-          "timestamp": 1772377380021,
-          "status": "ok",
-          "summary": "Done. Here's the summary:\n\n**PP OS Daily Log \u2014 March 1, 2026 (Sunday)**\n\n\ud83d\udccb **Board Hygiene:** No auto-fixes needed. Flagged major issue: 27 items in Verified including many OPEN issues \u2014 board integrity needs Rod's review.\n\n\u2705 **Tasks Created (#247-#249):**\n1. Audit Verified column \u2014 close/move OPEN issues in wrong status\n2. Resolve 3 stale In Progress items (7 days, over threshold)\n3. Draft cold DM templates for Twitter/LinkedIn (parallel outreach channel)\n\n\ud83d\udea8 **Flags:**\n- **NIST RFI: 8 days** \u2014 ",
-          "duration_ms": 217358,
-          "model": "claude-opus-4-6",
-          "tokens": 41224
-        },
-        {
-          "timestamp": 1772463780022,
-          "status": "ok",
-          "summary": "Now let me check backlog count and decide on new tasks. Current backlog: #212, #207 (only 2, min is 10). Let me check existing items more carefully before creating tasks, then write the log.",
-          "duration_ms": 152863,
-          "model": "claude-opus-4-6",
-          "tokens": 53743
-        }
-      ]
+      "cron_id": "f9d08ca6-2067-4644-ac08-323314acc834"
     },
     {
       "name": "pp-os-execute-ready",
@@ -378,48 +216,11 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": 900,
       "session_target": "isolated",
-      "next_run": "2026-03-02T22:05:00Z",
-      "last_run": "2026-03-02T20:05:00Z",
-      "sla_days_left": 30,
+      "next_run": "2026-03-03T16:05:00Z",
+      "last_run": "2026-03-03T00:05:00Z",
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "db5b5d84-c92f-421e-9351-cdc329d1b6d6",
-      "what": "Executes up to 3 items from the PP Product Board \"Ready\" column per run. Moves items through board statuses, creates PRs, writes code, comments on issues.",
-      "scope": [
-        "- **Repos:** Roca-Ventures/Breakout-Labs (write), Roca-Ventures/permissionprotocol-site (write)",
-        "- **External services:** GitHub API (issues, PRs, project board)",
-        "- **Accounts:** GitHub PAT (projects scope)",
-        "- **Secrets used:** `github-pat-projects.txt`"
-      ],
-      "model_detail": "claude-sonnet-4-6",
-      "risk_detail": "High | Bad PRs, incorrect board state, stale items stuck in progress",
-      "fail_closed": "If blocked \u2192 moves to \"Blocked (Need Human)\" with description",
-      "cron_message": "You are Charles, executing the PP Product Board Ready queue.\n\n## RULES\n- Execute UP TO 3 items per run\n- Always announce what you are starting before doing work\n- If blocked, move task to \"Blocked (Human Input Required)\" with a clear description of what is needed, then pick next Ready item\n- When do",
-      "recent_runs": [
-        {
-          "timestamp": 1772467744918,
-          "status": "ok",
-          "summary": "---\n\n**PP Product Board Run \u2014 Summary**\n\n**\u2705 Tasks completed: 3**\n\nAll three P0 items had deliverables already drafted in the workspace from prior work. This run verified the work, added required AC blocks, and promoted all three to QA Review.\n\n1. **#241 \u2014 Design Partner Quick-Start Guide** \u2192 QA Review\n   - Deliverable: `pp-os/design-partner-quickstart.md` \u2014 full 6-step guide (Prerequisites \u2192 Secrets \u2192 Action \u2192 Branch Protection \u2192 Approve \u2192 Verify Receipt), troubleshooting section, links to dash",
-          "duration_ms": 187732,
-          "model": "claude-sonnet-4-6",
-          "tokens": 36439
-        },
-        {
-          "timestamp": 1772474700023,
-          "status": "ok",
-          "summary": "---\n\n**PP Product Board Run \u2014 March 2, 2026 @ 11:05 AM**\n\n**Tasks processed: 3**\n\n---\n\n**\u2705 #186 \u2014 \ud83d\udfe1 P1: Create og-image.png for social previews \u2192 QA Review**\nAlready complete before this run. PR #5 merged 2026-02-22. Verified:\n- `https://permissionprotocol.com/assets/og-image.png` \u2192 200 \u2713\n- og:image + twitter:image meta tags present \u2713\n- PNG, 1200\u00d7630 \u2713\n\n---\n\n**\u2705 #188 \u2014 \ud83d\udfe1 P1: Deploy Request Page Mobile UX Revamp \u2192 QA Review**\nAlready complete before this run. PR #145 in Breakout-Labs merged 2026-",
-          "duration_ms": 317380,
-          "model": "claude-sonnet-4-6",
-          "tokens": 41194
-        },
-        {
-          "timestamp": 1772481900025,
-          "status": "ok",
-          "summary": "No Ready items found on the PP Product Board.\n\n**Summary:**\n- Tasks completed: 0\n- Tasks blocked: 0\n- Remaining Ready count: 0\n\nThe Ready queue is empty \u2014 nothing to execute this run.",
-          "duration_ms": 9442,
-          "model": "claude-sonnet-4-6",
-          "tokens": 14131
-        }
-      ]
+      "cron_id": "db5b5d84-c92f-421e-9351-cdc329d1b6d6"
     },
     {
       "name": "pp-os-incident-scanner",
@@ -440,20 +241,9 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": null,
-      "what": "Scans for AI agent incidents and security news for PP outreach hooks. Runs blogwatcher for monitored feeds. Compiles market intelligence.",
-      "scope": [
-        "- **Repos:** None",
-        "- **External services:** Web search, RSS feeds (blogwatcher)",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "claude-sonnet-4-6",
-      "risk_detail": "Low",
-      "fail_closed": "**Fail-closed:** If feeds unreachable \u2192 reports partial scan",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": null
     },
     {
       "name": "pp-os-qa-review",
@@ -472,47 +262,11 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-03-03T09:00:00Z",
-      "last_run": "2026-03-02T09:00:00Z",
-      "sla_days_left": 30,
+      "next_run": "2026-03-04T09:00:00Z",
+      "last_run": "2026-03-03T09:00:00Z",
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "16b300bb-563a-4017-8779-66c8b7d58fbf",
-      "what": "Runs standalone QA review script. Checks items in \"QA Review\" column, verifies acceptance criteria, uses R1 70B on DGX Spark for judgment calls. Moves items to Verified or bounces back.",
-      "scope": [
-        "- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)",
-        "- **External services:** GitHub API, DGX Spark (R1 70B via Ollama)",
-        "- **Secrets used:** `github-pat-projects.txt`"
-      ],
-      "model_detail": "claude-sonnet-4-6 (orchestrator), deepseek-r1:70b (judge)",
-      "risk_detail": "Low",
-      "fail_closed": "**Fail-closed:** If R1/Spark unreachable \u2192 flags items, doesn't auto-verify",
-      "cron_message": "Run the standalone QA review script and report results:\n\n```bash\nbash ~/.openclaw/workspace/scripts/qa-cron-standalone.sh\n```\n\nReport the final summary line. If any items were verified, reopened, or bounced for missing AC, list them by issue number and title. If R1/Spark was unreachable, flag it.",
-      "recent_runs": [
-        {
-          "timestamp": 1772269200023,
-          "status": "ok",
-          "summary": "QA reviewed 0 items. Board is clean.",
-          "duration_ms": 12081,
-          "model": "claude-sonnet-4-6",
-          "tokens": 16650
-        },
-        {
-          "timestamp": 1772355600026,
-          "status": "ok",
-          "summary": "**QA Review \u2014 Sun Mar 1, 2026 @ 2:00 AM MT**\n\n`QA reviewed 2 items: 2 verified, 0 reopened, 0 need AC, 0 awaiting Spark`\n\n**Items reviewed (both PASSED):**\n- **#228** \u2014 \ud83d\udd34 P0: Scan Greptile and CodeRabbit customer lists for design partner leads \u2192 \u2705 Verified (R1 confirmed)\n- **#229** \u2014 \ud83d\udd34 P0: Draft NIST RFI skeleton \u2014 structure and key arguments for PP positioning \u2192 \u2705 Verified (R1 confirmed)\n\n**R1/Spark:** Reachable and responsive. Both items were ambiguous on initial heuristic check but R1 confirm",
-          "duration_ms": 117539,
-          "model": "claude-sonnet-4-6",
-          "tokens": 17604
-        },
-        {
-          "timestamp": 1772442000052,
-          "status": "ok",
-          "summary": "**QA Review \u2014 Mon Mar 2, 2026 @ 2:00 AM MT**\n\n> `QA reviewed 0 items. Board is clean.`\n\nNo items were in the Done column \u2014 nothing to verify, reopen, or bounce. R1/Spark was not needed. Board is clean. \u2705",
-          "duration_ms": 10614,
-          "model": "claude-sonnet-4-6",
-          "tokens": 16691
-        }
-      ]
+      "cron_id": "16b300bb-563a-4017-8779-66c8b7d58fbf"
     },
     {
       "name": "pp-os-weekly-review",
@@ -533,37 +287,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T16:00:00Z",
       "last_run": "2026-03-01T17:00:00Z",
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "8e8f1d36-f14b-4144-977f-cb8b1f6fa97a",
-      "what": "Weekly master-plan alignment review. Reads all daily logs for the week, evaluates objective progress, checks Non-Negotiables, may recommend pivots.",
-      "scope": [
-        "- **Repos:** None (reads local files only)",
-        "- **External services:** None",
-        "- **Secrets used:** None"
-      ],
-      "model_detail": "claude-opus-4-6",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "You are Charles, doing the weekly PP OS master-plan review. Do the following:\n\n1. Read pp-os/master-plan.md\n2. Read pp-os/goals.md\n3. Read the last 7 daily logs from pp-os/master-log/\n4. Evaluate:\n   - Is the active objective still the right one? Are we making progress?\n   - Do any Non-Negotiables n",
-      "recent_runs": [
-        {
-          "timestamp": 1771779603172,
-          "status": "ok",
-          "summary": "---\n\n**PP OS Weekly Review \u2014 Sunday, February 22, 2026**\n\n---\n\n**TL;DR: The plan is sound. The objective is right. Execution is critically stalled. We have 27 days to deadline and zero pipeline.**\n\n---\n\n**1. Is the active objective still the right one?**\n\nYes. \"Get first external design partner by March 21\" is exactly the right next step. The MVP is built, the demo repo works, the GitHub Action is published. The only thing that validates PP now is someone outside our walls using it. No change ne",
-          "duration_ms": 45558,
-          "model": "claude-opus-4-6",
-          "tokens": 16408
-        },
-        {
-          "timestamp": 1772384400034,
-          "status": "ok",
-          "summary": "Here's the weekly review:\n\n---\n\n**PP OS Weekly Review \u2014 March 1, 2026**\n\n**Active Objective: Get first external design partner by March 21.**\n20 days remain. Zero pipeline. Zero outreach sent. Zero inbound requests. This objective is at serious risk.\n\n---\n\n**What's working:**\n- **Product is built.** Deploy Gate works end-to-end. 111+ receipts generated. GitHub Action published. The technical foundation is solid.\n- **Content/traffic is possible.** Feb 23 (92 views) and Feb 25 (102 views) showed r",
-          "duration_ms": 57153,
-          "model": "claude-opus-4-6",
-          "tokens": 37623
-        }
-      ]
+      "cron_id": "8e8f1d36-f14b-4144-977f-cb8b1f6fa97a"
     },
     {
       "name": "pr-prescreen-auto",
@@ -582,47 +308,11 @@
       "model": "sonnet",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-03-02T22:00:00Z",
-      "last_run": "2026-03-02T20:30:00Z",
-      "sla_days_left": 30,
+      "next_run": "2026-03-03T16:00:00Z",
+      "last_run": "2026-03-03T00:00:00Z",
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "be3510e3-af1b-497f-8693-1692d807a848",
-      "what": "Pre-screens open PRs on Breakout-Labs. Runs every 30 min during business hours. Skips already-screened PRs.",
-      "scope": [
-        "- **Repos:** Roca-Ventures/Breakout-Labs (read + comment)",
-        "- **External services:** GitHub API",
-        "- **Secrets used:** `github-pat-projects.txt`"
-      ],
-      "model_detail": "sonnet",
-      "risk_detail": "Low",
-      "fail_closed": "",
-      "cron_message": "Run the PR pre-screen cron and report results:\n\n```bash\nexport GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt)\nbash ~/.openclaw/workspace/scripts/pr-prescreen-cron.sh Roca-Ventures/Breakout-Labs\n```\n\nReport: how many PRs were reviewed, how many skipped (already screened), and any errors.",
-      "recent_runs": [
-        {
-          "timestamp": 1772479800023,
-          "status": "ok",
-          "summary": "PR Pre-Screen Cron \u2014 Roca-Ventures/Breakout-Labs\nRun time: 2026-03-02 19:30 UTC\n\n- **Reviewed (new):** 0\n- **Skipped (already screened):** 5\n- **Errors:** None\n\nAll open PRs have already been pre-screened. Nothing new to process.",
-          "duration_ms": 15389,
-          "model": "claude-sonnet-4-6",
-          "tokens": 16743
-        },
-        {
-          "timestamp": 1772481600022,
-          "status": "ok",
-          "summary": "PR Pre-Screen Cron \u2014 Roca-Ventures/Breakout-Labs\nRun time: 2026-03-02 20:00 UTC (1:00 PM Denver)\n\n- **Reviewed:** 0\n- **Already screened (skipped):** 5\n- **Errors:** None\n\nAll 5 open PRs had already been pre-screened in a prior run \u2014 nothing new to process.",
-          "duration_ms": 15806,
-          "model": "claude-sonnet-4-6",
-          "tokens": 16743
-        },
-        {
-          "timestamp": 1772483400028,
-          "status": "ok",
-          "summary": "PR pre-screen cron completed for **Roca-Ventures/Breakout-Labs** at 2026-03-02T20:30:10Z.\n\n- \u2705 **Reviewed:** 0 (no new PRs needing screening)\n- \u23ed\ufe0f **Skipped (already screened):** 5\n- \u274c **Errors:** None\n\nAll open PRs are already pre-screened \u2014 nothing new to process.",
-          "duration_ms": 26942,
-          "model": "claude-sonnet-4-6",
-          "tokens": 16742
-        }
-      ]
+      "cron_id": "be3510e3-af1b-497f-8693-1692d807a848"
     },
     {
       "name": "qa-workload1-review",
@@ -643,16 +333,9 @@
       "session_target": "isolated",
       "next_run": "2026-03-07T10:00:00Z",
       "last_run": null,
-      "sla_days_left": 30,
+      "sla_days_left": 29,
       "last_reviewed": "2026-03-02",
-      "cron_id": "8b3c2ce7-eb09-4c9b-8e44-be3a5c4cf542",
-      "what": "One-shot review of QA pipeline effectiveness after 1 week of operation.",
-      "scope": [],
-      "model_detail": "",
-      "risk_detail": "",
-      "fail_closed": "",
-      "cron_message": "QA Workload 1 has been running for 1 week. Review its effectiveness:\n\n1. Read QA receipts from ~/.openclaw/workspace/qa/receipts/2026-03/ to see all judgments made\n2. Count: total items reviewed, verified, reopened, bounced for missing AC, R1 invocations\n3. Check for false positives: items bounced t",
-      "recent_runs": []
+      "cron_id": "8b3c2ce7-eb09-4c9b-8e44-be3a5c4cf542"
     },
     {
       "name": "openclaw-gateway",
@@ -671,17 +354,7 @@
       "last_run": null,
       "sla_days_left": null,
       "last_reviewed": "2026-03-02",
-      "cron_id": null,
-      "what": "Core OpenClaw gateway daemon. Routes all LLM API calls, manages sessions, handles Telegram integration.",
-      "scope": [
-        "- **External services:** Anthropic API, Telegram Bot API",
-        "- **Secrets used:** Anthropic API key, Telegram bot token (via OpenClaw config)"
-      ],
-      "model_detail": "",
-      "risk_detail": "High \u2014 **all autonomous processes stop**",
-      "fail_closed": "",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": null
     },
     {
       "name": "openclaw-node",
@@ -700,16 +373,7 @@
       "last_run": null,
       "sla_days_left": null,
       "last_reviewed": "2026-03-02",
-      "cron_id": null,
-      "what": "OpenClaw node agent for paired device communication.",
-      "scope": [
-        "- **External services:** OpenClaw cloud relay"
-      ],
-      "model_detail": "",
-      "risk_detail": "Medium \u2014 loses remote node capabilities",
-      "fail_closed": "",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": null
     },
     {
       "name": "pp-prod-postgres",
@@ -728,17 +392,7 @@
       "last_run": null,
       "sla_days_left": null,
       "last_reviewed": "2026-03-02",
-      "cron_id": null,
-      "what": "PostgreSQL 15 database for Permission Protocol production data.",
-      "scope": [
-        "- **Data:** PP production database",
-        "- **Port:** 5434 (mapped from 5432)"
-      ],
-      "model_detail": "",
-      "risk_detail": "High \u2014 PP data loss",
-      "fail_closed": "",
-      "cron_message": "",
-      "recent_runs": []
+      "cron_id": null
     }
   ],
   "findings": [],

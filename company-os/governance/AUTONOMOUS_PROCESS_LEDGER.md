@@ -10,6 +10,15 @@
 >
 > **Governance hook:** Any process with Authority C must either produce a signed PP receipt for the action, or be hard-blocked from the action path. This is not a diary. This is governance.
 
+> **Token Minting Boundary (hardened 2026-03-02):** Approval tokens MUST be minted via `mint-approval-token.sh` only. The script:
+> - Verifies Telegram sender ID = 6091356144 (Rod) — hardcoded, not agent-configurable
+> - Computes file hash from the actual draft file (does not accept hash as parameter)
+> - Generates a UUID nonce per token (prevents replay)
+> - Appends every issuance to `approval-log.jsonl` (append-only audit trail)
+> - Logs unauthorized mint attempts with claimed sender ID
+>
+> Old `approve.sh` accepted content_hash as parameter — **removed**. Any code passing a hash directly is now broken by design.
+
 **Purpose:** Single source of truth for every autonomous process that can act (cron, timers, services, GitHub Actions, long-running agents).
 
 **Last full audit:** 2026-03-02
@@ -77,9 +86,20 @@
 
 ### Authority & Gates
 - **Authority level:** C
-- **Human gate:** Items must be in "Ready" column (Rod reviews Backlog → Ready). Can create PRs but should route to QA Review, not merge directly.
-- **Fail-closed behavior:** If blocked → moves to "Blocked (Need Human)" with description
-- **⚠️ GAP:** No PP receipt required for PR creation or board mutations. Should it be?
+- **Human gate (gate 1):** Items must be in "Ready" column (Rod reviews Backlog → Ready manually).
+- **Human gate (gate 2 — added 2026-03-02):** PR creation requires a valid approval token issued by `mint-approval-token.sh`. Gate enforced by `pp-001-pr-gate.sh` at execution boundary (git push / PR create), not at intent stage.
+- **Fail-closed behavior:** If gate denied → move item to "Blocked (Human Input Required)", notify Rod with draft hash. Do NOT create PR. Creating a draft PR is acceptable as a fallback.
+- **Gate script:** `company-os/governance/scripts/pp-001-pr-gate.sh --draft-file <pr-description-file>`
+
+### Indirect Escalation Path (documented 2026-03-02)
+PP-002 (daily planner, Authority B) can add items to Backlog via board API. PP-001 executes items from Ready. The escalation path:
+> PP-002 writes board state → Rod moves Backlog→Ready → PP-001 executes
+
+**Mitigations:**
+1. PP-002 scope is Backlog only — it cannot move items to Ready. Rod is the sole bridge.
+2. PP-001 gate 2 (approval token) is independent of board state — a compromised PP-002 that somehow moved items to Ready would still require Rod's explicit Telegram approval.
+3. Ledger review SLA: both PP-001 and PP-002 require 30-day review — stale processes auto-disabled.
+4. Audit trail: all gate events logged to `approval-log.jsonl`.
 
 ### Model
 - **Model:** claude-sonnet-4-6
@@ -570,7 +590,8 @@
 
 ## 🔴 Critical
 1. ~~**PP-008 (LinkedIn weekly) has no human gate**~~ — ✅ FIXED 2026-03-02. Telegram approval required before scheduling.
-2. **PP-001 (Board executor) can create PRs without PP receipt** — dogfooding gap.
+2. ~~**Approval token minting was agent-controlled**~~ — ✅ FIXED 2026-03-02. `mint-approval-token.sh` now enforces Telegram sender verification (6091356144), file-hash-from-disk, UUID nonce, and append-only audit log. Agent cannot self-approve.
+3. ~~**PP-001 (Board executor) has no token gate on PR creation**~~ — ✅ FIXED 2026-03-02. `pp-001-pr-gate.sh` now enforces token verification at PR creation boundary. Fail-closed: no token → Blocked. Indirect escalation path (PP-002 → board state) documented and mitigated.
 
 ## 🟡 Warnings
 3. ~~**PP-005 (Incident scanner) in error state**~~ — ✅ DISABLED 2026-03-02. Re-enable after fix.

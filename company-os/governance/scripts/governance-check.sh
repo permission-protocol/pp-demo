@@ -13,9 +13,10 @@ echo "=== Governance Integrity Check ==="
 echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo ""
 
-# 0. Generate fresh scan snapshot
+# 0. Generate fresh scan snapshot + dashboard
 echo "--- Scan ---"
 bash "$SCRIPT_DIR/gov-scan.sh" 2>&1 | head -1
+bash "$SCRIPT_DIR/generate-dashboard-html.sh" 2>&1 | head -1
 echo ""
 
 # 1. Drift Detection

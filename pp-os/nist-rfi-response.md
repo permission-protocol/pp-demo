@@ -16,15 +16,15 @@
 
 ## Executive Summary
 
-Autonomous AI agent systems are taking consequential real-world actions — deploying production software, initiating financial transactions, sending communications on behalf of users, and modifying infrastructure — at a pace that has decisively outrun the governance mechanisms designed to control them. The core security gap is not a monitoring problem or a detection problem: it is an **authorization problem**. In the vast majority of production AI agent deployments today, there is no cryptographically verifiable answer to the fundamental governance question: *was this action explicitly approved before it was executed?*
+The core security gap in AI agent systems is not monitoring or detection — it is **authorization**. In most production deployments today, there is no cryptographically verifiable answer to the fundamental question: *was this action explicitly approved before it executed?*
 
-Permission Protocol is authorization infrastructure for autonomous AI systems. Our foundational technical contribution — the **cryptographic authorization receipt** — creates an immutable, signed, timestamped record of every authorized action *before* that action executes. The enforcement model is binary: no receipt, no action. This is not a monitoring layer, a policy engine, or an audit logging tool. It is **pre-action enforcement infrastructure** that operates independently of the AI model, is cryptographically tamper-evident, and cannot be circumvented by a compromised or misaligned agent.
+Permission Protocol provides authorization infrastructure for autonomous AI systems. Our foundational contribution — the **cryptographic authorization receipt** — creates an immutable, signed, timestamped record of every authorized action *before* that action executes. The enforcement model is binary: no receipt, no action. This is not a monitoring layer or audit tool; it is **pre-action enforcement infrastructure** that operates independently of the AI model, is cryptographically tamper-evident, and cannot be circumvented by a compromised agent.
 
-Our reference implementation, **Deploy Gate**, operationalizes this model for software deployment pipelines. Deployed as a GitHub Actions required status check, Deploy Gate blocks every code deployment until a valid cryptographic authorization receipt exists — binding the receipt to the specific commit SHA, target environment, and authorized principal. The receipt is signed using Ed25519, timestamped per RFC 3161, and anchored to an append-only ledger. No bypass path exists; the enforcement gate is fail-closed by design.
+Our reference implementation, **Deploy Gate**, operationalizes this for software deployment pipelines. Integrated as a GitHub Actions required status check, Deploy Gate blocks every deployment until a valid cryptographic receipt exists — bound to the specific commit SHA, target environment, and authorized principal. Signed using Ed25519, timestamped per RFC 3161, anchored to an append-only ledger. Enforcement is fail-closed.
 
-The empirical case for this architecture is already documented. The OpenClaw security crisis of February 2026 — 42,665 publicly exposed agent instances, 93.4% carrying critical authentication bypass vulnerabilities, 6 CVEs disclosed within a single month — represents the first large-scale documented exploitation of the authorization vacuum in deployed AI agent systems. Agents operated in production environments with full tool access, no external authorization infrastructure, and no mechanism by which principals could verify or enforce what actions agents were permitted to take. The consequences were public, material, and preventable.
+The empirical case is documented. The OpenClaw crisis of February 2026 — 42,665 publicly exposed agent instances, 93.4% with critical authentication bypass vulnerabilities, 6 CVEs in a single month — is the first large-scale exploitation of the authorization vacuum in deployed AI agent systems. Agents operated in production with full tool access and no mechanism for principals to verify or enforce what actions they were permitted to take. The consequences were public, material, and preventable.
 
-Permission Protocol submits this response to offer a working technical architecture as a concrete reference implementation for NIST's voluntary standards work. We welcome further engagement with the AI Agent Standards Initiative.
+Permission Protocol submits this response to offer a working technical architecture as a concrete reference for NIST's voluntary standards work. We welcome further engagement with the AI Agent Standards Initiative.
 
 ---
 
@@ -32,63 +32,61 @@ Permission Protocol submits this response to offer a working technical architect
 
 ### 1(a) — Unique Security Threats Distinct from Traditional Software Systems *(Priority)*
 
-**The primary novel threat class:** AI agent systems introduce **unauthorized autonomous action** — the ability for a software system to take consequential real-world actions without any external party having cryptographically verified and approved those specific actions before execution. This threat class does not exist in traditional software systems, and traditional security controls are architecturally insufficient to address it.
+**The primary novel threat class:** AI agent systems introduce **unauthorized autonomous action** — consequential real-world actions taken without any external party cryptographically verifying and approving them before execution. This threat class does not exist in traditional software, and traditional controls are architecturally insufficient to address it.
 
-In traditional software, the instruction set is fixed. Vulnerabilities exploit known, bounded code paths. An attacker must find and exploit a specific flaw. AI agents operate on a fundamentally different model: the AI component makes discretionary decisions about *what to do* based on context, instructions, and objectives. The set of actions the agent might choose to take is not fully enumerable at development time. This creates new threat vectors that do not map cleanly onto existing vulnerability taxonomies:
+In traditional software, the instruction set is fixed; vulnerabilities exploit known, bounded code paths. AI agents operate differently: the model makes discretionary decisions about *what to do* based on context and objectives. The action space is not fully enumerable at development time, creating threat vectors that do not map onto existing vulnerability taxonomies.
 
 **Threat 1: The Authorization Vacuum**
 
-The most prevalent and consequential threat in current production AI agent deployments is the absence of any formal authorization model. The agent decides what action to take; scaffolding code executes it. No external party is required to approve the action before execution. This means any manipulation of the agent's decision-making process — whether through prompt injection, adversarial inputs, goal misalignment, or compromised context — translates *directly* into real-world state changes with no authorization checkpoint.
+The most prevalent threat in current production AI agent deployments is the absence of any formal authorization model. The agent decides what to do; scaffolding code executes it. No external party approves the action before execution. Any manipulation of the agent's decision-making — prompt injection, adversarial inputs, goal misalignment — translates *directly* into real-world state changes with no checkpoint.
 
-The OpenClaw security crisis provides empirical evidence at scale. A ClawHunter scan in February 2026 identified 42,665 publicly exposed OpenClaw instances, of which 93.4% carried critical authentication bypass vulnerabilities. Agents operating within those instances had tool access — file systems, APIs, external services — without any authorization infrastructure requiring pre-action approval. Astrix Security documented the resulting exposure; Cisco described the situation as "from a capability perspective, groundbreaking; from a security perspective, an absolute nightmare." Six CVEs were disclosed in February 2026 alone. This is not a hypothetical risk class; it is an operational failure mode already exploiting deployed systems.
+The OpenClaw crisis provides empirical evidence at scale. A ClawHunter scan in February 2026 identified 42,665 publicly exposed OpenClaw instances; 93.4% carried critical authentication bypass vulnerabilities. Agents had full tool access — file systems, APIs, external services — with no pre-action authorization infrastructure. Cisco described it as "from a capability perspective, groundbreaking; from a security perspective, an absolute nightmare." Six CVEs were disclosed in February 2026 alone. This is an operational failure mode already exploiting deployed systems.
 
 **Threat 2: Self-Authorization**
 
-In agent architectures where the model has access to tools without external enforcement, the model effectively authorizes its own actions. The system prompt or fine-tuned instruction set describes what the agent is "supposed" to do, but no external party enforces those constraints at execution time. Under adversarial pressure — prompt injection attacks, instruction hierarchy violations, or simply novel situations the prompt author did not anticipate — the model may deviate from intended behavior, and there is no enforcement gate to stop execution.
+Where the model has tool access without external enforcement, it effectively authorizes its own actions. System prompt instructions describe intended behavior but no external party enforces constraints at execution time. Under adversarial pressure — prompt injection, instruction hierarchy violations, or novel situations — the model may deviate, and no enforcement gate stops execution.
 
-In multi-agent contexts, this problem compounds: a compromised agent can instruct sub-agents, propagating unauthorized authority through the agent graph. The original authorization boundary (whatever it was) applies to the root agent; sub-agents may receive delegated authority that their own instructions never explicitly granted.
+In multi-agent contexts, this compounds: a compromised agent can instruct sub-agents, propagating unauthorized authority through the agent graph.
 
 **Threat 3: Receipt-Free Audit Trails**
 
-Post-hoc logging records what actions occurred, but not whether those actions were authorized before execution. This is an architecturally critical distinction. A log entry showing "agent deployed commit abc123 to production at 14:32:07 UTC" is indistinguishable, after the fact, from a legitimately authorized deployment and an unauthorized one executed by a compromised agent. Without a pre-action authorization record — a receipt that existed *before* the deploy executed — forensic attribution is impossible, and audit trails cannot serve as meaningful compliance evidence.
-
-The absence of pre-action receipts means that organizations relying solely on post-hoc logging cannot answer the regulatory question "was this action authorized?" with any cryptographic certainty. They can only answer "did this action occur?" These are fundamentally different questions.
+Post-hoc logging records what actions occurred, not whether they were authorized before execution. A log entry showing "agent deployed commit abc123 to production at 14:32:07 UTC" is indistinguishable from a legitimately authorized deployment and an unauthorized one. Without a pre-action receipt, organizations cannot answer "was this action authorized?" with cryptographic certainty — only "did it occur?" These are fundamentally different questions.
 
 **Threat 4: Scope Creep Without Enforcement**
 
-AI agents frequently operate in production with a scope defined by policy documents and system prompt instructions. These are probabilistic controls: they influence the model's behavior under normal conditions but do not prevent out-of-scope actions under adversarial conditions or at the edge of the model's training distribution. There is no technical enforcement layer that blocks a code-deployment agent from also sending email, or a data-retrieval agent from also modifying records, if the underlying tool access exists.
+Agents frequently operate with scope defined by system prompt instructions — probabilistic controls that do not prevent out-of-scope actions under adversarial conditions. There is no technical enforcement layer that blocks a code-deployment agent from also sending email if the underlying tool access exists.
 
-Permission Protocol addresses these threats architecturally. The receipt model requires that authorization exist *outside* the agent (Non-Negotiable #2 in PP's architecture). Receipts are cryptographic evidence, not logs (#3). The enforcement model is binary: no receipt blocks execution (#4). The scope field in every receipt precisely defines what action was authorized, preventing scope expansion (#5).
+Permission Protocol addresses these threats architecturally. The receipt model requires authorization to exist *outside* the agent. Receipts are cryptographic evidence, not logs. The enforcement model is binary: no receipt blocks execution. The scope field in every receipt precisely defines what action was authorized, preventing scope expansion.
 
 ---
 
 ### 1(b) — Variation by Deployment Method, Capability, and Use Case
 
-[TODO-ROD: Strategic judgment — which deployment contexts should PP prioritize in this response? Technical framing below; please add your positioning.]
+Threat severity scales with deployment dimensions, with **financial services and federal government** presenting the most acute risk profiles:
 
-Threat severity scales with several deployment dimensions:
+**Model capability and blast radius:** More capable models with broader tool access create larger blast radii when misused. An agent that can deploy code, send email, browse the web, and modify databases represents a much larger attack surface than a narrowly scoped agent. Each tool access class is a distinct action category requiring its own authorization policy and receipt scope.
 
-**Model capability and blast radius:** More capable models capable of using a broader range of tools create larger potential blast radii when those capabilities are misused. An agent that can deploy code, send email, browse the web, and modify database records through a unified interface represents a much larger attack surface than a narrowly scoped, single-purpose agent. The authorization requirement scales proportionally: each tool access class is a distinct action category requiring its own authorization policy and receipt scope.
+**Financial services deployments** represent the highest consequence density: agents executing trades, processing transactions, or modifying ledger entries without cryptographic pre-authorization create SOX and OCC compliance exposure that no post-hoc log can remediate. **Federal government deployments** carry the additional dimension that NIST has direct standards authority — a pilot demonstrating receipt-based authorization in federal AI agent systems would generate precedent with immediate regulatory weight.
 
-**Tool surface area:** Each tool available to an agent (file system access, external API calls, code execution, financial transactions) is a distinct attack surface. PP's receipt model covers any action class through configurable scope types; Deploy Gate represents the first vertical implementation, targeting production code deployment as the highest-stakes, highest-frequency autonomous action in software organizations.
+**Healthcare deployments** present the same structural gap (agent actions affecting patient records or clinical decision support without pre-authorization) but operate under a more complex regulatory surface (HIPAA, FDA) with longer adoption timelines.
 
-**Internal versus externally-deployed agents:** Externally deployed agents operating on behalf of end users present compounded authorization complexity — the agent must be authorized by the deploying organization *and* must act within bounds acceptable to each individual user. This layered authorization structure requires explicit modeling.
+**Externally-deployed agents** operating on behalf of end users present compounded authorization complexity: the agent must be authorized by the deploying organization *and* act within bounds acceptable to each individual user — a layered structure requiring explicit modeling.
 
-**Multi-agent orchestration:** As discussed in Section 1(e) below, multi-agent systems introduce authority propagation challenges that are absent in single-agent deployments.
+**Multi-agent orchestration:** As discussed in Section 1(e), multi-agent systems introduce authority propagation challenges absent in single-agent deployments.
 
 ---
 
 ### 1(c) — Security Risks as Adoption Barriers
 
-The authorization gap is creating measurable friction in enterprise AI agent adoption. Research from multiple sources in early 2026 confirms the pattern:
+The authorization gap is creating measurable friction in enterprise AI agent adoption:
 
-The Gravitee "State of AI Agent Security 2026" report, drawing on surveys of more than 900 executives, found that AI agent adoption is outpacing organizational governance controls — and that fewer than half of respondents felt confident their agent deployments could pass a compliance review focused on agent behavior.
+The Gravitee "State of AI Agent Security 2026" report (900+ executives) found adoption is outpacing governance controls — fewer than half felt confident their agent deployments could pass a compliance review focused on agent behavior.
 
-Strata's "AI Agent Identity Crisis" research identified identity and authorization for non-human actors as a primary blocker for enterprise AI agent adoption, particularly in regulated industries where audit trail requirements are legally mandated.
+Strata's "AI Agent Identity Crisis" research identified authorization for non-human actors as a primary blocker in regulated industries where audit trail requirements are legally mandated.
 
-The OpenClaw crisis directly suppressed deployment: following the February 2026 disclosures, organizational deployment policies tightened industry-wide, and multiple large enterprises suspended agent-to-production deployments pending security reviews.
+The OpenClaw crisis directly suppressed deployment: following February 2026 disclosures, multiple large enterprises suspended agent-to-production deployments pending security reviews.
 
-The absence of clear standards creates decision paralysis for organizations that want to implement responsible governance controls but have no authoritative framework against which to measure compliance. A NIST voluntary guideline establishing authorization infrastructure requirements would directly reduce adoption friction by providing deployers a compliance reference. PP's architecture is designed to be that reference.
+The absence of clear standards creates decision paralysis for organizations that want to implement responsible governance but have no authoritative framework. A NIST voluntary guideline establishing authorization infrastructure requirements would directly reduce adoption friction. PP's architecture is designed to be that reference.
 
 ---
 
@@ -96,29 +94,21 @@ The absence of clear standards creates decision paralysis for organizations that
 
 **Current state (2026):** The authorization vacuum dominates. Most production AI agent systems operate without formal external authorization infrastructure. The OpenClaw crisis represents the first large-scale exploitation of this gap at scale, but it will not be the last. The threat is already materializing faster than the governance infrastructure needed to address it.
 
-**Near-term evolution (2026–2027):** The proliferation of agentic frameworks — OpenAI's Agents SDK, Anthropic's Model Context Protocol (MCP), and numerous open-source orchestrators — will dramatically increase the density of agent-to-agent interactions in production environments. Each agent-to-agent communication represents an authorization surface: when Agent A instructs Agent B to execute an action, what authorization does Agent B carry, and how is that authority verifiable? Without receipt infrastructure to track authority chains, a single compromised root agent can propagate unauthorized authority to an arbitrarily large sub-agent graph.
+**Near-term (2026–2027):** Proliferating agentic frameworks (OpenAI Agents SDK, Anthropic MCP, open-source orchestrators) will dramatically increase agent-to-agent interactions. Each communication is an authorization surface. Without receipt infrastructure, a single compromised root agent propagates unauthorized authority through arbitrarily large sub-agent graphs.
 
-**Medium-term (2027–2029):** Agents operating in persistent, long-horizon environments will introduce temporal authorization challenges. A single authorization decision made at session initiation may govern actions executed hours or days later. Receipts issued at time T must remain verifiable at time T+N, with clear expiration and revocation mechanisms. Static prompt-based authorization models are architecturally incompatible with this use pattern.
+**Medium-term (2027–2029):** Persistent, long-horizon agents introduce temporal authorization challenges. A decision at session initiation may govern actions executed days later. Time-bounded receipts with expiration and revocation are required; static prompt-based authorization is architecturally incompatible.
 
-**Structural long-term risk:** Without external authorization infrastructure, the sole check on agent behavior is the model itself — an opaque system that cannot be externally audited, that changes with every model version update, and that cannot provide cryptographic guarantees about its own behavior. This is structurally analogous to financial systems without ledgers: trust without verification. The consequences of allowing this architecture to persist as AI agents take on higher-consequence actions — infrastructure management, financial operations, legal commitments — will be severe.
-
-Permission Protocol's cryptographic receipt architecture scales with, rather than against, agent complexity. Receipts are timestamped, externally held, and immutable. The enforcement model does not change as the underlying model changes; authorization infrastructure remains stable across model version updates.
+**Structural risk:** Without external authorization, the sole check on agent behavior is the model itself — opaque, version-dependent, unable to provide cryptographic guarantees. This is financial systems without ledgers: trust without verification. PP's receipt architecture scales with agent complexity because enforcement is model-independent.
 
 ---
 
 ### 1(e) — Multi-Agent System Threats
 
-Multi-agent orchestration introduces the **authority propagation problem**: when a root agent delegates a task to one or more sub-agents, what authorization do those sub-agents carry? The answer in current implementations is typically "whatever the scaffolding grants" — meaning no formal authorization model, and authority that can expand arbitrarily through delegation chains.
+Multi-agent orchestration introduces the **authority propagation problem**: when a root agent delegates to sub-agents, what authorization do they carry? In current implementations: "whatever the scaffolding grants" — no formal model, authority expanding arbitrarily through delegation.
 
-The primary threat vectors in multi-agent systems are:
+Key threat vectors: **Unauthorized delegation** (compromised root instructs sub-agent to exceed its scope), **authority laundering** (delegation chains obscure authorization provenance), and **orchestrator compromise** (hub-and-spoke architectures propagate unauthorized authority to all sub-agents simultaneously).
 
-**Unauthorized delegation:** A root agent, compromised via prompt injection or adversarial input, instructs a sub-agent to execute a high-privilege action that the root agent was never authorized to perform — or to perform an action on a scope (e.g., production environment) that was outside its authorized scope. Without per-action receipt requirements on sub-agents, this delegation is unchecked.
-
-**Authority laundering:** A chain of agent-to-agent calls obscures the authorization provenance of a given action. Post-hoc tracing becomes impractical as the delegation graph grows. Pre-action verification of sub-agent receipts is the only reliable control.
-
-**Orchestrator compromise:** In hub-and-spoke multi-agent architectures, a compromised orchestrator propagates unauthorized authority to all sub-agents simultaneously. The blast radius scales with the number of sub-agents and their respective tool surfaces.
-
-**PP's architectural response:** In the Permission Protocol model, receipts are per-action, not per-session. Each action in a multi-agent chain requires its own authorization receipt, which in turn can reference its parent receipt in the authorization chain. This makes authority propagation explicit, auditable, and bounded — a sub-agent cannot receive or exercise authority not explicitly reflected in its receipt. An agent cannot grant more authority than is documented in its own authorization chain.
+**PP's response:** Receipts are per-action, not per-session. Each action in a multi-agent chain requires its own receipt, referencing its parent receipt. Authority propagation is explicit, auditable, and bounded — no agent can grant more authority than its own receipt documents.
 
 ---
 
@@ -126,27 +116,25 @@ The primary threat vectors in multi-agent systems are:
 
 ### 2(a) — Technical Controls for Security *(Priority)*
 
-**The foundational principle:** Controls that live *inside* the agent — system prompt instructions, model-level fine-tuning, instruction hierarchies, refusal training — are necessary components of a defense-in-depth strategy but are architecturally insufficient as primary security controls for high-consequence deployments. A sufficiently capable model, under sufficiently adversarial conditions, can be induced to violate internal constraints. External enforcement — controls that operate independently of, and without the cooperation of, the model — is required.
+**The foundational principle:** Controls inside the agent — system prompts, fine-tuning, instruction hierarchies, refusal training — are necessary but architecturally insufficient as primary controls for high-consequence deployments. A sufficiently capable model under adversarial conditions can be induced to violate internal constraints. External enforcement — operating independently of, and without the cooperation of, the model — is required.
 
-NIST guidelines should distinguish between two qualitatively different categories of controls:
+NIST guidelines should distinguish two qualitatively different control categories:
 
 **Tier 1 — External Authorization Infrastructure (deterministic controls)**
 
-The most robust technical control is architectural: require cryptographic authorization before any action with external state effects. Permission Protocol's implementation of this model follows this sequence:
+Require cryptographic authorization before any action with external state effects. Permission Protocol's implementation:
 
-1. **Pre-action authorization request:** Before executing any action with external state effects, the agent system calls the PP authorization API. The request includes: action type, target scope, action parameters, principal identity, and session context.
+1. **Pre-action authorization request:** Before any externally-effecting action, the agent calls the PP authorization API with: action type, target scope, action parameters, principal identity, and session context.
 
-2. **Policy evaluation:** PP evaluates the request against configured policy — action class permitted, scope within authorized bounds, and whether the consequence level requires human countersignature before receipt issuance. For high-consequence actions (e.g., production deployment, financial transactions), human approval is required before a receipt is issued.
+2. **Policy evaluation:** PP evaluates against configured policy — action class permitted, scope within bounds, and whether consequence level requires human countersignature. High-consequence actions (production deployment, financial transactions) require human approval before a receipt is issued.
 
-3. **Cryptographic receipt issuance:** On approval, PP issues a signed authorization receipt. The receipt is signed using Ed25519 over a canonicalized JSON payload including: `id`, `companyId`, `agentId`, `requestId`, `status`, `riskTier`, `policyVersion`, `scope` (bound to specific action parameters), `createdAt`, `expiresAt`, and all signed fields. The scope binding ensures the receipt authorizes *exactly* the requested action — a receipt for `commitSha: a81f2c3e` cannot authorize deployment of any other commit. A receipt for `env: staging` cannot authorize production deployment.
+3. **Cryptographic receipt issuance:** On approval, PP issues an Ed25519-signed receipt over a canonicalized JSON payload including: `id`, `companyId`, `agentId`, `requestId`, `status`, `riskTier`, `policyVersion`, `scope`, `createdAt`, `expiresAt`. Scope binding ensures the receipt authorizes *exactly* the requested action — a receipt for `commitSha: a81f2c3e` cannot authorize any other commit; a staging receipt cannot authorize production deployment.
 
-4. **Enforcement gate:** The action executor validates the receipt against the PP verification API before proceeding. A receipt that is absent, expired, revoked, or scope-mismatched results in a `verified: false` response and execution is blocked. This is fail-closed enforcement — the default state is denial.
+4. **Enforcement gate:** The action executor validates the receipt via the PP verification API. Absent, expired, revoked, or scope-mismatched receipts return `verified: false` and block execution. Fail-closed: the default state is denial.
 
-5. **Ledger entry:** Every receipt creation, verification attempt, and redemption event is recorded in an append-only ledger. Records cannot be modified or deleted. Single-use redemption is enforced: a redeemed receipt cannot be presented again for a subsequent action.
+5. **Ledger entry:** Every receipt creation, verification attempt, and redemption is recorded in an append-only ledger. Records cannot be modified. Single-use redemption is enforced.
 
 **Deploy Gate as working reference implementation:**
-
-Deploy Gate operationalizes this model for the code deployment action class. Integrated as a GitHub Actions required status check:
 
 ```yaml
 - name: Verify Deploy Authorization
@@ -168,24 +156,21 @@ Deploy Gate operationalizes this model for the code deployment action class. Int
   run: ./deploy.sh production
 ```
 
-If the verification step fails — for any reason, including network failure (fail-closed behavior) — the `Deploy to Production` step does not execute. GitHub's required status check mechanism enforces this at the repository level; administrators cannot be bypassed by individual developers even if they have repository write access. The receipt is bound to the specific commit SHA and target environment; a staging receipt cannot pass production verification.
+If the verification step fails — for any reason including network failure — the deploy step does not execute. GitHub's required status check enforces this at the repository level; no individual developer, regardless of write access, can bypass a failing required status check without modifying branch protection rules. The receipt is bound to the specific commit SHA and environment; a staging receipt cannot pass production verification.
 
 **Tier 2 — System-Level Controls (defense-in-depth)**
-
-Complementary to external authorization infrastructure:
-- Least-privilege tool scoping: agent tool access is limited to the minimum required for the authorized action class, enforced at the infrastructure layer, not the model layer
-- Sandboxed execution environments with explicit egress controls
+- Least-privilege tool scoping, enforced at infrastructure layer (not model layer)
+- Sandboxed execution with explicit egress controls
 - Network-level access controls on tool endpoints
-- Human approval gates required for high-consequence actions before receipt issuance
+- Human approval gates before receipt issuance for high-consequence actions
 
 **Tier 3 — Model-Level Controls (probabilistic, necessary but insufficient)**
-
 - Prompt injection hardening and input sanitization
-- Instruction hierarchy enforcement (system instructions take precedence over user inputs and tool outputs)
+- Instruction hierarchy enforcement
 - Anomaly detection on action request sequences
 - Output filtering and refusal training
 
-**Critical point for NIST standards:** Controls in Tiers 2 and 3 reduce the probability of unauthorized action but cannot prevent it under sufficiently adversarial conditions. Only Tier 1 — external authorization with cryptographic enforcement — provides deterministic protection. NIST standards for high-consequence agent deployments should require Tier 1 controls, not treat all control types as equivalent or interchangeable.
+**Critical point for NIST standards:** Tiers 2 and 3 reduce probability of unauthorized action but cannot prevent it under sufficiently adversarial conditions. Only Tier 1 — external authorization with cryptographic enforcement — provides deterministic protection. NIST standards for high-consequence deployments should require Tier 1 controls, not treat all control types as equivalent.
 
 ---
 
@@ -211,8 +196,6 @@ PP's receipt schema is designed to accommodate these requirements. The `expiresA
 
 ### 2(d) — Patching and Update Considerations
 
-[TODO-ROD: Relatively brief. Your call on whether to expand.]
-
 A critical gap in current agent security practice: authorization policy embedded within the model (via fine-tuning or system prompts) changes with every model update. An organization that deploys a new model version may be silently changing its authorization behavior without any review process. External authorization infrastructure must be independent of the model component to remain stable and auditable across model version changes. PP's enforcement layer operates at the infrastructure layer; it is model-agnostic by design. Updating the underlying model does not affect receipt issuance policy, enforcement behavior, or ledger integrity.
 
 ---
@@ -221,11 +204,11 @@ A critical gap in current agent security practice: authorization policy embedded
 
 **Existing frameworks and their alignment with PP's architecture:**
 
-**NIST AI Risk Management Framework (AI 100-1):** PP's receipt model maps directly to the AI RMF's Govern, Map, and Manage functions. The receipt ledger operationalizes the "GOVERN 6.2" subcategory (policies and procedures are in place) and "MANAGE 3.2" (AI system response is monitored). The pre-action authorization gate operationalizes the "secure and resilient" subcategory across all functional areas.
+**NIST AI RMF (AI 100-1):** PP's receipt model maps directly to the Govern, Map, and Manage functions. The receipt ledger operationalizes "GOVERN 6.2" (policies and procedures in place) and "MANAGE 3.2" (AI system response is monitored). The pre-action authorization gate operationalizes "secure and resilient" across all functional areas.
 
-**NIST AI 600-1 (Generative AI Profile):** The profile's "Information Security" and "Human Oversight" considerations are architecturally addressed by PP's approval gates and receipt model. Specifically: the requirement for human oversight before high-consequence actions is implemented as a mandatory approval step before receipt issuance; the receipt itself serves as the accountability artifact specified in the profile's "Accountability" consideration.
+**NIST AI 600-1 (Generative AI Profile):** Human oversight before high-consequence actions is implemented as a mandatory approval step before receipt issuance; the receipt itself is the accountability artifact the profile specifies.
 
-**NIST SP 800-207 (Zero Trust Architecture):** PP's "no receipt, no action" enforcement model is a direct application of Zero Trust principles to the AI agent action layer. In traditional Zero Trust, no network access is implicitly trusted — every request is verified. In PP's model, no agent action is implicitly authorized — every action with external state effects requires verified pre-authorization. The Zero Trust principle "verify explicitly" maps precisely to receipt-based authorization.
+**NIST SP 800-207 (Zero Trust Architecture):** PP's "no receipt, no action" model is Zero Trust applied to the AI agent action layer. As Zero Trust requires verification of every network request, PP requires verified pre-authorization for every agent action with external state effects.
 
 **NIST SP 800-53 Rev. 5 control mapping:**
 | Control | PP Implementation |
@@ -238,14 +221,13 @@ A critical gap in current agent security practice: authorization policy embedded
 | IA-2 (Identification and Authentication) | `principal.agent_id` and `principal.actor_id` in every receipt |
 | SI-7 (Software, Firmware, and Information Integrity) | Receipt binds to commit SHA, preventing authorization of modified artifacts |
 
-**NIST SP 800-218A (Secure Software Development for Generative AI):** Deploy Gate directly addresses the software supply chain security use case — the receipt is bound to a specific commit SHA, ensuring that an authorization issued for one artifact cannot be presented to authorize deployment of a different artifact.
+**NIST SP 800-218A:** Deploy Gate addresses software supply chain security directly — the receipt bound to a specific commit SHA ensures an authorization for one artifact cannot authorize deployment of a different artifact.
 
-**Adoption barriers identified:**
+**Adoption barriers:**
 - No standardized interface or schema for agent authorization requests; every deployment requires custom integration
-- Absence of NIST guidance creates decision paralysis for risk-averse deployers who want to implement correct governance but have no authoritative reference
-- "Move fast" culture in AI-native development organizations deprioritizes governance infrastructure until a security crisis demonstrates the cost
+- Absence of NIST guidance creates decision paralysis for risk-averse deployers
 
-PP addresses the adoption barrier directly: Deploy Gate requires a single GitHub Action addition and a PP API key. The on-ramp is designed to take less than two minutes for a single repository, with immediate compliance value from the first receipt.
+Deploy Gate requires one GitHub Action step and a PP API key — under two minutes per repository, with immediate compliance value from the first receipt.
 
 ---
 
@@ -253,28 +235,15 @@ PP addresses the adoption barrier directly: Deploy Gate requires a single GitHub
 
 ### 3(a) — Identifying Threats During Development and Testing *(Priority)*
 
-**The authorization gap as the primary assessment target:**
+Current assessments focus on code vulnerabilities, model robustness, and data access controls — but do not evaluate whether external authorization infrastructure exists at all. An agent with hardened prompts and strict access controls remains insecure if any model exploitation translates directly to unauthorized action.
 
-Current security assessments of AI agent systems focus predominantly on code vulnerabilities, model robustness under adversarial inputs, and access controls on data resources. A critical assessment gap: evaluations do not systematically evaluate whether external authorization infrastructure exists at all. An agent system with no code vulnerabilities, hardened prompts, and strict data access controls remains fundamentally insecure if it has no external authorization enforcement — because any exploitation of the model itself translates directly to unauthorized action.
+**Proposed assessment framework:**
 
-**PP-based assessment methodology:**
-
-We propose the following assessment framework, aligned with NIST's assessment guidance:
-
-1. **Receipt coverage audit:** For each action class the agent is capable of executing (identified through tool surface enumeration), does a pre-action authorization receipt requirement exist? Unmapped action classes are unprotected action classes.
-
-2. **Receipt chain integrity verification:** In multi-agent systems, is each action in the agent graph covered by a receipt that traces back through a verifiable chain to a human principal with explicit authority? Gaps in the chain represent unauthorized delegation.
-
-3. **Enforcement gap analysis:** Is there any code path through which an action with external state effects can execute without a valid receipt being verified? This is analogous to a code signing gap analysis in software supply chain security. Any bypass path — including error handling paths, fallback modes, and administrative overrides — must be evaluated.
-
-4. **Scope constraint verification:** Do receipts include specific action parameters (not merely action type)? A receipt that authorizes "deploy code" without binding to a specific artifact, repository, and environment is insufficient. PP's scope types (e.g., `GIT_REF_COMMIT` binding to specific commit SHA and target environment) are the reference model.
-
-5. **Expiration and revocation testing:** Are expired receipts correctly rejected? Can receipts be revoked in real time if a session is determined to be compromised? PP's verification API returns distinct error codes for each failure mode: `RECEIPT_EXPIRED`, `RECEIPT_REVOKED`, `SIGNATURE_INVALID`, `SCOPE_MISMATCH`, and `RECEIPT_NOT_FOUND`.
-
-**Post-deployment incident detection:**
-- Receipt ledger anomaly detection: flag sessions where the volume, frequency, or scope of receipt requests diverges from established baseline
-- Missing receipt alerts: any action with external state effects that lacks a corresponding ledger entry is a security event requiring immediate investigation
-- Receipt boundary probing detection: attempts to obtain receipts for out-of-scope actions constitute reconnaissance and should trigger escalation
+1. **Receipt coverage audit:** For each action class (via tool surface enumeration), does a pre-action receipt requirement exist? Unmapped actions are unprotected.
+2. **Receipt chain integrity:** In multi-agent systems, does each action trace back to a human principal through verifiable receipts?
+3. **Enforcement gap analysis:** Can any externally-effecting action execute without receipt verification? Including error handlers, fallbacks, and admin overrides.
+4. **Scope constraint verification:** Do receipts bind to specific parameters (commit SHA, environment), not just action type?
+5. **Expiration and revocation testing:** Are expired/revoked receipts rejected? PP returns distinct error codes: `RECEIPT_EXPIRED`, `RECEIPT_REVOKED`, `SIGNATURE_INVALID`, `SCOPE_MISMATCH`, `RECEIPT_NOT_FOUND`.
 
 ---
 
@@ -308,8 +277,6 @@ PP can contribute to this ecosystem by publishing standardized receipt schemas p
 
 ### 3(d) — User-Facing Documentation
 
-[TODO-ROD: Brief. Lower priority.]
-
 Current user-facing documentation for AI agent systems is sparse and inconsistent regarding authorization behavior. A PP receipt-based system inherently generates user-accessible deployment documentation: the receipt ledger is a timestamped record of every authorized action, readable by compliance teams and auditors. The receipt itself functions as a plain-language commitment: "Action X was authorized by Principal Y at Time Z, for Scope S, with policy Policy P." This is documentation that cannot be retroactively altered.
 
 ---
@@ -318,41 +285,27 @@ Current user-facing documentation for AI agent systems is sparse and inconsisten
 
 ### 4(a) — Constraining Agent Deployment Environments *(Priority)*
 
-**The authorization layer as the primary constraint mechanism:**
+The most robust constraint mechanism is the authorization layer itself. If PP issues receipts only for permitted action types within permitted scope boundaries, the agent cannot execute out-of-scope actions regardless of what the model decides.
 
-The most robust mechanism for constraining agent action scope is the authorization layer itself. If the PP authorization service is configured to issue receipts only for permitted action types and within permitted scope boundaries, the agent *cannot* execute any out-of-scope action regardless of what the model decides. The constraint is enforced externally and cannot be overridden by the agent.
+**Scope constraint mechanisms:**
 
-**Technical mechanisms for scope constraint:**
+- **Action class allowlisting:** Only explicitly permitted action types receive receipts. Default state is denial (whitelist, not blacklist).
+- **Scope binding:** Receipts bind to exact parameters — `GIT_REF_COMMIT` includes commit SHA, repository, environment, capability. A receipt for one parameter set cannot authorize a different set.
+- **Environment separation:** Staging and production signers are independent; staging receipts cannot pass production verification. Boundaries are cryptographic, not policy-based.
+- **Rate limits and action budgets:** Per-session budgets trigger human escalation when exceeded, preventing runaway behavior.
+- **Context-aware authorization:** Dynamic policy can require human approval for first-time actions, high-value targets, or off-hours execution.
 
-**Action class allowlisting:** The PP authorization service is configured with an explicit list of action types for which receipts will be issued. Actions not on the allowlist return `RECEIPT_NOT_FOUND` at verification, blocking execution. This is a whitelist model rather than a blacklist — the default state is denial.
-
-**Scope binding and parameter constraints:** Receipts are bound to specific action parameters. The `GIT_REF_COMMIT` scope type binds to an exact commit SHA, repository, git ref, target environment, and capability string. A receipt issued for one set of parameters cannot authorize a different set. This prevents the common pattern where a broad authorization is obtained and then applied to a larger-than-intended set of actions.
-
-**Environment-scoped authority:** Deploy Gate enforces strict environment separation. The staging authority signer and production authority signer are independent; a staging receipt cannot pass production verification. Environment boundaries are cryptographic, not policy-based — there is no configuration switch that allows a staging receipt to be elevated to production authority.
-
-**Rate limits and action budgets:** The PP authorization service can enforce per-session action budgets. An agent attempting to obtain receipts for an unusually large number of actions in a short time window triggers an escalation to human review before additional receipts are issued. This prevents runaway agent behavior within a session even if individual action requests are within scope.
-
-**Context-aware authorization:** Authorization policy can be dynamic — requiring human approval for first-time action types, escalating for actions targeting high-value resources, applying stricter constraints during off-hours or in the absence of an active human session.
-
-**Deploy Gate as proof of concept:** The GitHub required status check mechanism provides the enforcement point that makes Deploy Gate's scope constraints non-bypassable at the repository level. Even repository administrators with direct merge authority cannot bypass a failing required status check without modifying the repository's branch protection rules — an action that generates a separate audit event and can itself be subject to PP authorization.
+Deploy Gate enforces these via GitHub required status checks — non-bypassable at the repository level, even by administrators.
 
 ---
 
 ### 4(b) — Rollback and Negation Capabilities for Unwanted Actions *(Priority)*
 
-**Receipts as rollback infrastructure:**
+PP receipts provide the foundational precondition for rollback: an immutable record of exactly what was authorized, with what parameters, by whom, and when. On incident detection, the `receiptId` identifies exact action parameters; the revocation signal (`RECEIPT_REVOKED`) propagates to dependent systems; rollback operations reference the original receipt to identify the state change to reverse.
 
-The PP receipt model provides the foundational precondition for rollback capability: an immutable, cryptographically signed record of exactly what action was authorized, with what parameters, at what time, by which principal.
+**Limitation:** Reversal depends on the reversibility of the underlying state change. PP provides identification infrastructure; the reversal mechanism is application-specific.
 
-The rollback workflow enabled by the receipt model:
-1. An action is identified as unauthorized or erroneous (either through anomaly detection, human review, or receipt revocation trigger)
-2. The receipt ledger entry for that action is identified by `receiptId` — providing the exact action parameters (artifact, repository, target environment, execution timestamp)
-3. The revocation signal propagates to dependent systems: `RECEIPT_REVOKED` error code is returned on any subsequent verification attempt
-4. Rollback operations reference the original receipt parameters to precisely identify the state change to be reversed
-
-**Current limitation:** Receipt-based rollback is a foundational precondition, not a complete solution. The ability to reverse an action depends on the reversibility of the underlying state change (code deployment rollback is straightforward; deleted data may not be recoverable). PP's receipt model provides the identification infrastructure; the rollback execution mechanism is application-specific.
-
-**Recommendation for NIST standards:** Rollback capability should be a tiered requirement for agent deployments, scaling with action consequence level. At minimum, every action with external state effects should generate an immutable record sufficient to identify and (where technically feasible) reverse the action. PP's receipt ledger satisfies the identification requirement; NIST guidelines should specify that identification is a threshold requirement, with application-specific reversal as a higher-tier requirement.
+**NIST recommendation:** Rollback capability should be tiered by consequence level. At minimum, every externally-effecting action should generate an immutable record sufficient to identify and (where feasible) reverse the action.
 
 ---
 
@@ -362,37 +315,24 @@ The PP receipt model most directly addresses authentication and source code inte
 
 For multi-agent interactions: when Agent A calls Agent B, the authority chain model requires Agent B's receipt to reference Agent A's authorization. This makes the authority propagation explicit and auditable in the ledger.
 
-[TODO-ROD: Expand on IoT/OT or critical infrastructure relevance if desired — this is in PP's longer-term roadmap but may be worth flagging for NIST's benefit.]
+
 
 ---
 
 ### 4(d) — Monitoring Deployment Environments *(Priority)*
 
-**The receipt ledger as monitoring infrastructure:**
+The receipt ledger generates monitoring signals as a side effect of authorization — qualitatively different from traditional logging:
 
-The PP receipt model generates a high-quality monitoring signal as an inherent side effect of authorization. This is qualitatively different from traditional agent monitoring:
+- **Authorization-aware:** Records what was *authorized*, not just what *happened*. The delta between authorized and executed actions is the critical security signal.
+- **Attempted action visibility:** Denied requests are security events; patterns of denials reveal reconnaissance.
+- **Agent-agnostic:** Consistent coverage regardless of model, framework, or orchestration tool.
+- **Tamper-evident:** Ed25519 signatures + append-only semantics prevent retroactive alteration.
 
-- **Authorization-aware monitoring:** The ledger records not only what actions occurred (as post-hoc logs do) but what was authorized before execution. The delta between "actions authorized" and "actions executed" — authorization gaps, unauthorized execution attempts, scope boundary probes — is the security signal that matters most in adversarial environments.
-
-- **Attempted action visibility:** Every authorization request, whether approved or denied, generates a ledger entry. Denied requests (actions the agent attempted but could not obtain a receipt for) are security events; patterns of denied requests reveal reconnaissance behavior.
-
-- **Agent-agnostic monitoring:** PP's receipt ledger provides consistent monitoring coverage regardless of which AI model, which agent framework, or which orchestration tool is used. All agent activity that touches the authorization layer generates the same structured ledger events.
-
-- **Tamper-evident audit trail:** Ed25519 signatures on receipt payloads and append-only ledger semantics make the monitoring record cryptographically tamper-evident. An attacker who compromises the agent system cannot retroactively alter the ledger to conceal unauthorized actions.
-
-**Anomaly detection on receipt activity:**
-- Unusual action sequences: requests for receipts in an order inconsistent with the established workflow for that agent type
-- Timing anomalies: receipt requests at unusual hours or with unusual urgency parameters
-- Scope boundary probing: repeated requests for receipts with incrementally expanding scope, suggestive of an agent testing authorization boundaries
-- Volume anomalies: receipt request rates exceeding established baselines for the agent type and session context
-
-**Maturity note:** Receipt ledger infrastructure and basic anomaly detection are operational in Deploy Gate's current implementation. Advanced anomaly detection on receipt activity patterns is an active development priority.
+**Anomaly detection signals:** Unusual action sequences, timing anomalies, scope boundary probing (incrementally expanding scope requests), and volume spikes. Receipt ledger infrastructure is operational in Deploy Gate; advanced anomaly detection is in active development.
 
 ---
 
 ### 4(e) — Open Internet Deployment
-
-[TODO-ROD: Brief reference to PP's relevance for internet-scale deployment, and whether you want to comment on public-facing agent deployments.]
 
 The authorization vacuum is most acute for agents deployed at internet scale, where the principal population is large, the action surface is broad, and human oversight per-action is infeasible. PP's receipt model scales to this context: authorization decisions are made by policy, not by individual human review of every action, with human escalation triggered by risk tier and anomaly detection. The ledger provides accountability infrastructure that enables post-hoc review at scale.
 
@@ -402,60 +342,49 @@ The authorization vacuum is most acute for agents deployed at internet scale, wh
 
 ### 5(a) — Tools and Resources for Rapid Adoption
 
-**PP's design philosophy on adoption:** Authorization infrastructure must install like a dependency, not like a compliance program. Every additional step in the adoption path is a barrier that prevents organizations from implementing the controls NIST wants to see.
-
-Deploy Gate is designed around this philosophy. Installation on a GitHub repository requires:
-1. Add one GitHub Actions workflow step (`permission-protocol/verify-action@v1`)
-2. Configure one repository secret (`PP_API_KEY`)
-3. Set Deploy Gate as a required status check in branch protection rules
-
-This is a two-minute setup on a single repository, with immediate compliance value from the first receipt. The incremental path from there — one repo to all repos; deploys to all agent actions — is designed to be friction-free.
+Authorization infrastructure must install like a dependency, not a compliance program. Deploy Gate requires: one GitHub Actions step, one secret (`PP_API_KEY`), one branch protection rule. Two-minute setup, immediate compliance value from the first receipt.
 
 **NIST opportunities to accelerate adoption:**
 
-1. **Reference implementation recognition:** NIST naming PP's receipt model or the authorization receipt architecture pattern as a reference implementation in voluntary guidelines would immediately legitimize adoption for risk-averse enterprises and regulated-industry deployers who need an authoritative standard to reference.
+1. **Reference implementation recognition:** Naming the authorization receipt pattern in voluntary guidelines legitimizes adoption for risk-averse enterprises and regulated industries.
 
-2. **Standardized receipt schema:** A NIST-published JSON schema for authorization receipts — analogous to the way RFC 7519 standardized JWT — would enable interoperability across authorization infrastructure providers and prevent proprietary lock-in. PP's current receipt schema (detailed in Appendix A) could serve as the basis for such standardization.
+2. **Standardized receipt schema:** A NIST-published JSON schema — analogous to RFC 7519 (JWT) — enables interoperability and prevents proprietary lock-in. PP's schema (Appendix A) could serve as the basis.
 
-3. **SP 800-53 mapping documentation:** Explicit published mapping of receipt-based authorization controls to SP 800-53 control families (AC, AU, IA, SI) would enable regulated-industry deployers to use PP receipts as evidence in FISMA and FedRAMP compliance assessments.
+3. **SP 800-53 mapping:** Explicit mapping of receipt controls to AC, AU, IA, SI families enables FISMA and FedRAMP compliance use.
 
-4. **Safe harbor framework:** [TODO-ROD: Your call on whether to advocate for this explicitly. Draft below.] Organizations that implement certified authorization infrastructure with demonstrated receipt coverage for high-consequence action classes should receive safe harbor from certain AI-related liability categories. This creates a positive incentive structure and rewards proactive compliance rather than waiting for incidents.
+4. **Safe harbor framework:** Organizations implementing certified authorization infrastructure with demonstrated receipt coverage should receive safe harbor from AI-related liability. The financial system provides precedent: anti-fraud controls reduce liability exposure. Without positive incentives, the market won't self-correct — authorization failure costs are externalized to users while implementation costs fall on deployers.
 
 ---
 
 ### 5(b) — Priority Areas for Government Engagement
 
-[TODO-ROD: This is a policy/strategic judgment section. Please review and revise to reflect your priorities and political calculus on voluntary vs. mandatory framing.]
-
 Based on our technical analysis and the current state of the market, we suggest NIST prioritize:
 
-1. **External authorization as a threshold requirement for high-consequence deployments:** NIST voluntary guidelines should establish that AI agent systems taking high-consequence actions (production code deployment, financial transactions above defined thresholds, infrastructure modifications, externally-sent communications) must implement external authorization infrastructure with cryptographic receipt issuance. This should be framed as a baseline requirement, not an optional enhancement.
+1. **External authorization as a threshold requirement for high-consequence deployments:** NIST voluntary guidelines should establish that AI agent systems taking high-consequence actions (production code deployment, financial transactions above defined thresholds, infrastructure modifications, externally-sent communications) require external authorization infrastructure with cryptographic receipt issuance. We recognize NIST's role is voluntary standards, not mandates — but the economic case for eventual regulatory adoption is clear: the cost of authorization failures is externalized to users and counterparties, while the cost of implementing authorization infrastructure is borne by deployers. The market will not self-correct under these incentive conditions. NIST establishing external authorization as a voluntary baseline creates the gravity that pulls adoption forward without requiring a crisis to force it.
 
 2. **Receipt interoperability standard:** A standardized protocol and schema for AI agent authorization receipts would enable portability across authorization infrastructure providers, prevent proprietary lock-in, and create a level playing field. Analogies exist in mature ecosystems: JWT for identity tokens, certificate transparency logs for TLS certificates, software bill of materials for supply chain. AI agent authorization receipts should have the same standardized foundation.
 
-3. **Federal pilot program:** A NIST-coordinated pilot implementing receipt-based authorization in federal agency AI agent deployments would generate real-world data on implementation friction, receipt schema requirements, and compliance utility — informing future rulemaking and voluntary guidelines with empirical rather than theoretical evidence.
+3. **Federal pilot program:** A NIST-coordinated pilot implementing receipt-based authorization in federal agency AI agent deployments would generate real-world data on implementation friction, receipt schema requirements, and compliance utility — informing future guidelines with empirical rather than theoretical evidence. Federal deployments are the ideal proving ground: the regulatory surface is well-defined, NIST has direct standards authority, and success creates precedent that accelerates private-sector adoption.
 
 ---
 
 ### 5(c) — Research Priorities
 
-The most urgent research gaps for the field, as identified through PP's development and market engagement:
+Urgent research gaps identified through PP's development:
 
-1. **Receipt schema standardization:** What information must an authorization receipt contain to be legally and technically sufficient across different action classes, regulatory regimes, and organizational contexts? The minimum viable schema includes: action type, action parameters (scope-bound), principal identity (agent and human), authorization timestamp, expiration, policy version, and cryptographic signature. But the specific fields required for legal non-repudiation in different regulatory contexts (HIPAA, SOX, FISMA) have not been formally specified.
+1. **Receipt schema standardization:** What fields are legally and technically sufficient across action classes and regulatory regimes (HIPAA, SOX, FISMA)? Minimum viable schema exists; regulatory-specific requirements have not been formally specified.
 
-2. **Multi-agent authority propagation models:** Formal models are needed for how authorization should propagate through agent delegation chains without authority escalation. The key problem: Agent A, authorized for scope S, delegates a subtask to Agent B — what is Agent B authorized to do, and how is this verifiable? PP's per-action receipt model provides an operational answer, but formal theoretical grounding and adversarial analysis of the delegation model would strengthen the standard.
+2. **Multi-agent authority propagation:** Formal models for authorization propagation through delegation chains without authority escalation. PP's per-action receipt model is an operational answer; formal adversarial analysis would strengthen the standard.
 
-3. **Receipt-based rollback mechanisms:** Technical infrastructure for reversing agent actions using receipt records is an underexplored area. The receipt provides the identification foundation; the reversal execution mechanisms for common action classes (infrastructure changes, financial transactions, content publications) need standardized specifications.
+3. **Receipt-based rollback:** Standardized reversal mechanisms for common action classes using receipt records.
 
-4. **Authorization performance at scale:** Pre-action receipt verification introduces latency into agent action execution. For high-frequency agent actions (potentially thousands per session), what is the acceptable latency budget, and what caching and pre-authorization models are consistent with maintaining security guarantees?
+4. **Authorization performance at scale:** Latency budgets for high-frequency agent actions; caching and pre-authorization models consistent with security guarantees.
 
-5. **Adversarial robustness of external authorization infrastructure:** If the authorization service is itself a target, what are its failure modes? Research on the security properties of the authorization infrastructure itself — including denial-of-service resilience, key compromise recovery, and ledger integrity under adversarial conditions — is needed.
+5. **Adversarial robustness of authorization infrastructure:** Failure modes when the authorization service itself is targeted — DoS resilience, key compromise recovery, ledger integrity.
 
 ---
 
 ### 5(d) — International Approaches
-
-[TODO-ROD: Your call on whether to expand this into a full comparative analysis or keep brief.]
 
 The EU AI Act (Regulation 2024/1689) establishes traceability and logging requirements for high-risk AI systems under Article 12, and human oversight requirements under Article 14. These are directionally aligned with PP's receipt model but differ in a critical architectural dimension: the EU framework specifies post-hoc logging and human review capability, while PP's model requires *pre-action* authorization. An agent can generate a comprehensive post-hoc log of every action it took without any of those actions having been pre-authorized.
 
@@ -467,13 +396,9 @@ The United Kingdom's AI Safety Institute has similarly focused on post-deploymen
 
 ### 5(e) — Cross-Disciplinary Insights
 
-The financial system analogy is instructive and should inform NIST's standards work. Every financial transaction requires authorization (the payment instruction), generates a non-repudiable record (the transaction receipt), and is settled against an append-only ledger. No payment system operates on a trust-the-actor model. The question "was this transaction authorized?" has a definitive, cryptographically verifiable answer. The question "was this AI agent action authorized?" should have the same property.
+Three mature systems independently arrived at the same architecture PP applies to AI agents: **Financial systems** (every transaction requires authorization, generates a receipt, settles against an append-only ledger), **blockchain** (transaction hashes as receipts, tamper-evident ledger, external validation), and **certificate transparency** (append-only logs making unauthorized issuance detectable). No payment system operates on trust-the-actor. AI agent authorization should have the same property.
 
-The blockchain ecosystem independently arrived at the same architectural insight: the transaction hash is a receipt, the blockchain is a tamper-evident ledger, and validity requires verification rather than trust. Proof-of-work and proof-of-stake are external validation mechanisms — the ledger's validity does not depend on trusting any individual node.
-
-Certificate transparency logs — a security infrastructure standard for TLS certificates — provide another direct analogy. The append-only log of issued certificates provides public verifiability and makes unauthorized certificate issuance detectable. PP's receipt ledger applies the same architecture to AI agent authorization.
-
-NIST has an opportunity to codify these cross-disciplinary insights into AI agent security standards before a second-generation security crisis — one affecting higher-consequence action classes than OpenClaw — makes the architectural gap undeniable at greater cost.
+NIST has an opportunity to codify these insights before a second-generation crisis — affecting higher-consequence action classes than OpenClaw — makes the gap undeniable at greater cost.
 
 ---
 
@@ -618,7 +543,7 @@ The first large-scale documented exploitation of the AI agent authorization vacu
 ### Industry Research
 
 - Gravitee "State of AI Agent Security 2026" (n=900+ executives): https://www.gravitee.io/blog/state-of-ai-agent-security-2026-report-when-adoption-outpaces-control
-- Strata "AI Agent Identity Crisis": [TODO-ROD: Add link if available]
+- Strata "AI Agent Identity Crisis: A 2026 Guide": https://www.strata.io/blog/agentic-identity/the-ai-agent-identity-crisis-new-research-reveals-a-governance-gap/
 - Microsoft Security "Four Priorities for AI-Powered Identity and Network Access Security in 2026": https://www.microsoft.com/en-us/security/blog/2026/01/20/four-priorities-for-ai-powered-identity-and-network-access-security-in-2026/
 
 ### NIST Framework References
@@ -635,19 +560,26 @@ The first large-scale documented exploitation of the AI agent authorization vacu
 
 The following items require your review and input:
 
-- [ ] **Organization name and legal status** — What is the submitting entity? Current status (LLC, C-Corp, sole proprietor)?
-- [ ] **Contact information** — Name, email, phone for submission form on regulations.gov
-- [ ] **Submission date** — Must be on or before March 9, 2026
-- [ ] **Strata link (Section 5a / Appendix B)** — Do you have the URL for the "AI Agent Identity Crisis" research?
-- [ ] **Section 1(b) — Deployment context prioritization** — Which verticals/contexts do you want to call out? (Healthcare, finance, federal?)
-- [ ] **Section 4(e) — Internet-scale deployment** — Expand or keep brief?
-- [ ] **Section 4(c) — IoT/OT relevance** — Mention as future roadmap item or leave out?
-- [ ] **Section 5(b) — Mandatory vs. voluntary language** — How aggressive should PP's policy recommendations be? "Threshold requirement" is the current framing; do you want stronger ("mandatory") or softer language?
-- [ ] **Section 5(a) — Safe harbor advocacy** — Keep the draft or remove? This is a political judgment call.
-- [ ] **Section 5(d) — EU AI Act comparison** — Keep brief (current) or expand into full comparative analysis?
-- [ ] **Competitive positioning** — How explicitly should we acknowledge other players (Astrix, Acuvity/Proofpoint)? Current draft names them in market context but does not attack.
-- [ ] **Word count / length** — Current draft is approximately 5,800 words (excluding appendices). NIST has no stated limit. Cut or leave?
-- [ ] **Final format** — Regulations.gov accepts plain text or PDF. Want a PDF-formatted version after your review?
+### Rod Must Fill (blocks submission)
+- [ ] **Organization name and legal status** — What is the submitting entity? (LLC, C-Corp, sole proprietor?)
+- [ ] **Contact information** — Name, email, phone for regulations.gov
+- [ ] **Submission date** — On or before March 9, 2026
+
+### Resolved by Charles (applied)
+- [x] **Strata link** — Found and added
+- [x] **Deployment context (1b)** — Lead with finance + federal, mention healthcare, skip IoT/OT
+- [x] **Internet-scale (4e)** — Kept brief
+- [x] **IoT/OT (4c)** — Removed (roadmap vaporware, NIST will smell it)
+- [x] **Mandatory vs voluntary (5b)** — Voluntary framing with economic case for eventual mandatory; respects NIST's role
+- [x] **Safe harbor (5a)** — Kept and strengthened (best policy instrument in the doc)
+- [x] **EU AI Act (5d)** — Kept brief, one paragraph
+- [x] **Competitive positioning** — Named, not attacked (Astrix, Acuvity/Proofpoint in market context)
+- [x] **Patching section (2d)** — Cleaned up, kept brief
+- [x] **User docs (3d)** — Cleaned up, kept brief
+
+### Still Recommended
+- [ ] **Trim to ~4,500 words** — Government reviewers skim; protect the receipts + Deploy Gate sections, cut everything else
+- [ ] **Final format: PDF** — With PP logo. Plain text on regulations.gov looks amateur.
 
 ---
 
