@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-03-03T14:00:06Z",
+  "generated_at": "2026-03-04T14:00:08Z",
   "host": "moltbot-macbook-pro",
   "stats": {
-    "total": 17,
-    "ok": 12,
+    "total": 18,
+    "ok": 10,
     "running": 3,
     "disabled": 2,
-    "shadow": 0,
-    "missing": 0,
-    "drift_count": 0,
+    "shadow": 1,
+    "missing": 2,
+    "drift_count": 3,
     "authority_a": 7,
     "authority_b": 5,
     "authority_c": 2,
@@ -34,7 +34,7 @@
       "session_target": "main",
       "next_run": "2027-02-12T16:30:00Z",
       "last_run": null,
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "6d3da517-dbd3-4cc6-a9bb-ca6674252a91"
     },
@@ -46,20 +46,20 @@
       "authority": "B",
       "human_gate": "None",
       "risk": "Low",
-      "status": "ok",
-      "drift": null,
-      "enabled": true,
-      "schedule_live": "0 18 * * *",
-      "schedule_tz": "America/Denver",
+      "status": "missing",
+      "drift": "ledger_only",
+      "enabled": null,
+      "schedule_live": null,
+      "schedule_tz": null,
       "schedule_ledger": "0 18 * * * (Denver)",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": null,
       "timeout_seconds": null,
-      "session_target": "isolated",
-      "next_run": "2026-03-04T01:00:00Z",
-      "last_run": "2026-03-03T01:00:00Z",
-      "sla_days_left": 29,
+      "session_target": null,
+      "next_run": null,
+      "last_run": null,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
-      "cron_id": "84b4bf2a-717d-464d-af94-830556e5bfbc"
+      "cron_id": null
     },
     {
       "name": "goal-xdares-seo-weekly",
@@ -69,20 +69,20 @@
       "authority": "A",
       "human_gate": "None",
       "risk": "Low",
-      "status": "ok",
-      "drift": null,
-      "enabled": true,
-      "schedule_live": "0 19 * * 0",
-      "schedule_tz": "America/Denver",
+      "status": "missing",
+      "drift": "ledger_only",
+      "enabled": null,
+      "schedule_live": null,
+      "schedule_tz": null,
       "schedule_ledger": "0 19 * * 0 (Denver)",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": null,
       "timeout_seconds": null,
-      "session_target": "isolated",
-      "next_run": "2026-03-09T01:00:00Z",
-      "last_run": "2026-03-02T02:00:00Z",
-      "sla_days_left": 29,
+      "session_target": null,
+      "next_run": null,
+      "last_run": null,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
-      "cron_id": "78a53c7c-9bc4-4075-b7bd-eddb63ddcc96"
+      "cron_id": null
     },
     {
       "name": "governance-integrity-check",
@@ -101,9 +101,9 @@
       "model": "sonnet",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-03-03T14:00:00Z",
-      "last_run": null,
-      "sla_days_left": 29,
+      "next_run": "2026-03-04T14:00:00Z",
+      "last_run": "2026-03-03T14:00:00Z",
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "60a9e179-3d6b-4051-8124-255b9f40cda0"
     },
@@ -126,7 +126,7 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T17:00:00Z",
       "last_run": "2026-03-01T18:00:00Z",
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "ef54b92a-4584-4d49-8dd1-150970dfc65a"
     },
@@ -149,7 +149,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -172,7 +172,7 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T14:00:00Z",
       "last_run": null,
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "8c0d1fb0-0464-444c-9543-049ee4098691"
     },
@@ -193,9 +193,9 @@
       "model": "opus",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-03-03T15:03:00Z",
-      "last_run": "2026-03-02T15:03:00Z",
-      "sla_days_left": 29,
+      "next_run": "2026-03-04T15:03:00Z",
+      "last_run": "2026-03-03T15:03:00Z",
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "f9d08ca6-2067-4644-ac08-323314acc834"
     },
@@ -216,9 +216,9 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": 900,
       "session_target": "isolated",
-      "next_run": "2026-03-03T16:05:00Z",
-      "last_run": "2026-03-03T00:05:00Z",
-      "sla_days_left": 29,
+      "next_run": "2026-03-04T16:05:00Z",
+      "last_run": "2026-03-04T00:05:00Z",
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "db5b5d84-c92f-421e-9351-cdc329d1b6d6"
     },
@@ -241,7 +241,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -262,9 +262,9 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-03-04T09:00:00Z",
-      "last_run": "2026-03-03T09:00:00Z",
-      "sla_days_left": 29,
+      "next_run": "2026-03-05T09:00:00Z",
+      "last_run": "2026-03-04T09:00:00Z",
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "16b300bb-563a-4017-8779-66c8b7d58fbf"
     },
@@ -287,7 +287,7 @@
       "session_target": "isolated",
       "next_run": "2026-03-08T16:00:00Z",
       "last_run": "2026-03-01T17:00:00Z",
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "8e8f1d36-f14b-4144-977f-cb8b1f6fa97a"
     },
@@ -308,9 +308,9 @@
       "model": "sonnet",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-03-03T16:00:00Z",
-      "last_run": "2026-03-03T00:00:00Z",
-      "sla_days_left": 29,
+      "next_run": "2026-03-04T16:00:00Z",
+      "last_run": "2026-03-04T00:00:00Z",
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "be3510e3-af1b-497f-8693-1692d807a848"
     },
@@ -333,9 +333,32 @@
       "session_target": "isolated",
       "next_run": "2026-03-07T10:00:00Z",
       "last_run": null,
-      "sla_days_left": 29,
+      "sla_days_left": 28,
       "last_reviewed": "2026-03-02",
       "cron_id": "8b3c2ce7-eb09-4c9b-8e44-be3a5c4cf542"
+    },
+    {
+      "name": "skills-auto-update",
+      "ledger_id": null,
+      "host": "mac",
+      "runtime": "openclaw-cron",
+      "authority": "UNKNOWN",
+      "human_gate": "UNKNOWN",
+      "risk": "UNKNOWN",
+      "status": "shadow",
+      "drift": "shadow_process",
+      "enabled": true,
+      "schedule_live": "0 5 * * *",
+      "schedule_tz": "America/Denver",
+      "schedule_ledger": null,
+      "model": "default",
+      "timeout_seconds": null,
+      "session_target": "isolated",
+      "next_run": "2026-03-05T12:00:00Z",
+      "last_run": "2026-03-04T12:00:00Z",
+      "sla_days_left": null,
+      "last_reviewed": null,
+      "cron_id": "df8c583f-b4c7-49d2-af4d-b9bd72517309"
     },
     {
       "name": "openclaw-gateway",
@@ -395,17 +418,36 @@
       "cron_id": null
     }
   ],
-  "findings": [],
+  "findings": [
+    {
+      "severity": "WARN",
+      "type": "ledger_only",
+      "process": "goal-xdares-seo-daily",
+      "detail": "goal-xdares-seo-daily: ledger_only"
+    },
+    {
+      "severity": "WARN",
+      "type": "ledger_only",
+      "process": "goal-xdares-seo-weekly",
+      "detail": "goal-xdares-seo-weekly: ledger_only"
+    },
+    {
+      "severity": "HIGH",
+      "type": "shadow_process",
+      "process": "skills-auto-update",
+      "detail": "skills-auto-update: shadow_process"
+    }
+  ],
   "infrastructure": {
     "launchd": [
       {
-        "pid": "21282",
+        "pid": "46553",
         "exit_code": "0",
         "label": "ai.openclaw.node"
       },
       {
-        "pid": "87628",
-        "exit_code": "0",
+        "pid": "46443",
+        "exit_code": "-15",
         "label": "ai.openclaw.gateway"
       },
       {
@@ -418,7 +460,7 @@
       {
         "name": "pp-prod-postgres",
         "image": "postgres:15-alpine",
-        "status": "Up 2 weeks",
+        "status": "Up 3 weeks",
         "ports": "0.0.0.0:5434->5432/tcp, [::]:5434->5432/tcp"
       }
     ]

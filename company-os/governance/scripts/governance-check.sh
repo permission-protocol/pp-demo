@@ -77,6 +77,42 @@ fi
 
 echo ""
 
+# 4. Dead Man's Switch Heartbeat Push
+# Push a timestamp to Roca-Ventures/charles so the GitHub Action watchdog
+# can detect if GOV-001 has been silent for >48h. This is the ONLY connection
+# between GOV-001 and the external watchdog — the watchdog itself is independent.
+echo "--- Dead Man's Switch Heartbeat ---"
+CHARLES_HEARTBEAT_DIR="$HOME/tmp/charles-heartbeat"
+HEARTBEAT_PAT_FILE="$HOME/.openclaw/secrets/github-pat-classic.txt"
+
+if [ -f "$HEARTBEAT_PAT_FILE" ]; then
+  HEARTBEAT_PAT=$(cat "$HEARTBEAT_PAT_FILE")
+  TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+  # Clone (shallow) or reuse
+  if [ ! -d "$CHARLES_HEARTBEAT_DIR/.git" ]; then
+    rm -rf "$CHARLES_HEARTBEAT_DIR"
+    git clone --depth 1 "https://${HEARTBEAT_PAT}@github.com/Roca-Ventures/charles.git" \
+      "$CHARLES_HEARTBEAT_DIR" 2>&1 | tail -1
+  else
+    cd "$CHARLES_HEARTBEAT_DIR" && git pull --rebase 2>&1 | tail -1
+  fi
+
+  cd "$CHARLES_HEARTBEAT_DIR"
+  mkdir -p governance
+  echo "GOV-001 heartbeat — last run: $TIMESTAMP" > governance/heartbeat.txt
+
+  git config user.email "charles@roca-ventures.com"
+  git config user.name "Charles (GOV-001)"
+  git add governance/heartbeat.txt
+  git diff --cached --quiet || git commit -m "gov: heartbeat $TIMESTAMP" 2>&1 | tail -1
+  git push 2>&1 | tail -1 && echo "✅ Heartbeat pushed: $TIMESTAMP" || echo "⚠️ Heartbeat push failed (alert watchdog will trigger in <48h)"
+else
+  echo "⚠️ Heartbeat PAT not found — dead man's switch NOT updated"
+fi
+
+echo ""
+
 # Summary
 if [ $EXIT_CODE -eq 0 ]; then
   echo "✅ Governance check passed. No issues."

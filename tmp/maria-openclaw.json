@@ -1,0 +1,94 @@
+{
+  "models": {
+    "default": "anthropic/claude-opus-4-6",
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://100.111.31.56:11434/v1",
+        "api": "openai-completions",
+        "authHeader": false,
+        "models": [
+          {
+            "id": "deepseek-r1:70b",
+            "name": "DeepSeek R1 70B",
+            "reasoning": true
+          },
+          {
+            "id": "llama3.1:8b",
+            "name": "Llama 3.1 8B"
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/node/.openclaw/workspace",
+      "memorySearch": {
+        "enabled": true
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "KEEP_EXISTING_TOKEN",
+      "groupPolicy": "allowlist",
+      "groupAllowFrom": [],
+      "streaming": "partial"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ]
+    },
+    "auth": {
+      "mode": "token",
+      "token": "CHANGE_THIS_TO_SOMETHING_SECURE"
+    }
+  },
+  "plugins": {
+    "enabled": true,
+    "slots": {
+      "memory": "memory-lancedb"
+    },
+    "entries": {
+      "memory-lancedb": {
+        "enabled": true,
+        "config": {
+          "embedding": {
+            "model": "gemini-embedding-001",
+            "apiKey": "GEMINI_API_KEY_HERE",
+            "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai",
+            "dimensions": 768
+          },
+          "autoCapture": true,
+          "autoRecall": true
+        }
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.3.3",
+    "lastTouchedAt": "2026-03-03T21:30:24.602Z"
+  }
+}

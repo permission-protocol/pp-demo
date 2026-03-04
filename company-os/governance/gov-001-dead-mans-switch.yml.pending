@@ -1,0 +1,97 @@
+name: GOV-001 Dead Man's Switch
+
+# Independent governance watchdog — runs on GitHub infrastructure, not on the agent.
+# Alerts if governance/heartbeat.txt in Roca-Ventures/charles has not been updated in 48h.
+#
+# GOV-001 (governance-integrity-check) runs daily at 7 AM Denver and pushes a heartbeat
+# to that file. If it stops — Mac offline, OpenClaw down, cron crashed — this action fires.
+#
+# Alert surface: GitHub Actions failure → email notification to repo watchers.
+# This watchdog is INDEPENDENT of Charles, OpenClaw, and the Telegram channel.
+
+on:
+  schedule:
+    # Runs every 6 hours — catches a 48h breach within one check cycle
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      threshold_hours:
+        description: 'Alert threshold in hours (default: 48)'
+        required: false
+        default: '48'
+
+jobs:
+  check-gov001-heartbeat:
+    name: Check GOV-001 Heartbeat (charles/governance/heartbeat.txt)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout charles repo (heartbeat source)
+        uses: actions/checkout@v4
+        with:
+          repository: Roca-Ventures/charles
+          token: ${{ secrets.CHARLES_READ_TOKEN }}
+          fetch-depth: 0
+
+      - name: Check heartbeat freshness
+        env:
+          ALERT_THRESHOLD_HOURS: ${{ github.event.inputs.threshold_hours || '48' }}
+        run: |
+          HEARTBEAT_FILE="governance/heartbeat.txt"
+
+          if [ ! -f "$HEARTBEAT_FILE" ]; then
+            echo "::error::CRITICAL: Heartbeat file missing — $HEARTBEAT_FILE not found in Roca-Ventures/charles"
+            echo "::error::This means GOV-001 has never successfully run, or the file was deleted."
+            exit 1
+          fi
+
+          # Get Unix timestamp of last commit touching the heartbeat file
+          LAST_COMMIT_TS=$(git log -1 --format="%ct" -- "$HEARTBEAT_FILE")
+
+          if [ -z "$LAST_COMMIT_TS" ]; then
+            echo "::error::CRITICAL: No commit history for heartbeat file"
+            exit 1
+          fi
+
+          NOW_TS=$(date +%s)
+          AGE_SECONDS=$(( NOW_TS - LAST_COMMIT_TS ))
+          AGE_HOURS=$(( AGE_SECONDS / 3600 ))
+          LAST_COMMIT_HUMAN=$(date -d "@$LAST_COMMIT_TS" -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || \
+                              date -r "$LAST_COMMIT_TS" -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || \
+                              echo "unknown")
+
+          echo "Heartbeat source:  Roca-Ventures/charles"
+          echo "Heartbeat file:    $HEARTBEAT_FILE"
+          echo "Last updated:      $LAST_COMMIT_HUMAN"
+          echo "Age:               ${AGE_HOURS}h"
+          echo "Alert threshold:   ${ALERT_THRESHOLD_HOURS}h"
+          echo ""
+          echo "Content:"
+          cat "$HEARTBEAT_FILE"
+          echo ""
+
+          if [ "$AGE_HOURS" -gt "$ALERT_THRESHOLD_HOURS" ]; then
+            echo "::error::🔴 GOV-001 DEAD MAN SWITCH TRIGGERED"
+            echo "::error::GOV-001 has been silent for ${AGE_HOURS}h (threshold: ${ALERT_THRESHOLD_HOURS}h)"
+            echo "::error::Last known run: $LAST_COMMIT_HUMAN"
+            echo ""
+            echo "=== INVESTIGATION GUIDE ==="
+            echo "Process:    GOV-001 (governance-integrity-check)"
+            echo "Host:       Moltbot MacBook Pro"
+            echo "Schedule:   0 7 * * * America/Denver"
+            echo "Last beat:  $LAST_COMMIT_HUMAN (${AGE_HOURS}h ago)"
+            echo ""
+            echo "LIKELY CAUSES:"
+            echo "  1. Mac offline or in deep sleep"
+            echo "  2. OpenClaw gateway down (check: openclaw gateway status)"
+            echo "  3. governance-check.sh failing silently"
+            echo "  4. GitHub PAT expired (github-pat-classic.txt)"
+            echo ""
+            echo "TO DIAGNOSE:"
+            echo "  ssh into mac"
+            echo "  openclaw cron list"
+            echo "  cat ~/.openclaw/workspace/company-os/governance/drift-log.jsonl | tail -5"
+            exit 1
+          fi
+
+          echo "✅ GOV-001 heartbeat is fresh"
+          echo "   Age: ${AGE_HOURS}h (threshold: ${ALERT_THRESHOLD_HOURS}h)"

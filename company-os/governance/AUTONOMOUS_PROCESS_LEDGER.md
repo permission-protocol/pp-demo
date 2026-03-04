@@ -10,6 +10,14 @@
 >
 > **Governance hook:** Any process with Authority C must either produce a signed PP receipt for the action, or be hard-blocked from the action path. This is not a diary. This is governance.
 
+> **Recursive Governance Problem (documented 2026-03-04):** GOV-001 is the process that checks all other processes. But if GOV-001 itself fails silently — Mac offline, OpenClaw crash, cron error — there is no internal mechanism to detect it. Charles cannot monitor its own monitor; that creates a closed loop with no exit.
+>
+> **Dead Man's Switch (GOV-001):** GOV-001 pushes a heartbeat to `Roca-Ventures/charles:governance/heartbeat.txt` after each successful daily run. An external GitHub Action (`gov-001-dead-mans-switch.yml` in `Roca-Ventures/Breakout-Labs`) checks this file every 6h and alerts if no update in 48h. The watchdog runs on GitHub's infrastructure — independent of Charles, OpenClaw, and the Mac entirely.
+>
+> **Invariant:** Governance of autonomous agents cannot rely solely on those agents to report their own failures. The dead man's switch is the enforcement layer for this invariant.
+>
+> **Current status (2026-03-04):** Heartbeat file live at `Roca-Ventures/charles:governance/heartbeat.txt`. GitHub Action YAML ready at `company-os/governance/gov-001-dead-mans-switch.yml.pending` — requires workflow-scope PAT to deploy. Pending Rod action: add `CHARLES_READ_TOKEN` secret to Breakout-Labs repo and push the workflow.
+
 > **Token Minting Boundary (hardened 2026-03-02):** Approval tokens MUST be minted via `mint-approval-token.sh` only. The script:
 > - Verifies Telegram sender ID = 6091356144 (Rod) — hardcoded, not agent-configurable
 > - Computes file hash from the actual draft file (does not accept hash as parameter)
