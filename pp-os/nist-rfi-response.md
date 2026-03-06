@@ -1,9 +1,9 @@
 # Response to Request for Information: Security Considerations for Artificial Intelligence Agents
 ## Docket NIST-2025-0035 | National Institute of Standards and Technology
 **Submitted by:** Permission Protocol  
-**Organization:** [TODO-ROD: Legal entity name]  
-**Contact:** [TODO-ROD: Name, email, phone]  
-**Submission Date:** [TODO-ROD: Date on or before March 9, 2026]  
+**Organization:** Permission Protocol, Inc.  
+**Contact:** Rodrigo Carvalho, rod@permissionprotocol.com, (646) 257-0013  
+**Submission Date:** March 9, 2026  
 **Submission Method:** regulations.gov, Docket NIST-2025-0035
 
 ---

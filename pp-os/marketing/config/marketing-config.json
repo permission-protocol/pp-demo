@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "brand": {
+    "voice": "Technical authority. No hype. Speak from building, not theorizing. Short sentences. Concrete examples over abstractions.",
+    "never_say": [
+      "game-changer", "revolutionary", "groundbreaking", "delighted to announce",
+      "excited to share", "leveraging", "synergy", "paradigm shift", "unlock",
+      "at the end of the day", "it goes without saying", "in today's landscape",
+      "moving forward", "deep dive", "best-in-class", "cutting-edge"
+    ],
+    "tone": "Builder sharing what they learned. Not a vendor pitching.",
+    "perspective": "Rod's voice for LinkedIn/Twitter. Charles for GitHub/technical."
+  },
+  "platforms": {
+    "blog": {
+      "url": "https://permissionprotocol.com/blog",
+      "publish_script": "pp-os/marketing/scripts/publish-blog.sh",
+      "min_words": 800,
+      "max_words": 2500,
+      "human_gate": true,
+      "daily_limit": 1
+    },
+    "twitter": {
+      "handle": "@PermissionPrtcl",
+      "api_keys": "~/.openclaw/secrets/x-pp-api.json",
+      "max_thread_tweets": 7,
+      "image_gen": true,
+      "human_gate": false,
+      "daily_limit": 3
+    },
+    "linkedin": {
+      "human_gate": true,
+      "daily_limit": 1,
+      "max_words": 300
+    },
+    "github_discussions": {
+      "human_gate": false,
+      "daily_limit": 2
+    },
+    "hn_comments": {
+      "human_gate": false,
+      "daily_limit": 2
+    }
+  },
+  "content_mix": {
+    "reactive": 0.4,
+    "authority": 0.3,
+    "tutorial": 0.2,
+    "product": 0.1
+  },
+  "image_gen": {
+    "model": "gemini-3.1-flash-image-preview",
+    "style": "dark minimal tech, teal (#44aa99) on void black (#0a0a0a), no text, no people",
+    "aspect_ratio": "16:9"
+  }
+}

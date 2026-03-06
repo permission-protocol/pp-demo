@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "created": "2026-03-05",
+  "tests": {
+    "linkedin_dm": {
+      "variant_a": {
+        "name": "ultra-short-question",
+        "description": "One provocative question + link. < 40 words.",
+        "example": "When a regulator asks 'was a human in the loop?' — what do you show them? That's what we built. permissionprotocol.com",
+        "sent": 3,
+        "responded": 0,
+        "active": true
+      },
+      "variant_b": {
+        "name": "congrats-hook",
+        "description": "Reference a recent win/news, then one question + link.",
+        "example": "Congrats on the round. When your agents start touching real money — who proves each action was authorized? permissionprotocol.com",
+        "sent": 0,
+        "responded": 0,
+        "active": false
+      }
+    },
+    "cold_email": {
+      "variant_a": {
+        "name": "specific-pain-reference",
+        "description": "Reference their specific product + the gap PP fills. 100-150 words.",
+        "sent": 2,
+        "responded": 0,
+        "active": true
+      },
+      "variant_b": {
+        "name": "ultra-short-email",
+        "description": "LinkedIn-style brevity applied to email. < 60 words.",
+        "sent": 0,
+        "responded": 0,
+        "active": false
+      }
+    },
+    "github_issue": {
+      "variant_a": {
+        "name": "interop-proposal",
+        "description": "Detailed technical interop opportunity. 150-200 words.",
+        "sent": 1,
+        "responded": 0,
+        "active": true
+      },
+      "variant_b": null
+    },
+    "twitter_reply": {
+      "variant_a": null,
+      "variant_b": null
+    }
+  }
+}

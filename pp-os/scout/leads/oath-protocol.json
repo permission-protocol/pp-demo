@@ -1,0 +1,49 @@
+{
+  "company": "OATH Protocol",
+  "slug": "oath-protocol",
+  "url": "https://github.com/oath-protocol/oath-protocol",
+  "description": "Open-source, local-first CLI tool (Rust) for cryptographically signed human intent verification — agents verify attestations before acting; absence of a signature blocks the action and serves as evidence.",
+  "agents": [
+    "Any Python/Rust agent that calls oath verify before sensitive operations",
+    "Designed as a pre-action check for file deletion, email sends, DB operations, code merges"
+  ],
+  "funding": {
+    "stage": "open source / no funding",
+    "total": "none",
+    "lead_investor": "none",
+    "notes": "Public domain (CC0). No central authority. Local-first — private key never leaves device. Protocol spec at v1.0.0."
+  },
+  "contacts": [
+    {
+      "name": "unknown",
+      "title": "unknown",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "oath-protocol",
+      "notes": "Founder identity not revealed in HN post or README. GitHub org is oath-protocol. Could reply on the HN thread to identify them."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Complementary open-source layer — OATH solves local dev workflow; PP solves enterprise governance and centralized audit",
+    "actions_needing_receipts": [
+      "All — by design, every agent action requires prior attestation"
+    ],
+    "integration_complexity": "low — PP could wrap or extend OATH for enterprise use cases",
+    "urgency": "medium — just launched HN Show HN 3 days ago with strong engagement",
+    "strategic_note": "OATH is a potential ally or acquisition target, NOT a direct competitor. Their approach is decentralized and local-first; PP's is centralized with enterprise auditability. PP could offer: 'OATH for local dev, PP for production.' Consider reaching out to collaborate on protocol spec alignment."
+  },
+  "lead_type": "ally",
+  "score": 3.5,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 1,
+    "tech_fit": 5,
+    "regulatory": 2,
+    "timing": 4
+  },
+  "source_signal": "signals/2026-03-05.jsonl#oath-protocol",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "Not a sales target. Ally/collaboration opportunity. Priority: identify founder, engage on HN thread or GitHub issues, explore protocol compatibility. If OATH gains traction, PP should have a public response (blog or GitHub comment) on how the two approaches are complementary."
+}

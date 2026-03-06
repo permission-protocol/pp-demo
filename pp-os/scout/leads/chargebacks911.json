@@ -1,0 +1,62 @@
+{
+  "company": "Chargebacks911",
+  "slug": "chargebacks911",
+  "url": "https://chargebacks911.com",
+  "description": "Fintech company specializing in AI-powered post-transaction dispute resolution and chargeback management for merchants and financial institutions.",
+  "agents": [
+    "AI agents that analyze transactions for fraud signals",
+    "Dispute investigation agents that assess chargeback evidence",
+    "Agents that autonomously categorize and route merchant disputes",
+    "Potential future agents making purchasing/supplier decisions on behalf of enterprise clients"
+  ],
+  "funding": {
+    "stage": "private / bootstrapped-to-profitable",
+    "total": "undisclosed (subsidiary of Global Risk Technologies)",
+    "lead_investor": "private, no VC rounds found",
+    "notes": "~216 employees, 4 continents, established revenue business"
+  },
+  "contacts": [
+    {
+      "name": "Donald Kossmann",
+      "title": "CTO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/donaldkossmann",
+      "github": "unknown",
+      "notes": "Just appointed May 2025. Published HNS interview on March 5 2026 articulating PP's exact problem: intent drift, decision transparency, post-transaction evidence capture, and the limits of OAuth delegation for agentic commerce."
+    },
+    {
+      "name": "Monica Eaton",
+      "title": "CEO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Listed in LeadIQ as Chief Executive Officer. Prefer CTO (Kossmann) as primary contact."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Authorization receipts and intent evidence for agentic commerce decisions",
+    "actions_needing_receipts": [
+      "agent_purchase_decision",
+      "vendor_selection",
+      "transaction_execution",
+      "dispute_resolution_ruling"
+    ],
+    "integration_complexity": "medium — would need SDK integration into their AI dispute and agent decision pipeline",
+    "urgency": "very high — Kossmann literally published an article yesterday describing PP's exact value proposition: 'enterprises will need to demonstrate what the agent was allowed to do and what it actually did' (his words)",
+    "quote": "What we likely need is... stronger auditability of agent decisions, and clearer evidence trails that show not just what was authorized, but how that authority was exercised over time. — Donald Kossmann, CTO, March 5 2026"
+  },
+  "lead_type": "design_partner",
+  "score": 4.05,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 2,
+    "tech_fit": 4,
+    "regulatory": 5,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-05.jsonl#chargebacks911",
+  "created": "2026-03-06",
+  "status": "outreach_ready"
+}

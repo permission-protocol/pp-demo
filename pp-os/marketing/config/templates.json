@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "formats": {
+    "incident_reaction": {
+      "description": "Fast response to AI agent incident. Positions PP as the solution that would have prevented it.",
+      "platforms": ["twitter", "linkedin"],
+      "template": "1. What happened (1-2 sentences, factual)\n2. Why it happened (missing authorization/audit)\n3. What would have prevented it (PP concept, not product pitch)\n4. One-liner linking to PP or SDK",
+      "max_words": { "twitter": 280, "linkedin": 200 },
+      "timeliness": "< 6 hours from incident",
+      "human_gate": false
+    },
+    "thought_leadership": {
+      "description": "Original insight about AI agent governance. Not reactive — proactive positioning.",
+      "platforms": ["linkedin", "blog"],
+      "template": "1. Provocative opening (challenge conventional wisdom)\n2. The real problem (systemic, not surface)\n3. How builders should think about it\n4. What we're doing about it (brief)\n5. CTA: question to audience or link",
+      "max_words": { "linkedin": 300, "blog": 2000 },
+      "timeliness": "this week",
+      "human_gate": true
+    },
+    "tutorial": {
+      "description": "How-to content showing PP SDK in action. Practical, copy-pasteable.",
+      "platforms": ["blog", "twitter", "github_discussions"],
+      "template": "1. Problem statement (what you're trying to do)\n2. Before PP (the messy way)\n3. After PP (clean, auditable)\n4. Code snippets (working, tested)\n5. Result: what you get (receipt, audit trail)",
+      "max_words": { "blog": 2500, "twitter": 280 },
+      "timeliness": "this month",
+      "human_gate": true
+    },
+    "signal_amplification": {
+      "description": "Amplify third-party content that validates PP's thesis. Not about us — about the trend.",
+      "platforms": ["twitter", "hn_comments"],
+      "template": "Share/comment with genuine insight. Add context they didn't cover. Never pitch PP directly — let the thesis speak.",
+      "max_words": { "twitter": 280, "hn_comments": 200 },
+      "timeliness": "< 24 hours",
+      "human_gate": false
+    },
+    "data_insight": {
+      "description": "Share interesting data points from PP usage, NIST, market trends.",
+      "platforms": ["twitter", "linkedin"],
+      "template": "1. The number/fact (attention-grabbing)\n2. Why it matters (one sentence)\n3. What it means for builders\n4. Optional: link to source or blog",
+      "max_words": { "twitter": 280, "linkedin": 150 },
+      "timeliness": "this week",
+      "human_gate": false
+    }
+  },
+  "humanize_rules": {
+    "max_exclamation_marks": 1,
+    "no_emoji_in_first_line": true,
+    "vary_sentence_length": true,
+    "start_with_observation_not_announcement": true,
+    "reference_specific_names_numbers_dates": true,
+    "contractions_preferred": true
+  }
+}

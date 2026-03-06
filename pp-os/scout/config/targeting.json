@@ -1,0 +1,110 @@
+{
+  "version": "1.0",
+  "updated": "2026-03-05",
+  
+  "signal_keywords": {
+    "high_priority": [
+      "AI agent security",
+      "AI agent vulnerability",
+      "agent authorization",
+      "agent autonomy risk",
+      "autonomous AI incident",
+      "AI agent breach",
+      "agent permission",
+      "agentic AI security",
+      "AI agent governance",
+      "prompt injection agent"
+    ],
+    "medium_priority": [
+      "AI agent framework",
+      "AI agent startup",
+      "autonomous AI funding",
+      "AI safety infrastructure",
+      "AI agent monitoring",
+      "agent orchestration security",
+      "AI compliance framework",
+      "AI audit trail",
+      "AI agent guardrails"
+    ],
+    "low_priority": [
+      "AI agent",
+      "autonomous AI",
+      "AI safety",
+      "AI governance",
+      "AI compliance"
+    ]
+  },
+
+  "signal_sources": {
+    "web_search": {
+      "enabled": true,
+      "queries": [
+        "AI agent security vulnerability 2026",
+        "AI agent unauthorized action incident",
+        "autonomous AI agent funding round",
+        "AI agent authorization framework",
+        "AI agent governance startup",
+        "agentic AI security research",
+        "AI agent prompt injection exploit"
+      ],
+      "freshness": "pd"
+    },
+    "hackernews": {
+      "enabled": true,
+      "endpoint": "https://hn.algolia.com/api/v1/search_by_date",
+      "queries": [
+        "AI agent security",
+        "autonomous AI risk",
+        "AI agent authorization"
+      ]
+    },
+    "github_trending": {
+      "enabled": true,
+      "topics": ["ai-agent", "agent-security", "ai-safety", "llm-security"]
+    }
+  },
+
+  "lead_scoring": {
+    "weights": {
+      "funding_stage": 0.25,
+      "agent_consequence_level": 0.30,
+      "regulatory_pressure": 0.15,
+      "technical_fit": 0.20,
+      "timing_signal": 0.10
+    },
+    "thresholds": {
+      "auto_research": 3.0,
+      "outreach_candidate": 4.0,
+      "high_priority": 4.5
+    }
+  },
+
+  "lead_types": {
+    "design_partner": {
+      "description": "Company building agents that handle high-consequence actions (money, data, infra)",
+      "priority": "highest",
+      "channels": ["linkedin", "email", "github"]
+    },
+    "ally": {
+      "description": "Complementary tools (monitoring, guardrails, orchestration) — integration partners",
+      "priority": "high",
+      "channels": ["github", "email", "twitter"]
+    },
+    "amplifier": {
+      "description": "Journalists, analysts, influencers covering AI agent security",
+      "priority": "high",
+      "channels": ["email", "twitter"]
+    },
+    "power_user": {
+      "description": "Individual builders running agents with real money/access at stake",
+      "priority": "medium",
+      "channels": ["twitter", "github"]
+    }
+  },
+
+  "exclusions": {
+    "companies": [],
+    "domains": ["openai.com", "anthropic.com", "google.com"],
+    "reasons": "Too big for cold outreach — need warm intros"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "slug": "lio-ai",
+  "created": "2026-03-05T18:02:00-07:00",
+  "source": "hotline",
+  "score": 5,
+  "status": "pending-approval",
+
+  "company": {
+    "name": "Lio",
+    "url": "https://lio.ai",
+    "description": "AI-native platform deploying agent teams to fully automate enterprise procurement — from request to PO — across ERP, contract management, supplier DBs, and email.",
+    "stage": "Series A",
+    "funding": "$30M raised today (March 5, 2026), led by a16z. $33M total. YC Spring '23.",
+    "investors": ["a16z", "SV Angels", "Harry Stebbings", "Y Combinator"],
+    "traction": "Managing billions in enterprise spend. One client automated 75% of outsourced procurement ops in 6 months."
+  },
+
+  "key_person": {
+    "name": "Vladimir Keil",
+    "role": "Co-founder & CEO",
+    "linkedin_guess": "https://www.linkedin.com/in/vladimirkeil",
+    "twitter_guess": "@vladkeil",
+    "email_guess": "vlad@lio.ai"
+  },
+
+  "pp_angle": "Lio agents operate autonomously across ERP systems, contracts, supplier databases, and email — exactly the kind of high-stakes, multi-system access that enterprise risk and compliance teams lose sleep over. When an agent can negotiate terms, approve POs, and onboard suppliers, you need more than a system prompt to prove it acted correctly. Permission Protocol gives every Lio agent action a cryptographic authorization receipt *before* it executes — an audit trail that legal, finance, and enterprise security teams can trust. This turns PP from an add-on into a sales accelerator for Lio's enterprise deals.",
+
+  "best_channel": "email",
+  "requires_approval": "charles",
+
+  "outreach_file": "outreach/pending/lio-ai-email.md"
+}

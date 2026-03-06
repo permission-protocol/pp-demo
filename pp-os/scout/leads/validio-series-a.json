@@ -1,0 +1,23 @@
+{
+  "slug": "validio-series-a",
+  "company": "Validio",
+  "website": "https://validio.io",
+  "one_liner": "Agentic enterprise data management platform — helps enterprises trust their data for AI pipelines.",
+  "stage": "Series A ($30M, led by Plural — March 5, 2026)",
+  "hq": "Stockholm, Sweden",
+  "key_person": {
+    "name": "Patrik Liu Tran",
+    "title": "Co-founder & CEO",
+    "contact_channels": ["LinkedIn", "email (likely patrik@validio.io)"]
+  },
+  "investors": ["Plural", "Lakestar", "J12 Ventures", "Kevin Ryan", "Denise Persson", "Emil Eifrem"],
+  "growth": "800% growth",
+  "customers": "Enterprises including Walden, AllianceBernstein",
+  "why_pp": "Validio deploys AI agents that touch production enterprise data. Every agent action — data validation, pipeline mutation, automated remediation — needs a verifiable authorization receipt before it fires. Without PP-style enforcement, one misconfigured agent can corrupt the data layer they're selling trust on top of. This is a 'secure the foundation' pitch: they sell data trust, PP makes the agents executing on that data trustworthy.",
+  "best_channel": "email",
+  "best_approach": "Congratulate on funding. Position PP as the authorization layer for their agentic pipelines — 'you're building trust in data, we help you extend that trust to the agents touching it.'",
+  "urgency": "high — fresh funding = expansion, new hires, new integrations window",
+  "found_at": "2026-03-05T19:03:00-07:00",
+  "source": "hotline",
+  "status": "pending_approval"
+}

@@ -1,0 +1,97 @@
+{
+  "company": "Lio Technologies",
+  "slug": "lio-technologies",
+  "url": "https://lio.ai",
+  "description": "AI-native multi-agent platform that autonomously executes enterprise procurement workflows end-to-end — reading documents, evaluating suppliers, negotiating terms, and completing transactions across ERP and contract systems.",
+  "agents": [
+    "Reads and classifies procurement requests from enterprise systems",
+    "Searches and evaluates supplier databases",
+    "Runs compliance checks and cross-references budgets",
+    "Negotiates contract terms with suppliers",
+    "Executes purchase orders and triggers payment events",
+    "Manages the full P2P (procure-to-pay) workflow autonomously"
+  ],
+  "funding": {
+    "stage": "Series A",
+    "total": "$33M",
+    "latest_round": "$30M",
+    "lead_investor": "Andreessen Horowitz (a16z)",
+    "other_investors": ["SV Angels", "Harry Stebbings", "Y Combinator"],
+    "yc_batch": "Spring 2023",
+    "announced": "2026-03-05"
+  },
+  "contacts": [
+    {
+      "name": "Vladimir Keil",
+      "title": "Co-founder & CEO",
+      "email": "v.keil@asklio.ai",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/vladimir-keil/",
+      "github": "unknown",
+      "notes": "Email sourced from BME Opensourcing supplier profile. Confirmed CEO via TechCrunch and Crunchbase."
+    },
+    {
+      "name": "Lukas Heinzmann",
+      "title": "Co-founder",
+      "email": "founders@asklio.ai",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown"
+    },
+    {
+      "name": "Till Wagner",
+      "title": "Co-founder",
+      "email": "founders@asklio.ai",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown"
+    }
+  ],
+  "company_stats": {
+    "users": "500,000+",
+    "enterprise_clients": "100+",
+    "spend_managed": "billions (USD)",
+    "retention": "100%",
+    "integration_time": "2 weeks"
+  },
+  "tech_stack": {
+    "signals": [
+      "Enterprise SaaS integrations (ERP, contract management, supplier DBs)",
+      "Cloud-native agentic infrastructure",
+      "REST API-based integration layer (2-week onboarding suggests drop-in)",
+      "Likely Python/Node backend based on YC-era stack norms"
+    ],
+    "complexity_estimate": "medium — need to hook into their agent execution pipeline at PO/payment trigger points"
+  },
+  "regulatory_exposure": {
+    "level": "medium-high",
+    "notes": "Procurement touches SOX compliance, AP audit trails, supplier contract law. Not directly regulated like fintech but enterprise audit requirements are substantial. Managing 'billions in enterprise spend' creates fiduciary accountability."
+  },
+  "pp_fit": {
+    "feature": "Authorization receipts for financial commitment agents",
+    "actions_needing_receipts": [
+      "purchase_order_creation",
+      "supplier_contract_execution",
+      "payment_trigger",
+      "budget_approval_override",
+      "vendor_onboarding"
+    ],
+    "value_prop": "Every PO Lio executes on behalf of an enterprise is an autonomous financial commitment. PP provides tamper-proof receipts proving which agent took which action, under whose authority, with what budget approval — turning Lio's output from 'AI did it' into a fully auditable procurement chain.",
+    "integration_complexity": "medium",
+    "urgency": "very high — announced $30M Series A TODAY from a16z; actively hiring engineering; expansion to US market; precisely the moment to get PP baked into their agent architecture before it hardens",
+    "pitch_angle": "Your agents manage billions. When the CFO asks 'who approved that $2M contract?' — Lio needs the answer to be provable, not reconstructed. PP is the audit layer your enterprise clients will demand once Lio becomes mission-critical."
+  },
+  "lead_type": "design_partner",
+  "score": 4.65,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 5,
+    "tech_fit": 4,
+    "regulatory": 4,
+    "timing": 5,
+    "notes": "Highest timing score possible — funding announced same day as this research run. a16z backing validates market, US expansion = sales pressure to close enterprise logos fast."
+  },
+  "source_signal": "latest-scan.json#hot_signals[1]",
+  "created": "2026-03-05",
+  "status": "outreach_ready"
+}

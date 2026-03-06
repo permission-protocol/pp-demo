@@ -1,0 +1,21 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "api_key_path": "~/.openclaw/secrets/gemini-api.json",
+  "brand": {
+    "primary_color": "#44aa99",
+    "background": "#0a0a0a",
+    "secondary_bg": "#1a1a1a",
+    "accent": "#c8c8c8",
+    "danger": "#EF4444",
+    "font_family": "Space Grotesk",
+    "aesthetic": "dark minimal tech, editorial illustration, moody sophisticated"
+  },
+  "prompt_prefix": "Generate an image: Dark minimal tech illustration for Permission Protocol, an authorization infrastructure brand. Brand colors: teal (#44aa99) on void black (#0a0a0a). Clean geometric aesthetic, no text, no people. Moody editorial tech style. 16:9 aspect ratio.",
+  "rules": [
+    "Every tweet gets a unique image matching its content",
+    "No text in images (Twitter handles text separately)",
+    "No people or faces",
+    "Always 16:9 for Twitter cards",
+    "Compress to <1MB before upload if needed"
+  ]
+}

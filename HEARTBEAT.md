@@ -1,5 +1,10 @@
 # HEARTBEAT.md
 
+## ⚠️ PENDING HOT SIGNAL — Check pp-os/marketing/HOT-SIGNAL.md
+Marketing signal scan found a hot signal (Clinejection secondary wave). Read `pp-os/marketing/HOT-SIGNAL.md` and alert Rod. Clear file after action.
+
+---
+
 ## Step 0: Deterministic Health Check (ALWAYS RUN FIRST)
 ```bash
 bash ~/.openclaw/workspace/scripts/heartbeat-check.sh

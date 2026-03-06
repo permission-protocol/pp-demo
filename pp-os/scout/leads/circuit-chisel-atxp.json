@@ -1,0 +1,64 @@
+{
+  "company": "Circuit & Chisel (ATXP)",
+  "slug": "circuit-chisel-atxp",
+  "url": "https://circuitandchisel.com",
+  "description": "Stripe alumni-founded agentic commerce platform building ATXP — a web-wide protocol enabling AI agents to autonomously handle the full commerce lifecycle (discovery → negotiation → payment) without human oversight.",
+  "agents": [
+    "Agents that browse and discover products across the web",
+    "Agents that negotiate prices with merchants autonomously",
+    "Agents that execute payments on behalf of users (agent-to-agent transactions)",
+    "Agents that manage the full procurement and checkout lifecycle"
+  ],
+  "funding": {
+    "stage": "Seed",
+    "total": "$19.2M",
+    "lead_investor": "Primary Venture Partners, ParaFi Capital",
+    "investors": ["Primary Venture Partners", "ParaFi Capital", "Stripe", "Coinbase Ventures", "Solana Ventures", "Samsung Next", "Polygon Labs"],
+    "angels": ["Anatoly Yakovenko (Solana)", "Raj Gokal (Solana)", "Edith Cooper (Amazon/PepsiCo board)", "Rich Widmann (Google Cloud Web3)", "Michael Tannenbaum (Figure)", "Arjun Sethi (Kraken Co-CEO)"],
+    "announced": "September 22, 2025"
+  },
+  "contacts": [
+    {
+      "name": "Louis Amira",
+      "title": "Co-Founder & CEO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Former Head of Crypto & AI Partnerships at Stripe."
+    },
+    {
+      "name": "David Noel-Romas",
+      "title": "Co-Founder & CTO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Former Head of Crypto Engineering at Stripe."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Authorization receipts for every agent-executed financial transaction — turning autonomous commerce into auditable, defensible, enterprise-grade payments",
+    "actions_needing_receipts": [
+      "agent_payment_execution",
+      "vendor_negotiation_acceptance",
+      "purchase_order_submission",
+      "agent_to_agent_settlement"
+    ],
+    "integration_complexity": "low-medium — they're building a protocol (ATXP); PP can be a required compliance layer in the protocol spec",
+    "urgency": "critical — ATXP explicitly removes human oversight from payments. Without authorization receipts, there's no dispute resolution layer, no enterprise adoption path, no regulatory compliance story. PP fills the exact hole their architecture creates.",
+    "strategic_angle": "PP is to ATXP what TLS is to HTTP — the security and trust layer the protocol needs to go enterprise. Could be a protocol-level partnership, not just a customer relationship."
+  },
+  "lead_type": "design_partner",
+  "score": 5.0,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 5,
+    "tech_fit": 5,
+    "regulatory": 5,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-05.jsonl#circuit-chisel",
+  "created": "2026-03-06",
+  "status": "outreach_ready"
+}

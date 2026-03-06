@@ -1,0 +1,76 @@
+{
+  "company": "ZyG",
+  "slug": "zyg-ecommerce",
+  "url": "https://zyg.com",
+  "description": "Israeli agentic OS for direct-to-consumer brands — AI agents handle demand validation, growth marketing, SEO, influencer management, supply chain, and cohort-based financing so founders can focus solely on product.",
+  "agents": [
+    "Demand validation agents that assess market viability",
+    "Performance marketing agents that manage ad spend autonomously",
+    "SEO agents that optimize and publish content",
+    "Influencer discovery and management agents",
+    "Supply chain and logistics coordination agents",
+    "Financial agents managing cohort-based financing decisions"
+  ],
+  "funding": {
+    "stage": "Seed (mega-round)",
+    "total": "$58M",
+    "lead_investor": "Bessemer Venture Partners, Viola Ventures, Lightspeed Venture Partners",
+    "investors": ["Bessemer Venture Partners", "Viola Ventures", "Lightspeed Venture Partners", "Disruptive AI", "Emerge", "Access Industries", "Stardom Ventures", "Jibe Ventures"],
+    "announced": "March 5, 2026"
+  },
+  "contacts": [
+    {
+      "name": "Omer Kaplan",
+      "title": "Co-Founder & CEO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/omerkaplan1/",
+      "github": "unknown",
+      "notes": "Former ironSource executive. Located in Israel."
+    },
+    {
+      "name": "Tomer Bar-Zeev",
+      "title": "Co-Founder & Chairman",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Former CEO of ironSource (acquired by Unity for $4.4B)."
+    },
+    {
+      "name": "Assaf Ben Ami",
+      "title": "Co-Founder, CFO & COO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "CFO/COO — key contact for financial governance discussion."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Authorization receipts for agent-managed financial decisions — ad spend, influencer contracts, supply chain orders",
+    "actions_needing_receipts": [
+      "marketing_spend_authorization",
+      "influencer_contract_execution",
+      "supply_chain_purchase_order",
+      "financing_disbursement",
+      "store_listing_publish"
+    ],
+    "integration_complexity": "medium — agents are custom-built in their ZyG OS, SDK integration needed",
+    "urgency": "medium-high — just raised $58M and scaling fast; DTC brands will demand governance + audit trails before trusting agents with their marketing budgets. Regulatory pressure will increase as they handle financing.",
+    "best_angle": "Enterprise DTC brands (their future enterprise clients) will require financial accountability before giving agents autonomous spend authority. PP is the governance layer that unlocks enterprise contracts."
+  },
+  "lead_type": "design_partner",
+  "score": 3.9,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 5,
+    "tech_fit": 3,
+    "regulatory": 3,
+    "timing": 4
+  },
+  "source_signal": "signals/2026-03-05.jsonl#zyg",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "Score 3.9 — just under outreach_ready threshold. Timing is perfect (announcement yesterday), but Israeli HQ and unknown tech stack are gaps. Recommend re-evaluate in 2 weeks once they've started hiring and their tech stack becomes visible from job postings."
+}

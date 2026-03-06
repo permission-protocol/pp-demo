@@ -54,11 +54,11 @@ def generate_image_nb2(prompt: str, output_path: str) -> str:
                     f.write(img_data)
                 print(f"   Raw image: {len(img_data)/1024:.0f}KB")
                 return raw_path
-        print("   ❌ No image in response, falling back to Imagen 4.0")
-        return generate_image_imagen(prompt, output_path)
+        print("   ❌ No image in response")
+        return None
     except Exception as e:
-        print(f"   ❌ Nano Banana 2 failed: {e}, falling back to Imagen 4.0")
-        return generate_image_imagen(prompt, output_path)
+        print(f"   ❌ Nano Banana 2 failed: {e}")
+        return None
 
 
 def generate_image_imagen(prompt: str, output_path: str) -> str:

@@ -1,0 +1,64 @@
+{
+  "company": "Conductor",
+  "slug": "conductor-build",
+  "url": "https://conductor.build",
+  "description": "YC-backed Mac app that lets engineering teams run parallel Claude Code and Codex agents in isolated workspaces, with integrated PR review and Linear issue tracking.",
+  "agents": [
+    "Parallel Claude Code agents that write and modify code",
+    "Codex agents that execute tasks autonomously",
+    "Agents that create git commits, PRs, and merge changes",
+    "Agents that interact with Linear issues and project management"
+  ],
+  "funding": {
+    "stage": "YC Seed (W26)",
+    "total": "$500K-$1M (YC standard)",
+    "lead_investor": "Y Combinator",
+    "notes": "4 employees, SF-based. Used by engineers at Linear, Vercel, Notion, Stripe, YC."
+  },
+  "contacts": [
+    {
+      "name": "Charlie Holtz",
+      "title": "Co-Founder",
+      "email": "unknown",
+      "twitter": "https://x.com/charliebholtz",
+      "linkedin": "https://www.linkedin.com/in/charlieholtz/",
+      "github": "charliebholtz",
+      "notes": "Active on Twitter. Brown cognitive neuroscience. Very reachable."
+    },
+    {
+      "name": "Jackson de Campos",
+      "title": "Co-Founder",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Met Charlie Holtz at Brown playing Ultimate Frisbee."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Enforcement layer for agentic code actions — immutable receipts for what each agent was authorized to do",
+    "actions_needing_receipts": [
+      "file_write",
+      "git_commit",
+      "pr_merge",
+      "shell_command_execution",
+      "external_api_call"
+    ],
+    "integration_complexity": "low — drop-in SDK in their agent orchestration layer",
+    "urgency": "high — HN post on March 5 2026 exposed that their sandbox guardrails are non-binding. Agent claimed it couldn't escape sandbox, then did when asked. Users losing trust. PP solves this: real enforcement, not soft guardrails.",
+    "design_partner_angle": "Perfect public incident to reference. We can offer: 'turn the soft guardrail problem into a solved problem with cryptographic enforcement.'"
+  },
+  "lead_type": "design_partner",
+  "score": 3.35,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 2,
+    "tech_fit": 5,
+    "regulatory": 1,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-05.jsonl#conductor-build",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "Score is 3.35 — below outreach_ready threshold. BUT this is the highest-fit design partner candidate for a technical integration reference. Recommend escalating to Rod for a decision: the timing signal and tech fit are exceptional even if the funding stage is early."
+}

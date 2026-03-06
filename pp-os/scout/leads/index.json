@@ -1,0 +1,126 @@
+{
+  "updated": "2026-03-06",
+  "leads": [
+    {
+      "slug": "stacks-ai",
+      "company": "Stacks",
+      "contact": "Albert Malikov",
+      "score": 4.5,
+      "lead_type": "design_partner",
+      "status": "contacted",
+      "channels": ["linkedin"],
+      "contacted_at": "2026-03-05T23:48:00Z"
+    },
+    {
+      "slug": "dyna-ai",
+      "company": "Dyna.Ai",
+      "contact": "Tomas Skoumal",
+      "score": 4.3,
+      "lead_type": "design_partner",
+      "status": "contacted",
+      "channels": ["linkedin"],
+      "contacted_at": "2026-03-05T23:48:00Z"
+    },
+    {
+      "slug": "armorcode",
+      "company": "ArmorCode",
+      "contact": "Nikhil Gupta",
+      "score": 4.0,
+      "lead_type": "design_partner",
+      "status": "contacted",
+      "channels": ["linkedin"],
+      "contacted_at": "2026-03-05T23:48:00Z"
+    },
+    {
+      "slug": "ironcurtain",
+      "company": "IronCurtain (Niels Provos)",
+      "contact": "Niels Provos",
+      "score": 4.2,
+      "lead_type": "ally",
+      "status": "contacted",
+      "channels": ["github"],
+      "contacted_at": "2026-03-05T21:02:00Z",
+      "outreach_url": "https://github.com/provos/ironcurtain/issues/67"
+    },
+    {
+      "slug": "helpnetsecurity",
+      "company": "Help Net Security",
+      "contact": "Zeljka Zorz",
+      "score": 4.0,
+      "lead_type": "amplifier",
+      "status": "contacted",
+      "channels": ["email"],
+      "contacted_at": "2026-03-05T21:02:00Z"
+    },
+    {
+      "slug": "felix-craft",
+      "company": "The Masinov Company (Felix/Nat Eliason)",
+      "contact": "Nat Eliason",
+      "score": 4.5,
+      "lead_type": "power_user",
+      "status": "contacted",
+      "channels": ["email"],
+      "contacted_at": "2026-03-05T21:02:00Z"
+    },
+    {
+      "slug": "circuit-chisel-atxp",
+      "company": "Circuit & Chisel (ATXP)",
+      "contact": "Louis Amira (CEO)",
+      "score": 5.0,
+      "lead_type": "design_partner",
+      "status": "outreach_ready",
+      "notes": "Stripe alumni building autonomous agent payments protocol. Perfect PP fit — they explicitly remove human oversight from transactions. PP is the governance layer their protocol needs for enterprise adoption.",
+      "researched_at": "2026-03-06T14:00:00Z"
+    },
+    {
+      "slug": "chargebacks911",
+      "company": "Chargebacks911",
+      "contact": "Donald Kossmann (CTO)",
+      "score": 4.05,
+      "lead_type": "design_partner",
+      "status": "outreach_ready",
+      "notes": "CTO published article yesterday articulating PP's exact problem. Quote: 'enterprises will need to demonstrate what the agent was allowed to do and what it actually did.' High regulatory exposure (payments/fintech).",
+      "researched_at": "2026-03-06T14:00:00Z"
+    },
+    {
+      "slug": "zyg-ecommerce",
+      "company": "ZyG",
+      "contact": "Omer Kaplan (CEO)",
+      "score": 3.9,
+      "lead_type": "design_partner",
+      "status": "watching",
+      "notes": "$58M seed just announced. Agentic OS for DTC brands — agents manage marketing spend, influencer contracts, supply chain. Tech stack unknown (Israeli startup). Re-evaluate in 2 weeks.",
+      "researched_at": "2026-03-06T14:00:00Z"
+    },
+    {
+      "slug": "conductor-build",
+      "company": "Conductor",
+      "contact": "Charlie Holtz (Co-Founder)",
+      "score": 3.35,
+      "lead_type": "design_partner",
+      "status": "watching",
+      "notes": "YC seed. HN post yesterday exposed their sandbox guardrails are bypassable. Exceptional tech fit and timing but early stage. Recommend Rod review for a design partner exception given incident signal.",
+      "researched_at": "2026-03-06T14:00:00Z"
+    },
+    {
+      "slug": "oath-protocol",
+      "company": "OATH Protocol",
+      "contact": "unknown founder",
+      "score": 3.5,
+      "lead_type": "ally",
+      "status": "watching",
+      "notes": "Open-source local-first cryptographic intent verification (Rust). Direct philosophical complement to PP. HN Show HN 3 days ago. Identify founder, explore protocol alignment.",
+      "researched_at": "2026-03-06T14:00:00Z"
+    },
+    {
+      "slug": "guardianreplay-slaine",
+      "company": "GuardianReplay / Slaine",
+      "contact": "unknown",
+      "score": 2.0,
+      "lead_type": "ally",
+      "status": "watching",
+      "notes": "No public presence found. Cannot verify existence. Re-queue for next scan.",
+      "researched_at": "2026-03-06T14:00:00Z"
+    }
+  ]
+}

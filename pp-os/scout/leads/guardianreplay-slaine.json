@@ -1,0 +1,43 @@
+{
+  "company": "GuardianReplay / Slaine",
+  "slug": "guardianreplay-slaine",
+  "url": "unknown",
+  "description": "Unverified — signal in latest-scan.json describes a 'tamper-evident agent audit' company. No public web presence found under either name.",
+  "agents": ["unknown"],
+  "funding": {
+    "stage": "unknown / pre-public",
+    "total": "unknown",
+    "lead_investor": "unknown",
+    "notes": "Cannot confirm existence via web search. May be stealth, a codename used in the scan, or not yet publicly announced."
+  },
+  "contacts": [
+    {
+      "name": "unknown",
+      "title": "unknown",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "No contact information available."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Potentially complementary — tamper-evident audit is core to PP's receipts model",
+    "actions_needing_receipts": ["unknown"],
+    "integration_complexity": "unknown",
+    "urgency": "unknown"
+  },
+  "lead_type": "ally",
+  "score": 2.0,
+  "score_breakdown": {
+    "consequence": 3,
+    "funding": 1,
+    "tech_fit": 3,
+    "regulatory": 2,
+    "timing": 1
+  },
+  "source_signal": "signals/2026-03-05.jsonl#guardianreplay",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "RESEARCH INCOMPLETE. Searched 'GuardianReplay', 'Slaine AI agent audit', 'guardianreplay.com', 'slaine.ai' — zero results. Re-queue for next scan with additional signal context. May require the original scan source URL or a different name variant."
+}

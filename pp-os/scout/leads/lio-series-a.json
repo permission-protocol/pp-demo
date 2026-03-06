@@ -1,0 +1,21 @@
+{
+  "slug": "lio-series-a",
+  "company": "Lio (fka askLio)",
+  "website": "https://asklio.com (assumed)",
+  "one_liner": "Agentic AI platform for enterprise procurement — automates purchasing workflows autonomously.",
+  "stage": "Series A ($30M — March 5, 2026)",
+  "hq": "New York City",
+  "key_person": {
+    "name": "TBD (needs research)",
+    "title": "Founder/CEO",
+    "contact_channels": ["LinkedIn", "email"]
+  },
+  "why_pp": "Procurement agents execute high-stakes, irreversible actions autonomously — vendor approvals, PO creation, spend commits. This is exactly the class of actions where unauthorized execution is catastrophic. PP's pre-action cryptographic authorization receipts + human approval gates give enterprise procurement teams the 'kill switch' they need to deploy agents without betting the company on alignment alone.",
+  "best_channel": "email or LinkedIn",
+  "best_approach": "Frame around procurement-specific risk: 'An agent that approves a $2M vendor without a human receipt in the audit trail is a liability, not an asset. PP closes that gap before your customers ask.'",
+  "urgency": "high — fresh funding = GTM expansion, enterprise customers asking hard questions",
+  "found_at": "2026-03-05T19:03:00-07:00",
+  "source": "hotline",
+  "status": "needs_research",
+  "notes": "Founder name + contact not found — rate-limited on search. Run follow-up research next cycle."
+}

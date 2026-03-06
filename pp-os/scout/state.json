@@ -1,0 +1,22 @@
+{
+  "lastRun": "2026-03-06T14:06:00Z",
+  "lastHotlineRun": "2026-03-06T14:06:00Z",
+  "hotSignalsToday": 2,
+  "fastTrackActionsThisRun": 2,
+  "tweetsPosted": [
+    {
+      "id": "2029921710879953381",
+      "text": "MIT study engagement tweet",
+      "postedAt": "2026-03-06T14:06:00Z"
+    }
+  ],
+  "pendingReplies": [
+    {
+      "inReplyTo": "2029700250819002644",
+      "draft": "outreach/approved/tweet-reply-2029700250819002644.md",
+      "error": "403 Forbidden — likely app-level reply restriction or protected tweet",
+      "needsManualPost": true
+    }
+  ],
+  "topSignalsSummary": "MIT/Cambridge/Harvard/Stanford published 30-agent study (19h ago): 'striking lack of protocols.' OpenClaw security crisis: 1,184 malicious ClawHub skills. IETF RFC draft for AI agent auth filed. All directly validate PP thesis."
+}

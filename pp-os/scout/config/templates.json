@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "updated": "2026-03-05",
+  "sender": {
+    "name": "Rod Carvalho",
+    "title": "Founder",
+    "company": "Permission Protocol",
+    "email": "rod@permissionprotocol.com",
+    "twitter": "@PermissionPrtcl",
+    "website": "permissionprotocol.com"
+  },
+  "templates": {
+    "design_partner_email": {
+      "subject_patterns": [
+        "Authorization receipts for {company}'s agents",
+        "Permission Protocol + {company} — the missing enforcement layer",
+        "{specific_pain} → cryptographic solution"
+      ],
+      "structure": [
+        "1. Hook: Reference their specific agent use case or incident (1 sentence)",
+        "2. Problem: Name the gap — no external gate between agent decision and action (2 sentences)",
+        "3. Solution: PP authorization receipts, specific to THEIR use case (2-3 sentences)",
+        "4. Proof: NIST submission, open-source SDKs, specific technical detail (1-2 sentences)",
+        "5. Ask: 15-minute call, not 'let me know if interested' (1 sentence)"
+      ],
+      "max_words": 150,
+      "tone": "technical peer, not salesperson"
+    },
+    "design_partner_linkedin": {
+      "structure": [
+        "1. One provocative question about THEIR specific agent risk",
+        "2. One sentence: what we built (no jargon)",
+        "3. permissionprotocol.com — nothing else"
+      ],
+      "max_words": 40,
+      "tone": "ultra-short, one question that makes them think, zero filler. Rod-approved style: 'Congrats on X. When Y happens — who proves Z? That's what we built. link'"
+    },
+    "ally_github": {
+      "subject_patterns": [
+        "Interop opportunity — {their_tool} + Permission Protocol",
+        "Complementary layers: {their_category} + authorization receipts"
+      ],
+      "structure": [
+        "1. Genuine compliment on their project (specific, not generic)",
+        "2. How PP complements what they built (not competes)",
+        "3. The combined value proposition",
+        "4. Open-source SDKs + NIST submission as credibility",
+        "5. Offer to discuss interop"
+      ],
+      "max_words": 200,
+      "tone": "fellow open-source builder"
+    },
+    "amplifier_email": {
+      "subject_patterns": [
+        "Expert source — AI agent authorization infrastructure",
+        "The gap between agent monitoring and agent authorization"
+      ],
+      "structure": [
+        "1. Reference their recent coverage (specific article/piece)",
+        "2. The insight they haven't covered yet (authorization vs monitoring)",
+        "3. PP credentials: NIST submission, open-source, technical depth",
+        "4. Offer: expert source, guest column, incident analysis",
+        "5. Available anytime"
+      ],
+      "max_words": 150,
+      "tone": "helpful expert, not self-promoting"
+    },
+    "power_user_twitter_dm": {
+      "structure": [
+        "1. Reference their specific agent/project",
+        "2. The risk they're running (specific to their setup)",
+        "3. PP as the fix (1 sentence + SDK install command)",
+        "4. Shareable proof page concept"
+      ],
+      "max_words": 80,
+      "tone": "builder to builder, casual"
+    }
+  },
+  "rules": {
+    "never_say": [
+      "I'd love to",
+      "I hope this finds you well",
+      "touching base",
+      "synergy",
+      "leverage",
+      "game-changing",
+      "revolutionary"
+    ],
+    "always_include": [
+      "pip install permission-protocol OR npm install @permission-protocol/sdk",
+      "permissionprotocol.com"
+    ],
+    "personalization_minimum": "Must reference at least ONE specific thing about the recipient (their product, their code, their writing, their funding)"
+  }
+}
