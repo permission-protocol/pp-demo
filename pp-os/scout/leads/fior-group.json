@@ -1,0 +1,55 @@
+{
+  "company": "Fior Group",
+  "slug": "fior-group",
+  "url": "https://fior.group",
+  "description": "UK-based startup that launched a quantum-safe AI agent authentication and governance platform — assigns unique cryptographic identities to every AI agent and machine, with real-time policy enforcement, network-boundary verification, and global revocation in <1ms.",
+  "agents": [
+    "FIOR.Auth: assigns cryptographic identity to AI agents, links to responsible operator, 75 APIs for granular permission control",
+    "FIOR.Gateway: verifies every agent at network boundary, governs behavior in-environment, revokes access on policy violation in <1ms",
+    "FIOR.Mobile Shield: mobile-layer agent protection",
+    "FIOR.Voice: voice-session identity binding"
+  ],
+  "funding": {
+    "stage": "Unknown — likely bootstrapped or pre-seed",
+    "total": "undisclosed",
+    "lead_investor": "unknown",
+    "notes": "No funding announcements found. PR-wire launch with press release suggests early-stage. UK-based."
+  },
+  "contacts": [
+    {
+      "name": "David Williams",
+      "title": "Founder, Fior Group",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://uk.linkedin.com/in/davidwilliamsfounder",
+      "github": "unknown",
+      "notes": "Based in UK. Active on launch PR. Quote: 'The security model protecting those environments was never designed for autonomous actors.'"
+    }
+  ],
+  "pp_fit": {
+    "feature": "Action-time audit receipts — the 'what actually happened' complement to Fior's 'who is allowed to act'",
+    "actions_needing_receipts": [
+      "agent_api_call_with_identity",
+      "policy_enforcement_event",
+      "access_revocation_trigger",
+      "network_boundary_crossing",
+      "permission_grant_or_deny"
+    ],
+    "integration_complexity": "low — 75 REST APIs, sub-millisecond architecture suggests SDK-friendly; PP receipts attach to FIOR.Auth identity events natively",
+    "urgency": "medium — just launched, building customer base; early co-positioning opportunity before they build audit trail in-house",
+    "strategic_angle": "Fior answers 'who is this agent and is it allowed?' PP answers 'what did this agent actually do, provably and immutably.' They are philosophically identical on the problem definition. Co-positioning opportunity OR risk they build receipts themselves as they mature. First-mover window to establish PP as the receipt standard Fior integrates."
+  },
+  "lead_type": "ally",
+  "score": 3.3,
+  "score_breakdown": {
+    "consequence": 3,
+    "funding": 2,
+    "tech_fit": 4,
+    "regulatory": 4,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-07.jsonl#3",
+  "created": "2026-03-07",
+  "status": "watching",
+  "notes": "Score below 4.0 due to unknown funding and UK-only presence. Strong philosophical alignment — David Williams is narrating PP's exact thesis. Watch for: (1) funding announcement (triggers outreach_ready), (2) customer traction signals, (3) any mention of audit trails or receipts in product roadmap. Could flip to competitor if they build audit layer in-house. Recommend Rod read their launch materials — highest overlap in framing of any company discovered so far."
+}

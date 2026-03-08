@@ -1,0 +1,17 @@
+{
+  "title": "HN Comment \u2014 AgentSeal Show HN (tool-call authorization gap)",
+  "platform": "hn",
+  "url": "https://news.ycombinator.com/item?id=47276273",
+  "published_at": "2026-03-06T08:36:00-07:00",
+  "signal_source": "https://news.ycombinator.com/item?id=47273144",
+  "content_type": "thought_leadership",
+  "priority": "warm",
+  "initial_metrics": {},
+  "follow_up_scheduled": false,
+  "metrics": {
+    "checked_at": "2026-03-06T17:15:00Z",
+    "replies": 0,
+    "engagement_score": 0,
+    "status": "live, waiting for traction"
+  }
+}

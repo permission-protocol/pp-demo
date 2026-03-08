@@ -1,25 +1,5 @@
 {
-  "version": 1,
-  "last_signal_scan": "2026-03-06T07:08:00-07:00",
-  "last_content_draft": null,
-  "last_publish": null,
-  "last_engagement_check": null,
-  "last_amplification": null,
-  "last_learning_run": null,
-  "daily_limits": {
-    "blog_today": 0,
-    "twitter_today": 0,
-    "linkedin_today": 0,
-    "github_today": 0,
-    "hn_today": 0,
-    "last_reset": null
-  },
-  "counters": {
-    "total_published": 0,
-    "total_signals": 4,
-    "total_engagements": 0
-  },
-  "do_not_cover": [],
-  "last_hotline_run": "2026-03-06T14:11:50.215595+00:00",
-  "last_hotline_engagements": 2
+  "last_signal_scan": "2026-03-07T23:00:00-07:00",
+  "last_publisher_run": null,
+  "hot_signals_pending": 3
 }

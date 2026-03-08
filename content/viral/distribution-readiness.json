@@ -1,0 +1,46 @@
+{
+  "platforms": {
+    "x_permissionprtcl": {
+      "status": "ready",
+      "account": "@PermissionPrtcl",
+      "api_keys": "~/.openclaw/secrets/x-api-pp.json",
+      "followers": 3,
+      "notes": "Brand new account, low reach. Needs growth."
+    },
+    "hackernews": {
+      "status": "ready",
+      "account": "rodchalski",
+      "creds": "1Password: news.ycombinator.com",
+      "karma": "new",
+      "notes": "Can submit links. Low karma may affect ranking."
+    },
+    "reddit_permissionprotocol": {
+      "status": "warmup",
+      "account": "PermissionProtocol",
+      "creds": "1Password: Reddit",
+      "karma": 0,
+      "age_days": 0,
+      "min_karma_to_post": 50,
+      "warmup_method": "Daily Scout digest (scout-reddit-digest cron), Rod posts manually",
+      "estimated_ready": "2026-03-27",
+      "notes": "Cannot auto-post (Reddit blocks bots). Cannot post to major subs yet."
+    },
+    "reddit_xdaresofficial": {
+      "status": "available",
+      "account": "xDaresOfficial",
+      "notes": "Has history, can post to major subs. Use for time-sensitive pieces."
+    },
+    "linkedin_rod": {
+      "status": "manual",
+      "notes": "Rod posts manually. Charles drafts content. Best for founder-voice pieces."
+    },
+    "blog_pp": {
+      "status": "ready",
+      "url": "permissionprotocol.com/blog",
+      "deploy": "Vercel auto-deploy on merge to main",
+      "publish_script": "scripts/publish-blog.sh",
+      "notes": "Static HTML in public/blog/. OG tags needed for social cards."
+    }
+  },
+  "updated": "2026-03-06"
+}

@@ -1,0 +1,80 @@
+{
+  "company": "IETF draft-klrc-aiagent-auth (Standards Track)",
+  "slug": "ietf-aiagent-auth",
+  "url": "https://datatracker.ietf.org/doc/draft-klrc-aiagent-auth/",
+  "description": "IETF Internet-Draft (filed March 2, 2026) proposing a model for AI agent authentication and authorization by extending existing standards — OAuth 2.0 and WIMSE (Workload Identity in Multi-System Environments) — rather than defining new protocols. Currently at version -00 (first draft). Submitted to the OAuth Working Group.",
+  "agents": [
+    "Standards framework covering agent-to-agent auth delegation chains",
+    "Agent identity management (treating agents as workloads)",
+    "Authorization scoping at token-issuance time (vs PP's action-time)"
+  ],
+  "funding": {
+    "stage": "N/A — standards body",
+    "total": "N/A",
+    "lead_investor": "N/A",
+    "notes": "IETF working document. No commercial entity or funding. Expires September 3, 2026 if not progressed."
+  },
+  "contacts": [
+    {
+      "name": "Pieter Kasselman",
+      "title": "Author — Defakto Security",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/pieterkasselman",
+      "github": "PieterKas",
+      "notes": "Lead author and likely initiator. Published GitHub repo at PieterKas/agent2agent-auth-framework. Defakto Security — security standards practitioner."
+    },
+    {
+      "name": "Justin Lombardo",
+      "title": "Author — AWS",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "AWS participation signals enterprise cloud interest in standardizing agent auth."
+    },
+    {
+      "name": "Yaron Rosomakho",
+      "title": "Author — Zscaler",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Zscaler = enterprise network security, ZTNA. Their involvement signals enterprise security concern about agent identity."
+    },
+    {
+      "name": "Brian Campbell",
+      "title": "Author — Ping Identity",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Ping Identity is a major enterprise IAM/OAuth vendor. Their authorship signals that OAuth players are building toward agent auth."
+    }
+  ],
+  "pp_fit": {
+    "feature": "PP solves what this draft cannot — action-time authorization receipts vs token-issuance-time delegation",
+    "actions_needing_receipts": [
+      "agent_identity_delegation",
+      "action_time_authorization",
+      "cross_agent_trust_chain"
+    ],
+    "integration_complexity": "strategic — PP should align with or extend this framework, not compete with it",
+    "urgency": "medium — standards timelines are slow (6-18 months), but early shaping is valuable",
+    "key_gap": "This draft extends OAuth: authorize at token-issuance time. PP authorizes at action-execution time and issues receipts. These are complementary — OAuth handles who can act (identity), PP handles what was authorized per action (authorization receipt). PP could position as the action-layer complement to this standard.",
+    "strategic_opportunity": "Engage IETF OAuth WG as a contributor. Position PP's authorization receipt model as the 'action plane' complement to WIMSE's 'identity plane'. Submitting a PP-authored companion draft would establish Rod/PP as standards-setters, not just a startup."
+  },
+  "lead_type": "competitor",
+  "score": 3.3,
+  "score_breakdown": {
+    "consequence": 3,
+    "funding": 2,
+    "tech_fit": 4,
+    "regulatory": 4,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-06.jsonl#ietf-draft-klrc",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "Not a competitor in the commercial sense — a standards effort that validates the space. Key risk: if this draft gets adopted as the RFC, 'agent authorization' becomes synonymous with OAuth extension and PP's action-receipt model could be sidelined. Key opportunity: engage Kasselman (GitHub PieterKas) as a thought-partner, propose that PP's authorization receipt model fills the 'action-time evidence' gap explicitly called out in the draft's 'identify gaps' section. Rod should read the full draft. Flag for Rod review."
+}

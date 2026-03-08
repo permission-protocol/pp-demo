@@ -1,0 +1,51 @@
+{
+  "slug": "grantex-competitor",
+  "type": "competitor",
+  "name": "Grantex",
+  "detected": "2026-03-07T00:02Z",
+  "source": "hn_hotline",
+  "hn_id": "47226273",
+  "url": "https://grantex.dev",
+  "github": "https://github.com/mishrasanjeev/grantex",
+  "docs": "https://grantex.dev/docs",
+  "ietf_draft": "https://datatracker.ietf.org/doc/draft-mishra-oauth-agent-grants/",
+  "what_they_do": "Open delegated authorization protocol for AI agents. OAuth 2.0 for the agentic era: principals grant agents scoped, time-limited permissions via signed JWT tokens. Every action auditable. Instant revocation including cascade across delegation chains.",
+  "positioning": "Standards-track OAuth extension for agent authorization",
+  "status": "Production-ready. SOC 2 Type I certified. Security audited (Vestige Security Labs). IETF Internet-Draft submitted to OAuth Working Group.",
+  "tech": {
+    "sdks": ["TypeScript", "Python", "Go"],
+    "integrations": ["LangChain", "OpenAI Agents SDK", "Google ADK", "CrewAI", "Vercel AI", "MCP"],
+    "policy_engines": ["OPA", "Cedar"],
+    "features": ["JWT token grants", "cascade revocation", "budget controls", "Prometheus metrics", "OpenTelemetry tracing"],
+    "deployment": ["Docker Compose", "Helm/Kubernetes", "Terraform provider"],
+    "tests": 679,
+    "hosted_on": "Google Cloud Run",
+    "license": "Apache 2.0"
+  },
+  "install": {
+    "npm": "npm install @grantex/sdk",
+    "pip": "pip install grantex",
+    "go": "go get github.com/mishrasanjeev/grantex-go"
+  },
+  "hn_points": 2,
+  "threat_level": "HIGH",
+  "differentiation": {
+    "vs_pp": "JWT-scoped grants (OAuth model) vs cryptographic action receipts (PP model). Grantex is about what an agent CAN do (pre-auth); PP is about proving what an agent DID (audit trail + enforcement). Both solve authorization vacuum but at different layers.",
+    "pp_advantages": [
+      "Receipt-first model: every action gets a cryptographic proof before execution",
+      "Fail-closed design (no receipt = action blocked at runtime)",
+      "Human approval gates with founder veto",
+      "More focused on audit/compliance receipts vs token delegation",
+      "Simpler mental model: receipts not OAuth grants"
+    ],
+    "grantex_advantages": [
+      "Standards-track (IETF) — this is a moat if OAuth WG adopts it",
+      "More integrations (LangChain, OpenAI, Google ADK, CrewAI, MCP)",
+      "SOC 2 already",
+      "More mature (679 tests, Helm chart, Terraform provider)",
+      "Self-hostable Apache 2.0"
+    ]
+  },
+  "action": "MONITOR — watch IETF draft progress. If it gains traction in OAuth WG, PP needs a standards position. Consider engaging with the author (mishrasanjeev on GitHub). Do NOT ignore — they are further along on enterprise readiness.",
+  "notes": "HN post from 2026-03-03. Only 2 points which is surprisingly low for this level of work — suggests limited organic traction despite solid engineering."
+}

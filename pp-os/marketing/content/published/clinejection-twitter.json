@@ -1,0 +1,30 @@
+{
+  "title": "Clinejection — 4,000 Machines, One GitHub Issue Title",
+  "platform": "twitter",
+  "url": "https://x.com/PermissionPrtcl/status/2029958627377958942",
+  "published_at": "2026-03-06T09:33:00-07:00",
+  "signal_source": "https://simonwillison.net/2026/Mar/6/clinejection/",
+  "content_type": "incident_reaction",
+  "priority": "hot",
+  "tweet_ids": [
+    "2029958627377958942",
+    "2029958628573335878",
+    "2029958630167203968",
+    "2029958631945556304"
+  ],
+  "metrics": {
+    "checked_at": "2026-03-07T00:05:00Z",
+    "impressions_combined": 12,
+    "likes": 0,
+    "retweets": 0,
+    "replies": 3,
+    "quotes": 0,
+    "engagement_score": 15,
+    "flagged_for_amplification": false,
+    "status": "early — best performer today. 3 replies, growing impressions",
+    "history": [
+      {"checked_at": "2026-03-06T17:15:00Z", "impressions": 4, "replies": 2, "score": 10},
+      {"checked_at": "2026-03-07T00:05:00Z", "impressions": 12, "replies": 3, "score": 15}
+    ]
+  }
+}

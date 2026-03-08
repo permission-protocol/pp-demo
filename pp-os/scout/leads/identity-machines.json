@@ -1,0 +1,28 @@
+{
+  "company": "Identity Machines",
+  "product": "Iron Book",
+  "url": "https://www.identitymachines.com",
+  "type": "competitor-partner",
+  "score": 4.5,
+  "source": "linkedin-comment-2026-03-06",
+  "referrer": "Jesse H. (LinkedIn comment on Rod's post)",
+  "status": "research_complete",
+  "funding": "unknown",
+  "contact": {
+    "demo_link": "https://calendly.com/lwolfe-identitymachines/demo-and-q-a",
+    "name": "L. Wolfe (from Calendly)"
+  },
+  "what_they_do": "Zero-trust SaaS platform for AI agent identity, security, and compliance. Agent trust scoring, dynamic capabilities-based access control (CapBAC), immutable audit trails.",
+  "overlap_with_pp": {
+    "high": ["agent authorization", "audit trails", "policy enforcement", "runtime access control"],
+    "medium": ["trust scoring (PP doesn't have this yet)", "compliance mapping"],
+    "low": ["IAM integration (Entra ID, Cognito)", "multi-cloud deployment"]
+  },
+  "differentiation": {
+    "pp_advantage": "Simpler SDK-first approach, deploy gate for CI/CD, receipt-based proof, open-source SDK",
+    "im_advantage": "Enterprise IAM integration, zero-trust identity framework, trust scoring, established compliance certifications, handles agent-to-agent auth"
+  },
+  "positioning": "They're enterprise-up (IAM/security teams), we're developer-up (SDK/CI). Different GTM, similar destination. Could be complementary or collision course depending on market evolution.",
+  "action": "Monitor closely. Don't treat as enemy — treat as market validation. Their existence proves the category is real. Consider: could PP receipts feed into their trust scores?",
+  "created": "2026-03-06"
+}

@@ -1,0 +1,101 @@
+{
+  "date": "2026-03-06",
+  "last_updated": "2026-03-07T00:05:00Z",
+  "checks": [
+    "2026-03-06T17:09:46Z",
+    "2026-03-07T00:05:00Z"
+  ],
+  "twitter": {
+    "agent_commander_tweet": {
+      "id": "2029958930433220947",
+      "impressions": 3,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0,
+      "quotes": 0,
+      "engagement_score": 0,
+      "hours_live": 8.5,
+      "status": "underperforming",
+      "note": "Thread broken (403 on tweet 2). Standalone tweet only. 0 engagement at 8.5h."
+    },
+    "clinejection_thread": {
+      "ids": [
+        "2029958627377958942",
+        "2029958628573335878",
+        "2029958630167203968",
+        "2029958631945556304"
+      ],
+      "impressions_combined": 12,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 3,
+      "quotes": 0,
+      "engagement_score": 15,
+      "hours_live": 8.5,
+      "status": "best performer today",
+      "note": "3 replies across thread. Growing: 4 → 12 impressions, 2 → 3 replies since morning."
+    },
+    "meta_agent_tweet": {
+      "id": "2030018636208083264",
+      "impressions": 6,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0,
+      "quotes": 0,
+      "engagement_score": 0,
+      "hours_live": 2.5,
+      "status": "too early — check at 24h",
+      "note": "Published 13:31 MDT. Very early. Meta alignment story has wide reach potential."
+    }
+  },
+  "hn": {
+    "cursor_is_dead_submission": {
+      "item_id": 47277134,
+      "points": 18,
+      "comments": 0,
+      "status": "DEAD (flagged)",
+      "note": "Still dead after 8h. 18 points lost. No recovery path visible."
+    },
+    "enterprise_security_comment": {
+      "item_id": 47276287,
+      "replies": 0,
+      "status": "live, no replies",
+      "note": "Low-traction parent thread. No engagement."
+    },
+    "agentseal_comment": {
+      "item_id": 47276273,
+      "replies": 0,
+      "status": "live, no replies",
+      "note": "Low-traction parent thread. No engagement."
+    }
+  },
+  "blog": {
+    "cursor_is_dead": {
+      "url": "https://www.permissionprotocol.com/blog/cursor-is-dead",
+      "pageviews_7d": 0,
+      "note": "Not showing in PostHog — likely no tracking or not yet indexed."
+    }
+  },
+  "site_overall": {
+    "pageviews_7d": 100,
+    "homepage": 24,
+    "review_pages": 43,
+    "quickstart_docs": 20,
+    "presentation": 2,
+    "brand": 1,
+    "developers": 2,
+    "note": "Review pages are biggest traffic driver (43 views) — people actively clicking through to /review/* IDs"
+  },
+  "best_performer": "clinejection_thread (score: 15, 3 replies, growing)",
+  "flags": {
+    "amplification": [],
+    "underperforming": ["agent_commander_tweet (score 0, thread broken)"],
+    "alerts": [
+      "Agent Commander thread still broken — 403 on tweet 2 persists. Consider standalone follow-up tweet instead.",
+      "HN 'Cursor is Dead' still DEAD after 8h — 18 points permanently lost.",
+      "HN comments on low-traction threads (enterprise-security, agentseal) — 0 replies each.",
+      "NOTABLE: /review/* pages getting heavy traffic (43 views) — something is driving people to review pages directly."
+    ]
+  },
+  "summary": "Day 1 content fully published. Best signal: Clinejection thread (3 replies, 15 score). Meta agent tweet too new to judge. Twitter API reply issue (403) blocking thread completion. HN submission flagged/dead. Site review page traffic is the biggest surprise — worth investigating."
+}

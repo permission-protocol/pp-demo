@@ -1,32 +1,18 @@
 {
   "slug": "lio-ai",
-  "created": "2026-03-05T18:02:00-07:00",
-  "source": "hotline",
+  "company": "Lio",
+  "website": "lio.ai",
+  "what_they_do": "AI-native platform deploying autonomous agent teams to automate the entire enterprise procurement process — from request submission through supplier negotiation, compliance checks, ERP updates, and contract management.",
+  "funding": "$30M Series A led by a16z (March 5, 2026). Total raised: $33M. YC Spring '23 alumni.",
+  "founders": [
+    {"name": "Vladimir Keil", "role": "CEO", "twitter": null, "linkedin_hint": "vladimir-keil"},
+    {"name": "Lukas Heinzmann", "role": "Co-founder"},
+    {"name": "Till Wagner", "role": "Co-founder"}
+  ],
+  "pp_fit": "CRITICAL. Lio's agents touch enterprise financials, legal contracts, compliance checks, supplier approvals, and ERP writes. Each of these is a high-stakes action where enterprise customers will demand: (1) cryptographic audit receipts before execution, (2) human approval gates for threshold-exceeding purchases, (3) founder/CISO veto capability, (4) provable compliance logging. Post-a16z fundraise means enterprise expansion is the priority — and enterprise procurement teams DO NOT accept 'trust us' from AI vendors. PP is the trust layer that makes Lio sellable to Fortune 500s.",
+  "urgency": "HIGH — fresh capital means hiring and enterprise sales motion starting NOW. First mover on the PP integration story.",
+  "contact_channel": "email + LinkedIn (CEO Vladimir Keil)",
+  "signal_source": "a16z tweet + TechCrunch coverage, March 5 2026",
   "score": 5,
-  "status": "pending-approval",
-
-  "company": {
-    "name": "Lio",
-    "url": "https://lio.ai",
-    "description": "AI-native platform deploying agent teams to fully automate enterprise procurement — from request to PO — across ERP, contract management, supplier DBs, and email.",
-    "stage": "Series A",
-    "funding": "$30M raised today (March 5, 2026), led by a16z. $33M total. YC Spring '23.",
-    "investors": ["a16z", "SV Angels", "Harry Stebbings", "Y Combinator"],
-    "traction": "Managing billions in enterprise spend. One client automated 75% of outsourced procurement ops in 6 months."
-  },
-
-  "key_person": {
-    "name": "Vladimir Keil",
-    "role": "Co-founder & CEO",
-    "linkedin_guess": "https://www.linkedin.com/in/vladimirkeil",
-    "twitter_guess": "@vladkeil",
-    "email_guess": "vlad@lio.ai"
-  },
-
-  "pp_angle": "Lio agents operate autonomously across ERP systems, contracts, supplier databases, and email — exactly the kind of high-stakes, multi-system access that enterprise risk and compliance teams lose sleep over. When an agent can negotiate terms, approve POs, and onboard suppliers, you need more than a system prompt to prove it acted correctly. Permission Protocol gives every Lio agent action a cryptographic authorization receipt *before* it executes — an audit trail that legal, finance, and enterprise security teams can trust. This turns PP from an add-on into a sales accelerator for Lio's enterprise deals.",
-
-  "best_channel": "email",
-  "requires_approval": "charles",
-
-  "outreach_file": "outreach/pending/lio-ai-email.md"
+  "created_at": "2026-03-06T18:05:00Z"
 }

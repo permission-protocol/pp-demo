@@ -1,0 +1,89 @@
+{
+  "company": "Ignyte Solutions (Anchor Protocol)",
+  "slug": "ignyte-anchor",
+  "url": "https://github.com/Ignyte-Solutions/anchor",
+  "description": "Open protocol for deterministic, offline verification of AI agent authorization — cryptographically signed Capability and ActionEnvelope artifacts verified locally without any network calls at decision time.",
+  "agents": [
+    "Not an agent platform — defines the verification substrate that agent platforms implement",
+    "Any agent invoking a tool must present a signed ActionEnvelope against a signed Capability",
+    "Verifiers evaluate both artifacts locally using a TrustBundle (no central authority required)",
+    "High-risk action mode: challenge nonce binding required before execution",
+    "Gateway enforcement pattern: verify artifacts at service boundaries before forwarding requests"
+  ],
+  "funding": {
+    "stage": "unknown — no public company presence found",
+    "total": "unknown",
+    "lead_investor": "unknown",
+    "notes": "GitHub org created recently. 1 star. No website, no LinkedIn, no Crunchbase presence found. Either pre-announcement stealth, solo developer project, or a consultancy by that name that hasn't announced this work publicly."
+  },
+  "contacts": [
+    {
+      "name": "unknown",
+      "title": "unknown",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "Ignyte-Solutions",
+      "notes": "No individual contributors visible in GitHub UI. Commits from Feb 12-17, 2026. Author identity not surfaced. Could open a GitHub issue to make contact."
+    }
+  ],
+  "pp_fit": {
+    "feature": "PP is the enterprise audit + approval layer above Anchor's verification substrate. Anchor proves the action was within signed scope; PP issues the immutable receipt that the action occurred, routes approval for high-risk actions, and provides centralized audit trails.",
+    "actions_needing_receipts": [
+      "Any action submitted as a signed ActionEnvelope — the Anchor protocol explicitly does not provide an audit receipt layer",
+      "High-risk actions with challenge nonce enforcement",
+      "Delegated capability chains (multi-hop agent authorization)"
+    ],
+    "integration_complexity": "low — Anchor's SDKs (Go, TypeScript, Python, Java) provide local verification; PP wraps the VerificationResult to issue a signed receipt and route to audit/approval pipeline",
+    "urgency": "low — project is early (1 star, last commit Feb 17), founder unknown",
+    "strategic_angle": "Anchor solves: 'was this action within cryptographically signed scope?' PP solves: 'did this action occur, who approved it, and where is the immutable proof?' These are adjacent primitives — Anchor handles verification-time; PP handles post-execution receipts and enterprise governance. Potential: PP could publish an Anchor-compatible integration pattern or open a spec discussion on the receipt layer gap."
+  },
+  "tech_stack": {
+    "core_language": "Go 1.24.6+",
+    "sdks": ["Go", "TypeScript", "Python", "Java"],
+    "protocol_artifacts": ["Capability", "ActionEnvelope", "VerificationResult", "TrustBundle"],
+    "schema_format": "JSON Schema (v2 spec)",
+    "license": "Apache-2.0",
+    "notes": "Deterministic verification — same inputs + trust policy = same output. Machine-readable reason codes for audit pipeline integration. Optional transparency reference linkage. Explicitly no network dependency at verification time."
+  },
+  "protocol_details": {
+    "verification_model": "local-first, offline-capable",
+    "key_primitives": [
+      "Capability (signed by issuer, scopes allowed actions)",
+      "ActionEnvelope (signed by agent, references capability)",
+      "TrustBundle (local trust material for key resolution)",
+      "VerificationResult (deterministic output with reason codes)"
+    ],
+    "v2_schema": true,
+    "replay_protection": true,
+    "delegation_depth_bound": true,
+    "rfcs_process": "docs/rfcs/ with security review + conformance vector updates required",
+    "versioning": "semantic versioning with explicit migration guides"
+  },
+  "competitive_overlap": {
+    "vs_pp": "Anchor = pre-execution verification that action is within signed scope. PP = post-execution receipt proving action occurred + approval routing + centralized audit. Non-overlapping primitives.",
+    "vs_grantex": "Grantex = OAuth 2.0-style delegated scoping (JWT grants, pre-auth). Anchor = cryptographic local verification at execution time. Anchor is more primitive than Grantex.",
+    "vs_oath_protocol": "OATH Protocol = human-signed intent attestation (local dev workflow). Anchor = machine-verifiable capability delegation (protocol substrate). Compatible layers."
+  },
+  "signal_note": "Original signal listed URL as github.com/openclaw-ecosystem/anchor (404). Actual repo found at Ignyte-Solutions/anchor via GitHub search.",
+  "lead_type": "ally",
+  "score": 3.3,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 1,
+    "tech_fit": 5,
+    "regulatory": 3,
+    "timing": 4,
+    "notes": "Tech fit is perfect — multi-language SDKs, complementary protocol layer, explicitly leaves the receipt/audit layer open. Dragged down by unknown/unfunded status. Timing is fresh. If the team has enterprise backing or fundraises, this warrants immediate outreach."
+  },
+  "source_signal": "signals/2026-03-07.jsonl — GitHub updated 8 days ago",
+  "created": "2026-03-07",
+  "status": "watching",
+  "watch_triggers": [
+    "Star count crosses 50",
+    "Founder identity revealed (GitHub issues, social)",
+    "Funding announcement",
+    "HN post or blog post",
+    "IETF or standards body engagement"
+  ]
+}

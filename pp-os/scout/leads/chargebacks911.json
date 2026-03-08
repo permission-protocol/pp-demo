@@ -58,5 +58,21 @@
   },
   "source_signal": "signals/2026-03-05.jsonl#chargebacks911",
   "created": "2026-03-06",
-  "status": "outreach_ready"
+  "status": "outreach_drafted",
+  "warmup": {
+    "started": "2026-03-06T22:05:00Z",
+    "actions": [
+      {
+        "type": "linkedin_comment_drafted",
+        "target": "https://www.linkedin.com/in/donald-kossmann-8915b1/",
+        "target_context": "Kossmann's HNS interview published March 5, 2026 — likely shared on his LinkedIn",
+        "draft_comment": "Strong framing of the intent drift problem — the gap between 'what was authorized' and 'what the agent actually chose to do' is exactly where traditional OAuth models start to break down. The 'evidence trail showing how authority was exercised over time' point is the crux of where this goes architecturally. Curious how you're thinking about standardizing that evidence format — is this a new protocol or an extension of existing audit log infrastructure?",
+        "status": "PENDING — requires Rod's LinkedIn account for manual post or Expandi for automation",
+        "date": "2026-03-06T22:05:00Z"
+      }
+    ],
+    "ready_for_outreach": false,
+    "notes": "No Twitter presence found. LinkedIn is primary warm-up channel. No public GitHub found. Best anchor: his HNS interview from March 5 is live — comment immediately while article is fresh (within 72h window).",
+    "blocker": "LinkedIn engagement requires Rod's manual action or Expandi setup (Phase 0 still in manual validation). Recommend Rod post this comment from his personal LinkedIn today — article is only 1 day old."
+  }
 }

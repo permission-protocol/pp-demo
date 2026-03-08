@@ -1,0 +1,30 @@
+{
+  "title": "Agent Commander Launch — Reactive vs Proactive Split",
+  "platform": "twitter",
+  "url": "https://x.com/PermissionPrtcl/status/2029958930433220947",
+  "published_at": "2026-03-06T09:35:00-07:00",
+  "signal_source": "https://www.thenasguy.com/2026/03/05/introducing-agent-commander-2/",
+  "content_type": "signal_amplification",
+  "priority": "warm",
+  "notes": "Tweet 1 posted OK. Tweet 2 got 403 (API rate limit). Thread is incomplete — tweet 1 standalone still makes the core point.",
+  "tweet_ids": ["2029958930433220947"],
+  "metrics": {
+    "checked_at": "2026-03-07T00:05:00Z",
+    "impressions": 3,
+    "likes": 0,
+    "retweets": 0,
+    "replies": 0,
+    "quotes": 0,
+    "engagement_score": 0,
+    "flagged_for_amplification": false,
+    "status": "underperforming — thread incomplete, 0 engagement at 8.5h"
+  },
+  "amplification_attempts": [
+    {
+      "date": "2026-03-06T22:13:00Z",
+      "action": "thread_completion",
+      "result": "blocked_403",
+      "note": "Second attempt to post tweet 2. Same 403 as morning. Twitter API reply permissions issue persists."
+    }
+  ]
+}

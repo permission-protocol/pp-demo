@@ -60,5 +60,32 @@
   },
   "source_signal": "signals/2026-03-05.jsonl#circuit-chisel",
   "created": "2026-03-06",
-  "status": "outreach_ready"
+  "status": "outreach_drafted",
+  "warmup": {
+    "started": "2026-03-06T22:05:00Z",
+    "actions": [
+      {
+        "type": "github_star",
+        "target": "atxp-dev/atxp",
+        "date": "2026-03-06T22:05:00Z",
+        "note": "Starred main ATXP wallet/agent infrastructure repo as cgoldber82"
+      },
+      {
+        "type": "github_star",
+        "target": "atxp-dev/cli",
+        "date": "2026-03-06T22:05:00Z",
+        "note": "Starred ATXP CLI repo as cgoldber82"
+      },
+      {
+        "type": "twitter_reply_drafted",
+        "target_tweet_id": "2029607771407348109",
+        "target_tweet_text": "@dan_pantera: agents will vote with their wallets → pressure for merchants to adapt. @atxp_ai does both.",
+        "draft_reply": "The vote-with-wallets mechanic makes sense for adoption pressure. The harder unlock is what happens when the agent makes a call the human disputes. Merchants who build in accountability primitives — decision logs, scoped authority — will attract enterprise agents faster than those who just accept the transaction.",
+        "status": "PENDING — requires @PermissionPrtcl X API keys",
+        "date": "2026-03-06T22:05:00Z"
+      }
+    ],
+    "ready_for_outreach": false,
+    "blocker": "Twitter posting blocked: @PermissionPrtcl X API keys not configured. Only @xdares_ keys available. Assign PP-specific keys to unblock."
+  }
 }

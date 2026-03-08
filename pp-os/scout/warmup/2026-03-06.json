@@ -1,0 +1,83 @@
+{
+  "date": "2026-03-06",
+  "run": "15:03 MST (3PM cycle)",
+  "leads_processed": 2,
+  "actions_executed": 2,
+  "actions_pending": 2,
+  "graduated": [],
+  "blockers": [
+    {
+      "type": "missing_api_keys",
+      "detail": "@PermissionPrtcl X/Twitter API keys not configured. All warm-up tweet actions blocked. Current keys are @xdares_ only.",
+      "action_required": "Create @PermissionPrtcl developer app at developer.x.com, generate OAuth1 keys, save to ~/.openclaw/secrets/pp-x-api.json"
+    },
+    {
+      "type": "linkedin_not_automated",
+      "detail": "Expandi not yet configured (Phase 0 = manual validation). LinkedIn warm-up requires Rod's manual action.",
+      "action_required": "Rod to manually post 1 LinkedIn comment on Kossmann's HNS article share — see draft in chargebacks911.json"
+    }
+  ],
+  "leads": [
+    {
+      "slug": "circuit-chisel-atxp",
+      "contact": "Louis Amira (@louisamira)",
+      "actions_executed": [
+        {
+          "type": "github_star",
+          "target": "atxp-dev/atxp",
+          "status": "done",
+          "account": "cgoldber82",
+          "note": "Main ATXP agent infrastructure repo — 48h after their public launch coverage"
+        },
+        {
+          "type": "github_star",
+          "target": "atxp-dev/cli",
+          "status": "done",
+          "account": "cgoldber82",
+          "note": "CLI tool updated March 6 — starred same day"
+        }
+      ],
+      "actions_pending": [
+        {
+          "type": "twitter_reply",
+          "target_tweet_id": "2029607771407348109",
+          "target_url": "https://x.com/louisamira/status/2029607771407348109",
+          "target_context": "Louis replying to @dan_pantera about agents voting with their wallets and merchants adapting",
+          "draft_reply": "The vote-with-wallets mechanic makes sense for adoption pressure. The harder unlock is what happens when the agent makes a call the human disputes. Merchants who build in accountability primitives — decision logs, scoped authority — will attract enterprise agents faster than those who just accept the transaction.",
+          "post_as": "@PermissionPrtcl",
+          "status": "BLOCKED — missing keys",
+          "quality_check": "Adds technical dimension (accountability primitives) to his merchant-pressure thesis. Zero PP mention. Genuine extension of the conversation. Should prompt a reply."
+        }
+      ],
+      "warmup_score": 1,
+      "engagement_window_closes": "2026-03-09T22:05:00Z"
+    },
+    {
+      "slug": "chargebacks911",
+      "contact": "Donald Kossmann",
+      "twitter": "not found — LinkedIn primary",
+      "actions_executed": [],
+      "actions_pending": [
+        {
+          "type": "linkedin_comment",
+          "target": "Kossmann's LinkedIn share of his HNS interview",
+          "target_article": "https://www.helpnetsecurity.com/2026/03/05/donald-kossmann-chargebacks911-agentic-commerce-security-risks/",
+          "draft_comment": "Strong framing of the intent drift problem — the gap between 'what was authorized' and 'what the agent actually chose to do' is exactly where traditional OAuth models start to break down. The 'evidence trail showing how authority was exercised over time' point is the crux of where this goes architecturally. Curious how you're thinking about standardizing that evidence format — is this a new protocol layer or an extension of existing audit infrastructure?",
+          "post_as": "Rod (personal LinkedIn) — @PermissionProtocol LinkedIn company page if exists",
+          "status": "PENDING — manual action required",
+          "urgency": "HIGH — article is 1 day old, comment window is most visible in first 48-72h"
+        }
+      ],
+      "warmup_score": 0,
+      "engagement_window_closes": "2026-03-08T14:00:00Z",
+      "note": "URGENT: 24h left on optimal comment window for Kossmann's HNS article."
+    }
+  ],
+  "next_run": "2026-03-07 08:00 MST",
+  "next_actions": [
+    "If @PermissionPrtcl X keys added: post reply to @louisamira tweet ID 2029607771407348109",
+    "Monitor if cgoldber82 GitHub star triggered any follow-back from atxp-dev org members",
+    "If Louis Amira tweets again in next 24h: queue 1 more reply draft (max 2 per person)",
+    "Check if Kossmann posted the HNS article on LinkedIn — Rod to comment manually"
+  ]
+}

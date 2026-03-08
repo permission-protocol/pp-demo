@@ -1,0 +1,62 @@
+{
+  "company": "Clinejection (Incident Signal)",
+  "slug": "clinejection-incident",
+  "url": "https://adnanthekhan.com/posts/clinejection/",
+  "description": "Supply chain attack exploiting a prompt injection vulnerability in Cline's AI-powered GitHub issue triage workflow. A malicious actor injected commands via a GitHub issue title, hijacking Cline's CI/CD pipeline, poisoning the Actions cache, stealing npm credentials, and publishing an unauthorized Cline CLI 2.3.0 package that installed OpenClaw on ~4,000 developer machines over an 8-hour window.",
+  "agents": [
+    "Cline's Claude-powered GitHub issue triager (automated, no human-in-the-loop)",
+    "The triager read GitHub issue titles as instructions — zero permission gating before execution",
+    "Executed CI/CD pipeline commands, cache manipulation, npm publishes without any authorization receipt or approval gate"
+  ],
+  "funding": {
+    "stage": "N/A — incident, not a company",
+    "total": "N/A",
+    "lead_investor": "N/A",
+    "notes": "Cline is an open-source AI coding assistant (VSCode extension, 5M users). This is an incident signal, not a company lead."
+  },
+  "contacts": [
+    {
+      "name": "Adnan Khan",
+      "title": "Security Researcher (discoverer)",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "adnankhan",
+      "notes": "Security researcher who discovered and disclosed the vulnerability. Published at adnanthekhan.com. Potential amplifier contact."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Pre-execution authorization gates with receipts — PP would have stopped the attack at the tool call layer",
+    "actions_needing_receipts": [
+      "ci_cd_pipeline_trigger",
+      "npm_publish",
+      "github_actions_cache_write",
+      "credential_access"
+    ],
+    "integration_complexity": "N/A — incident signal",
+    "urgency": "N/A — amplifier",
+    "attack_anatomy": "Prompt injection via issue title → AI agent executes malicious commands → no permission gate checked → cache poisoned → npm token stolen → unauthorized package published → 4,000 machines compromised. PP's action-time authorization receipt would have required explicit human approval BEFORE the pipeline trigger and npm publish.",
+    "narrative_value": "Clinejection is the clearest recent proof that LLM-powered agents executing real-world actions (CI/CD, package publishes) without pre-execution permission gates are supply chain attack vectors. PP is exactly the architectural layer that was missing. Cite in: Twitter threads, blog posts, investor conversations, enterprise sales calls."
+  },
+  "lead_type": "amplifier",
+  "score": 4.5,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 1,
+    "tech_fit": 5,
+    "regulatory": 3,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-06.jsonl#clinejection-incident",
+  "incident_timeline": {
+    "window": "December 21, 2025 – February 9, 2026",
+    "machines_compromised": 4000,
+    "tool_affected": "Cline CLI 2.3.0",
+    "vector": "Prompt injection in GitHub issue title → AI triager executes malicious instructions",
+    "payload": "OpenClaw installation on developer machines",
+    "coverage": ["Snyk Blog", "The Hacker News", "Adnan Khan Security Research", "Dev.to", "Grith.ai"]
+  },
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "This is not an outreach target — it's a narrative amplifier. Use in PP content: 'Clinejection happened because there was no PP-style authorization gate before execution. This is what we prevent.' Excellent case study for the PP thesis. Also note: Snyk covered this extensively — Snyk partnership/content angle worth exploring."
+}

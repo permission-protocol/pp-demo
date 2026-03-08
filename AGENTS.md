@@ -14,8 +14,31 @@ Before doing anything else:
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
+5. **Read relevant STATUS.md files** for active projects:
+   - `pp-os/STATUS.md` — Permission Protocol current state
+   - `goals/xdares-seo-growth/STATUS.md` — Xdares current state
+   - These are <20 lines each. Always current. Read them.
 
 Don't ask permission. Just do it.
+
+### 🔄 Session Bridge Protocol
+
+Every session is an island. These rules make the bridges:
+
+**On session START:** Read today's daily note + relevant STATUS.md files. You now know what other sessions have been doing.
+
+**On session END (or before long responses):** Update STATUS.md with anything that changed. Not a log — just the current state. Overwrite, don't append.
+
+**What goes in STATUS.md:**
+- What's active RIGHT NOW (in-flight work)
+- Pending items (next up)
+- Recent decisions (last 2-3 days)
+- Blockers
+
+**What does NOT go in STATUS.md:**
+- History (that's daily notes)
+- Lessons (that's MEMORY.md)
+- Raw data (that's project files)
 
 ## Memory
 
@@ -89,6 +112,13 @@ Before reporting "done" or "fixed":
 - Don't run destructive commands without asking.
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
+
+### 🔑 API Key Hygiene — HARD RULES
+- **Never paste API keys into chat.** Not Discord, not Telegram, not anywhere.
+- Keys belong in `~/.openclaw/secrets/` or 1Password. Nowhere else.
+- If Rod pastes a key in chat: store it to the secrets file immediately, then flag the message for deletion.
+- After storing: remind Rod to delete the message from the channel.
+- Rotate any key that was exposed in a chat message (it's now compromised).
 
 ### ⚠️ CRITICAL: Read SAFETY.md Before Risky Operations
 If you're about to touch config files, model settings, or anything that could brick you — **READ `SAFETY.md` FIRST.** You've died twice from model config changes. Don't be stupid.
@@ -165,6 +195,13 @@ Skills provide your tools. When you need one, check its `SKILL.md`. Keep local n
 - **Discord/WhatsApp:** No markdown tables! Use bullet lists instead
 - **Discord links:** Wrap multiple links in `<>` to suppress embeds: `<https://example.com>`
 - **WhatsApp:** No headers — use **bold** or CAPS for emphasis
+
+**🚫 Never Post File Paths to Discord**
+
+Rod cannot read your workspace files from Discord. When sharing anything with Rod on Discord:
+- Post the **actual content** (messages, text, data), not the file path
+- "I wrote it to `pp-os/outreach/phase0-messages.md`" is useless — paste what's in it
+- Exception: if Rod is at his Mac and explicitly needs to find a file
 
 ## 💓 Heartbeats - Be Proactive!
 
@@ -256,6 +293,29 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## Deployment Rules
+- **Merged ≠ Deployed.** After merging a PR on Vercel-hosted repos, verify the build succeeded before claiming "it's live."
+- Post-merge checklist: (1) Wait ~2 min, (2) `curl` the production endpoint, (3) Confirm new code is running.
+- If Vercel build fails, check the build log (Rod has dashboard access) — common causes: stale type references, missing imports.
+- **Never copy-paste utility functions across route files.** Extract shared logic (e.g., `fetchRequestDetails`) into a shared module. Copy-paste creates drift bugs.
+- **Test on production, not assumptions.** After every deploy, hit the actual production URL to verify behavior.
+
+## Branch Protection Awareness
+- `strict: true` on branch protection = GitHub updates PR branches when main advances → **HEAD SHA changes**
+- Any commit status set on the original SHA becomes stale. Always fetch the PR's **current** HEAD from GitHub API before setting status.
+- "Permission Protocol" is a required status check on Breakout-Labs — merge blocked until PP approval.
+- **The agent should never have admin scope on branch protection.** CI tokens: `contents:write` + `statuses:write` + `pull_requests:write` only. Admin stays with Rod.
+
+## GitHub Actions Patterns
+- **`if:` conditions skip after failed steps by default.** If a step depends on a previous step's *outputs* (not its *success*), add `always()` to the condition: `if: always() && steps.foo.outputs.bar != ''`
+- Without `always()`, GitHub skips the step even if the outputs were set before the failure.
+- **Workflow files on PR branches override main.** When re-running a workflow on a PR, it uses the PR branch's version, not main. To test a workflow fix, merge the fix to the PR branch first.
+
+## UX Race Conditions
+- **Users click faster than CI runs.** If an action depends on checks passing (e.g., merge after approve), the UX must handle the "too early" case gracefully.
+- Pattern: show a retry button on failure instead of a dead-end error state.
+- Better pattern (Phase 2): if merge fails with 405/422, show "waiting for checks" with a live poll instead of an error.
 
 ## Model Rules
 - NEVER change the model config without explicit user approval

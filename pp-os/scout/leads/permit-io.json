@@ -1,0 +1,58 @@
+{
+  "company": "Permit.io",
+  "slug": "permit-io",
+  "url": "https://www.permit.io",
+  "description": "Full-stack authorization-as-a-service platform enabling fine-grained access control (RBAC/ABAC/ReBAC) for applications, APIs, and AI agents — now pivoting messaging toward AI agent authorization.",
+  "agents": [
+    "Not an agent platform — they build the AuthZ layer that other apps (including agent platforms) embed",
+    "Added 'Approval Flows' feature for AI bot/agent access management",
+    "Their blog post today argues traditional authorization fails for agents — exactly PP's thesis"
+  ],
+  "funding": {
+    "stage": "Series A",
+    "total": "~$14M ($6M seed 2022 + $8M Series A Feb 2024)",
+    "lead_investor": "Scale Venture Partners (Series A)",
+    "other_investors": ["NFX", "Verissimo Ventures", "Roosh Ventures", "Firestreak Industries"]
+  },
+  "contacts": [
+    {
+      "name": "Or Weis",
+      "title": "Co-Founder & CEO",
+      "email": "unknown",
+      "twitter": "unknown — search @OrWeis",
+      "linkedin": "https://il.linkedin.com/in/orweis",
+      "github": "unknown",
+      "notes": "Active blogger on Permit.io site — last post Dec 2025 on open-source AuthZ tools. Author of OPAL (Open Policy Administration Layer)."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Complementary positioning: Permit handles 'who can do what' (policy-time AuthZ). PP handles 'what did the agent actually do' (action-time receipts + approval routing). Together they close the full agent security loop.",
+    "actions_needing_receipts": [
+      "agent tool execution",
+      "data access under policy",
+      "escalation through approval flows"
+    ],
+    "integration_complexity": "medium — Permit uses OPA/Cedar policy engines; PP receipts would attach to their audit log layer",
+    "urgency": "medium-high — their own blog post today explicitly states traditional AuthZ fails for agents, which is PP's exact market narrative",
+    "strategic_angle": "Ally-first play: PP fills the audit receipt gap their architecture deliberately leaves open. Or Weis is a technical thought leader — a public co-positioning conversation (blog post, podcast) could drive top-of-funnel for both."
+  },
+  "tech_stack": ["OPA (Rego)", "AWS Cedar", "GitOps", "Multi-language SDKs", "Sidecar/proxy model", "OPAL (open source)"],
+  "lead_type": "ally",
+  "score": 3.5,
+  "score_breakdown": {
+    "consequence": 3,
+    "funding": 4,
+    "tech_fit": 4,
+    "regulatory": 3,
+    "timing": 5,
+    "notes": "Consequence is indirect (they're an infra layer, not an agent executor). Timing is peak — their HN post today validates PP's market thesis. Strategic value exceeds score: Or Weis is an influential voice in AuthZ space. Monitor and consider a co-positioning approach."
+  },
+  "competitive_overlap": "Adjacent/moderate — Permit is access policy management; PP is action-time authorization receipts. If Permit builds audit trails + approval routing for agents, overlap increases. Watch their product roadmap.",
+  "community_size": "2,938 Discord members, 2,072 LinkedIn followers, active dev community via OPAL open source",
+  "source_signal": "signals/2026-03-06.jsonl — HN frontpage post",
+  "created": "2026-03-06",
+  "status": "outreach_drafted",
+  "outreach_drafted_at": "2026-03-06T23:00:00Z",
+  "channels_drafted": ["linkedin"],
+  "pending_approval": "rod"
+}

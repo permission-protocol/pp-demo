@@ -175,11 +175,77 @@ Three bugs fixed to get deploy gate verification working:
 - Before optimizing SEO, blog publishing, or agent workflows — confirm the pipes are actually working.
 - Source: R1 weekly curation (7-day analysis)
 
+### 2026-03-05 — SDKs, NIST RFI, Scout Upgrades
+- **NIST RFI submitted** — Docket NIST-2025-0035, tracking `mmd-wpnb-8bu4`. 4,422 words. Rod uploaded PDF to regulations.gov. Done.
+- **Python SDK published:** `pip install permission-protocol` v0.1.0 (PyPI: cgoldber82, token at `~/.openclaw/secrets/pypi-token.txt`)
+- **npm SDK published:** `npm install @permission-protocol/sdk` v0.1.0 (org: @permission-protocol, token at `~/.openclaw/secrets/npm-token.txt`)
+- **@PermissionPrtcl X API keys** stored at `~/.openclaw/secrets/x-pp-api.json`
+- **Image gen decision (Rod's):** Gemini 3.1 Flash Image Preview ONLY — Imagen 4.0 removed from all scripts
+- **LinkedIn outreach style:** Ultra-short (<40 words), one provocative question + link. Long = spam. Example: "Congrats on X. When Y — who proves Z? That's what we built. permissionprotocol.com"
+- **Scout upgrades built:** Hotline (hourly signal scan), Active Learning (Sunday auto-tunes weights/budgets), Warm-Up Engine (engage before cold DM)
+- Discord HQ set up (guild `1479269120334762008`). All comms moving from Telegram to Discord.
+- **Technical note:** PDF gen = pandoc → HTML → python3 http.server → browser PDF. Keep server alive during capture.
+- **npm publish gotcha:** granular access token with "bypass 2fa" — classic tokens get 403. Codex can't reach npm registry.
+
+### 2026-03-07 — THE FOCUS DECISION + Content Pipeline + Auth
+
+**THE FOCUS DECISION (Rod, 10 PM March 7)**
+- Single wedge for next 28 days (Mar 8 → Apr 4): AI coding agents (Codex, Cursor, Claude Code) deploying code without Permission Protocol
+- Everything else paused: scout pipeline, general marketing, broad outreach, brand polish
+- Success = 5+ external users with deploy-gate installed, 1+ completing full flow
+- 13 crons paused. FOCUS.md created as the single filter for all decisions
+- **Week plan:** W1=demo video + dogfood, W2=10 targets get 3 to try, W3=Show HN, W4=5 active users or pivot
+
+**PP Review Surface → Real Product**
+- GitHub OAuth + multi-tenant auth live (PR #138, NextAuth.js v4, JWT sessions)
+- `TENANT_MAP` env var maps GitHub org → PP tenant ID
+- `/review/*` routes protected, `/login` renders, auth confirmed in production
+- Next.js App Router bug: static segment inside dynamic route parent (e.g., `/api/review/list`) is caught as the dynamic param. Always use a different path level for collection endpoints (`/api/reviews`).
+
+**Content Pipeline Built**
+- Philosophy: Models DIAGNOSE, not REWRITE. AI rewriting AI voice = laundering slop.
+- Optimal 2-model combo: Gemini Thinking (diagnostic) + GPT 5.4 Thinking (authenticity)
+- R1 on Spark is useless for content review — hallucinated completely during test
+- New files: `pp-os/marketing/CONTENT-PLAYBOOK.md` (v3), `DOCTRINE-LIBRARY.md`, `swipe-file/`
+- 3-question framework before any content draft: Who reads this? What should they feel? What should they do?
+- OpenAI GPT 5.4 API key stored at `~/.openclaw/secrets/openai-api-key.txt` ✅
+- Gemini dedicated content key (free tier, quota 0) — use `gemini-api.json` instead
+
+**Vercel Deploy Issue Pattern**
+- Merged PRs may not deploy if Vercel build stopped (env var changes can do this)
+- Always run smoke test (`scripts/pp-smoke-test.sh`) after every deploy
+- Handle 307 redirects as passing in smoke tests
+
+### 2026-03-06 — Outreach Engine + Review Surface + Discord Consolidation
+- **PP Review Surface live** at `permissionprotocol.com/review/{id}` — full Approve/Reject/Merge without GitHub. AI summary (Gemini Flash Lite), risk signal badges (regex, not AI), expandable diff.
+- **GitHub Actions `if:` gotcha:** Steps after a failed step are skipped by default. Use `if: always() && steps.foo.outputs.bar != ''` when a step needs outputs from a step that may have failed.
+- **Workflow files on PR branches override main** — must merge fixes to branch first when testing workflow changes.
+- **UX race condition pattern:** Users click faster than CI runs. Add retry button on failure, not dead-end error.
+- **Outreach Engine deployed:**
+  - Expandi (7-day trial → $99/mo) as delivery layer
+  - Droplet: `pp-scout-sfo2`, IP `64.23.210.36`, Tailscale `100.122.174.112` (Rod's tailnet, NOT Charles's)
+  - Webhook server live at `https://hooks.permissionprotocol.com` (Fastify, port 3100, systemd)
+  - SQLite DB: signals, targets, outreach, events, playbook_history tables
+- **Expandi placeholder limit: ~300 chars** — values longer than ~300 chars are silently dropped with `placeholders_not_added` in response. Always truncate before injecting.
+- **Cloudflare orange cloud breaks Let's Encrypt** — must use grey cloud (DNS only) for HTTPS certs via Caddy/nginx.
+- **Caddy ACME challenge** requires port 80 open in UFW. Was blocked → cert failed.
+- **Discord comms rule:** File references don't work in Discord — Rod can't open workspace file paths. Always post actionable content directly to channels.
+- **Discord HQ consolidation:** All 25 crons rerouted from Telegram to Discord. New channels: `#rc-alerts` (1479510743467425854) for Rod↔Charles direct, `#rc-evaluate` for vendor eval, `#subscribers` (1479576120927191248) for signups.
+- **Expandi webhook event format:** Events in `hook.event`, LinkedIn URL in `contact.profile_link_public_identifier`, reply text in `messenger.last_received_message`, custom placeholders in `messenger.placeholders`.
+- **Outreach pipeline test:** Simulated webhook → DB match → Discord post ✅. Server uses Discord Bot API (not webhooks) — bot lacks MANAGE_WEBHOOKS permission.
+- **Memory consolidation cron** built (11 PM daily, Sonnet) — STATUS.md cleanup + MEMORY.md curation.
+- **Nightly self-improvement cron** built (11:30 PM daily, Sonnet) — reflection + top 3 improvements + auto-implement safe ones.
+
 ---
 
 ## Preferences & Patterns
 
 *Will fill in as I learn what works.*
+
+- **Codex first, always.** Claude Code only for single complex tasks where Codex fails or for nuanced writing.
+- **Screenshot before merge**, not after. Never merge blind.
+- **Rod's personal LinkedIn** for outreach (not PP company page) — founder-to-founder converts better.
+- **All comms via Discord PP HQ**, not Telegram.
 
 ---
 
@@ -191,11 +257,24 @@ Three bugs fixed to get deploy gate verification working:
 - [x] PP deploy gate fix — COMPLETED 2026-02-19 (PRs #105, #113)
 - [x] PP GitHub Action — COMPLETED 2026-02-20 (`permission-protocol/deploy-gate@v1`)
 - [x] pp-demo branch protection — COMPLETED 2026-02-20
-- [ ] PP: Get ONE founder publicly blocked (social proof)
-- [ ] PP: Dogfood deploy-gate on Xdares repos
-- [ ] PP: Pick ONE distribution surface and go deep
-- [ ] Xdares: 86 posts live, 240 tasks completed, 9 days to Mar 5 deadline
-- [ ] PP Brand Deployment: Issues #215-221 on PP Product Board (interactive brand system)
+- [x] PP Brand Deployment: Issues #215-221 — COMPLETED 2026-02-24
+- [x] NIST RFI — SUBMITTED 2026-03-05 (tracking mmd-wpnb-8bu4)
+- [x] Python + npm SDKs — PUBLISHED 2026-03-05
+- [x] PP Review Surface — LIVE 2026-03-06 (permissionprotocol.com/review/{id})
+- [x] Outreach Engine — DEPLOYED 2026-03-06 (Expandi + webhook server + 5 leads injected)
+- [x] PP Review Surface auth — LIVE 2026-03-07 (GitHub OAuth, multi-tenant, /review/* protected)
+- [ ] **FOCUS (28 days, Mar 8–Apr 4):** 5+ external users with deploy-gate installed, 1+ full flow
+- [ ] Week 1: Deploy-gate perfection + demo video + dogfood on PP/Xdares repos
+- [ ] Week 2: 10 targets → 3 to try → design partner
+- [ ] Week 3: Iterate on feedback → Show HN
+- [ ] Week 4: 5 active users or pivot decision
+- [ ] Vercel deploy webhook → #rc-alerts (waiting on Rod for webhook URL or bot permission)
+- [ ] MS-Agent RCE LinkedIn post — awaiting Rod ✅/🔄/❌
+- [ ] Rod: delete API key messages from #rod-actions (OpenAI + 2 Gemini keys visible)
+- [ ] Enable pay-as-you-go on Google AI Studio for gemini-content-api-key if billing separation needed
+- [ ] Xdares goal executor budget — needs Rod approval to resume (126 tasks queued, paused for focus)
+- ~~[ ] Fix Donald & Charlie Expandi placeholder messages — PAUSED (outreach paused for 28-day focus)~~
+- ~~[ ] Scout pipeline migration to droplet — PAUSED (scout paused for 28-day focus)~~
 
 ### PP Internal OS (2026-02-21)
 **Full autonomous operating system built in one session:**
@@ -276,4 +355,74 @@ Three bugs fixed to get deploy gate verification working:
 - Monthly run-rate: ~274 sessions (5.5% of 5K goal) — significant gap
 - Kickofflabs: 19,725 leads (flat)
 
-*Updated: 2026-03-01*
+### 2026-03-05 — NIST RFI + SDKs + Scout + Discord HQ + @PermissionPrtcl
+
+**NIST RFI submitted** — Docket NIST-2025-0035, 4,422 words. Submitted 4 days before deadline. Header: Permission Protocol, Inc. / Rodrigo Carvalho. Positions PP as standards contributor.
+
+**SDKs published:**
+- Python: `pip install permission-protocol` v0.1.0 (PyPI: cgoldber82)
+- npm: `npm install @permission-protocol/sdk` v0.1.0 (org: @permission-protocol)
+- Website quickstart updated with dual Python/JS tabs (PR #86)
+
+**Scout outreach system launched** (`pp-os/scout/`):
+- Fire Package 001: 7/7 targets contacted (3 emails, 1 GitHub issue, 3 LinkedIn DMs Rod sent)
+- Architecture: signal scan → research → draft → delivery → followup → active learning
+- 10 cron jobs, approval chain: auto-send GitHub/Twitter, Charles approves emails/DMs, Rod for VIPs
+- Scout agent planned for Maria's DO droplet (Option B → C path)
+
+**@PermissionPrtcl Twitter launched** — 5-tweet thread with Nano Banana 2 images. X API keys from 1Password, stored at `~/.openclaw/secrets/x-pp-api.json`.
+
+**Discord HQ live** — "Permission Protocol HQ" server. Channels: #general, #scout-alerts, #outreach-log, #daily-log, #cron-status. Charles bot + Rod.
+
+**Marketing pipeline built** — 6 autonomous crons (signal-scan → content-draft → publisher → engagement-monitor → amplifier → active-learning). Auto-approved: single tweets, HN, GitHub discussions. Human gates: blog, LinkedIn, long threads.
+
+**Lesson:** LinkedIn outreach templates must be ultra-short (<40 words). Rod flagged originals as spam. New style: one provocative question + link.
+
+### 2026-03-06 — Outreach Engine + Review Surface + Scout Droplet
+
+**PP Scout droplet provisioned:** pp-scout-sfo2, IP 64.23.210.36, Tailscale 100.122.174.112 (Rod's tailnet). Ubuntu 24.04, webhook server on port 3100, SQLite DB, daily backups.
+
+**Expandi wired for LinkedIn outreach:** Connector campaign built, API injection working, 5 Phase 0 leads loaded. Key constraint: **Expandi placeholder limit ~300 chars** — anything longer silently dropped. Webhooks: `https://hooks.permissionprotocol.com/hooks/expandi` (Caddy + Let's Encrypt).
+
+**Review surface shipped** (PRs #90-123 on site, #280-289 on Breakout-Labs):
+- Full review page: approve/reject/merge without touching GitHub
+- "Permission Protocol" required status check blocks GitHub merge until PP approval
+- Phase 2: AI summary (Gemini 3.1 Flash Lite), risk signals, full diff display
+- PR comments auto-posted with review links
+
+**R1 Discord bot live** — #r1-chat on PP HQ server, proxies to DeepSeek R1 70B on Spark.
+
+**Context architecture built:** STATUS.md per project, session bridge protocol, memory consolidation cron (11 PM), self-improvement cron (11:30 PM).
+
+**Lesson:** Cloudflare proxy (orange cloud) breaks Let's Encrypt ACME challenges — must use DNS-only (grey cloud). Also: Next.js dynamic routes catch static segments (`/api/review/list` matched by `/api/review/[id]`).
+
+### 2026-03-07 — THE FOCUS DECISION + Content Pipeline + Review Auth
+
+**🔴 THE DECISION (10 PM):** "No AI agent deploys code without Permission Protocol. Only this for 4 weeks."
+- Single wedge: AI coding agents (Codex, Claude Code, Cursor) deploying code
+- Everything else paused: Scout pipeline, general marketing, broad outreach
+- **28-day sprint: Mar 8 → Apr 4**
+- Success = 5+ external users with deploy-gate installed, 1+ completing full flow
+- 13 crons paused, remaining refocused on coding agent deploy signals only
+- FOCUS.md created as the single filter for all decisions
+- Week plan: (1) perfect + demo + dogfood, (2) find 10 users get 3 to try, (3) iterate on feedback + Show HN, (4) 5+ active users
+
+**Content pipeline built:**
+- Multi-model review: Gemini 3.1 Pro (diagnostic) → GPT 5.4 (authenticity) → Gemini Flash (civilian reader)
+- Core principle: models DIAGNOSE, Charles WRITES fixes. No AI rewrites.
+- Doctrine library at `pp-os/marketing/DOCTRINE-LIBRARY.md`
+- Playbook at `pp-os/marketing/CONTENT-PLAYBOOK.md`
+- Pentagon-Anthropic LinkedIn post published: https://www.linkedin.com/feed/update/urn:li:activity:7436113546427523072/
+
+**GitHub OAuth + multi-tenant review surface shipped (PR #138):**
+- NextAuth.js v4, JWT sessions, GitHub OAuth
+- Tenant mapping via `TENANT_MAP` env var (org → PP tenant ID)
+- Login page, user menu, middleware-protected `/review/*`
+- **Auth is live on production**
+
+**Lessons:**
+- First content drafts are too technical for general audiences. Stories > logic. Ask "who reads this and what should they feel?" BEFORE writing.
+- R1 on Spark: useless for content review (hallucinated). Only good for reasoning/judgment tasks.
+- Models should DIAGNOSE, not REWRITE. AI rewriting AI = laundering, not fixing.
+
+*Updated: 2026-03-08*

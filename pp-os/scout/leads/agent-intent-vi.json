@@ -1,0 +1,66 @@
+{
+  "company": "agent-intent / Verifiable Intent (Mastercard)",
+  "slug": "agent-intent-vi",
+  "url": "https://github.com/agent-intent/verifiable-intent",
+  "description": "Open specification for cryptographic agent authorization in commerce — a layered SD-JWT credential format that creates a tamper-evident delegation chain proving an AI agent's actions were within human-delegated scope. Maintained by Mastercard; open to multi-stakeholder contribution.",
+  "agents": [
+    "Not an agent platform — defines the authorization credential standard that agent platforms must implement",
+    "SD-JWT delegation chain: credential provider → user → agent",
+    "Two modes: Immediate (user reviews final values) and Autonomous (user sets constraints, agent acts independently)",
+    "Constraints cryptographically bound: amount range, allowed merchants, product line items",
+    "Checkout-payment integrity binding: cryptographic proof that payment mandate references same checkout the user approved"
+  ],
+  "funding": {
+    "stage": "Public company (Mastercard)",
+    "total": "N/A — Mastercard is a $500B+ public company",
+    "lead_investor": "Mastercard (maintainer)",
+    "other_investors": ["Multi-stakeholder contributions invited — no other major contributors identified yet"]
+  },
+  "contacts": [
+    {
+      "name": "unknown",
+      "title": "Mastercard team (specific maintainer not identified)",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "agent-intent GitHub org",
+      "notes": "Org is publicly visible; members not listed publicly. Repo published without named individual lead. Need to check git commit history for maintainer names."
+    }
+  ],
+  "pp_fit": {
+    "feature": "PP is the enforcement and receipt layer that VERIFIES Verifiable Intent credentials at execution time. VI defines the credential format; PP issues the authorization receipt confirming the agent acted within the VI-defined scope.",
+    "actions_needing_receipts": [
+      "purchase_authorization",
+      "payment_mandate_execution",
+      "merchant_transaction",
+      "checkout_finalization",
+      "scope_constraint_verification"
+    ],
+    "integration_complexity": "medium — spec-level alignment needed; PP would implement VI credential verification and issue receipts against VI's delegation chain",
+    "urgency": "high — draft v0.1 just published, window to engage during standard-setting phase is now",
+    "strategic_angle": "CRITICAL: PP should contribute to this spec and position as the reference enforcement implementation. If VI becomes the commerce standard for agent authorization (backed by Mastercard's network), PP being the canonical receipt-issuer is a platform-level win. This is not a sales target — it's a standards play."
+  },
+  "spec_details": {
+    "format": "SD-JWT (Selective Disclosure JWT)",
+    "version": "v0.1 Draft",
+    "in_scope": ["Layered credential format", "Delegation chain (provider → user → agent)", "Purchase constraint vocabulary", "Selective disclosure policies", "Verification procedures", "Checkout-payment integrity binding"],
+    "out_of_scope": ["Transport protocols", "Key management/provisioning", "Credential provider enrollment", "Agent platform APIs", "Dispute resolution", "Regulatory compliance mapping (PCI DSS, PSD2)"],
+    "explicitly_out_of_scope_note": "The spec leaves enforcement/receipt issuance undefined — that is PP's exact wedge"
+  },
+  "tech_stack": ["SD-JWT", "RFC 7800 (key confirmation)", "Selective Disclosure", "Python (test suite uses pytest)", "Protocol-landscape mapping for ACP, AP2"],
+  "competitive_overlap": "None — VI defines what was authorized; PP proves what was executed. Complementary primitives.",
+  "lead_type": "ally",
+  "score": 3.8,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 1,
+    "tech_fit": 4,
+    "regulatory": 5,
+    "timing": 5,
+    "notes": "Consequence and regulatory are max — Mastercard's payment network, PSD2/SCA territory. Funding scores low because it's a public company (slow-moving enterprise). Timing is critical — draft just dropped. Strategic value vastly exceeds numeric score. This is a Rod-level decision: engage on the spec directly."
+  },
+  "rod_flag": "STRATEGIC: Mastercard is defining the SD-JWT authorization credential standard for AI agents in commerce. This is the 'rails' layer — PP should position as the enforcement/receipt implementation for VI. Rod should: (1) read the full spec, (2) open a GitHub issue or PR engaging on the enforcement layer gap, (3) consider reaching out to Mastercard's innovation/standards team directly. Window for early influence is NOW while it's v0.1 draft.",
+  "source_signal": "signals/2026-03-06.jsonl — GitHub updated today",
+  "created": "2026-03-06",
+  "status": "watching"
+}

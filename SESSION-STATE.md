@@ -3,7 +3,7 @@
 *Current task context. Overwrite freely. Archive to daily notes when done.*
 
 ## Current Task
-None — session just started.
+None.
 
 ## Key Details
 *(Corrections, decisions, specific values from this session)*

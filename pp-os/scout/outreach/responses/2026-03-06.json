@@ -1,0 +1,21 @@
+{
+  "date": "2026-03-06",
+  "checked_at": "2026-03-06T23:00:00Z",
+  "responses": [],
+  "channels_checked": ["gmail", "github"],
+  "notable_inbox": [
+    {
+      "from": "Expandi Team <noreply@mg.expandi.io>",
+      "subject": "You were invited to Permission Protocol workspace",
+      "date": "2026-03-06 15:18",
+      "note": "Expandi LinkedIn automation platform — someone set up a 'Permission Protocol' workspace. May be Rod setting up LinkedIn outreach automation. Not a lead response."
+    },
+    {
+      "from": "Expandi Team <noreply@mg.expandi.io>",
+      "subject": "Please verify your account",
+      "date": "2026-03-06 15:20",
+      "note": "Account verification email for Expandi. Possible LinkedIn outreach automation setup by Rod."
+    }
+  ],
+  "notes": "No replies from any PP outreach contacts. IronCurtain #67 has 0 comments (checked via GH API — returned empty array). No email replies from Niels Provos, Nat Eliason, or Help Net Security. LinkedIn (Stacks/Dyna.Ai/ArmorCode/Permit.io) not checkable via automation. All leads remain in their current statuses. Notable: Expandi (LinkedIn automation) emails appeared — possible Rod-initiated LinkedIn outreach tooling for PP. Worth flagging."
+}

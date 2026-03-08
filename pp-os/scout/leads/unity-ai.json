@@ -1,0 +1,74 @@
+{
+  "company": "UnityAI",
+  "slug": "unity-ai",
+  "url": "https://www.unityai.co",
+  "description": "Nashville-based startup deploying an autonomous AI workforce for healthcare operations — agents execute patient scheduling, follow-ups, referrals, and staffing coordination at scale across 350+ outpatient sites, integrated directly into EHR platforms like Epic.",
+  "agents": [
+    "Patient intake and scheduling agents (autonomously complete 90% of scheduling without human staff)",
+    "Follow-up and referral coordination agents (25% increase in converted referrals)",
+    "Staffing coordination agents (shift management, PTO scheduling)",
+    "EHR-integrated agents operating across Tennessee Oncology, Peregrine Health, and others"
+  ],
+  "funding": {
+    "stage": "Series A",
+    "total": "$15M",
+    "lead_investor": "Third Prime (Series A), Nashville Capital Network, Whistler Capital Partners",
+    "notes": "Series A of $8.5M closed ~March 4, 2026. Seed was ~$6.5M. Operating at 300k+ patient interactions/month across 350+ sites — real revenue."
+  },
+  "contacts": [
+    {
+      "name": "Edmund Jackson",
+      "title": "Co-Founder & CEO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/edmundjackson/",
+      "github": "unknown",
+      "notes": "Cambridge PhD, former Wall Street quant, former CDO at HCA Healthcare. Deep healthcare + data background. Nashville-based."
+    },
+    {
+      "name": "Cody Hall",
+      "title": "Co-Founder & CTO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Former HCA exec per early press coverage."
+    },
+    {
+      "name": "Jason Parker",
+      "title": "Co-Founder & CPO",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown"
+    }
+  ],
+  "pp_fit": {
+    "feature": "HIPAA-grade audit receipts for every autonomous patient and billing action",
+    "actions_needing_receipts": [
+      "patient_scheduling_autonomous",
+      "appointment_cancel_or_reschedule",
+      "referral_submission",
+      "billing_code_submission",
+      "patient_record_access",
+      "insurance_verification_call",
+      "staff_shift_assignment"
+    ],
+    "integration_complexity": "medium — EHR integration complexity is high but UnityAI's API layer is the integration point; PP would attach to UnityAI's action events, not directly to EHR",
+    "urgency": "high — HIPAA requires audit trails for PHI access; fresh Series A means scaling team and compliance scrutiny incoming; enterprise hospital customers demand accountability",
+    "strategic_angle": "UnityAI's agents touch patient health information (PHI) autonomously. Every autonomous scheduling and billing action is a HIPAA audit event. PP's cryptographic receipts turn UnityAI's 'the agent did it' into 'here is the immutable proof of what the agent was authorized to do, what it actually did, and when.' This is not optional for their enterprise hospital customers — it's table stakes for procurement. PP becomes a PP becomes a compliance enabler that helps UnityAI close larger hospital systems."
+  },
+  "lead_type": "design_partner",
+  "score": 3.95,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 4,
+    "tech_fit": 3,
+    "regulatory": 5,
+    "timing": 4
+  },
+  "source_signal": "signals/2026-03-07.jsonl#4",
+  "created": "2026-03-07",
+  "status": "watching",
+  "notes": "Score 3.95 — just under outreach_ready threshold. Recommend Rod evaluate for design partner exception: HIPAA angle makes regulatory urgency very real, and fresh Series A means they have budget and scaling pressure simultaneously. EHR complexity is the risk — their integration layer may not expose clean action hooks. Best approach: cold email Edmund Jackson (CEO) directly framing HIPAA audit trail as procurement differentiator for hospital enterprise sales. Nashville-based — could be a warm intro through Nashville Capital Network if Rod has connections."
+}

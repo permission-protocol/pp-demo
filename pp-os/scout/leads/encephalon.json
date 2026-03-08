@@ -1,0 +1,15 @@
+{
+  "company": "Encephalon",
+  "product": "unknown",
+  "url": "unknown",
+  "type": "potential-partner",
+  "score": 3.5,
+  "source": "linkedin-comment-2026-03-06",
+  "referrer": "Direct LinkedIn comment on Rod's post",
+  "status": "needs_research",
+  "funding": "unknown",
+  "what_they_claim": "Building upstream context and governance for AI coding sessions. Said 'This is the right question and most teams are pretending it doesn't exist yet.'",
+  "overlap_with_pp": "Adjacent — they focus on context/governance for coding agents, we focus on authorization infrastructure. Complementary more than competitive.",
+  "action": "Find their LinkedIn profile, research founders, assess partnership potential. They came to US — warm lead. Priority: find their website or product.",
+  "created": "2026-03-06"
+}

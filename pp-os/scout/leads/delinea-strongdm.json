@@ -1,0 +1,76 @@
+{
+  "company": "Delinea / StrongDM",
+  "slug": "delinea-strongdm",
+  "url": "https://delinea.com",
+  "description": "Delinea (enterprise PAM leader, PE-backed by TPG/Thoma Bravo) acquired StrongDM (just-in-time runtime authorization for AI agents) on March 5, 2026, creating a unified identity security control plane covering human and non-human identities, AI agents, and privileged infrastructure access.",
+  "agents": [
+    "Manages privileged access for AI agents in enterprise environments",
+    "Real-time policy evaluation and enforcement for autonomous non-human identities (NHIs)",
+    "Just-in-time access for AI agents across infrastructure, databases, containers, CI/CD",
+    "Delinea Iris AI drives policy recommendations and anomaly detection"
+  ],
+  "funding": {
+    "stage": "Private / PE-backed",
+    "total": "~$94M (Delinea, CBInsights); StrongDM raised ~$54M separately — acquisition terms undisclosed",
+    "lead_investor": "TPG, Thoma Bravo",
+    "notes": "Mature PE-backed company. Not a startup — enterprise product with 1,100+ employees."
+  },
+  "contacts": [
+    {
+      "name": "Art Gilliland",
+      "title": "CEO, Delinea",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/artgilliland/",
+      "github": "unknown",
+      "notes": "Vocal on AI agent authorization. Quoted in acquisition announcement."
+    },
+    {
+      "name": "Tim Prendergast",
+      "title": "CEO, StrongDM (now Delinea exec post-acquisition)",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/timprendergast/",
+      "github": "unknown",
+      "notes": "StrongDM CEO pre-acquisition; now integrated into Delinea leadership."
+    },
+    {
+      "name": "Phil Calvin",
+      "title": "Chief Product Officer, Delinea",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown",
+      "notes": "Quoted in Security Boulevard on the acquisition thesis."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Immutable action-time receipt layer on top of runtime authorization",
+    "actions_needing_receipts": [
+      "privileged_access_grant",
+      "ai_agent_infrastructure_access",
+      "jit_privilege_escalation",
+      "database_query_by_agent",
+      "cicd_pipeline_trigger",
+      "config_change_by_agent"
+    ],
+    "integration_complexity": "medium — enterprise platform, REST APIs likely available; partnership/OEM path more realistic than direct SDK drop-in",
+    "urgency": "high — just completed acquisition to address exact AI agent governance gap; CEO actively narrating the problem space",
+    "strategic_angle": "PP fills the gap Delinea/StrongDM explicitly leaves open: they do authorization decisions (allow/deny), PP creates the cryptographic proof of what the agent was authorized to do vs. what it actually did. Complementary, not competitive. PARTNERSHIP play, not a customer play — PP could be the immutable audit receipt layer embedded in their platform."
+  },
+  "lead_type": "ally",
+  "score": 4.1,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 3,
+    "tech_fit": 3,
+    "regulatory": 5,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-07.jsonl#2",
+  "created": "2026-03-07",
+  "status": "outreach_drafted",
+  "channels": ["linkedin"],
+  "drafted_at": "2026-03-07T08:00:00-07:00",
+  "notes": "STRATEGIC ALLY. Partnership play, not a customer. They do the access decision; PP does the receipt. Delinea's enterprise customer base (F500, finance, government) is PP's dream market. Approach: position PP as the audit-receipt layer Delinea/StrongDM sells to their existing customers as an add-on. Art Gilliland is the right first contact — he's publicly narrating the exact problem."
+}

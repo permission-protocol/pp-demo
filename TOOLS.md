@@ -143,6 +143,59 @@ Then screenshot with browser tool:
 
 ---
 
+## Caddy / HTTPS Setup Runbook
+
+When setting up HTTPS on a new server (Caddy + Let's Encrypt), avoid these pitfalls:
+
+**1. Cloudflare must be DNS-only (grey cloud), NOT proxied (orange cloud)**
+- Orange cloud = Cloudflare proxies traffic = Let's Encrypt can't verify domain ownership via HTTP-01
+- Set to grey cloud BEFORE running `caddy start` or requesting a cert
+- You can switch back to orange cloud after cert is issued (but Caddy auto-renews, so keep it grey or use DNS-01 challenge)
+
+**2. Port 80 must be open for HTTP-01 ACME challenge**
+```bash
+ufw allow 80/tcp
+```
+- Even if your app only serves HTTPS, Caddy needs port 80 for the ACME challenge
+- Without it: cert request hangs or fails silently
+
+**3. nip.io wildcard DNS is unreliable with Let's Encrypt**
+- Rate limits + wildcard verification issues — don't use for prod HTTPS
+- Use a real domain (e.g., hooks.permissionprotocol.com)
+
+**4. Caddyfile minimal working config:**
+```
+hooks.permissionprotocol.com {
+    reverse_proxy localhost:3100
+}
+```
+- Caddy auto-provisions cert + handles HTTP→HTTPS redirect
+
+**5. Test before declaring done:**
+```bash
+curl https://hooks.permissionprotocol.com/health
+```
+
+---
+
+## Expandi Outreach Rules
+
+**Placeholder limit: 300 chars. Expandi silently drops anything longer (no error thrown).**
+
+Always validate before injecting leads:
+```bash
+node pp-os/outreach/scripts/validate-messages.js leads.json
+```
+
+**Campaign API inject URL:** `~/.openclaw/secrets/expandi-api.json`
+
+**Webhook server:** `https://hooks.permissionprotocol.com` (Fastify on pp-scout-sfo2)
+- Health check: `curl https://hooks.permissionprotocol.com/health`
+- Droplet SSH: `ssh -i ~/.ssh/github_ed25519 root@64.23.210.36`
+- Tailscale IP: `100.122.174.112`
+
+---
+
 ## Why Separate?
 
 Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.

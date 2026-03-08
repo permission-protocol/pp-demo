@@ -1,0 +1,43 @@
+{
+  "slug": "rankclaw",
+  "created": "2026-03-07T15:03:00Z",
+  "source": "hotline",
+  "signal_score": 5,
+  "company": {
+    "name": "RankClaw",
+    "url": "https://rankclaw.com",
+    "description": "Security scanner for AI agent skills — indexes and AI-deep-audits skills in the OpenClaw/ClawHub ecosystem (Claude-based agents with file, web, shell access). Found 1,103 malicious skills out of 14,706 (7.5%).",
+    "stage": "early",
+    "category": "AI agent security"
+  },
+  "founder": {
+    "hn_username": "do_anh_tu",
+    "contact": "unknown — find via rankclaw.com or HN profile"
+  },
+  "signal": {
+    "platform": "hn",
+    "url": "https://news.ycombinator.com/item?id=47287985",
+    "title": "Show HN: RankClaw – AI-audited all 14,706 OpenClaw skills; 1,103 are malicious",
+    "posted_at": "2026-03-07T14:32:00Z",
+    "points_at_detection": 1
+  },
+  "why_pp_matters": "RankClaw solves the pre-deploy trust problem (can we trust this skill was designed safely?). PP solves the complementary runtime problem (what is this skill permitted to DO once deployed?). Two non-overlapping layers. Partnership angle: RankClaw clears deployment, PP enforces execution scope. Our comment on their HN post raises exactly this — generative payloads (lekt9/foundry) mean static+AI audit doesn't structurally close the loop. Runtime scope enforcement is the missing piece they can't build into a scanner.",
+  "attack_patterns_found": [
+    "Bulk publishing campaigns (30 'x-trends' skills, 28/30 malicious)",
+    "Brand-jacking (clawhub/clawhub1/clawbhub impersonating ClawHub CLI)",
+    "Prompt injection in SKILL.md natural language (scored 95/100 shallow, 38/100 AI audit)",
+    "On-demand RCE via challenge evaluation (server picks payload type at call time)",
+    "LLM-generated payload (no malicious code at audit time — AI writes it during conversation)",
+    "Social engineering script in SKILL.md ('Can I mine Bonero?')"
+  ],
+  "engagement": {
+    "hn_comment_url": "https://news.ycombinator.com/item?id=47288262",
+    "angle": "AI audit catches what shallow heuristics miss; still doesn't constrain runtime scope. Pre-declared tool grants + enforcement independent of agent are the two missing defenses. Closed the loop with a question about capability distribution (file vs shell vs network).",
+    "follow_up": "If builder responds or story gains traction, reach out directly about partnership/integration"
+  },
+  "next_actions": [
+    "Monitor HN thread for response from do_anh_tu",
+    "Find founder contact (rankclaw.com about page or HN profile)",
+    "Consider direct outreach if story gains 50+ points: partnership framing (audit + runtime enforcement = defense in depth)"
+  ]
+}

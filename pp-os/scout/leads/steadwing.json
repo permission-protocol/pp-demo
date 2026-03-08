@@ -1,0 +1,73 @@
+{
+  "company": "Steadwing",
+  "slug": "steadwing",
+  "url": "https://www.steadwing.com",
+  "description": "YC-backed autonomous on-call engineer that diagnoses production incidents using evidence from across the stack (Datadog, GitHub, Slack, K8s, AWS) and autonomously executes remediations including rollbacks and config changes.",
+  "agents": [
+    "Incident diagnosis agent — correlates alerts from Datadog, PagerDuty, Sentry, GitHub, Slack",
+    "Root cause analysis engine — synthesizes evidence across 20+ integrations",
+    "Autonomous remediation — executes rollbacks, config changes in AWS/K8s without human approval",
+    "Memory system — learns from incident history to improve accuracy over time",
+    "UI allows team to 'approve and resolve, or let Steadwing handle it' — human-in-loop is optional, not required"
+  ],
+  "funding": {
+    "stage": "YC Seed",
+    "total": "undisclosed (YC)",
+    "lead_investor": "Y Combinator",
+    "other_investors": []
+  },
+  "contacts": [
+    {
+      "name": "Abejith Murali",
+      "title": "Founder & CEO",
+      "email": "abejith@steadwing.com",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/abejith/",
+      "github": "abejith",
+      "notes": "HN handle: abejith. Posted Show HN today. Indian engineer in SF Bay Area. Previously at stealth startup. Email format confirmed (a******@steadwing.com via RocketReach)."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Authorization receipts for autonomous infrastructure actions — every rollback, config change, and remediation execution needs a verifiable audit trail. PP is the 'proof layer' that makes Steadwing enterprise-safe.",
+    "actions_needing_receipts": [
+      "k8s_rollback",
+      "aws_config_change",
+      "github_deployment_revert",
+      "service_restart",
+      "incident_auto_close"
+    ],
+    "integration_complexity": "low-medium — Steadwing already has a structured action execution model; PP SDK wraps execution layer",
+    "urgency": "medium — early stage, but the moment they target enterprise (SOC2, regulated industries), audit trails become a prerequisite. PP positions Steadwing as enterprise-ready.",
+    "pitch_angle": "You already have 'approve or let Steadwing handle it' — PP makes every autonomous action PP-receipted, giving enterprises the audit trail they need to turn off the human-in-loop gate. Your enterprise conversion rate goes up."
+  },
+  "tech_stack": [
+    "Cloud-native (AWS, K8s, GCP assumed)",
+    "Datadog, PagerDuty, Sentry (monitoring)",
+    "GitHub (code/deployment)",
+    "Slack (communication)",
+    "REST API-driven integrations"
+  ],
+  "pricing": {
+    "free": "1 user, 10 RCAs, 2 integrations",
+    "pro": "$99/mo — 5 users, 50 RCAs, 5 integrations",
+    "team": "$199/mo — 10 users, unlimited integrations",
+    "enterprise": "custom"
+  },
+  "lead_type": "design_partner",
+  "score": 3.75,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 2,
+    "tech_fit": 4,
+    "regulatory": 3,
+    "timing": 5,
+    "notes": "Perfect consequence score — autonomous infrastructure changes are highest-stakes agent actions. Funding docks them (YC seed = very early). Timing is exceptional — Show HN today, product just launching. Flag for Rod: YC seed stage design partner exception worth considering. Even a handshake agreement would be a great case study."
+  },
+  "rod_flag": "Design partner exception candidate — too early by funding criteria but timing + consequence makes this worth a direct reach. Abejith is active on HN today. Rod should personally DM.",
+  "source_signal": "signals/2026-03-06.jsonl — Show HN (8pts)",
+  "created": "2026-03-06",
+  "status": "outreach_drafted",
+  "outreach_drafted_at": "2026-03-06T23:00:00Z",
+  "channels_drafted": ["email"],
+  "pending_approval": "charles"
+}

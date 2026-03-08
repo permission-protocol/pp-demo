@@ -1,0 +1,59 @@
+{
+  "campaign": "cursor-is-dead",
+  "created": "2026-03-06",
+  "assets": {
+    "blog": "https://permissionprotocol.com/blog/cursor-is-dead.html",
+    "x_thread": "https://x.com/PermissionPrtcl/status/2029957726001058155",
+    "x_first_tweet_id": "2029957726001058155",
+    "hn": "https://news.ycombinator.com/item?id=47277134",
+    "hn_id": "47277134",
+    "reddit_programming": null,
+    "reddit_experienceddevs": null,
+    "image": "content/viral/cursor-dead-v2.png"
+  },
+  "engagement_rules": {
+    "auto_respond": [
+      "agreement",
+      "technical_question",
+      "pushback_with_data"
+    ],
+    "flag_for_review": [
+      "pp_mention_opportunity",
+      "influential_account",
+      "partnership_signal"
+    ],
+    "ignore": [
+      "trolls",
+      "off_topic",
+      "spam"
+    ],
+    "tone": {
+      "x": "confident, direct, PP brand voice",
+      "hn": "humble, technical, zero marketing. First person 'we' — never 'Permission Protocol offers...'",
+      "reddit": "casual, authentic, like a dev who built something relevant"
+    }
+  },
+  "state": {
+    "x_last_checked": "2026-03-08T03:00:22.285Z",
+    "hn_last_checked": "2026-03-07T23:03:00Z",
+    "hn_post_status": "dead",
+    "hn_score": 18,
+    "reddit_last_checked": null,
+    "x_known_reply_ids": [
+      "2029957746389569961",
+      "2029957787527299196",
+      "2029957797811737054",
+      "2029957767193317675",
+      "2029957777255453074",
+      "2029957756644671510",
+      "2029957736310726942"
+    ],
+    "hn_known_comment_ids": [
+      47277339,
+      47277338,
+      47277333,
+      47277357
+    ],
+    "reddit_known_comment_ids": []
+  }
+}

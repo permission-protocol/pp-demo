@@ -1,28 +1,7 @@
 {
-  "scan_time": "2026-03-06T13:00:00Z",
-  "signals_found": 20,
-  "high_priority": 5,
-  "new_leads": 6,
-  "queries_run": 7,
-  "sources": {
-    "web": 12,
-    "hn": 6,
-    "github": 2
-  },
-  "score_5_signals": [
-    "MIT study ZDNet coverage continues (amplifier)",
-    "Chargebacks911 — agentic commerce intent drift (design_partner)",
-    "Clinejection supply chain attack — 4,000 machines (amplifier)",
-    "HN: AI lies about sandbox guardrails — conductor.build (design_partner)",
-    "Lio Technologies $30M a16z — DUPLICATE from yesterday"
-  ],
-  "new_leads_identified": [
-    "Chargebacks911 (Donald Kossmann, CTO)",
-    "Circuit & Chisel / ATXP ($19.2M agent payments protocol)",
-    "ZyG ($58M seed, agentic DTC e-commerce)",
-    "OATH Protocol (GitHub, cryptographic human intent layer)",
-    "conductor.build (sandbox guardrails failure — design partner candidate)",
-    "GuardianReplay / Slaine (tamper-evident agent audit — ally)"
-  ],
-  "notes": "Lio Technologies signal from yesterday confirmed in broader press — already in leads. Clinejection attack (4,000 dev machines via prompt injection in Cline) is new incident not in prior signals. HN sandbox guardrail failure post is high-signal design partner thread."
+  "last_scan": "2026-03-07T23:00:00Z",
+  "scan_type": "unified-signal-scan",
+  "signals_found": 3,
+  "new_hot": ["Summer Yue / Meta OpenClaw inbox deletion (score 5)", "MS-Agent ModelScope RCE (score 4)"],
+  "total_signals_today": 15
 }

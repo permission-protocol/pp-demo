@@ -1,0 +1,53 @@
+{
+  "company": "Kvlar",
+  "slug": "kvlar",
+  "url": "https://kvlar.io",
+  "description": "Open-source YAML policy engine written in Rust that acts as a transparent stdio proxy between AI agents and MCP servers, evaluating every tool call before execution with fail-closed enforcement.",
+  "agents": [
+    "Not an agent deployer — they ARE the enforcement layer for any AI agent using MCP servers",
+    "Target users: devs running Claude Desktop, Cursor, or any agent with MCP tool access",
+    "Policies cover: Postgres (DROP TABLE gates), GitHub (force-push gates), Slack (send gates), Shell (rm -rf blocks)"
+  ],
+  "funding": {
+    "stage": "open-source / unfunded",
+    "total": "$0 — solo developer project, Apache 2.0",
+    "lead_investor": "none",
+    "notes": "Solo indie developer. No company, no VC. Just launched via HN Show HN (item 47255351). 128+ policy tests, 8 server policy templates."
+  },
+  "contacts": [
+    {
+      "name": "kvlar (HN handle)",
+      "title": "Solo Developer / Founder",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "unknown",
+      "github": "unknown — check kvlar.io source or HN profile",
+      "notes": "HN username 'kvlar'. Real identity unknown. Reach via HN reply or GitHub if repo is public."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Complementary enforcement layer — Kvlar blocks/gates, PP provides the authorization receipts for what got approved",
+    "actions_needing_receipts": [
+      "tool_call_execution (any MCP action that was allowed)",
+      "human_approval_webhook_trigger",
+      "policy_evaluation_audit_log"
+    ],
+    "integration_complexity": "low — PP SDK wraps the 'allow' decisions and issues receipts; Kvlar handles enforcement",
+    "urgency": "low — open-source project, no enterprise urgency",
+    "differentiation": "Kvlar = enforcement (what CAN happen). PP = receipts (proof of WHAT DID happen and who authorized it). Different layers, potentially stackable. Kvlar has zero audit trail, no tamper-evident receipts, no enterprise compliance capability. PP fills that gap.",
+    "opportunity": "Ally/integration play. If Kvlar gains traction in dev community, PP could integrate as the audit receipt layer on top. Or Kvlar developer could become an advocate."
+  },
+  "lead_type": "ally",
+  "score": 2.6,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 1,
+    "tech_fit": 3,
+    "regulatory": 1,
+    "timing": 4
+  },
+  "source_signal": "signals/2026-03-06.jsonl#hn-kvlar-47255351",
+  "created": "2026-03-06",
+  "status": "watching",
+  "notes": "Too early for outreach — solo dev, unfunded. Monitor GitHub repo growth and HN traction. If Kvlar gets meaningful stars/adoption, reach out to propose PP as audit receipt layer on top of their enforcement engine. High conceptual alignment, zero business leverage today."
+}

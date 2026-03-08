@@ -1,0 +1,66 @@
+{
+  "company": "ArmorCode",
+  "slug": "armorcode",
+  "url": "https://www.armorcode.com",
+  "description": "Enterprise AI security governance platform pioneering 'Agentic AI for Exposure Management' — transforms fragmented security data (apps, cloud, code, infrastructure, AI agents) into intelligent, actionable risk reduction across the enterprise attack surface.",
+  "agents": [
+    "Internal AI agents that analyze and prioritize security risks across enterprise environments",
+    "Agents that correlate vulnerability data from apps, cloud, infra, and AI systems",
+    "Agentic AI for exposure management — automated risk reduction workflows",
+    "200+ enterprise customers with AI agents operating across regulated environments"
+  ],
+  "funding": {
+    "stage": "Series B equivalent",
+    "total": "$81M total ($65M Series B + $16M additional round closed March 2026)",
+    "lead_investor": "Cheyenne Ventures (latest round); Ballistic Ventures, Highland Capital, Sierra Ventures, NGP Capital, Harmonic Growth Partners, Tau Ventures, Cervin (participants)",
+    "notes": "Latest $16M round led by Cheyenne Ventures. New board member: Phil Venables (former Goldman Sachs/Google Cloud CISO — one of the most recognized names in enterprise security). Company doubled growth YoY."
+  },
+  "contacts": [
+    {
+      "name": "Nikhil Gupta",
+      "title": "CEO and Founder",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/nikhilgupta-armorcode",
+      "github": "unknown",
+      "notes": "Quote (March 2026): 'Enterprises are accelerating AI adoption, and with five trillion AI agents projected by 2030, AI risk management is essential to keep pace.' Strong alignment with PP narrative. Primary contact."
+    },
+    {
+      "name": "Phil Venables",
+      "title": "Board Director (just joined)",
+      "email": "unknown",
+      "twitter": "unknown",
+      "linkedin": "https://www.linkedin.com/in/philvenables",
+      "github": "unknown",
+      "notes": "Former VP/CISO at Google Cloud and Goldman Sachs. One of the most credible enterprise security voices. His joining ArmorCode signals enterprise security gravity. Not a cold outreach target — too senior."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Authorization receipts as structured input to ArmorCode's risk aggregation layer",
+    "actions_needing_receipts": [
+      "agent_action_execution (any consequential agent action)",
+      "risk_correlation_events",
+      "compliance_audit_evidence",
+      "exposure_remediation_actions"
+    ],
+    "integration_complexity": "medium — PP SDK generates receipts; ArmorCode ingests them as structured events into their exposure management dashboard",
+    "urgency": "medium-high — just raised $16M and explicitly positioning around agentic AI governance; window open now",
+    "positioning": "ArmorCode = post-hoc risk visibility (what risks exist, what was exposed). PP = pre-execution authorization + real-time receipts (what was authorized before it happened). PP receipts are the structured event log that ArmorCode needs to make agentic risk management trustworthy. Integration angle: PP generates the signed receipt; ArmorCode ingests it as tamper-evident evidence.",
+    "alternative_angle": "They might see PP as a competitor in the 'AI governance' space. Reframe: PP is the enforcement + receipt layer; ArmorCode is the risk aggregation + visibility layer. These are different planes of the same stack."
+  },
+  "lead_type": "ally",
+  "score": 4.3,
+  "score_breakdown": {
+    "consequence": 4,
+    "funding": 5,
+    "tech_fit": 3,
+    "regulatory": 5,
+    "timing": 5
+  },
+  "source_signal": "signals/2026-03-06.jsonl#armorcode-16m",
+  "created": "2026-03-06",
+  "status": "contacted",
+  "contacted_channels": ["linkedin"],
+  "contacted_at": "2026-03-05T23:48:00Z",
+  "notes": "Already contacted via LinkedIn (March 5). Outreach was made before this dossier was formalized. Follow-up angle: position PP as the action-time receipt layer that feeds ArmorCode's risk dashboard. Phil Venables joining board is significant — enterprise security credibility just jumped. Watch for any public response from Nikhil Gupta."
+}
