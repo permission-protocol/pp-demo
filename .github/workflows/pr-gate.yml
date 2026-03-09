@@ -66,6 +66,10 @@ jobs:
               \"failOnMissing\": true
             }")
           
+          echo "🔍 Raw API response:"
+          echo "$RESPONSE" | jq '.' 2>/dev/null || echo "$RESPONSE"
+          echo ""
+          
           VALID=$(echo "$RESPONSE" | jq -r '.valid // false')
           REQUEST_ID=$(echo "$RESPONSE" | jq -r '.requestId // empty')
           APPROVAL_URL=$(echo "$RESPONSE" | jq -r '.approvalUrl // empty')
