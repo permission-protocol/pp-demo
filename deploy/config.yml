@@ -1,17 +1,1 @@
-# Deploy Configuration
-# Changes to this file require Permission Protocol approval
-
-app:
-  name: pp-demo
-  environment: production
-
-deploy:
-  provider: render
-  auto_deploy: false  # PP controls this
-
-# E2E test: deploy-gate should block this PR
-version: 3.0.0
-
-scaling:
-  replicas: 2
-  region: us-west
+replicas: 3
