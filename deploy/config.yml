@@ -9,9 +9,8 @@ deploy:
   provider: render
   auto_deploy: false  # PP controls this
 
-# Try changing this value and opening a PR
-# The merge will be blocked until you approve in PP
-version: 2.0.0
+# E2E test: deploy-gate should block this PR
+version: 3.0.0
 
 scaling:
   replicas: 2
