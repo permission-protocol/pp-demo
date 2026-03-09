@@ -70,7 +70,8 @@ jobs:
           echo "$RESPONSE" | jq '.' 2>/dev/null || echo "$RESPONSE"
           echo ""
           
-          VALID=$(echo "$RESPONSE" | jq -r '.valid // false')
+          # API wraps result in envelope: { ok, result: { valid, receipt }, ... }
+          VALID=$(echo "$RESPONSE" | jq -r '.result.valid // .valid // false')
           REQUEST_ID=$(echo "$RESPONSE" | jq -r '.requestId // empty')
           APPROVAL_URL=$(echo "$RESPONSE" | jq -r '.approvalUrl // empty')
           
