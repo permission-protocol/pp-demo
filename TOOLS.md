@@ -11,7 +11,16 @@ Skills define _how_ tools work. This file is for _your_ specifics — the stuff 
 
 **Boards:**
 - [PP Marketing](https://github.com/orgs/Roca-Ventures/projects/1) — content, SEO, outreach
-- [PP Product](https://github.com/orgs/Roca-Ventures/projects/2) — core product, deploy gates, features
+- [PP Product](https://github.com/orgs/permission-protocol/projects/1) — core product, deploy gates, features
+  - Project Node ID: `PVT_kwDOD2Ims84BRQBA`
+  - Status Field: `PVTSSF_lADOD2Ims84BRQBAzg_IfZ8`
+  - Options: Backlog=`f75ad846`, Ready=`61e4505c`, In progress=`47fc9ee4`, In review=`df73e18b`, Done=`98236657`
+
+**⚠️ RULE: Every issue created on permission-protocol/* repos MUST be added to the PP Product board.**
+After `gh issue create`, always:
+1. Get the issue node_id from the URL/API
+2. Add to board via `addProjectV2ItemById` mutation
+3. Set status (default: Ready, unless specified otherwise)
 
 **Usage:**
 ```bash

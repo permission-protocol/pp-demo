@@ -11,7 +11,7 @@ WORKSPACE="$HOME/.openclaw/workspace"
 SCRIPTS="$WORKSPACE/scripts"
 QA_DIR="$WORKSPACE/qa"
 GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt 2>/dev/null || echo "")
-REPO="Roca-Ventures/Breakout-Labs"
+REPO="permission-protocol/app"
 
 ISSUE_NUM="${1:-}"
 TEMPLATE_TYPE="${2:-auto}"

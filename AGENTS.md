@@ -119,6 +119,8 @@ Before reporting "done" or "fixed":
 - If Rod pastes a key in chat: store it to the secrets file immediately, then flag the message for deletion.
 - After storing: remind Rod to delete the message from the channel.
 - Rotate any key that was exposed in a chat message (it's now compromised).
+- **SAVE LOCALLY FIRST, DISTRIBUTE SECOND.** When receiving any key: (1) write to `~/.openclaw/secrets/`, (2) THEN set on GitHub/Render/services. Never set a key on a remote service without saving it locally first. You can't read GitHub secrets back.
+- **EXTERNAL SERVICE WRITES (Render, Vercel, etc.):** ALWAYS back up existing configuration to a local file (e.g., `backups/render-env-vars-YYYY-MM-DD.json`) before ANY write operation. Read the full state with GET before using PUT to avoid wiping unmanaged fields.
 
 ### ⚠️ CRITICAL: Read SAFETY.md Before Risky Operations
 If you're about to touch config files, model settings, or anything that could brick you — **READ `SAFETY.md` FIRST.** You've died twice from model config changes. Don't be stupid.
@@ -304,7 +306,7 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 ## Branch Protection Awareness
 - `strict: true` on branch protection = GitHub updates PR branches when main advances → **HEAD SHA changes**
 - Any commit status set on the original SHA becomes stale. Always fetch the PR's **current** HEAD from GitHub API before setting status.
-- "Permission Protocol" is a required status check on Breakout-Labs — merge blocked until PP approval.
+- "Permission Protocol" is a required status check on permission-protocol/app — merge blocked until PP approval.
 - **The agent should never have admin scope on branch protection.** CI tokens: `contents:write` + `statuses:write` + `pull_requests:write` only. Admin stays with Rod.
 
 ## GitHub Actions Patterns

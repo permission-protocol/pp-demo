@@ -15,12 +15,12 @@ bash ~/.openclaw/workspace/scripts/heartbeat-check.sh
 - **This replaces manual model health checks, gateway checks, and cooldown checks**
 
 ## PP Product Board — Ready Queue
-Check `Ready` column in [PP Product](https://github.com/orgs/Roca-Ventures/projects/2):
+Check `Ready` column in [PP Product](https://github.com/orgs/permission-protocol/projects/1):
 ```bash
 GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt) gh api graphql -f query='
 query {
-  organization(login: "Roca-Ventures") {
-    projectV2(number: 2) {
+  organization(login: "permission-protocol") {
+    projectV2(number: 1) {
       items(first: 50) {
         nodes {
           id
@@ -70,6 +70,37 @@ Increment counter in `memory/heartbeat-state.json`. If `dailyCaptureCounter % 3 
 - Update `lastDailyCapture` in `memory/heartbeat-state.json`
 
 **Otherwise:** Continue with normal heartbeat checks.
+
+## Thread Health Check (Discord Ops)
+Scan `ops/threads.yaml` for thread hygiene:
+
+```bash
+cat ~/.openclaw/workspace/ops/threads.yaml
+```
+
+**Check for:**
+1. **Idle threads:** Any thread with `status: ACTIVE` and `last_updated` >72h ago → post nudge in-thread:
+   ```
+   💤 This thread has been quiet for <N> days.
+   Current state: <summary>
+   Open tasks: <count>
+   Should we: continue | park it | /close-review?
+   ```
+   Max one nudge per thread per 72h. Track in `memory/heartbeat-state.json` under `threadNudges: { "<thread_id>": "<last_nudge_iso>" }`.
+
+2. **Thread health digest:** If any threads need attention (idle, blocked, or ready to archive), post to `#daily-log` (1479273618876792893):
+   ```
+   🧵 Thread Health — <date>
+   Active: <N> | Waiting: <N> | Blocked: <N>
+   Idle >72h: <N> ⚠️
+   Ready to archive: <N>
+
+   Needs attention:
+   - "<title>" — idle <N> days, <N> open tasks
+   ```
+   Only post if there's something worth reporting. Silent otherwise.
+
+3. **Status drift:** If a thread's Discord activity contradicts its YAML status (e.g., marked WAITING but has new messages), update the YAML status.
 
 ## Quick Health Check
 - If any cron jobs show repeated failures → alert

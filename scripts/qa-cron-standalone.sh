@@ -21,7 +21,7 @@ QA_REVIEW_ID=$(python3 -c "import json; print(json.load(open('$BOARD_IDS'))['sta
 READY_ID=$(python3 -c "import json; print(json.load(open('$BOARD_IDS'))['statuses']['ready'])")
 VERIFIED_ID=$(python3 -c "import json; print(json.load(open('$BOARD_IDS'))['statuses']['verified'])")
 
-REPO="Roca-Ventures/Breakout-Labs"
+REPO="permission-protocol/app"
 
 # Stats
 VERIFIED=0

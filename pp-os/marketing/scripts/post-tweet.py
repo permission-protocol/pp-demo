@@ -23,11 +23,13 @@ def get_oauth():
         resource_owner_secret=keys["oauth1"]["access_token_secret"],
     )
 
-def post_tweet(text, reply_to=None):
+def post_tweet(text, reply_to=None, quote_id=None):
     oauth = get_oauth()
     payload = {"text": text}
     if reply_to:
         payload["reply"] = {"in_reply_to_tweet_id": reply_to}
+    if quote_id:
+        payload["quote_tweet_id"] = quote_id
     resp = oauth.post("https://api.x.com/2/tweets", json=payload)
     data = resp.json()
     if resp.status_code in (200, 201):
@@ -59,10 +61,18 @@ if __name__ == "__main__":
         post_tweet(sys.argv[2])
     elif mode == "reply":
         post_tweet(sys.argv[3], reply_to=sys.argv[2])
+    elif mode == "quote":
+        post_tweet(sys.argv[3], quote_id=sys.argv[2])
     elif mode == "thread":
         post_thread(sys.argv[2:])
     elif mode == "delete":
         delete_tweet(sys.argv[2])
+    elif mode == "follow":
+        oauth = get_oauth()
+        user_id = sys.argv[2]
+        payload = {"target_user_id": user_id}
+        resp = oauth.post(f"https://api.x.com/2/users/2026663150540697603/following", json=payload)
+        print(f"Follow {user_id}: {resp.status_code} {resp.json()}")
     else:
         print(f"Unknown mode: {mode}")
         print(__doc__)

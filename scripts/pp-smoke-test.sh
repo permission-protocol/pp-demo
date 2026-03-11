@@ -26,7 +26,7 @@ echo ""
 
 # Core pages
 check "Homepage" "$BASE/"
-check "Review dashboard" "$BASE/review"
+check "Review dashboard" "$BASE/review" "307"
 check "How it works" "$BASE/how-it-works"
 check "Developers" "$BASE/developers" "307"
 check "Pricing" "$BASE/pricing"
@@ -37,7 +37,7 @@ check "Review by ID (known)" "$BASE/api/review/cmmfhgf8z000ybnyzqqg2fosv"
 check "Review 404" "$BASE/api/review/nonexistent" "404"
 
 # Review page
-check "Review page" "$BASE/review/cmmfhgf8z000ybnyzqqg2fosv"
+check "Review page" "$BASE/review/cmmfhgf8z000ybnyzqqg2fosv" "307"
 
 echo -e "$RESULTS"
 echo ""

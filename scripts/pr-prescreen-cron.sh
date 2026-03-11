@@ -3,11 +3,11 @@
 # Checks for open PRs without a "🔍 PR Pre-Screen" comment, runs prescreen, posts results.
 #
 # Usage: pr-prescreen-cron.sh [owner/repo]
-# Default repo: Roca-Ventures/Breakout-Labs
+# Default repo: permission-protocol/app
 
 set -uo pipefail
 
-REPO="${1:-Roca-Ventures/Breakout-Labs}"
+REPO="${1:-permission-protocol/app}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 MARKER="🔍 PR Pre-Screen"
 REVIEWED=0
