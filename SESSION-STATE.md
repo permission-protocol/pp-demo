@@ -6,9 +6,4 @@
 None.
 
 ## Key Details
-- Render recovery verified (24 vars).
-- PR #26 (Carry-forward) merged.
-- 12 findings from Rod's QA session addressed/queued.
-
-## Context
-Nightly maintenance complete. PRs #33, #34, #35 awaiting Rod's review in the morning.
+(Archived 2026-03-12: Memory consolidation run complete. PR #84/85 merged, demo 9/9 verified, Batch 1 PR #86 pushed, Batch 2 in progress.)

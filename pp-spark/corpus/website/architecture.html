@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — Permission Protocol</title>
+  <meta name="description" content="Trust boundary separation, authority issuance, and receipt lifecycle in Permission Protocol.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://permissionprotocol.com/architecture">
+  <meta property="og:title" content="Architecture — Permission Protocol">
+  <meta property="og:description" content="Trust boundary separation, authority issuance, and receipt lifecycle in Permission Protocol.">
+  <meta property="og:image" content="https://permissionprotocol.com/assets/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Architecture — Permission Protocol">
+  <meta name="twitter:description" content="Trust boundary separation, authority issuance, and receipt lifecycle in Permission Protocol.">
+  <meta name="twitter:image" content="https://permissionprotocol.com/assets/og-image.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="/styles.css?v=14">
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init("phc_p8CF1B4nuU6nDEYHj4GfOZrOejgkN8BX75kzPZrE6bc", { api_host: "https://us.i.posthog.com", person_profiles: "identified_only" });
+  </script>
+</head>
+<body class="dark-brand-page">
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">
+        <span class="pp-lockup">
+          <svg class="pp-gate-svg" width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="shape-rendering: crispEdges;">
+            <rect x="1.5" y="1.5" width="13" height="13" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="8" y1="1.5" x2="8" y2="5.5" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="8" y1="10.5" x2="8" y2="14.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span class="pp-wordmark-inline">
+            <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+          </span>
+        </span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/deploy-gate">Deploy Gate</a></li>
+        <li><a href="/brand">Brand</a></li>
+        <li><a href="/architecture" class="primary">Architecture</a></li>
+        <li><a href="/receipt-model">Receipt Model</a></li>
+        <li><a href="/present">Present</a></li>
+        <li class="mobile-hide"><a href="/request-access" class="primary">Request Access</a></li>
+      </ul>
+      <a href="/request-access" class="nav-cta-btn" data-track="pp_nav_cta_click">Request Access</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Architecture</h1>
+      <p class="lead">Trust boundary separation between execution systems and authority domains.</p>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="container">
+      <div class="content">
+        
+        <h2>System Components</h2>
+        
+        <h3>Agent</h3>
+        <p>The autonomous system requesting to perform an action. An agent may have broad platform access but cannot self-authorize irreversible operations. Agents initiate requests; they do not issue receipts.</p>
+
+        <h3>Execution Platform</h3>
+        <p>The system where the action will occur — GitHub, CI runner, cloud provider, payment processor. The execution platform enforces receipt verification before action execution.</p>
+
+        <h3>Permission Router</h3>
+        <p>Routes authorization requests to the appropriate policy engine based on action type, environment, and risk tier. Handles request intake and response delivery.</p>
+
+        <h3>Policy Engine</h3>
+        <p>Evaluates requests against configured policies. Determines approval requirements — automatic approval for low-risk actions, human review for high-risk operations, multi-party approval for critical changes.</p>
+
+        <h3>Receipt Ledger</h3>
+        <p>Immutable record of all authorization decisions. Every approval generates a signed receipt stored in the ledger. Receipts can be verified against the ledger at any time.</p>
+
+        <h3>Signer Domain</h3>
+        <p>The cryptographic authority that signs receipts. Each environment (staging, production) has its own signer domain. Signer domains are isolated — a staging signer cannot produce a production receipt.</p>
+
+        <h3>Enforcement Layer</h3>
+        <p>The verification step in your execution pipeline. Before an irreversible action proceeds, the enforcement layer validates that a matching receipt exists and is valid.</p>
+
+        <h2>Trust Boundaries</h2>
+        
+        <p>Permission Protocol establishes clear trust boundaries:</p>
+
+        <div class="diagram" style="padding: 2.5rem;">
+          <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+            <div style="text-align: center; padding: 1.5rem; border: 2px dashed var(--gray-300); border-radius: 8px; min-width: 200px;">
+              <div style="font-weight: 500; margin-bottom: 0.5rem;">Execution Domain</div>
+              <div style="font-size: 0.875rem; color: var(--gray-600);">
+                Agent<br>
+                CI/CD<br>
+                Platform APIs
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; color: var(--gray-400); font-size: 2rem;">⟷</div>
+            <div style="text-align: center; padding: 1.5rem; border: 2px solid var(--black); border-radius: 8px; min-width: 200px;">
+              <div style="font-weight: 500; margin-bottom: 0.5rem;">Authority Domain</div>
+              <div style="font-size: 0.875rem; color: var(--gray-600);">
+                Policy Engine<br>
+                Signer<br>
+                Receipt Ledger
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>The execution domain can request authorization. It cannot grant it. The authority domain issues receipts but does not execute actions. Neither domain can impersonate the other.</p>
+
+        <h2>Authority Issuance vs Execution</h2>
+        
+        <p>Traditional systems conflate authorization with execution. If you can trigger a deploy, you can deploy. Permission Protocol separates these concerns:</p>
+
+        <ul class="requirements">
+          <li><strong>Execution capability</strong> — the ability to run <code>deploy.sh</code></li>
+          <li><strong>Authorization receipt</strong> — the cryptographic proof that this deploy was approved</li>
+        </ul>
+
+        <p>An agent may have execution capability without authorization. The execution platform will not proceed without both.</p>
+
+        <h2>Receipt Lifecycle</h2>
+
+        <ol style="margin: 1.5rem 0; padding-left: 1.5rem; color: var(--gray-700);">
+          <li style="margin-bottom: 0.75rem;"><strong>Request</strong> — Agent submits authorization request with scope</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Evaluation</strong> — Policy engine determines approval requirements</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Approval</strong> — Human or automatic approval based on policy</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Signing</strong> — Signer domain produces cryptographic receipt</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Storage</strong> — Receipt recorded in ledger</li>
+          <li style="margin-bottom: 0.75rem;"><strong>Verification</strong> — Enforcement layer validates receipt at execution time</li>
+          <li style="margin-bottom: 0;"><strong>Redemption</strong> — Action executes; receipt marked as redeemed</li>
+        </ol>
+
+        <p>Receipts are single-use. Once redeemed, they cannot authorize another action.</p>
+
+        <h2>Verification Model</h2>
+
+        <p>Receipt verification is stateless from the execution platform's perspective. The enforcement layer sends the scope to Permission Protocol and receives a yes/no decision. The execution platform does not need to understand policy logic — only whether a valid receipt exists.</p>
+
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line dimmed"># Verification request</div>
+            <div class="terminal-line">POST /v1/receipts/verify</div>
+            <div class="terminal-line">&nbsp;</div>
+            <div class="terminal-line">{</div>
+            <div class="terminal-line">  "scope": {</div>
+            <div class="terminal-line">    "scopeType": "GIT_REF_COMMIT",</div>
+            <div class="terminal-line">    "repo": "org/service",</div>
+            <div class="terminal-line">    "commitSha": "a81f2c3e...",</div>
+            <div class="terminal-line">    "env": "production",</div>
+            <div class="terminal-line">    "capability": "deploy:production"</div>
+            <div class="terminal-line">  }</div>
+            <div class="terminal-line">}</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 3rem;">
+          <a href="/receipt-model" class="btn btn-secondary" data-track="architecture-to-receipt">Receipt Model →</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-main">
+        <span class="pp-lockup">
+          <svg class="pp-gate-svg" width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="shape-rendering: crispEdges;">
+            <rect x="1.5" y="1.5" width="13" height="13" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="8" y1="1.5" x2="8" y2="5.5" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="8" y1="10.5" x2="8" y2="14.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span class="pp-wordmark-inline">
+            <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+          </span>
+        </span>
+        <span class="footer-text">© 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/main.js"></script>
+</body>
+</html>

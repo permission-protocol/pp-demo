@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Receipt Challenge — Permission Protocol</title>
+  <meta name="description" content="Try to merge code without a signed receipt. If you succeed, you win. Public, verifiable, no exceptions.">
+  <meta property="og:title" content="The Receipt Challenge — Permission Protocol">
+  <meta property="og:description" content="Try to merge code without a signed receipt. If you succeed, you win.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://permissionprotocol.com/challenge">
+  <meta property="og:image" content="https://permissionprotocol.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Receipt Challenge — Permission Protocol">
+  <meta name="twitter:description" content="Try to merge code without a signed receipt. If you succeed, you win.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="/styles.css?v=14">
+  <style>
+    .challenge-page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .challenge-page h1 { font-size: 2.75rem; margin-bottom: 0.75rem; letter-spacing: -0.03em; }
+    .challenge-page .subtitle { color: var(--gray-500); font-size: 1.25rem; margin-bottom: 3rem; line-height: 1.5; }
+
+    .challenge-box {
+      background: #111111; color: #e0e0e0;
+      border-radius: 12px; padding: 2.5rem;
+      margin-bottom: 3rem; text-align: center;
+    }
+    .challenge-box .dare {
+      font-size: 1.5rem; font-weight: 600; color: #ffffff;
+      margin-bottom: 1rem; line-height: 1.3;
+    }
+    .challenge-box .details {
+      font-size: 1rem; color: #b0b0b0; line-height: 1.7;
+      max-width: 500px; margin: 0 auto 1.5rem;
+    }
+    .challenge-box .repo-link {
+      display: inline-block;
+      background: #ffffff; color: #0a0a0a;
+      padding: 0.75rem 1.5rem; border-radius: 6px;
+      font-weight: 600; text-decoration: none;
+      font-size: 1rem;
+    }
+    .challenge-box .repo-link:hover { background: #f0f0f0; }
+
+    .rules { margin-bottom: 3rem; }
+    .rules h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+    .rule {
+      display: flex; gap: 1rem; margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+    .rule-icon {
+      flex-shrink: 0; width: 2rem; height: 2rem;
+      background: var(--gray-100); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .rule-text h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .rule-text p { color: var(--gray-600); line-height: 1.6; font-size: 0.95rem; }
+
+    .how-it-works { margin-bottom: 3rem; }
+    .how-it-works h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+    .flow-steps { counter-reset: flow; }
+    .flow-step {
+      counter-increment: flow;
+      padding-left: 2.5rem; position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .flow-step::before {
+      content: counter(flow);
+      position: absolute; left: 0; top: 0;
+      width: 1.75rem; height: 1.75rem;
+      border: 2px solid var(--gray-300); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 600; color: var(--gray-500);
+    }
+    .flow-step strong { display: block; margin-bottom: 0.25rem; }
+    .flow-step p { color: var(--gray-600); line-height: 1.6; font-size: 0.95rem; }
+
+    .result-block {
+      background: #0a0a0a; color: #e0e0e0;
+      border-radius: 8px; padding: 1.25rem 1.5rem;
+      font-family: var(--font-mono); font-size: 0.8rem;
+      line-height: 1.7; margin: 1rem 0;
+    }
+    .result-block .fail { color: #ef4444; }
+    .result-block .success { color: #22c55e; }
+
+    .why-section { margin-bottom: 3rem; border-top: 1px solid var(--gray-200); padding-top: 2rem; }
+    .why-section h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+    .why-section p { color: var(--gray-600); line-height: 1.7; margin-bottom: 1rem; }
+    .why-section strong { color: var(--gray-900); }
+
+    .cta-bottom {
+      text-align: center; padding: 2.5rem;
+      background: var(--gray-50); border-radius: 12px;
+      margin-top: 2rem;
+    }
+    .cta-bottom p { color: var(--gray-500); margin-bottom: 1rem; font-size: 1.1rem; }
+    .cta-bottom a {
+      display: inline-block; padding: 0.75rem 1.5rem;
+      background: var(--black); color: var(--white);
+      border-radius: 6px; font-weight: 600; text-decoration: none;
+      margin: 0 0.5rem;
+    }
+    .cta-bottom a:hover { background: var(--gray-800); }
+    .cta-bottom a.secondary {
+      background: transparent; color: var(--gray-700);
+      border: 1px solid var(--gray-300);
+    }
+    .cta-bottom a.secondary:hover { border-color: var(--gray-500); }
+
+    .back-link { display: inline-block; margin-bottom: 2rem; color: #9a9a9a; text-decoration: none; }
+    .back-link:hover { color: #e0e0e0; }
+  </style>
+</head>
+<body>
+  <div class="challenge-page">
+    <a href="/" class="back-link">← Permission Protocol</a>
+
+    <h1>The Receipt Challenge</h1>
+    <p class="subtitle">Try to merge code without generating a signed receipt.<br>If you succeed, you win.</p>
+
+    <div class="challenge-box">
+      <div class="dare">Merge to main. Without a receipt. We dare you.</div>
+      <div class="details">
+        The <code>pp-demo</code> repo has Deploy Gate enabled with branch protection.
+        Every PR to <code>main</code> requires a cryptographic authorization receipt before merge.
+        No exceptions. No workarounds.
+      </div>
+      <a href="https://github.com/permission-protocol/pp-demo" class="repo-link" target="_blank">
+        View the repo →
+      </a>
+    </div>
+
+    <div class="rules">
+      <h2>The Rules</h2>
+      
+      <div class="rule">
+        <div class="rule-icon">🔓</div>
+        <div class="rule-text">
+          <h3>Everything is public</h3>
+          <p>The repo, the workflow, the action source, the branch protection config. Full transparency. No security through obscurity.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">🎯</div>
+        <div class="rule-text">
+          <h3>One goal: merge without a receipt</h3>
+          <p>Fork it, open a PR, try to get it merged to <code>main</code> without a valid Permission Protocol receipt. Any method. Any creative approach.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">📜</div>
+        <div class="rule-text">
+          <h3>The receipt is the proof</h3>
+          <p>Ed25519 signature. Canonical JSON payload. Scoped to the exact commit SHA, repo, and environment. Time-limited. Independently verifiable.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-icon">🏆</div>
+        <div class="rule-text">
+          <h3>If you bypass it, tell us</h3>
+          <p>Found a way around it? Open an issue. We'll fix it, credit you, and make the system stronger. That's the point.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-it-works">
+      <h2>What Happens When You Try</h2>
+      
+      <div class="flow-steps">
+        <div class="flow-step">
+          <strong>You open a PR to main</strong>
+          <p>Any change. Any file. The Deploy Gate workflow triggers automatically.</p>
+        </div>
+
+        <div class="flow-step">
+          <strong>The gate checks for a receipt</strong>
+          <p>No receipt found? Hard stop.</p>
+          <div class="result-block">
+            <span class="fail">❌ NO RECEIPT — Human approval required</span><br><br>
+            👉 Approve: https://app.permissionprotocol.com/pp/deploy-requests/dr_...
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <strong>Branch protection blocks the merge</strong>
+          <p>The "Deploy Gate" check is required. It failed. GitHub won't let you merge. The merge button is grayed out.</p>
+        </div>
+
+        <div class="flow-step">
+          <strong>A human approves (or doesn't)</strong>
+          <p>Click the link. Review. Approve. A cryptographic receipt is generated. Re-run the workflow. Now it passes.</p>
+          <div class="result-block">
+            <span class="success">✅ RECEIPT VERIFIED — Deploy authorized</span><br>
+            Receipt: <span class="success">rcpt_dg_...</span> | Approved by: reviewer@company.com
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-section">
+      <h2>Why This Matters</h2>
+      <p>
+        Most "governance" tools can be bypassed by someone with admin access, a misconfigured policy, or a creative workaround. 
+        Deploy Gate is different: the enforcement is <strong>cryptographic</strong>, not configuration-based.
+      </p>
+      <p>
+        The receipt isn't a flag in a database. It's a <strong>signed artifact</strong> that the CI pipeline independently verifies.
+        Even if you compromise the agent, the bot, or the workflow — you can't forge a receipt without the signing key.
+        And the signing key lives in Permission Protocol, not in your repo.
+      </p>
+      <p>
+        This isn't governance theater. It's an <strong>enforcement primitive</strong>.
+      </p>
+    </div>
+
+    <div class="cta-bottom">
+      <p>Want this on your repo?</p>
+      <a href="/install">Install in 2 minutes →</a>
+      <a href="https://github.com/permission-protocol/deploy-gate" class="secondary" target="_blank">View source →</a>
+    </div>
+  </div>
+</body>
+</html>

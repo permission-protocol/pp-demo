@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-03-07T20:47:17.053857+00:00",
+  "categories": {
+    "doctrine": {
+      "files": 8,
+      "chars": 78920,
+      "file_list": [
+        "doctrine/design-partner-quickstart.md",
+        "doctrine/pp-strategy-v2.md",
+        "doctrine/design-partner-targets.md",
+        "doctrine/nist-rfi-final.md",
+        "doctrine/CONTENT-PLAYBOOK.md",
+        "doctrine/market-intel.md",
+        "doctrine/master-plan.md",
+        "doctrine/DOCTRINE-LIBRARY.md"
+      ]
+    },
+    "incidents": {
+      "files": 4,
+      "chars": 30002,
+      "file_list": [
+        "incidents/incident-hooks-week-of-2026-02-26.md",
+        "incidents/incident-hooks-week-of-2026-03-04.md",
+        "incidents/external-ai-incidents-2025-2026.md",
+        "incidents/distribution-engine-ai-incidents.md"
+      ]
+    },
+    "internal": {
+      "files": 0,
+      "chars": 0,
+      "file_list": []
+    },
+    "product": {
+      "files": 7,
+      "chars": 27826,
+      "file_list": [
+        "product/breakout-labs-readme.md",
+        "product/DESIGN_PARTNER.md",
+        "product/CHALLENGE.md",
+        "product/deploy-gate-readme.md",
+        "product/README.md",
+        "product/ROADMAP.md",
+        "product/SECURITY.md"
+      ]
+    },
+    "website": {
+      "files": 6,
+      "chars": 92718,
+      "file_list": [
+        "website/architecture.html",
+        "website/challenge.html",
+        "website/pentagon-anthropic-authorization.html",
+        "website/agentic-commerce-authorization-gap-blog.md",
+        "website/brand.html",
+        "website/deploy-gate.html"
+      ]
+    }
+  },
+  "total_files": 25,
+  "total_chars": 229466
+}

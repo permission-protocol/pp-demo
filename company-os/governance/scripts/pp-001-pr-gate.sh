@@ -16,7 +16,7 @@
 # Fail-closed: absent, expired, or hash-mismatched tokens → denied.
 #
 # ── Why this gate exists ───────────────────────────────────────────────────────
-# PP-001 is Authority C (creates public PRs on Roca-Ventures/Breakout-Labs).
+# PP-001 is Authority C (creates public PRs on permission-protocol/app).
 # Without this gate, an agent could create PRs without explicit human approval.
 # This gate enforces that a human (Rod, Telegram ID 6091356144) explicitly reviewed
 # the draft and minted an approval token via mint-approval-token.sh.

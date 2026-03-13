@@ -1,31 +1,23 @@
-# PP Status — Last Updated: 2026-03-10 23:00 MST
+# PP Status — Last updated 2026-03-12 23:00 MDT
 
-## 🎯 28-DAY FOCUS (Mar 8 → Apr 4) — DAY 3 COMPLETE
-**Single wedge: AI coding agents (Codex, Cursor, Claude Code) deploying code without Permission Protocol**
-- Success = 5+ external users with deploy-gate installed, 1+ completing full flow
-- **Week 1 (Mar 8-14):** Perfect deploy-gate + demo video + dogfood on PP/Xdares repos
-
-## Active Right Now
-- **Render Recovery COMPLETE**: All 24 env vars restored and verified. Auth, signing, and Cloudinary functional.
-- **Approval Flow Upgrades**: Re-approval flow (PR #23) and Carry-forward approvals (PR #26) live.
-- **Dashboard Redesign**: PR #24 live. PR #33 (redesign v2 + favicon) pending Rod review.
-- **Reliability & Security**: PR #34 (atomic receipt + scope separation) and PR #35 (auto-supersede) pending Rod review.
-
-## Paused (Focus Sprint)
-- Scout pipeline (13 crons off)
-- Marketing pipeline (5 crons off)
+## Active
+- **PR #86** on app: batch 1 UX overhaul (7 specs), pushed, CI running
+- **Batch 2** Codex session `nimble-bison`: approval screen redesign (4 specs), ~90% done on branch `fix/approval-screen-redesign`
 
 ## Pending
-- [ ] Rod: Approve PRs #33, #34, #35 via PP UI
-- [ ] Demo video for deploy-gate (Day 4/5 goal)
-- [ ] Dogfood deploy-gate on Xdares repo
-- [ ] Vercel deploy webhook → #rc-alerts (waiting on Rod)
-- [ ] Fix login link on marketing site nav (Findings #1)
+- Merge PR #86 after CI green
+- Push + PR batch 2
+- Fix 3 type errors in page.tsx (from batch 1 Codex)
+- Rod: set `PP_SIGNING_PRIVATE_KEY` on Render
+- Demo video → GTM distribution
 
 ## Recent Decisions
-- **Self-Approval Blocked**: CI keys can no longer approve their own requests (`deployRequests.approve` scope).
-- **GitHub App Transition**: Decided for future to simplify key management.
-- **Background Jobs**: Post-approval actions (merge/rerun) moved to async background processing.
+- Approval screen = decision flow (4 zones: Context/Assessment/Action/Evidence)
+- 80% of approvals above the fold, no scrolling
+- Environment theming (production=amber, staging=blue)
+- Deny flow collapsed by default
+- URL restructure: `/pp/` → `/c/`
+- Ruleset awareness: repos use rulesets, disable via API for force-merge.
 
 ## Blockers
-- None. (Render outage resolved)
+- Receipt signing: `PP_SIGNING_PRIVATE_KEY` not on Render (Rod action)

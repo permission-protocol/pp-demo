@@ -103,8 +103,11 @@ When context gets long, compaction can erase recent exchanges. This catches them
 Before reporting "done" or "fixed":
 - **Text changes ≠ behavior changes.** Changing a prompt doesn't change architecture.
 - Identify the actual mechanism (config values, cron type, code path), not just the description.
-- Verify by observing behavior, not just reading config.
+- Verify by observing behavior (logs, screenshots, curl), not just reading config.
 - If you changed how something works, test that the NEW behavior actually fires.
+- **Visual QA Protocol**: Always run `scripts/pre-merge-review.sh` for UI changes before merging. Screenshot-first, merge-second.
+- **Embedded vs Infrastructure**: Prefer embedded solutions (in-process workers, sqlite) for "single service" deployments unless scale mandates external dependencies.
+- **Coding Agent Import Hygiene**: Coding agents (Codex/Claude) often miss new imports in large files. Always run a type-check (`tsc`) or lint pass immediately after an agent finishes work.
 
 ## Safety
 

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: -apple-system, 'Inter', 'SF Pro', sans-serif;
+    padding: 40px;
+    width: 900px;
+  }
+  h1 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #44aa99;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+  .tier-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #44aa99;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .tier { margin-bottom: 36px; }
+  .cards { display: flex; gap: 16px; flex-wrap: wrap; }
+  .card {
+    background: #111;
+    border: 1px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 24px;
+    width: 270px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card.primary { border-color: #44aa9940; }
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .avatar::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+  }
+  .card.primary .avatar::after { border-color: #44aa9930; }
+  
+  .a1 { background: linear-gradient(135deg, #1a3a4a, #0d2030); }
+  .a2 { background: linear-gradient(135deg, #2a1a3a, #1a0d2a); }
+  .a3 { background: linear-gradient(135deg, #1a2a1a, #0d1a0d); }
+  .a4 { background: linear-gradient(135deg, #3a1a1a, #2a0d0d); }
+  .a5 { background: linear-gradient(135deg, #1a1a3a, #0d0d2a); }
+
+  .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .role {
+    font-size: 11px;
+    color: #44aa99;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .pain {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    min-height: 54px;
+  }
+  .pain em {
+    color: #e8a040;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .quote {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+    padding-left: 10px;
+    border-left: 2px solid #222;
+    margin-bottom: 14px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .tag {
+    font-size: 9px;
+    color: #555;
+    background: #1a1a1a;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+  .priority {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .priority.now { background: #44aa9920; color: #44aa99; }
+  .priority.next { background: #e8a04020; color: #e8a040; }
+  .priority.future { background: #ffffff10; color: #555; }
+</style>
+</head>
+<body>
+
+<h1>Permission Protocol — Personas</h1>
+<div class="subtitle">Who we're building for · March 2026</div>
+
+<div class="tier">
+  <div class="tier-label">Tier 1 — Must Win (Now)</div>
+  <div class="cards">
+    
+    <div class="card primary">
+      <span class="priority now">Now</span>
+      <div class="avatar a1">🚀</div>
+      <div class="name">Marco</div>
+      <div class="role">The Solo Shipper</div>
+      <div class="pain">Ships with Codex/Claude Code daily. <em>Wakes up to broken prod</em> because the agent merged at 2am. Wants guardrails without process.</div>
+      <div class="quote">"I need a seatbelt, not a speed limit."</div>
+      <div class="tags">
+        <span class="tag">r/ChatGPTPro</span>
+        <span class="tag">Cursor forums</span>
+        <span class="tag">X vibe-coding</span>
+        <span class="tag">Indie Hackers</span>
+      </div>
+    </div>
+
+    <div class="card primary">
+      <span class="priority now">Now</span>
+      <div class="avatar a2">🛡️</div>
+      <div class="name">Sarah</div>
+      <div class="role">The Shield</div>
+      <div class="pain">Eng lead, 10-50 person startup. 5 devs using Copilot/Cursor. <em>No audit trail</em> for AI-generated PRs when things break.</div>
+      <div class="quote">"Who approved this? Nobody can answer me."</div>
+      <div class="tags">
+        <span class="tag">Hacker News</span>
+        <span class="tag">Eng blogs</span>
+        <span class="tag">GitHub trending</span>
+        <span class="tag">Team Slack</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-label">Tier 2 — Expands the Wedge</div>
+  <div class="cards">
+
+    <div class="card">
+      <span class="priority next">Next</span>
+      <div class="avatar a3">⚙️</div>
+      <div class="name">Kai</div>
+      <div class="role">The Plumber</div>
+      <div class="pain">DevOps / platform eng. Builds the CI/CD pipeline. <em>AI PRs flooding in</em> — can't tell agent-authored from human. Wants to gate differently.</div>
+      <div class="quote">"My pipeline doesn't know if a human or a bot wrote this."</div>
+      <div class="tags">
+        <span class="tag">DevOps Reddit</span>
+        <span class="tag">CNCF Slack</span>
+        <span class="tag">GH Actions Marketplace</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="priority next">Next</span>
+      <div class="avatar a4">🔐</div>
+      <div class="name">Elena</div>
+      <div class="role">The Regulator</div>
+      <div class="pain">Security-conscious CTO. Regulated industry. <em>If an agent deploys ransomware, who's liable?</em> Needs cryptographic proof of auth chain.</div>
+      <div class="quote">"Show me the signature, not the log."</div>
+      <div class="tags">
+        <span class="tag">RSA / BSides</span>
+        <span class="tag">Compliance Slack</span>
+        <span class="tag">CISO networks</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-label">Tier 3 — Company OS Era</div>
+  <div class="cards">
+
+    <div class="card">
+      <span class="priority future">Future</span>
+      <div class="avatar a5">🤖</div>
+      <div class="name">Amir</div>
+      <div class="role">The Architect</div>
+      <div class="pain">Building multi-agent systems that take real-world actions. <em>Needs authorization primitive</em> beyond deploys — for any consequential action.</div>
+      <div class="quote">"My agents need receipts for everything, not just code."</div>
+      <div class="tags">
+        <span class="tag">LangChain</span>
+        <span class="tag">CrewAI</span>
+        <span class="tag">AutoGen</span>
+        <span class="tag">Agent Twitter</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

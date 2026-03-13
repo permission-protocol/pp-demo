@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pentagon Wants AI Without a Permission Layer. Anthropic Said No. | Permission Protocol</title>
+  <meta name="description" content="Anthropic refused to let the Pentagon use Claude for autonomous weapons without human authorization. They got labeled a supply chain risk. The real problem: authorization built on contracts instead of cryptography.">
+  <meta name="keywords" content="Anthropic Pentagon, AI autonomous weapons, AI authorization, supply chain risk, deploy gate, human oversight">
+  <script type='application/ld+json'>
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The Pentagon Wants AI Without a Permission Layer. Anthropic Said No.",
+    "description": "Anthropic refused to let the Pentagon use Claude for autonomous weapons without human authorization. They got labeled a supply chain risk. The real problem: authorization built on contracts instead of cryptography.",
+    "author": {"@type": "Organization", "name": "Permission Protocol"},
+    "publisher": {"@type": "Organization", "name": "Permission Protocol", "url": "https://permissionprotocol.com"},
+    "datePublished": "2026-03-06",
+    "url": "https://permissionprotocol.com/blog/pentagon-anthropic-authorization"
+  }
+  </script>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="The Pentagon Wants AI Without a Permission Layer. Anthropic Said No.">
+  <meta property="og:description" content="Authorization built on contracts is authorization built on paper. Here's what should exist instead.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://permissionprotocol.com/blog/pentagon-anthropic-authorization">
+  <meta property="og:image" content="https://permissionprotocol.com/blog/pentagon-anthropic-authorization.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@PermissionPrtcl">
+  <meta name="twitter:title" content="The Pentagon Wants AI Without a Permission Layer. Anthropic Said No.">
+  <meta name="twitter:description" content="Authorization built on contracts is authorization built on paper.">
+  <meta name="twitter:image" content="https://permissionprotocol.com/blog/pentagon-anthropic-authorization.png">
+
+  <link rel="canonical" href="https://permissionprotocol.com/blog/pentagon-anthropic-authorization">
+  <link rel="stylesheet" href="../styles.css?v=14">
+</head>
+<body class="dark-brand-page">
+  <nav>
+    <div class="container nav-container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.svg" alt="Permission Protocol" width="32" height="32">
+        <span>Permission Protocol</span>
+      </a>
+      <div class="nav-links">
+        <a href="/how-it-works">How It Works</a>
+        <a href="/developers/quickstart">Developers</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/blog">Blog</a>
+        <a href="/developers/quickstart" class="nav-cta">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <article class="blog-post">
+    <div class="container blog-container">
+      <header class="blog-header">
+        <h1>The Pentagon Wants AI Without a Permission Layer. Anthropic Said No.</h1>
+        <p class="blog-date">March 2026</p>
+        <p class="blog-subtitle">Authorization built on contracts is authorization built on paper. Here's what should exist instead.</p>
+      </header>
+
+      <img src="/blog/pentagon-anthropic-authorization.png" alt="Authorization infrastructure for AI systems" class="blog-hero-image" style="max-height:24rem;width:100%;object-fit:cover;border-radius:12px;margin:2rem 0;">
+
+      <div class="blog-content">
+
+        <h2>What happened</h2>
+
+        <p>Anthropic had a contract with the Department of Defense. The terms included two restrictions: Claude would not be used for fully autonomous weapons systems, and Claude would not be used for mass domestic surveillance.</p>
+
+        <p>The Pentagon wanted those restrictions removed. Anthropic refused.</p>
+
+        <p>The U.S. government responded by designating Anthropic a <strong>supply chain risk</strong> &mdash; a label normally reserved for foreign adversaries like Huawei. It is the first time an American company has received this designation. Defense contractors must now certify they don't use Anthropic's models in Pentagon work.</p>
+
+        <p>Anthropic is taking it to court.</p>
+
+        <h2>The wrong debate</h2>
+
+        <p>The public conversation has focused on politics. Who's right &mdash; Anthropic or the Pentagon? Is Dario Amodei principled or naive? Should AI companies have veto power over military use?</p>
+
+        <p>These are important questions. They are also the wrong questions if you care about the outcome.</p>
+
+        <p>The core issue is not whether Anthropic <em>wants</em> to prevent autonomous weapons use. The issue is whether they <em>can</em>.</p>
+
+        <h2>Contract clauses are not enforcement</h2>
+
+        <p>Anthropic's restrictions are contractual. They exist as legal text in an agreement between two parties. Once Claude is deployed inside a customer's infrastructure, those restrictions are enforced by trust, not technology.</p>
+
+        <p>There is no runtime mechanism that verifies a human authorized a specific action before Claude's output triggers it. There is no cryptographic receipt proving who approved what. There is no audit trail that connects a model inference to an authorization decision.</p>
+
+        <p>The restrictions are real. The enforcement is honor-system.</p>
+
+        <p>This is not a criticism of Anthropic. It is a description of the current state of the entire industry. No major AI provider has an authorization layer that sits between "model produced output" and "system took action."</p>
+
+        <h2>The military solved this decades ago</h2>
+
+        <p>Authorization for consequential actions is not a new problem. The military has chain-of-command. Financial systems have dual-key controls. Nuclear launch requires two-person integrity. Healthcare has prescription authority.</p>
+
+        <p>Every high-stakes domain has the same pattern: <strong>before an irreversible action executes, a specific human (or policy) must authorize it, and that authorization must be provable after the fact.</strong></p>
+
+        <p>AI systems have skipped this step entirely.</p>
+
+        <p>When a coding agent deploys to production, who authorized the deploy? When an AI assistant sends an email on your behalf, who approved the send? When a model's output triggers a physical action in the real world, where is the signed receipt?</p>
+
+        <p>The answer, in almost every case, is: nowhere. The action happened because the model produced an output and the system executed it. No gate. No receipt. No audit trail.</p>
+
+        <h2>Architecture, not contracts</h2>
+
+        <p>The Anthropic-Pentagon dispute makes the gap visible at the highest possible stakes. But the gap exists everywhere AI agents act.</p>
+
+        <p>The fix is not better contracts. Contracts are renegotiated, overridden, reinterpreted, or ignored. The fix is an authorization layer &mdash; infrastructure that enforces a simple rule: <strong>consequential actions do not execute without a signed, verifiable authorization from a human or policy.</strong></p>
+
+        <p>This is what Permission Protocol builds. Every action flows through an authorization gate. Every authorization produces a cryptographic receipt. Every receipt is verifiable and auditable. The gate is fail-closed &mdash; if no authorization exists, the action does not execute.</p>
+
+        <p>If "Claude will not be used for autonomous weapons" were enforced by a permission layer instead of a contract clause, the enforcement would be architectural. The model's output could not trigger a weapon system without a signed human authorization receipt. The debate would be over &mdash; not because of policy, but because of physics.</p>
+
+        <h2>The question that matters</h2>
+
+        <p>The Anthropic-Pentagon fight will resolve one way or another. Contracts will be signed or torn up. CEOs will negotiate. Politicians will posture.</p>
+
+        <p>But the underlying question will remain for every AI system that acts in the real world:</p>
+
+        <p><strong>When your AI system takes an irreversible action, who authorized it? And can you prove it?</strong></p>
+
+        <p>If the answer depends on a contract clause, a terms-of-service page, or a verbal promise &mdash; you don't have authorization. You have hope.</p>
+
+        <p>Authorization should be infrastructure. Not paperwork.</p>
+
+        <div style="margin-top:3rem;padding:1.5rem;border:1px solid rgba(68,170,153,0.3);border-radius:12px;background:rgba(68,170,153,0.05);">
+          <p style="margin:0;font-size:0.95rem;"><strong>Permission Protocol</strong> is the authorization layer for AI systems. Every consequential action requires a signed receipt before execution. <a href="/developers/quickstart" style="color:#44aa99;">Try the SDK →</a></p>
+        </div>
+
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Permission Protocol</p>
+    </div>
+  </footer>
+</body>
+</html>

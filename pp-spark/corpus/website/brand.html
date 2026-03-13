@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Identity — Permission Protocol</title>
+  <meta name="description" content="Permission Protocol brand identity system. Deny by default. Permit by proof." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ===== Brand Page Specific ===== */
+    .brand-page { min-height: 100vh; background: #0a0a0a; color: #d0d0d0; }
+
+    /* Sticky top bar */
+    .brand-topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,10,10,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid #161616;
+    }
+    .brand-topbar-inner {
+      max-width: 1100px; margin: 0 auto; padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand-toggle {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      padding: 6px 16px; border: 1px solid #333; color: #666;
+      background: transparent; cursor: pointer;
+      transition: all 0.3s; letter-spacing: 0.05em;
+    }
+    .brand-toggle.signed { border-color: #44aa99; color: #44aa99; background: rgba(68,170,153,0.05); }
+
+    /* Container */
+    .brand-container { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
+
+    /* Section labels */
+    .brand-section-label {
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.2em; color: #555; margin-bottom: 24px;
+    }
+    .brand-sub-label {
+      font-family: 'Space Mono', monospace; font-size: 9px;
+      letter-spacing: 0.15em; color: #444; margin-top: 16px; margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .brand-divider { width: 100%; height: 1px; background: #1a1a1a; margin: 64px 0; }
+    .brand-desc {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: #444; line-height: 1.7; margin-top: 12px;
+    }
+    .brand-desc .hl { color: #666; }
+    .brand-desc .permit { color: #44aa99; }
+    .brand-desc .deny { color: #aa4455; }
+
+    /* Showcase cards */
+    .brand-card {
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px; min-height: 160px;
+    }
+    .brand-card.short { min-height: 80px; }
+    .brand-card.tall { min-height: 240px; }
+    .brand-card-dark { background: #0e0e0e; }
+    .brand-card-light { background: #f0f0ed; }
+    .brand-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .brand-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .brand-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 24px; }
+    .brand-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+
+    /* Hero */
+    .brand-hero { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 32px; }
+    .brand-hero-label {
+      font-family: 'Space Mono', monospace; font-size: 9px;
+      color: #333; text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 40px;
+    }
+    .brand-hero-tagline {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      color: #444; line-height: 1.7; margin-top: 32px; max-width: 420px;
+    }
+
+    /* Wordmark */
+    .wordmark { display: flex; flex-direction: column; line-height: 1.1; font-family: 'Space Grotesk', sans-serif; }
+    .wordmark-permission { font-weight: 500; letter-spacing: 0.07em; }
+    .wordmark-protocol { font-weight: 300; opacity: 0.6; letter-spacing: 0.07em; }
+    .wordmark.xl .wordmark-permission, .wordmark.xl .wordmark-protocol { font-size: 32px; }
+    .wordmark.lg .wordmark-permission, .wordmark.lg .wordmark-protocol { font-size: 22px; }
+    .wordmark.md .wordmark-permission, .wordmark.md .wordmark-protocol { font-size: 16px; }
+    .wordmark.xl { gap: 12px; } .wordmark.lg { gap: 9px; } .wordmark.md { gap: 7px; }
+
+    .wordmark-inline {
+      font-family: 'Space Grotesk', sans-serif; line-height: 1;
+    }
+    .wordmark-inline .perm { font-weight: 500; }
+    .wordmark-inline .slash { font-weight: 300; opacity: 0.5; margin: 0 0.4em; }
+    .wordmark-inline .proto { font-weight: 300; opacity: 0.6; }
+    .wordmark-inline.sm { font-size: 12px; letter-spacing: 0.1em; }
+    .wordmark-inline.lg { font-size: 20px; letter-spacing: 0.07em; }
+
+    /* Lockups */
+    .lockup-h { display: flex; align-items: center; gap: 16px; }
+    .lockup-h .lockup-divider { width: 1px; height: 32px; opacity: 0.15; }
+    .lockup-hc { display: flex; align-items: center; gap: 10px; }
+    .lockup-v { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+    /* Gate SVG animation — smooth attribute transitions */
+    .gate-top, .gate-bottom { transition: y 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+    /* Color transitions on all SVG strokes */
+    .gate-svg rect, .gate-svg line { transition: stroke 0.5s ease; }
+    /* Text/element color transitions */
+    .wordmark, .wordmark-inline, .lockup-h, .lockup-hc, .lockup-v,
+    .lockup-divider, .hero-wordmark { transition: color 0.5s ease, opacity 0.5s ease; }
+
+    /* Size ladder */
+    .size-ladder { display: flex; align-items: flex-end; gap: 32px; }
+    .size-ladder-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .size-ladder-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #333; }
+
+    /* Interactive animation section */
+    .brand-anim-section { display: flex; flex-direction: column; align-items: center; padding: 32px 0; }
+    .brand-anim-title {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: #666; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .brand-anim-name {
+      font-family: 'Space Mono', monospace; font-size: 20px;
+      color: #c8c8c8; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 12px;
+    }
+    .brand-anim-desc {
+      font-family: 'Space Mono', monospace; font-size: 12px; color: #555; margin-bottom: 40px;
+    }
+    .brand-anim-toggle {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      padding: 8px 20px; border: 1px solid #555; color: #888;
+      background: transparent; cursor: pointer; transition: all 0.3s; margin-bottom: 48px;
+    }
+    .brand-anim-toggle.signed { border-color: #44aa99; color: #44aa99; background: rgba(68,170,153,0.06); }
+
+    /* State readout */
+    .brand-readout {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      padding: 16px; border: 1px solid #1a1a1a; background: #060606;
+      width: 100%; max-width: 380px;
+    }
+    .brand-readout-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+    .brand-readout-row:last-child { margin-bottom: 0; }
+    .brand-readout-key { color: #444; }
+    .brand-readout-arrow { color: #333; }
+    .brand-readout-val { transition: color 0.3s; }
+
+    /* Color swatches */
+    .brand-swatch-box { aspect-ratio: 1; border: 1px solid #222; margin-bottom: 12px; }
+    .brand-swatch-name { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; }
+    .brand-swatch-hex { font-family: 'Space Mono', monospace; font-size: 11px; color: #555; }
+    .brand-swatch-desc { font-family: 'Space Mono', monospace; font-size: 9px; color: #3a3a3a; margin-top: 4px; }
+
+    /* App icon */
+    .brand-icon-container {
+      display: flex; align-items: center; justify-content: center;
+      background: #111; border: 1px solid #222;
+    }
+
+    /* Clear space */
+    .brand-clearspace { display: flex; align-items: flex-start; gap: 64px; margin-bottom: 24px; }
+    .brand-clearspace-box { border: 1px dashed #333; padding: 24px; display: inline-block; position: relative; }
+    .brand-clearspace-label {
+      font-family: 'Space Mono', monospace; font-size: 9px; color: #44aa99;
+      position: absolute;
+    }
+    .brand-minsize-grid { display: flex; align-items: flex-end; gap: 24px; margin-top: 8px; }
+    .brand-minsize-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .brand-minsize-box { border: 1px dashed #333; padding: 8px; }
+    .brand-minsize-ok { font-family: 'Space Mono', monospace; font-size: 9px; color: #44aa99; }
+    .brand-minsize-no { font-family: 'Space Mono', monospace; font-size: 9px; color: #aa4455; }
+    .brand-clearspace-note { font-family: 'Space Mono', monospace; font-size: 10px; color: #444; margin-top: 12px; }
+
+    /* Misuse */
+    .brand-misuse-card {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .brand-misuse-box {
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; border: 1px dashed rgba(170,68,85,0.3); min-height: 100px; width: 100%; margin-bottom: 12px;
+    }
+    .brand-misuse-label {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .brand-misuse-x { color: #aa4455; font-size: 10px; }
+    .brand-misuse-text { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; }
+
+    /* Contextual */
+    .brand-ctx-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #444; letter-spacing: 0.1em; text-align: center; margin-top: 8px; }
+
+    /* Typography showcase */
+    .brand-type-primary {
+      font-family: 'Space Grotesk', sans-serif; font-size: 28px;
+      color: #c8c8c8; line-height: 1.3; margin-top: 12px;
+    }
+    .brand-type-weight-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #333; letter-spacing: 0.1em; margin-top: 16px; }
+    .brand-type-code {
+      font-family: 'Space Mono', monospace; font-size: 14px;
+      color: #888; line-height: 1.6; margin-top: 12px;
+    }
+
+    /* Footer */
+    .brand-footer {
+      margin-top: 80px; padding-top: 32px; border-top: 1px solid #141414;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand-footer-version { font-family: 'Space Mono', monospace; font-size: 9px; color: #2a2a2a; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .brand-grid-2, .brand-grid-3, .brand-grid-5 { grid-template-columns: 1fr; }
+      .brand-grid-4 { grid-template-columns: 1fr 1fr; }
+      .brand-clearspace { flex-direction: column; gap: 32px; }
+      .size-ladder { flex-wrap: wrap; gap: 16px; }
+      .brand-container { padding: 40px 16px; }
+    }
+  </style>
+</head>
+<body class="brand-page">
+
+  <!-- Top Bar with toggle -->
+  <div class="brand-topbar">
+    <div class="brand-topbar-inner">
+      <div class="lockup-hc">
+        <svg class="gate-svg" width="20" height="20" viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+          <rect x="1.5" y="1.5" width="13" height="13" stroke="#999" stroke-width="1.5" fill="none"/>
+          <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#999" stroke-width="1.5"/>
+          <line x1="8" y1="1.5" x2="8" class="gate-top" stroke="#999" stroke-width="1.5"/>
+          <line x1="8" x2="8" y2="14.5" class="gate-bottom" stroke="#999" stroke-width="1.5"/>
+        </svg>
+        <span class="wordmark-inline sm" style="color: #999;">
+          <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+        </span>
+      </div>
+      <button class="brand-toggle" id="topToggle" onclick="toggleState()">○ unsigned</button>
+    </div>
+  </div>
+
+  <div class="brand-container">
+
+    <!-- ===== HERO ===== -->
+    <div class="brand-hero">
+      <div class="brand-hero-label">Brand Identity System</div>
+      <svg class="gate-svg hero-gate" width="80" height="80" viewBox="0 0 16 16" fill="none" style="shape-rendering: geometricPrecision;">
+        <rect x="1.5" y="1.5" width="13" height="13" stroke="#777" stroke-width="1.2" fill="none"/>
+        <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#777" stroke-width="1.2"/>
+        <line x1="8" y1="1.5" x2="8" class="gate-top" stroke="#777" stroke-width="1.2"/>
+        <line x1="8" x2="8" y2="14.5" class="gate-bottom" stroke="#777" stroke-width="1.2"/>
+      </svg>
+      <div class="wordmark xl hero-wordmark" style="margin-top: 32px; color: #777;">
+        <span class="wordmark-permission">PERMISSION</span>
+        <span class="wordmark-protocol">PROTOCOL</span>
+      </div>
+      <div class="brand-hero-tagline">
+        Deny by default. Permit by proof.<br/>The gate is always closed.
+      </div>
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 01. PRIMARY MARK ===== -->
+    <div class="brand-section-label">01 — Primary Mark</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark">
+        <div class="size-ladder" id="ladder-dark"></div>
+      </div>
+      <div class="brand-card brand-card-light">
+        <div class="size-ladder" id="ladder-light"></div>
+      </div>
+    </div>
+    <div class="brand-desc">
+      The mark exists in two states. <span class="hl">Blocked</span> is the resting state — the channel is severed at the barrier. <span class="hl">Signed</span> is the authorized state — the channel crosses through. The mark always defaults to blocked.
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 02. INTERACTIVE ANIMATION ===== -->
+    <div class="brand-section-label">02 — Interactive Animation</div>
+    <div class="brand-anim-section">
+      <div class="brand-anim-title">primitive</div>
+      <div class="brand-anim-name">gate</div>
+      <div class="brand-anim-desc">no action without explicit authorization</div>
+      <button class="brand-anim-toggle" id="animToggle" onclick="toggleState()">○ unsigned</button>
+
+      <div class="size-ladder" id="ladder-anim" style="margin-bottom: 48px;"></div>
+
+      <div class="brand-readout">
+        <div class="brand-readout-row">
+          <span class="brand-readout-key" id="readout-state-key">state</span>
+          <span class="brand-readout-arrow">→</span>
+          <span class="brand-readout-val" id="readout-state">unsigned</span>
+        </div>
+        <div class="brand-readout-row">
+          <span class="brand-readout-key">channel</span>
+          <span class="brand-readout-arrow">→</span>
+          <span class="brand-readout-val" id="readout-channel">severed</span>
+        </div>
+        <div class="brand-readout-row">
+          <span class="brand-readout-key">crossing</span>
+          <span class="brand-readout-arrow">→</span>
+          <span class="brand-readout-val" id="readout-crossing">denied</span>
+        </div>
+      </div>
+    </div>
+    <div class="brand-desc">
+      The channel segments animate toward the barrier when signing and retract when revoking. The transition is <span class="hl">450ms ease-out</span> — deliberate enough to feel like a mechanical action, not a toggle. The animation is optional and should only appear in interactive contexts.
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 03. WORDMARK ===== -->
+    <div class="brand-section-label">03 — Wordmark</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark">
+        <div class="wordmark lg" style="color: #c8c8c8;">
+          <span class="wordmark-permission">PERMISSION</span>
+          <span class="wordmark-protocol">PROTOCOL</span>
+        </div>
+      </div>
+      <div class="brand-card brand-card-light">
+        <div class="wordmark lg" style="color: #1a1a1a;">
+          <span class="wordmark-permission">PERMISSION</span>
+          <span class="wordmark-protocol">PROTOCOL</span>
+        </div>
+      </div>
+    </div>
+    <div class="brand-sub-label">INLINE VARIANT</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark short">
+        <span class="wordmark-inline lg" style="color: #c8c8c8;">
+          <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+        </span>
+      </div>
+      <div class="brand-card brand-card-light short">
+        <span class="wordmark-inline lg" style="color: #1a1a1a;">
+          <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+        </span>
+      </div>
+    </div>
+    <div class="brand-desc">
+      <span class="hl">PERMISSION</span> is set in Space Grotesk Medium. <span class="hl">PROTOCOL</span> is set in Space Grotesk Light at 60% opacity. The weight differential creates a subject–system hierarchy. The inline variant uses a slash separator for compact contexts.
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 04. LOCKUPS ===== -->
+    <div class="brand-section-label">04 — Lockups</div>
+
+    <div class="brand-sub-label">HORIZONTAL</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark" id="lockup-h-dark"></div>
+      <div class="brand-card brand-card-light" id="lockup-h-light"></div>
+    </div>
+
+    <div class="brand-sub-label">HORIZONTAL COMPACT</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark short" id="lockup-hc-dark"></div>
+      <div class="brand-card brand-card-light short" id="lockup-hc-light"></div>
+    </div>
+
+    <div class="brand-sub-label">VERTICAL / STACKED</div>
+    <div class="brand-grid-2">
+      <div class="brand-card brand-card-dark tall" id="lockup-v-dark"></div>
+      <div class="brand-card brand-card-light tall" id="lockup-v-light"></div>
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 05. COLOR SYSTEM ===== -->
+    <div class="brand-section-label">05 — Color System</div>
+    <div class="brand-grid-5" id="color-swatches"></div>
+    <div class="brand-desc">
+      The palette is near-monochrome by default. Color enters the system only through state: <span class="permit">Permit</span> for authorized actions, <span class="deny">Deny</span> for blocked states. The brand lives in the absence of color.
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 06. CONTEXTUAL APPLICATION ===== -->
+    <div class="brand-section-label">06 — Contextual Application</div>
+    <div class="brand-grid-3" id="ctx-lockups-top"></div>
+    <div class="brand-grid-3" id="ctx-lockups-bottom"></div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 07. CLEAR SPACE & MINIMUM SIZE ===== -->
+    <div class="brand-section-label">07 — Clear Space & Minimum Size</div>
+    <div class="brand-clearspace">
+      <div>
+        <div class="brand-sub-label">CLEAR SPACE</div>
+        <div style="position: relative; display: inline-block; margin-top: 8px;">
+          <div class="brand-clearspace-box">
+            <svg class="gate-svg" width="48" height="48" viewBox="0 0 16 16" fill="none" style="shape-rendering: geometricPrecision;">
+              <rect x="1.5" y="1.5" width="13" height="13" stroke="#888" stroke-width="1.2" fill="none"/>
+              <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#888" stroke-width="1.2"/>
+              <line x1="8" y1="1.5" x2="8" class="gate-top" stroke="#888" stroke-width="1.2"/>
+              <line x1="8" x2="8" y2="14.5" class="gate-bottom" stroke="#888" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <span class="brand-clearspace-label" style="top: -16px; left: 50%; transform: translateX(-50%);">1×</span>
+          <span class="brand-clearspace-label" style="top: 50%; left: -16px; transform: translateY(-50%);">1×</span>
+        </div>
+        <div class="brand-clearspace-note">Minimum clear space = 1× mark width</div>
+      </div>
+      <div>
+        <div class="brand-sub-label">MINIMUM SIZE</div>
+        <div class="brand-minsize-grid">
+          <div class="brand-minsize-item">
+            <div class="brand-minsize-box">
+              <svg class="gate-svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+                <rect x="1.5" y="1.5" width="13" height="13" stroke="#888" stroke-width="1.5" fill="none"/>
+                <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#888" stroke-width="1.5"/>
+                <line x1="8" y1="1.5" x2="8" class="gate-top" stroke="#888" stroke-width="1.5"/>
+                <line x1="8" x2="8" y2="14.5" class="gate-bottom" stroke="#888" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="brand-minsize-ok">16px ✓</span>
+          </div>
+          <div class="brand-minsize-item" style="opacity: 0.4;">
+            <div class="brand-minsize-box">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+                <rect x="1.5" y="1.5" width="13" height="13" stroke="#888" stroke-width="1.5" fill="none"/>
+                <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#888" stroke-width="1.5"/>
+                <line x1="8" y1="1.5" x2="8" y2="5.5" stroke="#888" stroke-width="1.5"/>
+                <line x1="8" y1="10.5" x2="8" y2="14.5" stroke="#888" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="brand-minsize-no">12px ✗</span>
+          </div>
+        </div>
+        <div class="brand-clearspace-note">Do not render below 16px</div>
+      </div>
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 08. APP ICON & FAVICON ===== -->
+    <div class="brand-section-label">08 — App Icon & Favicon</div>
+    <div style="display: flex; align-items: flex-end; gap: 32px; margin-bottom: 24px;" id="app-icons"></div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 09. TYPOGRAPHY ===== -->
+    <div class="brand-section-label">09 — Typography</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 24px;">
+      <div>
+        <div class="brand-sub-label">PRIMARY — SPACE GROTESK</div>
+        <div class="brand-type-primary">
+          <span style="font-weight: 300;">Deny by default.</span><br/>
+          <span style="font-weight: 500;">Permit by proof.</span>
+        </div>
+        <div class="brand-type-weight-label">LIGHT 300 · MEDIUM 500</div>
+      </div>
+      <div>
+        <div class="brand-sub-label">SYSTEM / CODE — SPACE MONO</div>
+        <div class="brand-type-code">
+          <span style="color: #44aa99;">gate</span> --state=unsigned<br/>
+          &nbsp;&nbsp;<span style="color: #555;">→ channel: severed</span><br/>
+          &nbsp;&nbsp;<span style="color: #555;">→ crossing: denied</span><br/><br/>
+          <span style="color: #44aa99;">gate</span> --sign=proof.sig<br/>
+          &nbsp;&nbsp;<span style="color: #888;">→ channel: continuous</span><br/>
+          &nbsp;&nbsp;<span style="color: #888;">→ crossing: permitted</span>
+        </div>
+        <div class="brand-type-weight-label">REGULAR 400</div>
+      </div>
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <!-- ===== 10. MISUSE ===== -->
+    <div class="brand-section-label">10 — Incorrect Usage</div>
+    <div class="brand-grid-4" id="misuse-grid"></div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="brand-footer">
+      <div class="lockup-hc">
+        <svg class="gate-svg" width="20" height="20" viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+          <rect x="1.5" y="1.5" width="13" height="13" stroke="#333" stroke-width="1.5" fill="none"/>
+          <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#333" stroke-width="1.5"/>
+          <line x1="8" y1="1.5" x2="8" class="gate-top" stroke="#333" stroke-width="1.5"/>
+          <line x1="8" x2="8" y2="14.5" class="gate-bottom" stroke="#333" stroke-width="1.5"/>
+        </svg>
+        <span class="wordmark-inline sm" style="color: #333;">
+          <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+        </span>
+      </div>
+      <div class="brand-footer-version">Brand Identity Guidelines v1.0</div>
+    </div>
+  </div>
+
+  <script>
+    let signed = false;
+
+    function createGateSVG(size, color, animate) {
+      const sw = size <= 20 ? 1.5 : size <= 40 ? 1.4 : 1.2;
+      const rendering = size <= 20 ? 'crispEdges' : 'geometricPrecision';
+      const topY2 = signed ? 8 : 5.5;
+      const bottomY1 = signed ? 8 : 10.5;
+
+      return `<svg class="gate-svg" width="${size}" height="${size}" viewBox="0 0 16 16" fill="none" style="shape-rendering: ${rendering};">
+        <rect x="1.5" y="1.5" width="13" height="13" stroke="${color}" stroke-width="${sw}" fill="none"/>
+        <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="${color}" stroke-width="${sw}"/>
+        <line x1="8" y1="1.5" x2="8" y2="${topY2}" class="gate-top" stroke="${color}" stroke-width="${sw}"/>
+        <line x1="8" y1="${bottomY1}" x2="8" y2="14.5" class="gate-bottom" stroke="${color}" stroke-width="${sw}"/>
+      </svg>`;
+    }
+
+    function buildSizeLadder(container, sizes, color) {
+      container.innerHTML = sizes.map(s => `
+        <div class="size-ladder-item">
+          ${createGateSVG(s, color, true)}
+          <span class="size-ladder-label">${s}</span>
+        </div>
+      `).join('');
+    }
+
+    function buildHorizontalLockup(container, color) {
+      container.innerHTML = `
+        <div class="lockup-h">
+          ${createGateSVG(40, color, true)}
+          <div class="lockup-divider" style="background-color: ${color};"></div>
+          <div class="wordmark md" style="color: ${color};">
+            <span class="wordmark-permission">PERMISSION</span>
+            <span class="wordmark-protocol">PROTOCOL</span>
+          </div>
+        </div>`;
+    }
+
+    function buildCompactLockup(container, color) {
+      container.innerHTML = `
+        <div class="lockup-hc">
+          ${createGateSVG(20, color, true)}
+          <span class="wordmark-inline sm" style="color: ${color};">
+            <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+          </span>
+        </div>`;
+    }
+
+    function buildVerticalLockup(container, color) {
+      container.innerHTML = `
+        <div class="lockup-v">
+          ${createGateSVG(56, color, true)}
+          <div class="wordmark md" style="color: ${color};">
+            <span class="wordmark-permission">PERMISSION</span>
+            <span class="wordmark-protocol">PROTOCOL</span>
+          </div>
+        </div>`;
+    }
+
+    function buildColorSwatches() {
+      const colors = [
+        { name: 'Void', hex: '#0a0a0a', desc: 'Primary background' },
+        { name: 'Ash', hex: '#1a1a1a', desc: 'Surface / borders' },
+        { name: 'Signal', hex: '#c8c8c8', desc: 'Primary foreground' },
+        { name: 'Permit', hex: '#44aa99', desc: 'Authorized state' },
+        { name: 'Deny', hex: '#aa4455', desc: 'Blocked / error' },
+      ];
+      document.getElementById('color-swatches').innerHTML = colors.map(c => `
+        <div>
+          <div class="brand-swatch-box" style="background-color: ${c.hex};"></div>
+          <div class="brand-swatch-name">${c.name}</div>
+          <div class="brand-swatch-hex">${c.hex}</div>
+          <div class="brand-swatch-desc">${c.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function buildContextual() {
+      const top = document.getElementById('ctx-lockups-top');
+      const topConfigs = [
+        { bg: '#0a0a0a', color: '#c8c8c8', border: '1px solid #1a1a1a' },
+        { bg: '#ffffff', color: '#0a0a0a', border: 'none' },
+        { bg: '#44aa99', color: '#0a0a0a', border: 'none', forceSigned: true },
+      ];
+      top.innerHTML = topConfigs.map(c => `
+        <div class="brand-card tall" style="background: ${c.bg}; ${c.border ? 'border: ' + c.border : ''}">
+          <div class="lockup-v">
+            ${createGateSVG(56, c.color, !c.forceSigned)}
+            <div class="wordmark md" style="color: ${c.color};">
+              <span class="wordmark-permission">PERMISSION</span>
+              <span class="wordmark-protocol">PROTOCOL</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      const bottom = document.getElementById('ctx-lockups-bottom');
+      const bottomConfigs = [
+        { bg: '#111', color: '#44aa99', label: 'Terminal / CLI' },
+        { bg: '#1a1a2e', color: '#c8c8c8', label: 'Product UI' },
+        { bg: '#f5f5f0', color: '#1a1a1a', label: 'Documentation' },
+      ];
+      bottom.innerHTML = bottomConfigs.map(c => `
+        <div>
+          <div class="brand-card short" style="background: ${c.bg};">
+            <div class="lockup-hc">
+              ${createGateSVG(20, c.color, true)}
+              <span class="wordmark-inline sm" style="color: ${c.color};">
+                <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+              </span>
+            </div>
+          </div>
+          <div class="brand-ctx-label">${c.label}</div>
+        </div>
+      `).join('');
+    }
+
+    function buildAppIcons() {
+      const icons = [
+        { size: 128, radius: 28, padding: 28 },
+        { size: 64, radius: 14, padding: 14 },
+        { size: 32, radius: 7, padding: 6 },
+        { size: 16, radius: 3, padding: 2 },
+      ];
+      document.getElementById('app-icons').innerHTML = icons.map(i => `
+        <div class="size-ladder-item">
+          <div class="brand-icon-container" style="width: ${i.size}px; height: ${i.size}px; border-radius: ${i.radius}px; padding: ${i.padding}px;">
+            ${createGateSVG(i.size - i.padding * 2, '#c8c8c8', true)}
+          </div>
+          <span class="size-ladder-label">${i.size}</span>
+        </div>
+      `).join('');
+    }
+
+    function buildMisuse() {
+      const misuses = [
+        { label: 'Do not rotate', transform: 'rotate(45deg)' },
+        { label: 'Do not stretch', transform: 'scaleX(1.5)' },
+        { label: 'Do not outline only partially', style: 'opacity: 0.3' },
+        { label: 'Do not add effects', style: 'filter: blur(1px) drop-shadow(0 0 8px #44aa99)' },
+      ];
+      document.getElementById('misuse-grid').innerHTML = misuses.map(m => `
+        <div class="brand-misuse-card">
+          <div class="brand-misuse-box">
+            <div style="${m.transform ? 'transform: ' + m.transform + ';' : ''}${m.style || ''}">
+              ${createGateSVG(40, '#555', false)}
+            </div>
+          </div>
+          <div class="brand-misuse-label">
+            <span class="brand-misuse-x">✗</span>
+            <span class="brand-misuse-text">${m.label}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateGateStates() {
+      const topY2 = signed ? '8' : '5.5';
+      const bottomY1 = signed ? '8' : '10.5';
+      document.querySelectorAll('.gate-top').forEach(el => {
+        el.setAttribute('y2', topY2);
+      });
+      document.querySelectorAll('.gate-bottom').forEach(el => {
+        el.setAttribute('y1', bottomY1);
+      });
+    }
+
+    function updateReadout() {
+      const stateKey = document.getElementById('readout-state-key');
+      const state = document.getElementById('readout-state');
+      const channel = document.getElementById('readout-channel');
+      const crossing = document.getElementById('readout-crossing');
+
+      stateKey.style.color = signed ? '#44aa99' : '#555';
+      state.textContent = signed ? 'signed' : 'unsigned';
+      state.style.color = signed ? '#c8c8c8' : '#666';
+      channel.textContent = signed ? 'continuous' : 'severed';
+      channel.style.color = signed ? '#c8c8c8' : '#666';
+      crossing.textContent = signed ? 'permitted' : 'denied';
+      crossing.style.color = signed ? '#44aa99' : '#aa4455';
+    }
+
+    function updateToggles() {
+      document.querySelectorAll('.brand-toggle, .brand-anim-toggle').forEach(btn => {
+        btn.textContent = signed ? '● signed' : '○ unsigned';
+        btn.classList.toggle('signed', signed);
+      });
+    }
+
+    function updateHero() {
+      const heroGate = document.querySelector('.hero-gate');
+      if (heroGate) {
+        const color = signed ? '#d0d0d0' : '#777';
+        heroGate.querySelectorAll('rect, line').forEach(el => el.setAttribute('stroke', color));
+      }
+      const heroWm = document.querySelector('.hero-wordmark');
+      if (heroWm) {
+        heroWm.style.color = signed ? '#d0d0d0' : '#777';
+        heroWm.style.opacity = signed ? '1' : '0.65';
+      }
+    }
+
+    function updateColors() {
+      // Update all color-responsive elements without rebuilding DOM
+      // Ladder dark: signed=#c8c8c8, unsigned=#888
+      document.querySelectorAll('[data-color-signed]').forEach(el => {
+        const color = signed ? el.dataset.colorSigned : el.dataset.colorUnsigned;
+        if (el.tagName === 'rect' || el.tagName === 'line') {
+          el.setAttribute('stroke', color);
+        } else {
+          el.style.color = color;
+        }
+      });
+      // Update lockup dividers
+      document.querySelectorAll('.lockup-divider[data-color-signed]').forEach(el => {
+        el.style.backgroundColor = signed ? el.dataset.colorSigned : el.dataset.colorUnsigned;
+      });
+    }
+
+    function toggleState() {
+      signed = !signed;
+      updateGateStates();
+      updateColors();
+      updateReadout();
+      updateToggles();
+      updateHero();
+    }
+
+    function createGateSVGWithData(size, signedColor, unsignedColor) {
+      const sw = size <= 20 ? 1.5 : size <= 40 ? 1.4 : 1.2;
+      const rendering = size <= 20 ? 'crispEdges' : 'geometricPrecision';
+      const color = signed ? signedColor : unsignedColor;
+      const topY2 = signed ? 8 : 5.5;
+      const bottomY1 = signed ? 8 : 10.5;
+
+      return `<svg class="gate-svg" width="${size}" height="${size}" viewBox="0 0 16 16" fill="none" style="shape-rendering: ${rendering};">
+        <rect x="1.5" y="1.5" width="13" height="13" stroke="${color}" stroke-width="${sw}" fill="none" data-color-signed="${signedColor}" data-color-unsigned="${unsignedColor}"/>
+        <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="${color}" stroke-width="${sw}" data-color-signed="${signedColor}" data-color-unsigned="${unsignedColor}"/>
+        <line x1="8" y1="1.5" x2="8" y2="${topY2}" class="gate-top" stroke="${color}" stroke-width="${sw}" data-color-signed="${signedColor}" data-color-unsigned="${unsignedColor}"/>
+        <line x1="8" y1="${bottomY1}" x2="8" y2="14.5" class="gate-bottom" stroke="${color}" stroke-width="${sw}" data-color-signed="${signedColor}" data-color-unsigned="${unsignedColor}"/>
+      </svg>`;
+    }
+
+    function buildAll() {
+      // Build size ladders
+      const ladderDark = document.getElementById('ladder-dark');
+      ladderDark.innerHTML = [16,24,32,48,64].map(s => `
+        <div class="size-ladder-item">
+          ${createGateSVGWithData(s, '#c8c8c8', '#888')}
+          <span class="size-ladder-label">${s}</span>
+        </div>`).join('');
+
+      const ladderLight = document.getElementById('ladder-light');
+      ladderLight.innerHTML = [16,24,32,48,64].map(s => `
+        <div class="size-ladder-item">
+          ${createGateSVGWithData(s, '#1a1a1a', '#555')}
+          <span class="size-ladder-label">${s}</span>
+        </div>`).join('');
+
+      const ladderAnim = document.getElementById('ladder-anim');
+      ladderAnim.innerHTML = [16,24,32,48,64,128].map(s => `
+        <div class="size-ladder-item">
+          ${createGateSVGWithData(s, '#c8c8c8', '#888')}
+          <span class="size-ladder-label">${s}px</span>
+        </div>`).join('');
+
+      // Lockups
+      function hLockup(container, sc, uc) {
+        container.innerHTML = `
+          <div class="lockup-h">
+            ${createGateSVGWithData(40, sc, uc)}
+            <div class="lockup-divider" style="background-color: ${signed ? sc : uc};" data-color-signed="${sc}" data-color-unsigned="${uc}"></div>
+            <div class="wordmark md" style="color: ${signed ? sc : uc};" data-color-signed="${sc}" data-color-unsigned="${uc}">
+              <span class="wordmark-permission">PERMISSION</span>
+              <span class="wordmark-protocol">PROTOCOL</span>
+            </div>
+          </div>`;
+      }
+      function hcLockup(container, sc, uc) {
+        container.innerHTML = `
+          <div class="lockup-hc">
+            ${createGateSVGWithData(20, sc, uc)}
+            <span class="wordmark-inline sm" style="color: ${signed ? sc : uc};" data-color-signed="${sc}" data-color-unsigned="${uc}">
+              <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+            </span>
+          </div>`;
+      }
+      function vLockup(container, sc, uc) {
+        container.innerHTML = `
+          <div class="lockup-v">
+            ${createGateSVGWithData(56, sc, uc)}
+            <div class="wordmark md" style="color: ${signed ? sc : uc};" data-color-signed="${sc}" data-color-unsigned="${uc}">
+              <span class="wordmark-permission">PERMISSION</span>
+              <span class="wordmark-protocol">PROTOCOL</span>
+            </div>
+          </div>`;
+      }
+
+      hLockup(document.getElementById('lockup-h-dark'), '#c8c8c8', '#888');
+      hLockup(document.getElementById('lockup-h-light'), '#1a1a1a', '#555');
+      hcLockup(document.getElementById('lockup-hc-dark'), '#c8c8c8', '#888');
+      hcLockup(document.getElementById('lockup-hc-light'), '#1a1a1a', '#555');
+      vLockup(document.getElementById('lockup-v-dark'), '#c8c8c8', '#888');
+      vLockup(document.getElementById('lockup-v-light'), '#1a1a1a', '#555');
+
+      // Contextual
+      const ctxTop = document.getElementById('ctx-lockups-top');
+      ctxTop.innerHTML = [
+        { bg: '#0a0a0a', sc: '#c8c8c8', uc: '#888', border: '1px solid #1a1a1a' },
+        { bg: '#ffffff', sc: '#0a0a0a', uc: '#555', border: 'none' },
+        { bg: '#44aa99', sc: '#0a0a0a', uc: '#0a0a0a', border: 'none' },
+      ].map(c => `
+        <div class="brand-card tall" style="background: ${c.bg}; ${c.border !== 'none' ? 'border: ' + c.border : ''}">
+          <div class="lockup-v">
+            ${createGateSVGWithData(56, c.sc, c.uc)}
+            <div class="wordmark md" style="color: ${signed ? c.sc : c.uc};" data-color-signed="${c.sc}" data-color-unsigned="${c.uc}">
+              <span class="wordmark-permission">PERMISSION</span>
+              <span class="wordmark-protocol">PROTOCOL</span>
+            </div>
+          </div>
+        </div>`).join('');
+
+      const ctxBottom = document.getElementById('ctx-lockups-bottom');
+      ctxBottom.innerHTML = [
+        { bg: '#111', color: '#44aa99', label: 'Terminal / CLI' },
+        { bg: '#1a1a2e', color: '#c8c8c8', label: 'Product UI' },
+        { bg: '#f5f5f0', color: '#1a1a1a', label: 'Documentation' },
+      ].map(c => `
+        <div>
+          <div class="brand-card short" style="background: ${c.bg};">
+            <div class="lockup-hc">
+              ${createGateSVGWithData(20, c.color, c.color)}
+              <span class="wordmark-inline sm" style="color: ${c.color};">
+                <span class="perm">PERMISSION</span><span class="slash">/</span><span class="proto">PROTOCOL</span>
+              </span>
+            </div>
+          </div>
+          <div class="brand-ctx-label">${c.label}</div>
+        </div>`).join('');
+
+      // App icons
+      document.getElementById('app-icons').innerHTML = [
+        { size: 128, radius: 28, padding: 28 },
+        { size: 64, radius: 14, padding: 14 },
+        { size: 32, radius: 7, padding: 6 },
+        { size: 16, radius: 3, padding: 2 },
+      ].map(i => `
+        <div class="size-ladder-item">
+          <div class="brand-icon-container" style="width: ${i.size}px; height: ${i.size}px; border-radius: ${i.radius}px; padding: ${i.padding}px;">
+            ${createGateSVGWithData(i.size - i.padding * 2, '#c8c8c8', '#888')}
+          </div>
+          <span class="size-ladder-label">${i.size}</span>
+        </div>`).join('');
+
+      // Misuse (static — no color change)
+      document.getElementById('misuse-grid').innerHTML = [
+        { label: 'Do not rotate', transform: 'rotate(45deg)' },
+        { label: 'Do not stretch', transform: 'scaleX(1.5)' },
+        { label: 'Do not outline only partially', style: 'opacity: 0.3' },
+        { label: 'Do not add effects', style: 'filter: blur(1px) drop-shadow(0 0 8px #44aa99)' },
+      ].map(m => `
+        <div class="brand-misuse-card">
+          <div class="brand-misuse-box">
+            <div style="${m.transform ? 'transform: ' + m.transform + ';' : ''}${m.style || ''}">
+              ${createGateSVG(40, '#555', false)}
+            </div>
+          </div>
+          <div class="brand-misuse-label">
+            <span class="brand-misuse-x">✗</span>
+            <span class="brand-misuse-text">${m.label}</span>
+          </div>
+        </div>`).join('');
+
+      // Color swatches (static)
+      buildColorSwatches();
+    }
+
+    // Init: build DOM once, then only update attributes on toggle
+    buildAll();
+    updateGateStates();
+    updateReadout();
+    updateToggles();
+    updateHero();
+  </script>
+</body>
+</html>
