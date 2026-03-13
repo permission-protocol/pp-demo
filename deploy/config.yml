@@ -1,1 +1,18 @@
-replicas: 3
+version: 3.1.0
+name: pp-demo
+environment: production
+
+scaling:
+  replicas: 3
+  region: us-west
+  auto_scale:
+    min: 2
+    max: 5
+    target_cpu: 70
+
+security:
+  cors:
+    enabled: true
+    origins:
+      - https://app.permissionprotocol.com
+      - https://dashboard.example.com
