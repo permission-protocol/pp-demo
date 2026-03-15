@@ -48,6 +48,28 @@ Rodrigo Carvalho. System-builder at the frontier of AI, infrastructure, and crea
 - **Root Cause**: Webhook path `/api/github-app/webhook` was NOT in `PUBLIC_PATHS` in `src/middleware.ts`. Middleware blocked the webhook before route-level HMAC verification could run.
 - **Lesson**: When integrating external webhooks, ensure the path bypasses global auth middleware. Check `middleware.ts` first when webhooks fail silently.
 
+### 2026-03-14 — Cron Timeout ≠ Cron Failure
+- `cron run` with short `timeoutMs` returns "gateway timeout" but the job still launches. Verify with a second `cron run` — if "already-running", it's fine.
+
+---
+
+## Systems Built
+
+### Create Factory (2026-03-13)
+Autonomous product pipeline: ideate → organize → spec → build → qa.
+- **Cron:** ideate+organize Mondays 6AM, build+qa weekdays 10AM
+- **Spec stays manual** — quality gate, Charles writes PRDs
+- **Stress tested:** 5/5 builds successful, avg 9m 25s, 12 PRs merged in one batch
+- **Type-aware:** bugs get lightweight bugfix.md template, features get full PRD
+- **Config:** `factory/config.json`, shared helpers in `discord-helper.sh`
+- **Discord:** #factory-control, #factory-pipeline, #factory-wip, #factory-done
+
+### iPhone Mobile QA (2026-03-13)
+Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot).
+- **Script:** `scripts/iphone-qa.sh`, daily cron via Gemini Flash
+- **Wired into factory qa.sh** — non-blocking, disabled by default (`mobile_qa_enabled: false`)
+- **Flip to true** after 5 clean daily cron runs
+
 ---
 
 ## Preferences & Patterns
@@ -60,22 +82,21 @@ Rodrigo Carvalho. System-builder at the frontier of AI, infrastructure, and crea
 - **Research before hack (15-min rule).** 2h wasted vs 10min solution.
 - **Physical devices need checklists.** Cables, Trust settings, Remote Automation.
 - **Cheap models for cron, expensive for judgment.** Gemini Flash daily QA = $0.01/run.
+- **JSONL hygiene:** Always `jq -c` (compact), never pretty-print. Spaces after colons break grep patterns.
+- **Batch Codex:** Use `~/Projects/worktrees/` not `/tmp`. Poll git status, not process logs. Check remote branches before re-launching.
 
 ---
 
 ## Open Threads
 
-- [x] NIST RFI — SUBMITTED 2026-03-05
-- [x] Python + npm SDKs — PUBLISHED 2026-03-05
-- [x] API Key Consolidation — COMPLETED 2026-03-09
-- [x] Deploy-Gate Dogfooding — COMPLETED 2026-03-09
-- [x] Mobile Approval Sprint — COMPLETED 2026-03-12
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
-- [ ] Merge PR #119 (Webhook Auth Fix) — **CRITICAL**
+- [ ] Merge PR #119 (Webhook Auth Fix) — **CRITICAL** (GitHub App can't receive events)
+- [ ] Fix Prisma FK bug (idea-032) — **CRITICAL** (deploy request creation broken)
+- [ ] Merge deploy-gate PR #20 (URL fix) + bump v1 tag
 - [ ] Demo video for deploy-gate
-- [ ] Xdares goal executor budget — needs Rod approval to resume
-- [x] iPhone Mobile QA — COMPLETED 2026-03-13
-- [x] Create Factory — COMPLETED 2026-03-13 (12 PR batch merged)
-- [ ] Merge PR #32 (Prisma FK fix) — CRITICAL (fixes PP dashboard)
-- [ ] Xdares age-gate modal — blocks background buttons on mobile (compliance risk)
 - [ ] Build ship.sh for factory "Done" transitions
+- [ ] Enable mobile QA in factory config (after 5 clean cron runs)
+- [ ] Xdares goal executor budget — needs Rod approval to resume
+- [ ] McKinsey Lilli breach — content opportunity (alert sent 2026-03-15)
+
+*Updated: 2026-03-15*
