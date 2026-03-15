@@ -98,6 +98,45 @@ When context gets long, compaction can erase recent exchanges. This catches them
 
 **After compaction recovery, never ask "what were we doing?"** — read the buffer.
 
+### 🔌 External Integration Checklist (Webhooks/Callbacks)
+When adding new webhooks (GitHub, Stripe, Resend, etc.) or OAuth callbacks:
+- [ ] **Middleware**: Add the endpoint to `middleware.ts` (e.g., `PUBLIC_PATHS`) so it's not blocked by 401.
+- [ ] **CSRF/Auth**: Ensure the endpoint uses appropriate verification (HMAC, signature headers) instead of standard session auth.
+- [ ] **Token Types**: Verify if you need a Bearer, JWT, or Installation-specific token.
+- [ ] **Reachability**: Test the endpoint from outside the environment (or check provider logs) immediately.
+
+### 🔬 Research Before Hack (15-Minute Rule)
+
+When hitting a wall with a tool, API, or integration:
+1. **STOP building workarounds.** The urge to "just try one more thing" is the enemy.
+2. **Spend 15 minutes researching** the right abstraction layer:
+   - Search: "programmatically do X from Y" (not "fix X workaround")
+   - Check if there's a native API, protocol, or driver for the task
+   - Ask: "Am I fighting a security boundary?" If yes, there's probably a sanctioned path.
+3. **Only then** start building.
+
+**Why this matters:** We spent 2+ hours hacking iPhone Mirroring (coordinate mapping, synthetic clicks, keyboard workarounds) before discovering Safari WebDriver does it natively in 10 minutes. The wrong abstraction layer (pixel/screen) vs right one (DOM/WebDriver) was a 10x time difference.
+
+**Pattern to watch for:** When multiple approaches all fail the same way (clicks blocked, events swallowed, coordinates wrong), you're probably at the wrong layer — not missing a trick at the current one.
+
+### 🔌 Physical Infrastructure Checklist
+
+When integrating physical devices (phones, hardware, IoT):
+- [ ] **Cable:** Data-capable? (charge-only cables are silent failures)
+- [ ] **Trust/Pairing:** Device trusts the computer?
+- [ ] **Settings:** All required toggles enabled? (Web Inspector, Remote Automation, etc.)
+- [ ] **Keep-alive:** Auto-lock disabled? Guided Access? Screen stays on?
+- [ ] **Stability:** What happens when session dies? Auto-reconnect strategy?
+- [ ] **Cron-readiness:** Will this work unattended at 9 AM tomorrow?
+
+### 💰 Model Cost Awareness
+
+- **Routine/cron tasks → cheapest model that works** (Gemini Flash: ~$0.01/run)
+- **Judgment/analysis → mid-tier** (Sonnet for most things)
+- **Complex reasoning → Opus** (only when quality demands it)
+- **Vision on cron → always cheap model.** Screenshots are huge token-wise. One 3x DPR screenshot on Opus costs more than an entire Flash audit.
+- **Structured data is free.** Collect metrics via JS/bash (zero tokens), analyze with LLM only when needed.
+
 ### ✅ Verify Implementation, Not Intent
 
 Before reporting "done" or "fixed":
@@ -299,6 +338,60 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
 
+## 🤖 Coding Agent Workspace Rules
+
+### Never use `/tmp` for agent worktrees
+`/tmp` is volatile — macOS cleans it overnight. Agent commits that aren't pushed are gone forever.
+- Use `~/pp-agent-work/` or `~/.openclaw/workspace/tmp/` for worktrees
+- Clean up manually after merging, not before
+
+### Store prompts in workspace, not `/tmp`
+Write agent prompts to `pp-os/agent-prompts/` so they survive cleanup. Reference by absolute path.
+
+### Always push immediately after agent commits
+Agents in sandboxed environments often can't push. The flow:
+1. Agent finishes → commits locally
+2. **I push immediately** — don't wait, don't batch
+3. A committed-but-not-pushed branch is one reboot from gone
+
+### Pre-merge build gate (every agent, every time)
+Before declaring any agent work "done":
+- [ ] `next build` (or equivalent) passes
+- [ ] `layout.tsx` / config files match main (agents love "fixing" fonts for offline builds)
+- [ ] Branch is pushed to remote
+- [ ] No `<<<<<<` conflict markers in any file
+
+### Sequential > parallel when files overlap
+If two features touch the same files (e.g., `ReviewPageClient.tsx`):
+- Run them **sequentially**: finish + merge Feature A, then start Feature B from updated main
+- Conflict resolution often costs more time than the parallelism saves
+- Only run parallel agents when they touch **different files**
+
+### 🏭 Batch Codex Protocol
+**Learned from Fix Issues thread (March 13, 2026). Hard-won lessons.**
+
+#### Pre-Flight
+1. **Verify package manager** — check `package.json` for `packageManager` field, look for lockfiles. Install `pnpm`/`yarn` if missing BEFORE launching agents.
+2. **Use persistent worktree dirs** — `~/Projects/worktrees/pp-{issue}`, NOT `/tmp/`. Temp dirs get cleaned by the OS and you lose uncommitted work.
+3. **Check for existing branches** — `gh api repos/{owner}/{repo}/branches | grep {pattern}` before creating. Previous runs may have already pushed.
+
+#### Monitoring (the big one)
+**DO NOT rely on `process log` for Codex.** PTY buffering makes it show `(no output yet)` for entire runs. Instead:
+- Poll `git status --short` and `git log --oneline` in the worktree — that's the source of truth
+- Check `ps aux | grep codex` to confirm the process is alive
+- Check remote branches to see if the agent already pushed
+
+#### Post-Agent
+1. **Check remote FIRST** — before assuming failure, check if the branch exists on remote. Codex may have pushed + created PRs autonomously.
+2. **Push immediately** if the agent committed but didn't push — a reboot or cleanup wipes local-only branches.
+3. **Run tsc/build** — Codex often misses imports. Type-check immediately after agent finishes.
+4. **One type-fix commit is fine** — if there's a minor type error, fix and push. Don't re-run the whole agent.
+
+#### Batch-Specific Rules
+- **Stagger launches if repos overlap** — if two agents touch the same repo, launch sequentially or use separate worktrees from the same main SHA.
+- **Create PRs yourself** — don't rely on agents to create PRs. They sometimes do, sometimes don't. Check remote, then create.
+- **Set 15-min timeouts** — Codex rarely needs more than 10 min. If it's still running at 15, check git status to see if it's stuck.
+
 ## Deployment Rules
 - **Merged ≠ Deployed.** After merging a PR on Vercel-hosted repos, verify the build succeeded before claiming "it's live."
 - Post-merge checklist: (1) Wait ~2 min, (2) `curl` the production endpoint, (3) Confirm new code is running.
@@ -321,6 +414,25 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 - **Users click faster than CI runs.** If an action depends on checks passing (e.g., merge after approve), the UX must handle the "too early" case gracefully.
 - Pattern: show a retry button on failure instead of a dead-end error state.
 - Better pattern (Phase 2): if merge fails with 405/422, show "waiting for checks" with a live poll instead of an error.
+
+## Coding Agent QA Protocol
+**Learned from QA Sprint #2 (March 11, 2026). These are hard rules.**
+
+### Post-Codex Checklist (before pushing)
+1. **Read the diff** — `git diff main --stat` then skim the actual changes
+2. **Check against each PRD requirement** — every "must have" in the spec should map to a change
+3. **Check for removed elements** — did Codex delete something it shouldn't have?
+4. **Walk the user journey** — mentally step through: user lands → reads → acts → done. Is every step frictionless?
+5. **Flag gaps** — if something's missing, fix it or re-run Codex. Don't push and hope.
+
+### PRD Requirements
+- **Include a "User Journey" section** — step-by-step what the user does, not just what's on screen. "User clicks Approve → modal appears with X, Y, Z → user fills → submits" beats "Approve button at top right."
+- **Include a "Customer Test" gate** — "Would a new customer understand this without help? If they'd get stuck, redesign."
+- **Compare existing before redesigning** — grep the codebase for prior art. The answer may already exist in another page/repo.
+
+### Architecture Rules
+- **Two surfaces for one thing = tech debt.** If you build the same feature twice (e.g., review page on marketing site AND app), schedule the merge immediately.
+- **Embedded > external for default path.** Don't make customers deploy extra services for the product to function. External infra is opt-in for scale.
 
 ## Model Rules
 - NEVER change the model config without explicit user approval

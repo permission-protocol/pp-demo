@@ -203,6 +203,11 @@ node pp-os/outreach/scripts/validate-messages.js leads.json
 - Droplet SSH: `ssh -i ~/.ssh/github_ed25519 root@64.23.210.36`
 - Tailscale IP: `100.122.174.112`
 
+### GitHub App Auth Reference
+- **App JWT**: Created using App ID + Private Key. Used for global App-level API calls (e.g., `GET /app/installations`).
+- **Installation Token**: Created via `POST /app/installations/{id}/access_tokens`. Used for repo-level API calls (e.g., `GET /installation/repositories`, `POST /repos/{owner}/{repo}/statuses`).
+- **Rule**: If you get a 401/403 on a repo-level call while using a JWT, you probably need an Installation Token.
+
 ---
 
 ## Why Separate?

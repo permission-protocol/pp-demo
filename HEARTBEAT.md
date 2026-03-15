@@ -102,6 +102,37 @@ cat ~/.openclaw/workspace/ops/threads.yaml
 
 3. **Status drift:** If a thread's Discord activity contradicts its YAML status (e.g., marked WAITING but has new messages), update the YAML status.
 
+## Factory Pipeline Health
+Check `factory/ideas.jsonl` for stuck items. Use `updated_at` timestamps vs current time.
+
+```bash
+python3 -c "
+import json, datetime
+now = datetime.datetime.utcnow()
+stuck = []
+for line in open('$HOME/.openclaw/workspace/factory/ideas.jsonl'):
+    idea = json.loads(line.strip())
+    status = idea.get('status','')
+    updated = datetime.datetime.fromisoformat(idea['updated_at'].replace('Z','+00:00')).replace(tzinfo=None)
+    age_h = (now - updated).total_seconds() / 3600
+    thresholds = {'build-wip': 2, 'qa-wip': 1, 'prd-wip': 48, 'build-ready': 24}
+    if status in thresholds and age_h > thresholds[status]:
+        stuck.append({'id': idea['id'], 'status': status, 'hours': round(age_h,1), 'title': idea['title'][:50]})
+for s in stuck: print(json.dumps(s))
+"
+```
+
+**Actions by status:**
+| Status | Threshold | Action |
+|---|---|---|
+| `build-wip` | > 2h | ⚠️ Alert `#factory-pipeline` — stuck build, may need manual intervention |
+| `qa-wip` | > 1h | ⚠️ Alert — QA should never take >1h with timeout wrappers |
+| `prd-wip` | > 48h | 💤 Post nudge in WIP thread (via thread-map.json) — continue or park? |
+| `build-ready` | > 24h | ℹ️ Remind Rod in `#factory-pipeline` — PR waiting for review |
+
+- **Max 1 alert per idea per heartbeat cycle** — don't spam
+- If no stuck items and no ideas updated in 8+ days → factory cron may be dead, alert Rod
+
 ## Quick Health Check
 - If any cron jobs show repeated failures → alert
 - Run `./scripts/health-check.sh` weekly (Sunday heartbeats)
