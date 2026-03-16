@@ -1,0 +1,2003 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-031
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce950-3839-73f1-a88e-ae074e96bfdd
+--------
+user
+Add a production environment warning banner to the PP deploy request review page.
+In `src/app/pp/deploy-requests/[requestId]/page.tsx`:
+1. Create an `EnvironmentBanner` component near the top of the file (after the imports). It should:
+   - Accept `environment: string` and `isProduction: boolean` props
+   - Return `null` if `!isProduction`
+   - Render a full-width sticky banner with amber styling when production
+   - Use classes: `sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm`
+   - Text: `⚠️ PRODUCTION DEPLOYMENT — {environment}`
+2. Render `<EnvironmentBanner environment={request.env} isProduction={isProduction} />` as the FIRST element inside the main return, before the existing page layout.
+The `isProduction` variable already exists at line ~745: `const isProduction = request?.env.toLowerCase() === 'production';`
+Do NOT modify existing environment badge or panel styling — this banner is additive.
+Before finishing, run `npx tsc --noEmit` and fix any type errors.
+mcp startup: no servers
+codex
+I’m updating the deploy request review page to add a production-only sticky warning banner, then I’ll run TypeScript validation and fix anything that breaks.
+exec
+/bin/zsh -lc "sed -n '1,140p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "rg -n \"const isProduction|return \\(\" src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-031 exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+codex
+The shell globbed the bracketed path. I’m re-running with proper quoting, then I’ll patch the component and insertion point.
+exec
+/bin/zsh -lc "sed -n '1,140p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "rg -n \"const isProduction|return \\(\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 52ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 53ms:
+67:  return (
+84:  return (
+115:  return (
+137:      return (
+171:      return (
+232:    return (
+290:    return (
+339:                    return (
+651:    return () => window.clearInterval(interval);
+675:    return () => window.clearInterval(interval);
+738:    return () => {
+759:  const isProduction = request?.env.toLowerCase() === 'production';
+1140:    return (
+1150:    return (
+1185:    return (
+1207:  return (
+1419:                            return (
+codex
+I’ve got the file shape and the production flag location. Next I’m patching in the banner component and placing it as the first element in the page render without touching the existing environment badge/panel markup.
+exec
+/bin/zsh -lc "sed -n '740,1260p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "git diff -- 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 53ms:
+      window.clearInterval(poll);
+    };
+  }, [request]);
+
+  const prNumber = useMemo(() => getEffectivePrNumber(request), [request]);
+  const githubBase = useMemo(() => (request ? `https://github.com/${request.repo}` : null), [request]);
+  const prUrl = request?.prUrl ?? (githubBase && prNumber ? `${githubBase}/pull/${prNumber}` : null);
+  const commitUrl = githubBase && request ? `${githubBase}/commit/${request.commitSha}` : null;
+  const diffFiles = enrichment?.diff.files ?? [];
+  const changedFiles = diffFiles.length > 0 ? diffFiles.map((file) => file.filename) : contextDetails?.changedFiles ?? [];
+  const reviewTitle = request
+    ? request.prTitle?.trim() || enrichment?.diff.title?.trim() || (prNumber ? `Pull Request #${prNumber}` : request.capability)
+    : '';
+  const actorLabel = request?.prAuthor ?? contextDetails?.commitSummary?.author ?? request?.createdByRef ?? 'Unknown';
+  const actorDescriptor = getActorDescriptor(request);
+  const isPendingExpired =
+    request?.status === 'pending' &&
+    Boolean(request?.expiresAt && new Date(request.expiresAt).getTime() <= Date.now());
+  const isRequestExpired = Boolean(request && (request.status === 'expired' || isPendingExpired));
+  const isProduction = request?.env.toLowerCase() === 'production';
+ succeeded in 52ms:
+
+codex
+I’ve confirmed the main return wrapper, so the banner can sit ahead of the existing page surface without disturbing the current layout. I’m applying that edit now, then I’ll run `npx tsc --noEmit`.
+codex
+The file footer didn’t match the patch context cleanly. I’m reading the end of the component and applying a narrower patch against the actual closing structure.
+exec
+/bin/zsh -lc "sed -n '1,90p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "tail -n 80 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 53ms:
+                        ) : null}
+                        <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                          <div className="text-white">
+                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                          </div>
+                          <div className="mt-2 text-[var(--muted)]">
+                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
+                          </div>
+                          {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                        </div>
+                        {request.post_approval_result ? (
+                          <div
+                            className={`rounded-2xl border px-4 py-3 ${
+                              request.post_approval_result.status === 'success'
+                                ? 'border-green-500/30 bg-green-500/10 text-green-200'
+                                : 'border-[#F59E0B]/30 bg-[#F59E0B]/10 text-amber-100'
+                            }`}
+                          >
+                            {request.post_approval_result.message}
+                          </div>
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -59,2 +59,20 @@
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+apply_patch(auto_approved=true) exited 0 in 45ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..6abeaf96e66e6ac9a5aae2434b44637359d2ea82
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..6abeaf96e66e6ac9a5aae2434b44637359d2ea82
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -1225,4 +1225,6 @@
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+@@ -2229,30 +2231,31 @@
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+apply_patch(auto_approved=true) exited 0 in 63ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+
+thinking
+**Checking formatting and running checks**
+
+I’m thinking about checking the formatting, maybe the indentation is alright? It’s always good to make sure it looks neat. Then, I’ll run the TypeScript compiler (tsc) to catch any potential issues. It’s crucial for me to ensure everything is in order before progressing. After running tsc, I’ll see if there are any errors to fix. Taking these steps will help keep the project on track!
+codex
+The JSX wrap is in place. I’m running the requested TypeScript check now; if it surfaces unrelated errors, I’ll fix the ones necessary to keep this page compiling.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-031file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+ exited 2 in 9.52s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+codex
+TypeScript is still running. I’m waiting for the result, then I’ll inspect the updated file once more to make sure the wrapper didn’t disturb surrounding structure.
+exec
+/bin/zsh -lc "sed -n '1,80p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "sed -n '1200,1265p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 52ms:
+  }
+
+  if (!request) {
+    return (
+      <div className="mx-auto max-w-lg p-6">
+        <Card className="rounded-2xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-red-300">
+              <XCircle className="h-5 w-5" />
+              Error
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-[var(--muted)]">{error || 'Deploy request not found.'}</p>
+            <Link href="/c/deploy-requests">
+              <Button variant="secondary" className="w-full">
+                Back to Queue
+              </Button>
+            </Link>
+          </CardContent>
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+codex
+`tsc` completed, and the failures are repo-wide pre-existing issues outside this page. I’m making one cleanup pass on the JSX indentation so the change lands cleanly, then I’ll summarize the exact validation result.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+exec
+/bin/zsh -lc "sed -n '1204,1295p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 53ms:
+      <div className="mx-auto max-w-lg p-6">
+        <Card className="rounded-2xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-red-300">
+              <XCircle className="h-5 w-5" />
+              Error
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-[var(--muted)]">{error || 'Deploy request not found.'}</p>
+            <Link href="/c/deploy-requests">
+              <Button variant="secondary" className="w-full">
+                Back to Queue
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..5aaa2a7b077cb5f85adcb2293d833ca056241bf2
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,8 +1223,10 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
+         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+           {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+           {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+
+thinking
+**Considering code adjustments**
+
+I’m thinking about possibly closing the conditionals later. Should I use Prettier? Running it on the whole file might be excessive. Maybe I can just apply the patch for the first few lines. Indentation looks fine, but I have to check if there's incorrect nesting. I need to compile to ensure there are no syntax errors. I should take another look around the closing of `!isDecisionFlowLayout`—that might be okay. I could just patch the visible lines.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -1229,13 +1229,13 @@
+         <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+apply_patch(auto_approved=true) exited 0 in 66ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+
+thinking
+**Checking TypeScript Errors**
+
+I need to ensure I might have misindented something while closing, but that's alright. It could be a good idea to run a quick `tsc` on the file. Since it might be tricky, I could use the command `npx tsc --noEmit --pretty false 2>&1 | rg "src/app/pp/deploy-requests/\\[requestId\\]/page.tsx"` to check if there are any errors specifically related to this file. Let's confirm that everything is working fine!
+codex
+The page change is in place, and I want to confirm this file itself stayed clean despite the repo-wide `tsc` failures. I’m filtering the TypeScript output for this page only.
+exec
+/bin/zsh -lc "npx tsc --noEmit --pretty false 2>&1 | rg \"src/app/pp/deploy-requests/\\[requestId\\]/page\\.tsx\"" in /Users/moltbot/pp-agent-work/factory-idea-031file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+ exited 1 in 3.10s:
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '1,90p;1220,1260p'" in /Users/moltbot/pp-agent-work/factory-idea-031exec
+/bin/zsh -lc "git diff -- 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-031 succeeded in 52ms:
+     1	'use client';
+     2	
+     3	import Link from 'next/link';
+     4	import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+     5	import { useParams, useRouter, useSearchParams } from 'next/navigation';
+     6	import {
+     7	  AlertTriangle,
+     8	  CheckCircle2,
+     9	  ChevronDown,
+    10	  ChevronRight,
+    11	  ExternalLink,
+    12	  FileCode2,
+    13	  GitBranch,
+    14	  GitPullRequest,
+    15	  Lock,
+    16	  RefreshCw,
+    17	  ShieldCheck,
+    18	  XCircle,
+    19	} from 'lucide-react';
+    20	import { Button } from '@/components/ui/button';
+ succeeded in 53ms:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b34228..057ac9a 100644
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@ import {
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+
+thinking
+**Considering formatting options**
+
+My indentation is still off, but the syntax seems fine, so I might leave it as is. However, I wonder if I should make the formatting prettier using a command. Maybe my project has a way to do that with Prettier? Although, it’s not strictly necessary. I could also consider running ESLint for formatting, but since the output is already concise, it may not be needed. I should definitely mention any pre-existing errors in the TypeScript compilation across the repo.
+codex
+Added a production-only sticky warning banner to [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx#L60) and rendered it as the first element in the main page return at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx#L1225). The existing environment badge and panel styling were left unchanged.
+
+Validation: `npx tsc --noEmit` still fails, but the failures are pre-existing repo-wide issues outside this page. I also filtered `tsc` output for `src/app/pp/deploy-requests/[requestId]/page.tsx` and there were no errors for this file.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 8b342287d103b0ae60c775be8af253fdd9b7dd15..057ac9a6b18a2aa0c9130c73681d9d550570ea5f
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,24 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function EnvironmentBanner({
++  environment,
++  isProduction,
++}: {
++  environment: string;
++  isProduction: boolean;
++}) {
++  if (!isProduction) {
++    return null;
++  }
++
++  return (
++    <div className="sticky top-0 z-50 w-full border-b border-amber-400/40 bg-amber-500/15 px-4 py-2.5 text-center text-sm font-semibold text-amber-100 backdrop-blur-sm">
++      {`⚠️ PRODUCTION DEPLOYMENT — ${environment}`}
++    </div>
++  );
++}
++
+ function LoadingInlineLabel({
+   children,
+   tone = 'default',
+@@ -1205,19 +1223,21 @@
+   }
+ 
+   return (
+-    <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+-      <div className="mx-auto max-w-5xl space-y-6">
+-        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
+-          {freshnessLabel ? <span>{freshnessLabel}</span> : null}
+-          {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
+-          {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
+-        </div>
++    <>
++      <EnvironmentBanner environment={request.env} isProduction={isProduction} />
++      <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
++        <div className="mx-auto max-w-5xl space-y-6">
++          <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--muted)]">
++            {freshnessLabel ? <span>{freshnessLabel}</span> : null}
++            {switching ? <LoadingInlineLabel tone="muted">Syncing active company...</LoadingInlineLabel> : null}
++            {switchWarning ? <span className="text-amber-300">{switchWarning}</span> : null}
++          </div>
+ 
+-        {!isDecisionFlowLayout ? (
+-          <div className="sticky top-4 z-20">
+-            <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
+-            {canShowDecisionBar ? (
+-              <div className="space-y-3">
++          {!isDecisionFlowLayout ? (
++            <div className="sticky top-4 z-20">
++              <div className="rounded-[24px] border border-[#222222] bg-[var(--card)]/95 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.4)] backdrop-blur">
++                {canShowDecisionBar ? (
++                  <div className="space-y-3">
+                 {showDecisionNote || showDenyOptions ? (
+                   <textarea
+                     value={decisionNote}
+@@ -2209,33 +2229,34 @@
+           </>
+         )}
+ 
+-        <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
+-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
+-            <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+-            Audit Trail
+-          </summary>
+-          <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
+-            {timeline.map((event) => (
+-              <div key={event.id} className="flex gap-3">
+-                <div
+-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
+-                    event.tone === 'completed'
+-                      ? 'bg-[#10B981]'
+-                      : event.tone === 'failed'
+-                        ? 'bg-[#EF4444]'
+-                        : 'bg-[#3B82F6]'
+-                  }`}
+-                />
+-                <div className="min-w-0">
+-                  <div className="text-sm text-white">{event.title}</div>
+-                  {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
+-                  {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++          <details className="group rounded-3xl border border-[var(--border)] bg-[var(--card)]">
++            <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm text-[var(--muted)] transition-colors hover:text-white">
++              <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
++              Audit Trail
++            </summary>
++            <div className="space-y-4 border-t border-[var(--border)] px-5 py-4">
++              {timeline.map((event) => (
++                <div key={event.id} className="flex gap-3">
++                  <div
++                    className={`mt-1 h-2.5 w-2.5 rounded-full ${
++                      event.tone === 'completed'
++                        ? 'bg-[#10B981]'
++                        : event.tone === 'failed'
++                          ? 'bg-[#EF4444]'
++                          : 'bg-[#3B82F6]'
++                    }`}
++                  />
++                  <div className="min-w-0">
++                    <div className="text-sm text-white">{event.title}</div>
++                    {event.timestamp ? <div className="text-xs text-[var(--muted)]">{formatDateTime(event.timestamp)}</div> : null}
++                    {event.detail ? <div className="mt-1 text-sm text-[var(--foreground)]">{event.detail}</div> : null}
++                  </div>
+                 </div>
+-              </div>
+-            ))}
+-          </div>
+-        </details>
++              ))}
++            </div>
++          </details>
++        </div>
+       </div>
+-    </div>
++    </>
+   );
+ }
+
+tokens used
+30,733
+Added a production-only sticky warning banner to [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx#L60) and rendered it as the first element in the main page return at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-031/src/app/pp/deploy-requests/[requestId]/page.tsx#L1225). The existing environment badge and panel styling were left unchanged.
+
+Validation: `npx tsc --noEmit` still fails, but the failures are pre-existing repo-wide issues outside this page. I also filtered `tsc` output for `src/app/pp/deploy-requests/[requestId]/page.tsx` and there were no errors for this file.

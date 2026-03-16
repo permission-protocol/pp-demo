@@ -1,0 +1,3452 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-056
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf2ac-308d-7850-baea-4efe0cc43b16
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting repository updates**
+
+I need to take a closer look at the repository. My first step is to kick off a commentary update. Maybe I should also consider using the update_plan? Hmm, I need to read through the AGENTS section, but I’m wondering if those skills might not apply here. It’s important to make sure I’m on the right track and not missing any key details as I move forward!
+codex
+I’m reading the product spec and the current codebase first so I can implement the requested changes against what actually exists, then I’ll verify the acceptance criteria and commit the result.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 52ms:
+# PRD: idea-056 — Detect and show GitHub merge conflicts on PP review page
+
+**Issue:** permission-protocol/app#136
+**Priority:** P1
+**Repo:** permission-protocol/app
+
+## Problem
+When a PR has merge conflicts on GitHub, the PP review page pre-merge checklist shows "No conflicts ✓ OK to proceed" instead of detecting the conflict. The "Merge & Deploy" button remains enabled.
+
+## Requirements
+
+### Must Have
+1. Check `mergeable` and `mergeable_state` from the merge-readiness response:
+   - `mergeable === false` OR `mergeable_state === 'dirty'` → show conflict warning
+   - `mergeable === null` → show "GitHub is computing mergeability..." (not "No conflicts")
+   
+2. When conflicts detected:
+   - Pre-merge checklist shows: "❌ Merge conflicts detected — resolve on GitHub"
+   - "Merge & Deploy" button is **disabled** with tooltip "Resolve conflicts first"
+   - Link to the GitHub PR for conflict resolution
+ succeeded in 52ms:
+/Users/moltbot/pp-agent-work/factory-idea-056
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+src/lib/services/delegated-accounts.ts
+src/lib/services/deploy-gate-post-approval.ts
+
+thinking
+**Inspecting relevant files**
+
+I need to check out some files. It's crucial to make sure I’m looking at the right materials. I wonder if there are specific documents I should prioritize. I want to ensure I'm covering all bases before proceeding. I'll take my time to review everything necessary for a thorough understanding. Okay, let's dive in and see what details I can gather from those files! It’ll help clarify things.
+codex
+I’ve got the spec. Next I’m tracing the review page’s merge-readiness flow so I can change the checklist and button gating without touching the API or polling behavior.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '1,260p' src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "rg -n \"No conflicts|Merge & Deploy|mergeable|mergeable_state|getBranchStatus|tooltip\" src/app/pp/deploy-requests/[requestId]/page.tsx src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx src/components -g '"'!**/*.map'"'" in /Users/moltbot/pp-agent-work/factory-idea-056 exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+codex
+The shell globbed the bracketed route path, so I’m rerunning those reads with quoted paths and then I’ll patch the gating logic once I confirm the exact render points.
+exec
+/bin/zsh -lc "sed -n '1,320p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '1,320p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "rg -n \"No conflicts|Merge & Deploy|mergeable|mergeable_state|getBranchStatus|tooltip|title=|disabled\" 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx' src/components" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 54ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 54ms:
+import type { ReactNode } from 'react';
+
+export type DeployRequestStatus =
+  | 'pending'
+  | 'approved'
+  | 'denied'
+  | 'expired'
+  | 'redeemed'
+  | 'superseded'
+  | 'cancelled';
+
+export type GitHubRerunStatus =
+  | 'pending'
+  | 'success'
+  | 'failed_transient'
+  | 'failed_permanent'
+  | 'manual_required';
+
+export type VerificationStatus = 'NOT_ATTEMPTED' | 'VERIFIED' | 'FAILED';
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+ succeeded in 52ms:
+src/components/providers.tsx:64:          reason: !isFrozen ? 'Manually enabled via keyboard shortcut' : 'Manually disabled via keyboard shortcut',
+src/components/providers.tsx:71:        title: data.frozen ? 'Global Freeze enabled' : 'Global Freeze disabled',
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:147:  mergeable: boolean | null;
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:148:  mergeable_state: string;
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:417:export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:421:  switch (readiness.mergeable_state) {
+src/app/pp/deploy-requests/[requestId]/page.tsx:41:  getBranchStatus,
+src/app/pp/deploy-requests/[requestId]/page.tsx:334:              title={signal.reason}
+src/app/pp/deploy-requests/[requestId]/page.tsx:345:              title={signal.why}
+src/app/pp/deploy-requests/[requestId]/page.tsx:595:                title="Deploy request visual preview"
+src/app/pp/deploy-requests/[requestId]/page.tsx:844:        nextReadiness.mergeable === null || nextReadiness.mergeable_state === 'unknown'
+src/app/pp/deploy-requests/[requestId]/page.tsx:925:        if (readiness.mergeable_state === 'clean' && checksReady) {
+src/app/pp/deploy-requests/[requestId]/page.tsx:1022:  const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+src/app/pp/deploy-requests/[requestId]/page.tsx:1030:  const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+src/app/pp/deploy-requests/[requestId]/page.tsx:1031:  const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
+src/app/pp/deploy-requests/[requestId]/page.tsx:1052:    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1124:    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1136:              : mergeReadiness?.mergeable_state !== 'clean'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1184:    mergeReadiness?.mergeable_state === 'clean' &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1587:                        disabled={approveDisabled}
+codex
+I found the existing mergeability state handling and the spots where the UI is still treating “not known yet” like “no conflicts.” I’m reading those specific sections now so the patch stays localized.
+exec
+/bin/zsh -lc "sed -n '1725,1885p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '400,470p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '820,1210p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 53ms:
+    return requestStatus === 'approved' ? 'Waiting for checks to re-run...' : 'No check runs reported (0/0)';
+  }
+  if (readiness.checks_passing === readiness.checks_total && readiness.checks.every((check) => !isFailingCheck(check))) {
+    return `All checks passing (${readiness.checks_passing}/${readiness.checks_total})`;
+  }
+  return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+}
+
+export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
+  return Boolean(
+    readiness &&
+    readiness.checks_total > 0 &&
+    readiness.checks_passing === readiness.checks_total &&
+    readiness.checks.every((check) => !isFailingCheck(check))
+  );
+}
+
+export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+  if (!readiness) {
+    return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+ succeeded in 53ms:
+                              >
+                                {showChecks ? 'Hide details' : 'Show details'}
+                                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showChecks ? 'rotate-180' : ''}`} />
+                              </button>
+                            ) : null}
+                          </div>
+
+                          {showChecks && mergeReadiness?.checks?.length ? (
+                            <div className="space-y-2 rounded-xl border border-[#222222] bg-[#0a0a0a] p-3">
+                              {mergeReadiness.checks.map((check) => {
+                                const passing = isPassingCheck(check);
+                                const failing = isFailingCheck(check);
+                                return (
+                                  <div key={`${check.name}-${check.status}-${check.conclusion ?? 'none'}`} className="flex items-center justify-between gap-3 text-xs">
+                                    <span className="text-[var(--foreground)]">{check.name}</span>
+                                    <span className={passing ? 'text-[#10B981]' : failing ? 'text-[#EF4444]' : 'text-[#F59E0B]'}>
+                                      {check.status === 'completed' ? check.conclusion ?? 'completed' : 'Pending'}
+                                    </span>
+                                  </div>
+                                );
+ succeeded in 53ms:
+      setEnrichmentLoading(false);
+    }
+  }, []);
+
+  const fetchMergeReadiness = useCallback(async (currentRequest: DeployGateRequest | null, options?: { silent?: boolean }) => {
+    if (!currentRequest?.id || !currentRequest.prNumber || currentRequest.status !== 'approved') {
+      setMergeReadiness(null);
+      setMergeReadinessError(null);
+      setMergeReadinessUnknownSince(null);
+      return null;
+    }
+    if (!options?.silent) {
+      setMergeReadinessLoading(true);
+    }
+    setMergeReadinessError(null);
+    try {
+      const response = await fetch(`/api/v1/deploy-requests/${currentRequest.id}/merge-readiness`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error?.message || 'Failed to load merge readiness');
+codex
+I’ve isolated the exact state derivations. The remaining decision is just how to surface the disabled-button tooltip reliably, since native `title` on a disabled button is inconsistent, so I’m checking the local tooltip component before editing.
+exec
+/bin/zsh -lc "sed -n '1,140p' src/components/ui/button.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '1,220p' src/components/ui/tooltip.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc 'rg -n "<Tooltip|HelpTooltip" src/app src/components | head -n 40' in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 52ms:
+'use client';
+
+import { clsx } from 'clsx';
+import { Loader2 } from 'lucide-react';
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'ghost' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  children: React.ReactNode;
+}
+
+export function Button({
+  variant = 'primary',
+  size = 'md',
+  loading = false,
+  children,
+  className,
+  disabled,
+  ...props
+ succeeded in 51ms:
+'use client';
+
+import { useState, useRef, useEffect, ReactNode } from 'react';
+import { clsx } from 'clsx';
+import { HelpCircle } from 'lucide-react';
+import { helpContent, HelpTopic } from '../../lib/help-content';
+
+interface TooltipProps {
+  content: ReactNode;
+  children: ReactNode;
+  position?: 'top' | 'bottom' | 'left' | 'right';
+  delay?: number;
+}
+
+export function Tooltip({ 
+  content, 
+  children, 
+  position = 'top',
+  delay = 200,
+}: TooltipProps) {
+ succeeded in 53ms:
+src/components/layout/header.tsx:7:import { HelpTooltip } from '../ui/tooltip';
+src/components/layout/header.tsx:535:            <HelpTooltip topic="globalFreeze" position="bottom" />
+src/components/layout/prod-safety-banner.tsx:18:import { HelpTooltip } from '../ui/tooltip';
+src/components/layout/prod-safety-banner.tsx:189:                <HelpTooltip topic="globalFreeze" size="sm" position="bottom" />
+src/components/layout/prod-safety-banner.tsx:195:                <HelpTooltip topic="globalFreeze" size="sm" position="bottom" />
+src/components/layout/prod-safety-banner.tsx:283:                  <HelpTooltip topic="globalFreeze" size="sm" position="right" />
+src/components/ui/tooltip.tsx:96:interface HelpTooltipProps {
+src/components/ui/tooltip.tsx:102:export function HelpTooltip({ topic, size = 'sm', position = 'top' }: HelpTooltipProps) {
+src/components/ui/tooltip.tsx:113:    <Tooltip
+src/components/ui/tooltip.tsx:144:      <HelpTooltip topic={topic} />
+src/components/ui/role-details-drawer.tsx:342:            <Tooltip content="Editing roles is an advanced feature and may require approval. Coming soon.">
+src/app/pp/page.tsx:905:              <Tooltip
+src/app/pp/setup/page.tsx:236:      <Tooltip
+src/app/pp/setup/page.tsx:1070:          <Tooltip
+
+thinking
+I'm thinking about how I need to inspect the usage of tooltips, particularly in cases where the button might be disabled. I want to understand how these tooltips interact with the disabled state of the buttons. It's interesting to figure out if they still provide useful information or if they get muted in some way. This exploration should help clarify the usability of the interface. I’ll need to take a closer look at that!
+exec
+/bin/zsh -lc "sed -n '330,370p' src/components/ui/role-details-drawer.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '890,930p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 52ms:
+                  <ul className="space-y-1 text-sm text-[var(--muted)] list-disc list-inside">
+                    <li>Treat retrieved content as untrusted</li>
+                    <li>Do not follow instructions embedded in documents</li>
+                    <li>No unsafe or prohibited actions</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* Section 6: Editing (Disabled v1) */}
+          <section className="pt-4 border-t border-[var(--border)]">
+            <Tooltip content="Editing roles is an advanced feature and may require approval. Coming soon.">
+              <Button variant="secondary" disabled className="w-full">
+                <Lock className="w-4 h-4 mr-2" />
+                Edit Role
+              </Button>
+            </Tooltip>
+          </section>
+        </div>
+ succeeded in 52ms:
+        value: (
+          <Link
+            href={getMergeQueuePath(companySlug, 'pending_merge,merge_failed')}
+            className="inline-flex items-center gap-2 hover:text-white"
+          >
+            <span className="text-3xl font-semibold tracking-tight">
+              {stats.awaitingMerge + stats.mergeFailed > 0 ? String(stats.awaitingMerge + stats.mergeFailed) : '✓'}
+            </span>
+            <ExternalLink className="h-4 w-4 text-[var(--muted)]" />
+          </Link>
+        ),
+        hint: (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span>Current backlog</span>
+              <Tooltip
+                position="top"
+                content={(
+                  <div className="space-y-1 text-left">
+                    <p className="font-medium text-[var(--foreground)]">Merge status meaning</p>
+
+thinking
+**Evaluating ReactNode properties**
+
+I need to check the type of detail property for ReactNode. I should adjust call sites to accept only strings; that seems fine. I might also need to tweak the waitingForMergeabilityConfirmation variable to allow for mergeable being null. Right now, all checks are passing, but I’m unclear about the state. I wonder if the mergeabilityStatusLabel is being used; maybe I should search for that.
+codex
+I’m patching the review page now. The main changes are: treat `mergeable: null` as a pending conflict check, make the checklist text exact, keep the merge button visible but disabled on conflicts with a real tooltip, and add a direct GitHub conflict-resolution link.
+exec
+/bin/zsh -lc "rg -n \"mergeabilityStatusLabel|waitingForMergeabilityConfirmation|noConflictsDetail|noConflictsStatus|ChecklistStatusRow\\(|Tooltip\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 52ms:
+167:function ChecklistStatusRow({
+1051:  const waitingForMergeabilityConfirmation = Boolean(
+1054:  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+1066:          : waitingForMergeabilityConfirmation
+1069:  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+1070:  const noConflictsDetail =
+1073:      : noConflictsStatus === 'pass'
+1075:        : noConflictsStatus === 'fail'
+1234:            : waitingForMergeabilityConfirmation
+1770:                              status={noConflictsStatus}
+1771:                              detail={noConflictsDetail}
+2531:                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
+2532:                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
+2534:                              mergeabilityStatusLabel
+
+thinking
+I need to check around line 2520 in the code, as it seems I might need to look into the status label being used in the branch. This could be important for understanding how the code operates. I'm just wondering if there could be a different or better way to organize that label. It feels like there’s something more I should consider about it, but I’ll start with this inspection first!
+exec
+/bin/zsh -lc "sed -n '1218,1250p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "sed -n '2515,2545p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 53ms:
+          ? {
+              tone: 'pending' as const,
+              label: 'Merging PR...',
+              showSpinner: true,
+            }
+          : readyToMerge
+            ? {
+                tone: 'success' as const,
+                label: 'All checks passed — ready to merge',
+              }
+            : request.githubRerunStatus === 'pending'
+            ? {
+                tone: 'pending' as const,
+                label: 'Re-running checks after approval...',
+                showSpinner: true,
+              }
+            : waitingForMergeabilityConfirmation
+              ? {
+                  tone: 'pending' as const,
+                  label: 'Waiting for GitHub to confirm mergeability...',
+ succeeded in 53ms:
+                    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-white">Merge Readiness</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3 text-sm">
+                        {mergeReadinessLoading ? (
+                          <div className="flex items-center gap-2 text-[var(--muted)]">
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                            Fetching merge readiness...
+                          </div>
+                        ) : null}
+                        <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                          <div className="text-white">
+                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                          </div>
+                          <div className="mt-2 text-[var(--muted)]">
+                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
+                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
+                            ) : (
+                              mergeabilityStatusLabel
+
+thinking
+**Considering mergeability updates**
+
+I think I need to update the waitingForMergeabilityConfirmation to handle situations where the mergeable status is null. It looks like line 1234 uses banners, so I could adjust that as well. Maybe I should patch the page and check if the helper function needs changes too. I also need to ensure I have the exact type detail for ReactNode and import Tooltip correctly. I'll check the getBranchStatus to verify mergeable status as false or null first, and then patch both files.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -420,2 +420,14 @@
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+@@ -431,4 +443,2 @@
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -63,2 +63,3 @@
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+@@ -173,3 +174,3 @@
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+@@ -1031,2 +1032,3 @@
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+@@ -1051,6 +1053,6 @@
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+@@ -1066,5 +1068,12 @@
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+@@ -1075,3 +1084,18 @@
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+@@ -1123,2 +1147,3 @@
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+@@ -1130,3 +1155,3 @@
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+@@ -1768,3 +1793,3 @@
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+@@ -1843,11 +1868,25 @@
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+apply_patch(auto_approved=true) exited 0 in 57ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..c3c6edabcae53f087ff11cfe983a715ebe577966
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,6 +1145,7 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+     (readinessChecksPassing || mergeReadinessError)
+   );
+@@ -1128,7 +1153,7 @@
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1791,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1866,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..2b4f3b7eda68d98ac29448fab48fe6d47ff1a00a
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..c3c6edabcae53f087ff11cfe983a715ebe577966
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,6 +1145,7 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+     (readinessChecksPassing || mergeReadinessError)
+   );
+@@ -1128,7 +1153,7 @@
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1791,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1866,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..2b4f3b7eda68d98ac29448fab48fe6d47ff1a00a
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+**Considering merge readiness**
+
+I'm pondering setting `canMergeNow` as approved and including `prNumber`. I need to consider conditions for `mergeReadinessError` or if it's mergeable, which means true, state is clean, and readiness checks are passing. I think patching might be a good idea, and I should also think about adding an unknown label. There's also a mention of a tooltip wrapper div that needs patching. So, let's patch this!
+codex
+The first pass is in. I’m doing a type/behavior check now because there’s one subtle regression risk around the old “merge even if readiness fetch errored” fallback, and I want to preserve that unless the spec explicitly forbids it.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc 'npm test -- --runInBand tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-056 exited 1 in 517ms:
+
+> permission-protocol@0.1.0 test
+> vitest --runInBand tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts
+
+file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/vendor/cac.cdAtVkJZ.js:403
+          throw new CACError(`Unknown option \`${name.length > 1 ? `--${name}` : `-${name}`}\``);
+                ^
+
+CACError: Unknown option `--runInBand`
+    at Command.checkUnknownOptions (file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/vendor/cac.cdAtVkJZ.js:403:17)
+    at CAC.runMatchedCommand (file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/vendor/cac.cdAtVkJZ.js:603:13)
+    at CAC.parse (file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/vendor/cac.cdAtVkJZ.js:544:12)
+    at file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/cli.js:9:13
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async main (file:///Users/moltbot/pp-agent-work/factory-idea-056/node_modules/vitest/dist/cli-wrapper.js:45:5)
+
+Node.js v22.22.0
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..c3c6edabcae53f087ff11cfe983a715ebe577966
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,6 +1145,7 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+     (readinessChecksPassing || mergeReadinessError)
+   );
+@@ -1128,7 +1153,7 @@
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1791,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1866,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..2b4f3b7eda68d98ac29448fab48fe6d47ff1a00a
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+I need to poll the test schedule and rerun the tests properly. I'm wondering if I should exclude the review-page-helpers.test. It might be better to take a closer look at what's necessary for my testing process to ensure everything runs smoothly. I think focusing on the essential components will help avoid unnecessary complications. It's a matter of checking what can be skipped and what absolutely needs to be included for accurate results.
+codex
+Type-check is still running; the test command just needed a Vitest-compatible invocation. I’m polling the compiler and rerunning only the relevant tests with the correct CLI syntax.
+exec
+/bin/zsh -lc 'npx vitest run tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-056 exited 2 in 10.93s:
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/delegated-accounts/[id]/route.ts(32,27): error TS2552: Cannot find name 'getDelegatedAccount'. Did you mean 'deleteDelegatedAccount'?
+src/app/api/delegated-accounts/feature/route.ts(26,27): error TS2552: Cannot find name 'isDelegatedAccountsEnabled'. Did you mean 'setDelegatedAccountsEnabled'?
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(263,37): error TS2339: Property 'constitutionDocument' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(371,11): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(473,11): error TS2353: Object literal may only specify known properties, and 'decidedAt' does not exist in type '(Without<ApprovalUpdateInput, ApprovalUncheckedUpdateInput> & ApprovalUncheckedUpdateInput) | (Without<...> & ApprovalUpdateInput)'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(489,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/regenerate/route.ts(93,9): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Without<TaskCreateInput, TaskUncheckedCreateInput> & TaskUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/regenerate/route.ts(113,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/revise/route.ts(134,9): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Without<TaskCreateInput, TaskUncheckedCreateInput> & TaskUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/revise/route.ts(154,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/job-runs/route.ts(38,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/job-runs/route.ts(151,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/kb/packs/[id]/docs/[docTypeId]/route.ts(32,24): error TS2304: Cannot find name 'getPack'.
+src/app/api/kb/packs/[id]/route.ts(29,24): error TS2304: Cannot find name 'getPack'.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..c3c6edabcae53f087ff11cfe983a715ebe577966
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,6 +1145,7 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+     (readinessChecksPassing || mergeReadinessError)
+   );
+@@ -1128,7 +1153,7 @@
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1791,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1866,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..2b4f3b7eda68d98ac29448fab48fe6d47ff1a00a
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+ exited 1 in 1.64s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-056
+
+ ❯ tests/review-page-helpers.test.ts  (2 tests | 1 failed) 6ms
+   ❯ tests/review-page-helpers.test.ts > getBranchStatus > shows approval-specific pending copy while GitHub recomputes mergeability
+     → expected { tone: 'pending', …(1) } to deeply equal { tone: 'pending', …(1) }
+ ✓ tests/deploy-gate-merge-renew.test.ts  (1 test) 57ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/review-page-helpers.test.ts > getBranchStatus > shows approval-specific pending copy while GitHub recomputes mergeability
+
+AssertionError: expected { tone: 'pending', …(1) } to deeply equal { tone: 'pending', …(1) }
+
+- Expected
++ Received
+
+  Object {
+-   "label": "Checks re-running after approval...",
++   "label": "GitHub is still computing mergeability",
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..c3c6edabcae53f087ff11cfe983a715ebe577966
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,6 +1145,7 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
++    mergeReadiness?.mergeable === true &&
+     (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+     (readinessChecksPassing || mergeReadinessError)
+   );
+@@ -1128,7 +1153,7 @@
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1791,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1866,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <span className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </span>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..2b4f3b7eda68d98ac29448fab48fe6d47ff1a00a
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'GitHub is still computing mergeability'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+codex
+The local targeted tests surfaced one helper-copy mismatch, not a logic issue. I’m restoring that helper’s existing approved-state copy so the broader page behavior stays spec-compliant without breaking the current test contract.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -1147,5 +1147,10 @@
+     request.prNumber &&
+-    mergeReadiness?.mergeable === true &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+@@ -1870,3 +1875,3 @@
+                             <Tooltip content="Resolve conflicts first">
+-                              <span className="w-full">
++                              <div className="w-full">
+                                 <Button
+@@ -1879,3 +1884,3 @@
+                                 </Button>
+-                              </span>
++                              </div>
+                             </Tooltip>
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -428,3 +428,3 @@
+         requestStatus === 'approved'
+-          ? 'GitHub is still computing mergeability'
++          ? 'Checks re-running after approval...'
+           : 'Waiting for GitHub mergeability status...',
+apply_patch(auto_approved=true) exited 0 in 49ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+M /Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+exec
+/bin/zsh -lc "git diff -- 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 50ms:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91..432d07a 100644
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@ import {
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@ function ChecklistStatusRow({
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+exec
+/bin/zsh -lc 'npx vitest run tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-056file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+ succeeded in 1.27s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-056
+
+ ✓ tests/review-page-helpers.test.ts  (2 tests) 2ms
+ ✓ tests/deploy-gate-merge-renew.test.ts  (1 test) 63ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  12:07:20
+   Duration  712ms (transform 103ms, setup 25ms, collect 124ms, tests 65ms, environment 0ms, prepare 117ms)
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+**Considering git status and commits**
+
+I’m thinking that I might not need a conflict link if a prUrl doesn't exist. It's okay! I also want to check the git status and make sure to commit any changes. I wonder if there are other user changes that I should inspect. It feels like I need to stay on top of everything to ensure I don’t miss anything important. It can be a bit overwhelming, but I'm on it!
+codex
+The targeted tests now pass. I’m doing a quick git-state check before committing so I only include the files changed for this PRD work and don’t trample unrelated worktree changes.
+exec
+/bin/zsh -lc "git diff --check -- 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 53ms:
+
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 83ms:
+ M src/app/pp/deploy-requests/[requestId]/page.tsx
+ M src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+I'm considering how to approach tracking changes. I think I might need to focus on committing only the changes that have been tracked. It seems like untracked files in the Project Requirement Document aren't necessary to include. I need to make sure my commit message reflects this clearly. It's all about clarity in the message, so I’ll think carefully about the wording when I finalize it. Let's see how this goes!
+codex
+I only changed the two review-page files. I’m committing just those tracked edits and leaving the untracked factory prompt/spec files out of the commit.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+**Considering repository permissions**
+
+I'm thinking about whether I need permission since the sandbox might prohibit using .git. It’s also possible that workspace-write isn't letting me access .git due to a lock. I can't ask for approval, so I'm wondering if committing changes could be impossible. Maybe I should check the permissions by inspecting with `ls -ld .git` to get more clarity on what's happening here. That could help me understand the issue better!
+codex
+The code changes are finished, but the commit step is blocked by the sandbox: it can’t create `.git/index.lock`, so I can’t write to the repo metadata from here. I’m confirming that this is a sandbox limitation rather than a repo-state problem, then I’ll give you the exact commit command to run locally if needed.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/refs' in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 53ms:
+drwxr-xr-x  13 moltbot  staff    416 Mar 15 12:04 .git
+-rw-r--r--   1 moltbot  staff  97066 Mar 15 12:04 .git/index
+drwxr-xr-x   5 moltbot  staff    160 Mar 15 12:04 .git/refs
+exec
+/bin/zsh -lc 'git rev-parse --show-toplevel && git status --short' in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 51ms:
+/Users/moltbot/pp-agent-work/factory-idea-056
+ M src/app/pp/deploy-requests/[requestId]/page.tsx
+ M src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+I’m considering how to tackle the git add and commit process, especially since I'm running into some blocks. It looks like I need to ensure verification tests pass before I can commit. There are also issues with TypeScript causing errors in the existing repository. Maybe I could include file references and line numbers to clarify the problems I’m facing. Using a command like nl -ba might help get those relevant line references lined up.
+exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx' | sed -n '416,440p'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '1018,1165p'" in /Users/moltbot/pp-agent-work/factory-idea-056exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '1760,1898p'" in /Users/moltbot/pp-agent-work/factory-idea-056 succeeded in 51ms:
+   416	
+   417	export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   418	  if (!readiness) {
+   419	    return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   420	  }
+   421	  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
+   422	    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+   423	  }
+   424	  if (readiness.mergeable === null) {
+   425	    return {
+   426	      tone: 'pending',
+   427	      label:
+   428	        requestStatus === 'approved'
+   429	          ? 'Checks re-running after approval...'
+   430	          : 'Waiting for GitHub mergeability status...',
+   431	    };
+   432	  }
+   433	  switch (readiness.mergeable_state) {
+   434	    case 'clean':
+   435	      return { tone: 'ok', label: 'Branch is up to date with base' };
+ succeeded in 51ms:
+  1760	                          </div>
+  1761	
+  1762	                          {showChecks && mergeReadiness?.checks?.length ? (
+  1763	                            <div className="space-y-2 rounded-xl border border-[#222222] bg-[#0a0a0a] p-3">
+  1764	                              {mergeReadiness.checks.map((check) => {
+  1765	                                const passing = isPassingCheck(check);
+  1766	                                const failing = isFailingCheck(check);
+  1767	                                return (
+  1768	                                  <div key={`${check.name}-${check.status}-${check.conclusion ?? 'none'}`} className="flex items-center justify-between gap-3 text-xs">
+  1769	                                    <span className="text-[var(--foreground)]">{check.name}</span>
+  1770	                                    <span className={passing ? 'text-[#10B981]' : failing ? 'text-[#EF4444]' : 'text-[#F59E0B]'}>
+  1771	                                      {check.status === 'completed' ? check.conclusion ?? 'completed' : 'Pending'}
+  1772	                                    </span>
+  1773	                                  </div>
+  1774	                                );
+  1775	                              })}
+  1776	                            </div>
+  1777	                          ) : null}
+  1778	
+  1779	                          <div className="space-y-2">
+ succeeded in 51ms:
+  1018	    request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+  1019	  );
+  1020	  const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+  1021	  const allChecksPassing = areAllChecksPassing(mergeReadiness);
+  1022	  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+  1023	  const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+  1024	  const showMergeReadinessRefresh = Boolean(
+  1025	    request?.status === 'approved' &&
+  1026	    mergeReadinessUnknownSince &&
+  1027	    Date.now() - mergeReadinessUnknownSince >= 30_000 &&
+  1028	    request.mergeStatus !== 'merged' &&
+  1029	    !request.mergedAt
+  1030	  );
+  1031	  const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+  1032	  const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
+  1033	  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+  1034	  const checksFailing = Boolean(
+  1035	    mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+  1036	    request?.githubRerunStatus === 'failed_transient' ||
+  1037	    request?.githubRerunStatus === 'failed_permanent'
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+
+thinking
+**Finalizing commit details**
+
+I need to be concise while mentioning the blocked commit and include the file references. It's also important to note the tests and the existing TSC failures. I want to ensure that I provide enough context, but not too much, so it remains clear and easy to understand for anyone reviewing this. Balancing clarity and brevity is key here to ensure the message is effective!
+codex
+Implemented the PRD changes on the PP review page.
+
+In [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx#L1021), the conflict state now distinguishes `mergeable === true`, `mergeable === false`, and `mergeable === null` correctly. The checklist only shows “No conflicts” when GitHub explicitly confirms `mergeable === true`; unknown mergeability now shows “Checking for conflicts...” with the existing spinner behavior, and conflicts show the required warning plus a direct PR link. In [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx#L1862), the conflict case now keeps `Merge & Deploy` visible but disabled with a tooltip of “Resolve conflicts first”, and adds a “Resolve on GitHub” link.
+
+In [review-page-helpers.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx#L417), `getBranchStatus()` now treats `mergeable === false` and `mergeable_state === 'dirty'` as conflicts before any other branch-state handling.
+
+Verification: `npx vitest run tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts` passed. `npx tsc --noEmit` still fails, but only due to many pre-existing repo errors unrelated to this change.
+
+I could not create the requested commit because the sandbox blocks writes to `.git` metadata: `fatal: Unable to create '.git/index.lock': Operation not permitted`. The exact commit command to run locally is:
+```bash
+git add -- 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'
+git commit -m "Detect merge conflicts on PP review page"
+```
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 0ba2c91a6e73036080cf0d5e59ad8928f4978d33..432d07a09a7ee41939dcd7704f27c9df115996e0
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -61,6 +61,7 @@
+   type ReviewEnrichment,
+   type UpdateBranchState,
+ } from './review-page-helpers';
++import { Tooltip } from '@/components/ui/tooltip';
+ 
+ type GitHubAppStatus = 'not_installed' | 'setup_incomplete' | 'ready' | 'unknown';
+ 
+@@ -171,7 +172,7 @@
+ }: {
+   label: string;
+   status: 'pass' | 'fail' | 'pending';
+-  detail: string;
++  detail: ReactNode;
+ }) {
+   return (
+     <div className="flex items-start justify-between gap-3 rounded-xl border border-[#222222] bg-[#0a0a0a] px-3 py-2.5">
+@@ -1029,6 +1030,7 @@
+   );
+   const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+   const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
++  const mergeabilityUnknown = Boolean(mergeReadiness && mergeReadiness.mergeable === null);
+   const checksFailing = Boolean(
+     mergeReadiness?.checks.some((check) => isFailingCheck(check)) ||
+     request?.githubRerunStatus === 'failed_transient' ||
+@@ -1049,10 +1051,10 @@
+     !checksFailing
+   );
+   const waitingForMergeabilityConfirmation = Boolean(
+-    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++    mergeabilityUnknown || (allChecksPassing && mergeReadiness?.mergeable_state === 'unknown')
+   );
+   const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+-    ? 'Waiting for GitHub to confirm mergeability...'
++    ? 'Checking for conflicts...'
+     : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+@@ -1064,16 +1066,38 @@
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+           : waitingForMergeabilityConfirmation
+-            ? 'Waiting for GitHub to confirm mergeability...'
++            ? 'Checking for conflicts...'
+             : 'Waiting for GitHub mergeability status';
+-  const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
++  const noConflictsStatus =
++    mergeReadinessError ? 'pass' : !mergeReadiness || mergeabilityUnknown ? 'pending' : hasConflict ? 'fail' : mergeReadiness.mergeable === true ? 'pass' : 'pending';
++  const noConflictsLabel =
++    noConflictsStatus === 'fail'
++      ? '❌ Merge conflicts detected — resolve on GitHub'
++      : noConflictsStatus === 'pending'
++        ? 'Checking for conflicts...'
++        : 'No conflicts';
+   const noConflictsDetail =
+     mergeReadinessError
+       ? 'OK to proceed'
+       : noConflictsStatus === 'pass'
+         ? 'GitHub reports no merge conflicts'
+         : noConflictsStatus === 'fail'
+-          ? 'Resolve merge conflicts on GitHub before merging'
++          ? (
++              <span className="inline-flex flex-wrap items-center gap-2">
++                <span>Resolve merge conflicts on GitHub before merging.</span>
++                {prUrl ? (
++                  <a
++                    href={prUrl}
++                    target="_blank"
++                    rel="noreferrer"
++                    className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
++                  >
++                    Open PR
++                    <ExternalLink className="h-3.5 w-3.5" />
++                  </a>
++                ) : null}
++              </span>
++            )
+           : 'GitHub is still computing conflict status';
+   const approvedByText = request?.approvedBy ? `@${request.approvedBy}` : getApprovedByText(request?.decidedBy);
+   const blastRadiusText = getBlastRadiusText(enrichment?.summary ?? null, changedFiles);
+@@ -1121,14 +1145,20 @@
+   const canMergeNow = Boolean(
+     request?.status === 'approved' &&
+     request.prNumber &&
+-    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+-    (readinessChecksPassing || mergeReadinessError)
++    (
++      Boolean(mergeReadinessError) ||
++      (
++        mergeReadiness?.mergeable === true &&
++        mergeReadiness?.mergeable_state === 'clean' &&
++        readinessChecksPassing
++      )
++    )
+   );
+   const mergeBlockedReason =
+     !mergeReadiness && !mergeReadinessError
+       ? 'Merge readiness is still being computed.'
+       : hasConflict
+-          ? 'Resolve merge conflicts on GitHub before merging.'
++          ? 'Resolve conflicts first'
+           : branchBehind
+             ? 'Update the branch before merging.'
+             : !readinessChecksPassing
+@@ -1766,7 +1796,7 @@
+                               detail={branchUpToDateDetail}
+                             />
+                             <ChecklistStatusRow
+-                              label="No conflicts"
++                              label={noConflictsLabel}
+                               status={noConflictsStatus}
+                               detail={noConflictsDetail}
+                             />
+@@ -1841,15 +1871,29 @@
+                             {updateBranchState.status === 'updating' ? 'Updating Branch...' : 'Update Branch'}
+                           </Button>
+                         ) : hasConflict && prUrl ? (
+-                          <a
+-                            href={prUrl}
+-                            target="_blank"
+-                            rel="noreferrer"
+-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
+-                          >
+-                            View on GitHub
+-                            <ExternalLink className="h-4 w-4" />
+-                          </a>
++                          <div className="space-y-3">
++                            <Tooltip content="Resolve conflicts first">
++                              <div className="w-full">
++                                <Button
++                                  onClick={() => void handleMerge()}
++                                  disabled
++                                  className="h-12 w-full rounded-2xl bg-[#3B82F6] text-white hover:bg-[#2563EB] disabled:bg-[#3B82F6]/50"
++                                >
++                                  <GitPullRequest className="h-4 w-4" />
++                                  Merge & Deploy
++                                </Button>
++                              </div>
++                            </Tooltip>
++                            <a
++                              href={prUrl}
++                              target="_blank"
++                              rel="noreferrer"
++                              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#222222] text-sm font-medium text-white transition-colors hover:border-[#3B82F6]"
++                            >
++                              Resolve on GitHub
++                              <ExternalLink className="h-4 w-4" />
++                            </a>
++                          </div>
+                         ) : (
+                           <Button
+                             onClick={() => void handleMerge()}
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276..74f6d9951d41094ee58e117376c1d3c3fd337a9e
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -418,6 +418,18 @@
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+   }
++  if (readiness.mergeable === false || readiness.mergeable_state === 'dirty') {
++    return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
++  }
++  if (readiness.mergeable === null) {
++    return {
++      tone: 'pending',
++      label:
++        requestStatus === 'approved'
++          ? 'Checks re-running after approval...'
++          : 'Waiting for GitHub mergeability status...',
++    };
++  }
+   switch (readiness.mergeable_state) {
+     case 'clean':
+       return { tone: 'ok', label: 'Branch is up to date with base' };
+@@ -429,8 +441,6 @@
+             ? `Branch is ${readiness.behind_by} commit${readiness.behind_by === 1 ? '' : 's'} behind base`
+             : 'Branch is behind the base branch',
+       };
+-    case 'dirty':
+-      return { tone: 'error', label: 'Merge conflict detected, resolve on GitHub' };
+     case 'blocked':
+       return {
+         tone: 'warn',
+
+tokens used
+55,074
+Implemented the PRD changes on the PP review page.
+
+In [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx#L1021), the conflict state now distinguishes `mergeable === true`, `mergeable === false`, and `mergeable === null` correctly. The checklist only shows “No conflicts” when GitHub explicitly confirms `mergeable === true`; unknown mergeability now shows “Checking for conflicts...” with the existing spinner behavior, and conflicts show the required warning plus a direct PR link. In [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/page.tsx#L1862), the conflict case now keeps `Merge & Deploy` visible but disabled with a tooltip of “Resolve conflicts first”, and adds a “Resolve on GitHub” link.
+
+In [review-page-helpers.tsx](/Users/moltbot/pp-agent-work/factory-idea-056/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx#L417), `getBranchStatus()` now treats `mergeable === false` and `mergeable_state === 'dirty'` as conflicts before any other branch-state handling.
+
+Verification: `npx vitest run tests/review-page-helpers.test.ts tests/deploy-gate-merge-renew.test.ts` passed. `npx tsc --noEmit` still fails, but only due to many pre-existing repo errors unrelated to this change.
+
+I could not create the requested commit because the sandbox blocks writes to `.git` metadata: `fatal: Unable to create '.git/index.lock': Operation not permitted`. The exact commit command to run locally is:
+```bash
+git add -- 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'
+git commit -m "Detect merge conflicts on PP review page"
+```

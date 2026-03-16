@@ -1,0 +1,66 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-058
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf334-aea7-72b2-93d9-1fde085e1897
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting repository instructions**
+
+I need to inspect the repository and review the instructions. Maybe I should start with an update in the commentary. I think I’ll need a plan too. I’m wondering if I should read AGENTS? Although, it seems like that might not be relevant to my skills right now. Alright, I'll focus on inspecting the files for now to get a clearer picture of what’s needed.
+codex
+I’m reading the product spec and the current codebase first so I can map each required change to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-058exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-058 succeeded in 53ms:
+# PRD: idea-058 — Add prTitle to DeployGateRequest + populate from deploy-gate action
+
+**Issue:** permission-protocol/app#92
+**Priority:** P2
+**Repo:** permission-protocol/app
+**Size:** S
+
+## Problem
+Deploy requests don't store the PR title. The queue shows fallback text "Pull Request #N" instead of the actual PR title. Users can't scan the queue meaningfully without clicking into each request.
+
+## User Journey
+1. Marco opens the deploy queue on the PP dashboard
+2. Sees a list of "Pull Request #42", "Pull Request #43", etc.
+3. Has no idea what any of them are without clicking each one
+4. **Expected:** Sees actual PR titles like "Add Stripe webhook handler", "Fix auth redirect loop"
+
+## Requirements
+
+### Must Have
+1. **Prisma schema change:** Add `prTitle String?` to the `DeployGateRequest` model
+ succeeded in 53ms:
+Total output lines: 752
+
+/Users/moltbot/pp-agent-work/factory-idea-058
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+

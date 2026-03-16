@@ -1,0 +1,1002 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-032
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce9f1-9818-7103-b81c-bc90a84a53e9
+--------
+user
+You are fixing a bug. Read FACTORY-PRD.md for full context.
+
+## Fix Approach
+Reorder the operations inside the transaction:
+1. **First** create the new deploy request
+2. **Then** update old pending requests to set `supersededByRequestId` to the newly created request's ID
+This is safe because both operations are in the same Prisma transaction — either both succeed or neither does.
+## Acceptance Criteria
+- [ ] New deploy requests are created successfully (no FK violation)
+- [ ] Old pending requests in the same lane are still superseded correctly
+- [ ] `supersededByRequestId` points to the newly created request's actual ID
+- [ ] Existing tests pass
+- [ ] `tsc --noEmit` passes
+## Codex Prompt
+You are fixing a critical Prisma foreign key violation in the deploy request creation flow.
+In `src/app/api/v1/receipts/verify/route.ts`, find the transaction block around line 580-600 that:
+1. Updates old pending requests with `supersededByRequestId: newRequestId`
+2. Creates the new deploy request
+The bug: step 1 sets a FK to an ID that doesn't exist yet (step 2 hasn't run).
+Fix: Swap the order.
+1. First, create the new deploy request (the `tx.deployGateRequest.create(...)` call)
+2. Then, update old pending requests with `supersededByRequestId: created.id` (using the actual created record's ID)
+You'll need to:
+- Move the `tx.deployGateRequest.create(...)` block BEFORE the `tx.deployGateRequest.updateMany(...)` block
+- Change `supersededByRequestId: newRequestId` to use the actual created record's `id` (e.g., `created.id`)
+- Make sure the variable holding the created request is available for the updateMany
+- Keep both operations inside the same `tx` (transaction)
+Also check: is `newRequestId` generated with `cuid()` or similar? If so, you can keep generating it upfront and pass it as `id` in the create call — that way the ID is known before create. Either approach works.
+Before finishing, run `npx tsc --noEmit` and fix any type errors.
+
+Fix this bug with the minimal change needed. Add a test if possible. Run `npx tsc --noEmit` before finishing.
+mcp startup: no servers
+
+thinking
+**Inspecting files**
+
+I’m thinking about the need to inspect files, particularly something related to FACTORY-PRD. I wonder if I should be concerned about any skills being needed, but I suspect none apply here. It's probably best to just start with a commentary update to ensure clarity on what I’m looking for initially. Let’s make sure to take it step by step, keeping track of everything as I go.
+codex
+I’m reading the PRD and the route implementation first, then I’ll patch the transaction in the smallest possible way and run the requested checks.
+exec
+/bin/zsh -lc "sed -n '1,220p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc "rg -n \"deployGateRequest\\.(updateMany|create)|supersededByRequestId|newRequestId\" src/app/api/v1/receipts/verify/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-032 succeeded in 53ms:
+# Bugfix: idea-032 — Prisma FK violation on supersededByRequestId
+
+## Symptom
+Deploy request creation fails with: `Foreign key constraint violated: DeployGateRequest_supersededByRequestId_fkey`. This means NO new deploy requests can be created, which completely blocks the PP approval flow.
+
+## Affected Files
+- `src/app/api/v1/receipts/verify/route.ts` — the supersede logic around line 582-598
+
+## Root Cause Analysis
+In the verify endpoint's transaction, the supersede logic runs BEFORE the new request is created:
+
+```
+1. updateMany: set old requests' supersededByRequestId = newRequestId  ← FK points to non-existent ID!
+2. create: create the new request with id = newRequestId               ← this is where the ID is born
+```
+
+`supersededByRequestId` is a foreign key to `DeployGateRequest.id`. Setting it to `newRequestId` before that request exists violates the FK constraint.
+
+## Fix Approach
+Reorder the operations inside the transaction:
+ succeeded in 53ms:
+565:      const newRequestId = randomUUID();
+584:        await tx.deployGateRequest.updateMany({
+595:            supersededByRequestId: newRequestId,
+600:      const created = await tx.deployGateRequest.create({
+602:          id: newRequestId,
+
+thinking
+**Inspecting surrounding code**
+
+I need to take a closer look at the surrounding code and possibly the tests too. It's really important to have a good understanding of the context. I wonder if there are specific areas that are particularly tricky or if there are tests that might help clarify things. My goal is to ensure everything is functioning correctly and that I can catch any issues early on. Let's make sure I focus carefully on this!
+codex
+I found the exact transaction. Next I’m reading the surrounding block and looking for an existing test that exercises the verify/deploy request flow so I can patch the bug without broad changes.
+exec
+/bin/zsh -lc "sed -n '520,660p' src/app/api/v1/receipts/verify/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc 'rg -n "receipts/verify|deployGateRequest|supersededByRequestId|verify route|verify receipt" src test tests __tests__' in /Users/moltbot/pp-agent-work/factory-idea-032 succeeded in 53ms:
+          idempotencyKey,
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (existingByIdempotency && REUSABLE_DEPLOY_REQUEST_STATUSES.has(existingByIdempotency.status)) {
+        const needsReactivation = existingByIdempotency.status === 'expired';
+        await tx.deployGateRequest.update({
+          where: { id: existingByIdempotency.id },
+          data: {
+            scopeIdentityKey,
+            ...(redeemRunId || headerRunId ? { runId: redeemRunId ?? headerRunId } : {}),
+            ...(checkRunId ? { checkRunId } : {}),
+            ...(needsReactivation ? {
+              status: 'pending',
+              decidedAt: null,
+              reason: null,
+              receiptId: null,
+              expiresAt: null,
+            } : {}),
+          },
+ exited 2 in 52ms:
+Total output lines: 203
+
+rg: test: No such file or directory (os error 2)
+rg: __tests__: No such file or directory (os error 2)
+tests/merge-readiness-route.test.ts:14:    deployGateRequest: {
+tests/deploy-gate-verify-request.test.ts:16:  supersededByRequestId?: string | null;
+tests/deploy-gate-verify-request.test.ts:77:  const deployGateRequest = {
+tests/deploy-gate-verify-request.test.ts:166:        supersededByRequestId: data.supersededByRequestId ?? null,
+tests/deploy-gate-verify-request.test.ts:231:      deployGateRequest,
+tests/deploy-gate-verify-request.test.ts:232:      $transaction: vi.fn(async (fn: any) => fn({ deployGateRequest })),
+tests/deploy-gate-verify-request.test.ts:303:  return new NextRequest('http://localhost/api/v1/receipts/verify', {
+tests/deploy-gate-verify-request.test.ts:348:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:369:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:386:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:396:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:399:    const reqWithCheckRun = new NextRequest('http://localhost/api/v1/receipts/verify', {
+tests/deploy-gate-verify-request.test.ts:422:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:435:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:449:    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+tests/deploy-gate-verify-request.test.ts:475:    expect(older?.supersededByRequestId).toBe(newer?.id);
+
+thinking
+**Inspecting test lines**
+
+I need to take a closer look at the relevant test lines that pertain to the behavior that has been superseded. It's important to evaluate how these tests have changed over time and what impact that might have on current functionality. By examining these lines, I can gather insights and ensure everything aligns correctly with the latest requirements or modifications. It's all about making sure the system works as intended!
+codex
+There’s already a targeted verify-route test file with supersede assertions. I’m checking whether it already covers operation order; if not, I’ll add a narrow regression test rather than build new scaffolding.
+exec
+/bin/zsh -lc "sed -n '420,520p' tests/deploy-gate-verify-request.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc "sed -n '1,260p' tests/deploy-gate-verify-request.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-032 succeeded in 53ms:
+    });
+
+    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+    const response = await POST(createVerifyRequest({ withCreateToken: false }));
+
+    expect(response.status).toBe(404);
+    const body = await response.json();
+    expect(body.requestId).toBeUndefined();
+    expect(body.approvalUrl).toBeUndefined();
+    expect(body.creationSkippedReason).toBe('API key missing required scope: deployRequests.create');
+    expect(body.errorMessage).toBe('Auto-create requires API key scope deployRequests.create.');
+    expect(mockDeployGateRequests.size).toBe(0);
+  });
+
+  it('is idempotent under concurrent verify calls for same scope', async () => {
+    const { POST } = await import('@/app/api/v1/receipts/verify/route');
+
+    const responses = await Promise.all(
+      Array.from({ length: 8 }, () => POST(createVerifyRequest({ withCreateToken: true })))
+    );
+ succeeded in 53ms:
+import { NextRequest } from 'next/server';
+
+const originalEnv = { ...process.env };
+
+type MockDeployGateRequest = {
+  id: string;
+  companyId: string;
+  laneKey: string;
+  idempotencyKey: string;
+  scopeIdentityKey?: string;
+  repo?: string;
+  prNumber?: number | null;
+  commitSha: string;
+  scopeHash: string;
+  status: string;
+  supersededByRequestId?: string | null;
+  checkRunId: string | null;
+  receiptId: string | null;
+  verificationStatus?: string;
+  verificationAttemptCount?: number;
+
+thinking
+**Considering testing strategies**
+
+I think I need to explore adding a test for ordering by potentially mocking the `updateMany` function to fail if the foreign key target is missing. Right now, the in-memory setup doesn't enforce that foreign key, so maybe I could add a test to check whether `create` is called before `updateMany` based on invocation order. I’ll check out `vitest` to help with that and ensure everything is reset during `beforeEach`.
+codex
+The current test already proves the logical supersede outcome, but not the FK-safe ordering. I’m checking the test setup/reset so I can add a regression assertion on call order without destabilizing the suite.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc "sed -n '260,420p' tests/deploy-gate-verify-request.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-032 succeeded in 52ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ succeeded in 52ms:
+    },
+  };
+});
+
+vi.mock('@/lib/auth/api-keys', () => {
+  return {
+    validateApiKey: vi.fn(async () => ({
+      id: 'ak_test_1',
+      companyId: 'global',
+      scopes: ['receipts.verify', 'deployRequests.create'],
+    })),
+  };
+});
+
+vi.mock('@/lib/rate-limit', () => {
+  return {
+    checkRateLimit: vi.fn(() => ({
+      success: true,
+      limit: 100,
+      remaining: 99,
+codex
+I have enough context. I’m making the minimal fix in the transaction, then I’ll tighten the existing supersede test to assert the FK-safe call order and actual replacement ID.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts
+@@ -582,19 +582,2 @@
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+@@ -642,2 +625,19 @@
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+apply_patch(auto_approved=true) exited 0 in 47ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-032/tests/deploy-gate-verify-request.test.ts
+@@ -448,2 +448,3 @@
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+@@ -475,2 +476,5 @@
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+apply_patch(auto_approved=true) exited 0 in 57ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-032/tests/deploy-gate-verify-request.test.ts
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+
+thinking
+**Running tests effectively**
+
+I'm considering running targeted tests, possibly even all tests, to ensure everything is working well. I'm thinking I should prioritize existing acceptance tests to see if they pass first. It might be a good idea to also run targeted tests with vitest alongside TypeScript checks. I want to make sure I'm thorough but also efficient in my approach. Let's see what results we get!
+codex
+The code change is in place. I’m running the focused verify-route test first to catch regressions quickly, then `tsc --noEmit` as requested; if those are clean I’ll decide whether a broader test run is necessary.
+exec
+/bin/zsh -lc 'npx vitest run tests/deploy-gate-verify-request.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-032file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+ succeeded in 2.15s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-032
+
+stdout | tests/deploy-gate-verify-request.test.ts > Deploy gate request creation on verify missing receipt > returns requestId and approvalUrl for trusted missing-receipt calls
+[verify] Request received {
+  correlationId: 'ppv_f778e421-10d2-4811-9c20-61d2fcc822fb',
+  companyId: 'global',
+  companySlug: 'global',
+  apiKeyId: 'ak_test_1',
+  authType: 'modern',
+  repo: 'Roca-Ventures/Breakout-Labs',
+  scope: 'deploy:main',
+  commitSha: '2345d02f2345d02f2345d02f2345d02f2345d02f',
+  workflow: null,
+  workflowRunId: 'run-123',
+  checkRunId: null
+}
+[verify] DEBUG: Scope lookup params {
+  correlationId: 'ppv_f778e421-10d2-4811-9c20-61d2fcc822fb',
+codex
+The checks are still running. I’m polling both processes now; if either surfaces type fallout or mock-order issues, I’ll patch and rerun.
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+ exited 2 in 9.10s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+
+thinking
+**Considering testing options**
+
+I'm thinking I might need broader tests, but I’m also unsure if that’s necessary. I could mention that tsc fails might be unrelated, but then again, I could run a git diff to inspect specific lines for references. It's a bit of a toss-up which direction to take here. I just want to ensure I get it right and find the most useful approach!
+codex
+The targeted regression test passed. `npx tsc --noEmit` failed, but the errors are repo-wide and unrelated to this fix; I’m capturing the changed lines and the key blockers so the outcome is explicit.
+exec
+/bin/zsh -lc "nl -ba tests/deploy-gate-verify-request.test.ts | sed -n '455,490p'" in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc "nl -ba src/app/api/v1/receipts/verify/route.ts | sed -n '578,640p'" in /Users/moltbot/pp-agent-work/factory-idea-032exec
+/bin/zsh -lc 'git diff -- src/app/api/v1/receipts/verify/route.ts tests/deploy-gate-verify-request.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-032 succeeded in 52ms:
+   578	          ? [{ id: existingPendingLane.id }]
+   579	          : [];
+   580	
+   581	      const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+   582	
+   583	      const created = await tx.deployGateRequest.create({
+   584	        data: {
+   585	          id: newRequestId,
+   586	          companyId,
+   587	          laneKey,
+   588	          idempotencyKey,
+   589	          repo: scope.repo,
+   590	          ref: dbRef,
+   591	          commitSha: dbCommitSha,
+   592	          capability: scope.capability,
+   593	          env: scope.env,
+   594	          // PR-specific fields
+   595	          scopeType: scope.scopeType,
+   596	          prNumber: isPrScope ? scope.prNumber : null,
+   597	          headSha: isPrScope ? scope.headSha : null,
+ succeeded in 53ms:
+   455	        prNumber: 22,
+   456	        headSha: '1111111111111111111111111111111111111111',
+   457	      })
+   458	    );
+   459	    expect(first.status).toBe(404);
+   460	
+   461	    const second = await POST(
+   462	      createVerifyRequest({
+   463	        withCreateToken: true,
+   464	        prNumber: 22,
+   465	        headSha: '2222222222222222222222222222222222222222',
+   466	      })
+   467	    );
+   468	    expect(second.status).toBe(404);
+   469	
+   470	    const requests = Array.from(mockDeployGateRequests.values());
+   471	    const older = requests.find((request) => request.commitSha === '1111111111111111111111111111111111111111');
+   472	    const newer = requests.find((request) => request.commitSha === '2222222222222222222222222222222222222222');
+   473	
+   474	    expect(older?.status).toBe('superseded');
+ succeeded in 52ms:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a20..dc77582 100644
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@ async function createOrReuseDeployGateRequest(params: {
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+codex
+Reordered the transaction so the new deploy request is created before any pending requests are marked superseded, and the FK now uses the persisted record’s actual ID at [src/app/api/v1/receipts/verify/route.ts#L583](/Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts#L583) and [src/app/api/v1/receipts/verify/route.ts#L626](/Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts#L626). That is the minimal fix for the Prisma FK violation.
+
+I also tightened the existing regression test at [tests/deploy-gate-verify-request.test.ts#L448](/Users/moltbot/pp-agent-work/factory-idea-032/tests/deploy-gate-verify-request.test.ts#L448) so it now checks both outcomes: the older request is superseded by the newer request’s real ID, and `create` is invoked before `updateMany`.
+
+Verification:
+- `npx vitest run tests/deploy-gate-verify-request.test.ts` passed.
+- `npx tsc --noEmit` failed, but only due to pre-existing repo-wide TypeScript errors outside this change set, including `permission-protocol-sdk/packages/examples/minimal-agent.ts`, `reference-demo/src/index.ts`, and multiple unrelated API/service files. I did not change those as part of this bug fix.
+file update:
+diff --git a/src/app/api/v1/receipts/verify/route.ts b/src/app/api/v1/receipts/verify/route.ts
+index 4521a204f2cbd03e1b338b6445fb71f153b57079..dc775822b0893b7297fda6f8c3789c38d7203aec
+--- a/src/app/api/v1/receipts/verify/route.ts
++++ b/src/app/api/v1/receipts/verify/route.ts
+@@ -580,23 +580,6 @@
+ 
+       const pendingSupersedeIds = pendingSupersedeCandidates.map((candidate) => candidate.id);
+ 
+-      if (pendingSupersedeIds.length > 0) {
+-        await tx.deployGateRequest.updateMany({
+-          where: {
+-            id: { in: pendingSupersedeIds },
+-            status: 'pending',
+-          },
+-          data: {
+-            status: 'superseded',
+-            decidedAt: now,
+-            reason: isPrScope
+-              ? 'Superseded by newer deploy request for same PR'
+-              : 'Superseded by newer deploy request in same lane',
+-            supersededByRequestId: newRequestId,
+-          },
+-        });
+-      }
+-
+       const created = await tx.deployGateRequest.create({
+         data: {
+           id: newRequestId,
+@@ -640,6 +623,23 @@
+         select: { id: true },
+       });
+ 
++      if (pendingSupersedeIds.length > 0) {
++        await tx.deployGateRequest.updateMany({
++          where: {
++            id: { in: pendingSupersedeIds },
++            status: 'pending',
++          },
++          data: {
++            status: 'superseded',
++            decidedAt: now,
++            reason: isPrScope
++              ? 'Superseded by newer deploy request for same PR'
++              : 'Superseded by newer deploy request in same lane',
++            supersededByRequestId: created.id,
++          },
++        });
++      }
++
+       return { ...created, created: true };
+     });
+   } catch (error) {
+diff --git a/tests/deploy-gate-verify-request.test.ts b/tests/deploy-gate-verify-request.test.ts
+index d40b6ea28499102f2b6c3e5d10c0e2619a9a1972..3b2762b6e2fd9c755cf8d904b23d74f7f920c1a0
+--- a/tests/deploy-gate-verify-request.test.ts
++++ b/tests/deploy-gate-verify-request.test.ts
+@@ -446,6 +446,7 @@
+   });
+ 
+   it('supersedes older pending requests for the same PR when a newer sha arrives', async () => {
++    const { prisma } = await import('@/lib/db');
+     const { POST } = await import('@/app/api/v1/receipts/verify/route');
+ 
+     const first = await POST(
+@@ -473,6 +474,9 @@
+     expect(older?.status).toBe('superseded');
+     expect(newer?.status).toBe('pending');
+     expect(older?.supersededByRequestId).toBe(newer?.id);
++    expect((prisma.deployGateRequest.create as any).mock.invocationCallOrder.at(-1)).toBeLessThan(
++      (prisma.deployGateRequest.updateMany as any).mock.invocationCallOrder.at(-1)
++    );
+   });
+ 
+   it('rejects verification for system tenants', async () => {
+
+tokens used
+41,371
+Reordered the transaction so the new deploy request is created before any pending requests are marked superseded, and the FK now uses the persisted record’s actual ID at [src/app/api/v1/receipts/verify/route.ts#L583](/Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts#L583) and [src/app/api/v1/receipts/verify/route.ts#L626](/Users/moltbot/pp-agent-work/factory-idea-032/src/app/api/v1/receipts/verify/route.ts#L626). That is the minimal fix for the Prisma FK violation.
+
+I also tightened the existing regression test at [tests/deploy-gate-verify-request.test.ts#L448](/Users/moltbot/pp-agent-work/factory-idea-032/tests/deploy-gate-verify-request.test.ts#L448) so it now checks both outcomes: the older request is superseded by the newer request’s real ID, and `create` is invoked before `updateMany`.
+
+Verification:
+- `npx vitest run tests/deploy-gate-verify-request.test.ts` passed.
+- `npx tsc --noEmit` failed, but only due to pre-existing repo-wide TypeScript errors outside this change set, including `permission-protocol-sdk/packages/examples/minimal-agent.ts`, `reference-demo/src/index.ts`, and multiple unrelated API/service files. I did not change those as part of this bug fix.

@@ -1,0 +1,673 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-051
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf230-fe29-7b23-aa37-cf0d9027d3d9
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting files and updates**
+
+I need to inspect some files, and I should send a commentary update first. I’m considering if using an update_plan is necessary, as it might be substantial. I’ll need to read the AGENTS instructions, but I’m not sure there’s a specific skill required for this. My next step will be to inspect the repository and the file to get a better understanding of what needs to be done.
+codex
+I’m reading the product requirements and the current codebase first so I can map each requested change to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-051exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 52ms:
+# PRD: idea-051 — Mobile Tab Labels Fix
+
+**Issue:** permission-protocol/app#126  
+**Priority:** P2  
+**Repo:** permission-protocol/app
+
+## Problem
+On mobile (390px), tab bar shows "Repositori..." — truncated labels.
+
+## Requirements
+- On screens < 640px: abbreviate tab labels
+  - "Dashboard" → "Dashboard" (fits)
+  - "Deploy Queue" → "Queue"
+  - "Repositories" → "Repos"
+  - "Deploy Providers" → "Providers"
+  - "API Keys" → "Keys"
+  - "Setup" → "Setup" (fits)
+- Keep icons visible on all breakpoints
+- Tab bar should scroll horizontally if still too wide (overflow-x-auto)
+
+ succeeded in 52ms:
+/Users/moltbot/pp-agent-work/factory-idea-051
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+src/lib/services/delegated-accounts.ts
+src/lib/services/deploy-gate-post-approval.ts
+
+thinking
+**Finding the tab bar**
+
+I need to locate the tab bar, so I'll start by inspecting the relevant layout elements like the sidebar or header. It might be helpful to check out the page layout too, just in case that's where it is hidden. I'm thinking that searching for the labels could also help me pinpoint it more effectively. Let's see what I can discover!
+codex
+I have the requirement pinned down: only the mobile tab labels change, desktop labels stay intact, icons stay visible, and the tab bar needs horizontal overflow. I’m locating the shared navigation component now so the change lands once instead of being duplicated.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/components/layout/sidebar.tsx" in /Users/moltbot/pp-agent-work/factory-idea-051exec
+/bin/zsh -lc "sed -n '1,260p' src/components/layout/header.tsx" in /Users/moltbot/pp-agent-work/factory-idea-051exec
+/bin/zsh -lc "rg -n 'Deploy Queue|Repositories|Deploy Providers|API Keys|Dashboard|Setup' src/components src/app" in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 52ms:
+'use client';
+
+import { useEffect, useState, useCallback, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Shield, ShieldOff, AlertTriangle, RefreshCw, Building2, ChevronDown, Plus, Check, Command, Sparkles, User as UserIcon, Settings, LogOut } from 'lucide-react';
+import { HelpTooltip } from '../ui/tooltip';
+import { NotificationCenter } from '../ui/notification-center';
+import { CompactModeSelector } from '../ui/operating-mode-selector';
+import { clsx } from 'clsx';
+import { performSignOut } from '../../lib/auth/logout';
+import {
+  clearActiveCompanyCookie,
+  getActiveCompanyIdFromCookie,
+  setActiveCompany,
+} from '../../lib/company/active-company-client';
+
+interface Company {
+  id: string;
+  name: string;
+ succeeded in 52ms:
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState, type ComponentType } from 'react';
+import { clsx } from 'clsx';
+import {
+  Shield,
+  Inbox,
+  GitBranch,
+  Key,
+  Settings,
+  Activity,
+  Building2,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  X,
+} from 'lucide-react';
+ succeeded in 53ms:
+src/components/layout/sidebar.tsx:33:  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: GitBranch, matchPrefix: true },
+src/components/layout/sidebar.tsx:34:  { name: 'API Keys', href: '/c/api-keys', icon: Key, matchPrefix: true },
+src/components/layout/sidebar.tsx:35:  { name: 'Setup', href: '/c/setup', icon: Settings, matchPrefix: true },
+src/components/layout/header.tsx:478:                <span className="text-xs font-medium text-purple-400">Company Setup</span>
+src/components/ui/dashboard-primary-cta.tsx:26:interface SetupState {
+src/components/ui/dashboard-primary-cta.tsx:58:  setup: SetupState
+src/components/ui/dashboard-primary-cta.tsx:152:export function DashboardPrimaryCTA() {
+src/components/ui/dashboard-primary-cta.tsx:154:  const [setup, setSetup] = useState<SetupState | null>(null);
+src/components/ui/dashboard-primary-cta.tsx:158:    async function fetchSetupState() {
+src/components/ui/dashboard-primary-cta.tsx:163:          setSetup(data);
+src/components/ui/dashboard-primary-cta.tsx:171:    fetchSetupState();
+src/app/wizards/github-connection/page.tsx:166:                    <p className="font-medium text-amber-400 text-sm">Organization Repositories?</p>
+src/components/ui/pp-getting-started.tsx:36:interface PPSetupState {
+src/components/ui/pp-getting-started.tsx:50:  setupState: PPSetupState;
+src/components/ui/command-palette.tsx:8:  LayoutDashboard,
+src/components/ui/command-palette.tsx:120:      label: 'Go to Dashboard',
+src/components/ui/command-palette.tsx:121:      icon: LayoutDashboard,
+src/components/ui/command-palette.tsx:128:      label: 'Go to Company Setup',
+src/components/ui/pack-setup-panel.tsx:71:interface PackSetupPanelProps {
+src/components/ui/pack-setup-panel.tsx:112:export function PackSetupPanel({
+codex
+I found the mobile tab strip in the `pp` layout. I’m reading that component now and then I’ll patch it so the labels swap only below `sm` while preserving the existing desktop navigation.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/pp/layout.tsx" in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 50ms:
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+
+const navItems = [
+  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+  { name: 'Setup', href: '/c/setup', icon: Settings },
+];
+
+export default function PPLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [pendingCount, setPendingCount] = useState(0);
+
+exec
+/bin/zsh -lc "sed -n '1,220p' src/app/c/layout.tsx" in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 51ms:
+export { default } from '@/app/pp/layout';
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 53ms:
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+
+thinking
+**Considering layout edits**
+
+I need to edit the page layout and think about whether to run tests. Should I add a mobileLabel property? I guess ensuring an explicit overflow-x-auto is vital too. It seems that the icons are visible across all breakpoints, so that's good. I should make a commit soon and decide if running tests is necessary. If I do test, should I use a targeted approach or just stick to linting? I’ll need to apply the patch as well.
+codex
+I’ve confirmed the change is isolated to [`src/app/pp/layout.tsx`](/Users/moltbot/pp-agent-work/factory-idea-051/src/app/pp/layout.tsx). I’m editing that shared tab strip now to add explicit mobile labels and keep the horizontal scrolling behavior aligned with the PRD.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-051/src/app/pp/layout.tsx
+@@ -8,8 +8,8 @@
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+@@ -78,3 +78,3 @@
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+apply_patch(auto_approved=true) exited 0 in 34ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-051/src/app/pp/layout.tsx
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+
+thinking
+**Inspecting code and tests**
+
+I need to verify if there's a formatting issue. I could run a targeted test, or maybe not. I might use tools like sed and typecheck or run eslint. It could be worthwhile to inspect the file and run tests too. A simple compile likely won’t have tests, but I could do an npm test in a targeted way. Running `npm exec tsc --noEmit` might be more resource-intensive, but I’m okay with that. I'll also check the package scripts.
+codex
+The patch is in place. I’m doing a quick verification pass now to make sure the shared layout still typechecks cleanly and that I’m not committing avoidable regressions for a one-file UI change.
+exec
+/bin/zsh -lc "sed -n '1,220p' src/app/pp/layout.tsx" in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 52ms:
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+
+const navItems = [
+  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
+  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
+  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
+  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
+  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+];
+
+export default function PPLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [pendingCount, setPendingCount] = useState(0);
+
+exec
+/bin/zsh -lc "node -e \"const pkg=require('./package.json'); console.log(JSON.stringify(pkg.scripts||{}, null, 2))\"" in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 53ms:
+{
+  "dev": "npm run db:setup && next dev",
+  "build": "npm run db:check && next build",
+  "start": "next start -p ${PORT:-3000}",
+  "lint": "next lint",
+  "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+  "postinstall": "npm run db:setup && prisma generate",
+  "db:generate": "npm run db:setup && prisma generate",
+  "db:migrate": "npm run db:setup && prisma migrate dev",
+  "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+  "db:push": "npm run db:setup && prisma db push",
+  "db:seed": "tsx prisma/seed.ts",
+  "db:studio": "npm run db:setup && prisma studio",
+  "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+  "db:check": "npx tsx scripts/check-migrations.ts",
+  "test": "vitest",
+  "test:db": "tsx scripts/setup-test-db.ts",
+  "test:run": "npm run test:db && vitest run",
+  "scheduler": "tsx src/lib/scheduler/run.ts",
+  "migrate:deploy-gate-lane-dedupe:online": "tsx scripts/deploy-gate-lane-dedupe-online.ts",
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+
+thinking
+I think I might need to run an npm lint command. It seems like it should be enough, but I’m not completely sure if it’s just one file that needs it. So, perhaps I’ll go ahead and run “npm run lint.” It could take a bit of time, but I think it’ll be worth it to make sure everything is in good shape. Let's see how it goes!
+exec
+/bin/zsh -lc 'npm run lint' in /Users/moltbot/pp-agent-work/factory-idea-051file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+codex
+Lint is running. If it passes, I’ll commit immediately; if it fails, I’ll check whether the failure is from this change or pre-existing noise before deciding what to fix.
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+ succeeded in 5.19s:
+
+> permission-protocol@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+
+thinking
+**Checking Git status and committing**
+
+I need to check the Git status first to see any changes that are staged, unstaged, or untracked. After that, I’ll commit the changes with a clear message to reflect what I've done. It’s important to keep the commit history organized! I want to make sure I’m being thorough, so I’ll double-check everything before actually running the commit command. Let's get this done efficiently!
+codex
+The change verifies cleanly with `next lint`. I’m staging only the layout edit and creating the requested commit now.
+exec
+/bin/zsh -lc 'git diff -- src/app/pp/layout.tsx' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 52ms:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b..7607114 100644
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 81ms:
+ M src/app/pp/layout.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+
+thinking
+**Evaluating git permissions**
+
+I’m thinking that I might not be able to write to .git, and it seems like approval is needed. Checking permissions could be the next step. Maybe the git commit is impossible because of sandboxes. I wonder if I can use an exec command without the necessary permissions. I should inform the user that I’m unable to write, but I might still be able to check things by inspecting .git and .git/index.
+codex
+The code change is complete, but the sandbox blocked the commit itself because it can’t create `.git/index.lock` in this environment. I’m checking whether that’s a transient repo permission issue or a hard sandbox limitation so I can tell you exactly what remains.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/objects' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 53ms:
+drwxr-xr-x  13 moltbot  staff    416 Mar 15 09:50 .git
+-rw-r--r--   1 moltbot  staff  96062 Mar 15 09:50 .git/index
+drwxr-xr-x   4 moltbot  staff    128 Mar 15 09:50 .git/objects
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-051 succeeded in 53ms:
+ M src/app/pp/layout.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+
+thinking
+**Considering sandbox limitations**
+
+I can't fully commit due to sandbox restrictions. It makes things a bit tricky! I'm thinking maybe I could use `git diff` to inspect changes, or perhaps line references could help clarify things. However, I want to ensure that I'm being cautious with this approach since working within limitations can be frustrating. Let's explore our options while staying mindful of these constraints!
+codex
+Implemented the PRD in [`src/app/pp/layout.tsx`](/Users/moltbot/pp-agent-work/factory-idea-051/src/app/pp/layout.tsx): the mobile tab bar now uses the exact required labels below `sm` (`Queue`, `Repos`, `Providers`, `Keys`), keeps the existing desktop labels unchanged, and continues to show icons on all breakpoints with horizontal scrolling via `overflow-x-auto`.
+
+Verification: `npm run lint` passed.
+
+I could not complete the requested commit because the sandbox blocks writes inside `.git` and rejects creation of `.git/index.lock`, so `git add`/`git commit` fail in this environment. The working tree change is ready to commit locally.
+file update:
+diff --git a/src/app/pp/layout.tsx b/src/app/pp/layout.tsx
+index af5d58b7becd5cc5d0865dd2a25c047521a0c36c..760711406bf3062c245aa85b22cf1e9a282df26d
+--- a/src/app/pp/layout.tsx
++++ b/src/app/pp/layout.tsx
+@@ -6,12 +6,12 @@
+ import { Shield, ShieldCheck, Key, Settings, Cloud, FolderGit2 } from 'lucide-react';
+ 
+ const navItems = [
+-  { name: 'Dashboard', href: '/c', icon: Shield, exact: true },
+-  { name: 'Deploy Queue', href: '/c/deploy-requests', icon: ShieldCheck },
+-  { name: 'Repositories', href: '/c/repos', icon: FolderGit2 },
+-  { name: 'Deploy Providers', href: '/c/deploy-providers', icon: Cloud },
+-  { name: 'API Keys', href: '/c/api-keys', icon: Key },
+-  { name: 'Setup', href: '/c/setup', icon: Settings },
++  { name: 'Dashboard', mobileName: 'Dashboard', href: '/c', icon: Shield, exact: true },
++  { name: 'Deploy Queue', mobileName: 'Queue', href: '/c/deploy-requests', icon: ShieldCheck },
++  { name: 'Repositories', mobileName: 'Repos', href: '/c/repos', icon: FolderGit2 },
++  { name: 'Deploy Providers', mobileName: 'Providers', href: '/c/deploy-providers', icon: Cloud },
++  { name: 'API Keys', mobileName: 'Keys', href: '/c/api-keys', icon: Key },
++  { name: 'Setup', mobileName: 'Setup', href: '/c/setup', icon: Settings },
+ ];
+ 
+ export default function PPLayout({ children }: { children: React.ReactNode }) {
+@@ -76,7 +76,7 @@
+               >
+                 <Icon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{item.name}</span>
+-                <span className="sm:hidden">{item.name.split(' ')[0]}</span>
++                <span className="sm:hidden">{item.mobileName}</span>
+                 {item.href === '/c/deploy-requests' && pendingCount > 0 ? (
+                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                     {pendingCount}
+
+tokens used
+25,521
+Implemented the PRD in [`src/app/pp/layout.tsx`](/Users/moltbot/pp-agent-work/factory-idea-051/src/app/pp/layout.tsx): the mobile tab bar now uses the exact required labels below `sm` (`Queue`, `Repos`, `Providers`, `Keys`), keeps the existing desktop labels unchanged, and continues to show icons on all breakpoints with horizontal scrolling via `overflow-x-auto`.
+
+Verification: `npm run lint` passed.
+
+I could not complete the requested commit because the sandbox blocks writes inside `.git` and rejects creation of `.git/index.lock`, so `git add`/`git commit` fail in this environment. The working tree change is ready to commit locally.

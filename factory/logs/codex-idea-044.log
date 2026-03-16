@@ -1,0 +1,2907 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-044
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf21e-fdd7-70c0-a661-75872455682f
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+I'm thinking we need to inspect the situation first, and then update the user. It looks like we might not have web access, so I need to rely on commentary tools. I'll start by providing the necessary update for now, and then make a plan after the inspection is done. It’s all about ensuring the user stays informed, and I want to do this properly to keep things running smoothly!
+codex
+I’m reading the PRD and the current codebase first so I can map the requested changes to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 52ms:
+# PRD: idea-044 — Complete Quickstart Page (5 Steps)
+
+**Issue:** Roca-Ventures/permissionprotocol-site#197
+**Priority:** P0
+**Repo:** Roca-Ventures/permissionprotocol-site
+
+## Problem
+The quickstart page (`/developers/quickstart`) only shows 2 of 5 steps:
+1. Install the SDK ✅
+2. Configure your API key ✅
+3. ❌ Missing
+4. ❌ Missing
+5. ❌ Missing
+
+Developers hit a dead end after configuring their API key. "Now what?"
+
+## User Journey
+1. Marco (EM) tells his team "try Permission Protocol"
+2. Dev goes to quickstart, installs SDK, configures key
+3. **Current:** Page ends. Dev is confused.
+ succeeded in 52ms:
+/Users/moltbot/pp-agent-work/factory-idea-044
+src/lib/auth.ts
+src/lib/receiptData.ts
+src/lib/artifactDemo.ts
+src/components/CodeBlock.tsx
+src/components/CopyCommandButton.tsx
+src/components/CTABanner.tsx
+src/components/UseCaseGrid.tsx
+src/components/DiagramFlow.tsx
+src/components/StackDiagram.tsx
+src/components/SectionBlock.tsx
+src/components/ComparisonTable.tsx
+src/components/LayoutChrome.tsx
+src/components/ReceiptCard.tsx
+src/components/SiteHeader.tsx
+src/components/ReceiptShareButtons.tsx
+src/components/Hero.tsx
+favicon.svg
+REMAINING-PAGES-INSTRUCTIONS.md
+BRANDING-PASS-INSTRUCTIONS.md
+
+thinking
+I need to inspect the quickstart file along with its related components. This step is essential because it's going to help clarify how everything fits together and ensure everything functions as expected. I'm wondering if I've thought through all the necessary details and if there’s anything I might have overlooked. It’s always good to double-check because sometimes I get caught up in the smaller details. Let’s see what I find!
+codex
+I have the PRD. Next I’m checking how the quickstart page is currently structured so I can extend it without touching the existing Step 1 and Step 2 content or the page styling system.
+exec
+/bin/zsh -lc "sed -n '1,360p' app/developers/quickstart/QuickstartPageClient.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc "sed -n '1,260p' src/components/CodeBlock.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc "sed -n '1,260p' src/components/SectionBlock.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc "sed -n '1,260p' app/developers/quickstart/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 53ms:
+import type { Metadata } from "next";
+import { QuickstartPageClient } from "./QuickstartPageClient";
+
+export const metadata: Metadata = {
+  title: "Developers Quickstart | Permission Protocol",
+  description: "Install the SDK, add an approval guard, and issue your first authority receipt in minutes.",
+  openGraph: {
+    title: "Permission Protocol Quickstart",
+    description: "Go from zero to your first authority receipt in 5 minutes.",
+    images: ["/assets/og-image.png"]
+  }
+};
+
+export default function QuickstartPage() {
+  return <QuickstartPageClient />;
+}
+ succeeded in 53ms:
+"use client";
+
+import { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import type { ReactNode } from "react";
+
+type Tab = {
+  label: string;
+  code: string;
+};
+
+type CodeBlockProps = {
+  tabs: Tab[];
+};
+
+export function CodeBlock({ tabs }: CodeBlockProps) {
+  const [active, setActive] = useState(tabs[0]?.label ?? "");
+  const [copied, setCopied] = useState(false);
+  const current = tabs.find((tab) => tab.label === active) ?? tabs[0];
+
+ succeeded in 53ms:
+"use client";
+
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
+
+type SectionBlockProps = {
+  id?: string;
+  headline: string;
+  subheadline?: string;
+  children: ReactNode;
+};
+
+export function SectionBlock({ id, headline, subheadline, children }: SectionBlockProps) {
+  return (
+    <motion.section
+      id={id}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+ succeeded in 53ms:
+"use client";
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ReactNode, useState } from "react";
+import { CopyCommandButton } from "@/src/components/CopyCommandButton";
+
+const reveal = {
+  initial: { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.3, ease: "easeOut" }
+};
+
+const terminalLines = [
+  { text: "$ python agent.py", tone: "default" },
+  { text: "> deploy_service() requested", tone: "default" },
+  { text: "> Authorization required", tone: "teal" },
+  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+  { text: "> Waiting for approval...", tone: "amber" },
+codex
+The page already has the right visual primitives. I’m reshaping the flow to the exact 5-step journey from the PRD: keep Steps 1-2 intact, replace the current Steps 3-6 with the required guard, approval, and receipt sequence.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc "sed -n '1,220p' src/components/CopyCommandButton.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 51ms:
+{
+  "name": "pp-website-v3",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.511.0",
+    "next": "^14.2.30",
+    "next-auth": "^4.24.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+ succeeded in 51ms:
+"use client";
+
+import { useState } from "react";
+import { Check, Terminal } from "lucide-react";
+
+type CommandOption = {
+  id: string;
+  command: string;
+};
+
+type CopyCommandButtonProps = {
+  command?: string;
+  commands?: CommandOption[];
+  activeCommandId?: string;
+};
+
+export function CopyCommandButton({ command, commands, activeCommandId }: CopyCommandButtonProps) {
+  const [copied, setCopied] = useState(false);
+  const resolvedCommand =
+    (commands && commands.length > 0
+codex
+I’m editing the quickstart client now. The change is isolated to the page content and flow; I’m not touching the surrounding layout or introducing any new components or dependencies.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -14,14 +14,2 @@
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+@@ -47,4 +35,4 @@
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
+   },
+@@ -52,4 +40,4 @@
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
+   }
+@@ -57,2 +45,28 @@
+ 
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
++  }
++] as const;
++
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+@@ -73,15 +87,2 @@
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+@@ -167,2 +168,3 @@
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+@@ -183,21 +185,16 @@
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+@@ -221,19 +218,15 @@
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+@@ -242,4 +235,4 @@
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+@@ -247,3 +240,3 @@
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+@@ -251,2 +244,11 @@
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example -&gt;
++              </Link>
++            </div>
+           </StepCard>
+apply_patch(auto_approved=true) exited 0 in 57ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..9d4cf3ff0ae63e3839efd1cc85dfde10af3ccf2b
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
+   }
+ ] as const;
+ 
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
++  }
++] as const;
++
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -165,6 +166,7 @@
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -181,25 +183,20 @@
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example -&gt;
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..9d4cf3ff0ae63e3839efd1cc85dfde10af3ccf2b
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
+   }
+ ] as const;
+ 
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
++  }
++] as const;
++
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -165,6 +166,7 @@
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -181,25 +183,20 @@
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example -&gt;
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+
+thinking
+**Inspecting titles and wording**
+
+I need to inspect the results, especially the titles. The phrase "Protect a risky action" might need to be changed to "Add your first approval guard" for accuracy. I also think the wording needs adjusting in some areas. It seems like the Step 4 mockup is okay, but Step 3's title isn't exact. Should I check Step 2's copy for accuracy as well? I definitely want to ensure the step titles align with the PRD.
+codex
+The structural rewrite is in place. I’m doing a pass against the PRD wording now to tighten anything that needs to match the requested copy more literally, then I’ll run validation.
+exec
+/bin/zsh -lc "sed -n '1,340p' app/developers/quickstart/QuickstartPageClient.tsx" in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 52ms:
+"use client";
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ReactNode, useState } from "react";
+import { CopyCommandButton } from "@/src/components/CopyCommandButton";
+
+const reveal = {
+  initial: { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.3, ease: "easeOut" }
+};
+
+const installTabs = [
+  { id: "python", label: "Python", code: "pip install permission-protocol" },
+  { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+] as const;
+
+const configTabs = [
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..9d4cf3ff0ae63e3839efd1cc85dfde10af3ccf2b
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
+   }
+ ] as const;
+ 
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
++  }
++] as const;
++
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -165,6 +166,7 @@
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -181,25 +183,20 @@
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example -&gt;
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+
+thinking
+**Considering ASCII and Unicode Options**
+
+I’m thinking about the default use of ASCII—unless there’s a clear reason to use something else like an apostrophe. I might keep `->` since it’s likely acceptable. I wonder if I can use the Unicode arrow instead? There’s also the entity `&rarr;`, but it’s not exact. If the file can handle it, I’d use the direct arrow character to meet explicit requests. Plus, I need to make sure my wording is clear for the specifications.
+codex
+I found two PRD mismatches in the draft: the Step 3 title wasn’t exact, and the TypeScript helper text still referenced the old wrapper name. I’m correcting those before validation.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -150,3 +150,3 @@
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+@@ -164,3 +164,3 @@
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+@@ -177,4 +177,4 @@
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+@@ -250,3 +250,3 @@
+               <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
+-                See a live example -&gt;
++                See a live example →
+               </Link>
+apply_patch(auto_approved=true) exited 0 in 68ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+
+thinking
+**Considering build and linting**
+
+I’m thinking about whether I need to run a lint or build process. Should I run the lint first, or maybe it’s better to build first? Wait, could I skip the config step? I’m not entirely sure about the order. I guess I’ll have to decide based on what comes next. It's a little confusing, but I just want to make sure everything runs smoothly! Let's figure this out together.
+codex
+I’ve aligned the wording to the PRD. Next I’m running the repo checks to catch any typing or rendering issues before I commit.
+exec
+/bin/zsh -lc 'npm run lint' in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc 'npm run build' in /Users/moltbot/pp-agent-work/factory-idea-044file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+ succeeded in 5.15s:
+
+> pp-website-v3@1.0.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+codex
+The checks are still running. I’m waiting on lint and production build to finish so I can verify this didn’t introduce any regressions outside the page itself.
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+ exited 1 in 7.01s:
+
+> pp-website-v3@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+request to https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 1/3...
+request to https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 1/3...
+request to https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 2/3...
+request to https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 2/3...
+request to https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+thinking
+**Evaluating build failure**
+
+I think there might be a build failure unrelated to the network, so I'll need to check the git status first. It seems like running a targeted type check might not be possible right now. I should consider inspecting the line references, but I wonder if that's actually necessary. Before committing, I should really check the diff to ensure everything's in order. Let's take it one step at a time!
+codex
+`npm run lint` passed. The production build is blocked by the sandboxed environment failing to fetch Google Fonts from `fonts.googleapis.com`; that’s external to this page change, so I’m checking the final diff and then I’ll commit the quickstart update.
+exec
+/bin/zsh -lc 'git diff -- app/developers/quickstart/QuickstartPageClient.tsx' in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 51ms:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94..1265d22 100644
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@ const reveal = {
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ succeeded in 52ms:
+ M app/developers/quickstart/QuickstartPageClient.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+
+thinking
+**Considering commit options**
+
+I need to think about avoiding committing untracked files from the user. I'll commit my changes but focus on adding only specific modified files, like `.factory-prompt` and `FACTORY-PRD`. It seems best to include a no revert option as well. I should remember to use `git add` for the specific file and also craft a clear commit message. It's all about keeping things organized and intentional!
+codex
+The repo has unrelated untracked files, so I’m staging only the quickstart page change and leaving the rest alone before committing.
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+codex
+The code change is done, but the sandbox blocks writes inside `.git`, so the commit itself cannot be created here. I’m confirming the worktree state one more time so I can give you the exact outcome and the commit blocker cleanly.
+exec
+/bin/zsh -lc "nl -ba app/developers/quickstart/QuickstartPageClient.tsx | sed -n '1,280p'" in /Users/moltbot/pp-agent-work/factory-idea-044exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-044 succeeded in 52ms:
+     1	"use client";
+     2	
+     3	import Link from "next/link";
+     4	import { motion } from "framer-motion";
+     5	import { ReactNode, useState } from "react";
+     6	import { CopyCommandButton } from "@/src/components/CopyCommandButton";
+     7	
+     8	const reveal = {
+     9	  initial: { opacity: 0, y: 14 },
+    10	  whileInView: { opacity: 1, y: 0 },
+    11	  viewport: { once: true, amount: 0.2 },
+    12	  transition: { duration: 0.3, ease: "easeOut" }
+    13	};
+    14	
+    15	const installTabs = [
+    16	  { id: "python", label: "Python", code: "pip install permission-protocol" },
+    17	  { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+    18	] as const;
+    19	
+    20	const configTabs = [
+ succeeded in 52ms:
+ M app/developers/quickstart/QuickstartPageClient.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+
+thinking
+**Finalizing build details**
+
+I need to prepare a concise summary. I should mention that the commit is blocked and that the lint passed, but the build is blocked due to issues with fetching fonts. It might be good to provide file references and indicate that no special skills are needed. I could mention the exact commit command the user can run, like `git add ... && git commit -m ...`. It might be helpful to include this in the final output, structured in short paragraphs.
+codex
+Implemented the quickstart PRD in [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx#L33). Steps 1 and 2 were left intact, and Steps 3 through 5 now match the required flow: approval guard code with Python/TypeScript tabs and copy buttons, a dashboard approval mockup that makes the blocking behavior explicit, and receipt verification with `receipt.verified  # True`, signed/portable/auditable messaging, and a live link to `/r/demo` at [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx#L165).
+
+Validation: `npm run lint` passed. `npm run build` failed for an environment reason unrelated to this page change: Next.js could not fetch Google Fonts from `fonts.googleapis.com` in the sandbox.
+
+I could not create the requested commit because the sandbox denies writes inside `.git` and `git commit` fails with `Unable to create '.git/index.lock': Operation not permitted`. The working tree still contains the page change unstaged in [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx). If you run the commit locally outside this restriction, use: `git add app/developers/quickstart/QuickstartPageClient.tsx && git commit -m "Complete developers quickstart flow"`
+file update:
+diff --git a/app/developers/quickstart/QuickstartPageClient.tsx b/app/developers/quickstart/QuickstartPageClient.tsx
+index 837db94988602cb00f4e4f9cdf88aea56228ddaf..1265d2272e10ecb2c7462b02330ed58d9a46814d
+--- a/app/developers/quickstart/QuickstartPageClient.tsx
++++ b/app/developers/quickstart/QuickstartPageClient.tsx
+@@ -12,18 +12,6 @@
+   transition: { duration: 0.3, ease: "easeOut" }
+ };
+ 
+-const terminalLines = [
+-  { text: "$ python agent.py", tone: "default" },
+-  { text: "> deploy_service() requested", tone: "default" },
+-  { text: "> Authorization required", tone: "teal" },
+-  { text: "> Approval link: https://permissionprotocol.com/approve/4ac91", tone: "default" },
+-  { text: "> Waiting for approval...", tone: "amber" },
+-  { text: ">", tone: "default" },
+-  { text: "> ✓ Approved by sarah.kim", tone: "green" },
+-  { text: "> ✓ Receipt issued: pp_r_8f91c2", tone: "green" },
+-  { text: "> ✓ Deployment executed", tone: "green" }
+-] as const;
+-
+ const installTabs = [
+   { id: "python", label: "Python", code: "pip install permission-protocol" },
+   { id: "javascript", label: "TypeScript / JavaScript", code: "npm install @permissionprotocol/sdk" }
+@@ -45,16 +33,42 @@
+ const protectTabs = [
+   {
+     id: "python",
+-    label: "Python Decorator",
+-    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")`
++    label: "Python",
++    code: `from permission_protocol import require_approval\n\n@require_approval\ndef deploy_service():\n    deploy("billing-api")\n\n# Agent calls deploy_service()\n# -> Paused until authorized`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `import { requireApproval } from 'permission-protocol';\n\nconst deploy = requireApproval(async () => {\n  await deployService("billing-api");\n});\n\n// Agent calls deploy()\n// -> Paused until authorized`
++  }
++] as const;
++
++const approvalTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\n# A notification appears in the dashboard\n# The action is blocked until someone clicks Approve`
+   },
+   {
+     id: "javascript",
+-    label: "JS Wrapper",
+-    code: `import { withApproval } from "@permissionprotocol/sdk";\n\nconst deployService = withApproval(\n  async () => {\n    await deploy("billing-api");\n  },\n  { action: "deploy_service" }\n);`
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\n// A notification appears in the dashboard\n// The action is blocked until someone clicks Approve`
+   }
+ ] as const;
+ 
++const receiptTabs = [
++  {
++    id: "python",
++    label: "Python",
++    code: `receipt = deploy_service()\n\nreceipt.verified  # True`
++  },
++  {
++    id: "javascript",
++    label: "TypeScript",
++    code: `const receipt = await deploy();\n\nconsole.log(receipt.verified); // true`
++  }
++] as const;
++
+ function StepCard({ step, title, children }: { step: number; title: string; children: ReactNode }) {
+   return (
+     <motion.article {...reveal} className="rounded-lg border border-border bg-ash p-6">
+@@ -71,19 +85,6 @@
+   );
+ }
+ 
+-function TerminalLine({ text, tone }: { text: string; tone: (typeof terminalLines)[number]["tone"] }) {
+-  const color =
+-    tone === "green"
+-      ? "text-[#10B981]"
+-      : tone === "amber"
+-        ? "text-warning"
+-        : tone === "teal"
+-          ? "text-permit"
+-          : "text-signal";
+-
+-  return <p className={`font-mono overflow-x-auto whitespace-nowrap text-xs leading-6 sm:text-sm ${color}`}>{text}</p>;
+-}
+-
+ type CodeTabsProps = {
+   tabs: readonly {
+     id: string;
+@@ -147,7 +148,7 @@
+           <p className="text-xs uppercase tracking-[0.22em] text-permit">Quickstart</p>
+           <h1 className="mt-4 text-4xl font-bold tracking-tight text-signal">Your first authority receipt in 5 minutes.</h1>
+           <p className="mt-4 text-lg text-secondary">
+-            Install the SDK, add an approval guard, and share your first receipt.
++            Install the SDK, configure your key, wrap your first action, approve it, and verify the receipt.
+           </p>
+         </motion.header>
+ 
+@@ -161,10 +162,11 @@
+             <p className="mt-3 text-sm text-secondary">Get your free API key at permissionprotocol.com/developers</p>
+           </StepCard>
+ 
+-          <StepCard step={3} title="Protect a risky action">
++          <StepCard step={3} title="Add your first approval guard">
+             <CodeTabs
+               tabs={protectTabs}
+               ariaLabel="Approval guard examples"
++              showCopyButton
+               helperText={(activeTabId) =>
+                 activeTabId === "python" ? (
+                   <>
+@@ -173,33 +175,28 @@
+                   </>
+                 ) : (
+                   <>
+-                    Any function wrapped with <code className="font-mono text-signal">withApproval(...)</code> will pause
+-                    until authorized.
++                    Any function wrapped with <code className="font-mono text-signal">requireApproval(...)</code> will
++                    pause until authorized.
+                   </>
+                 )
+               }
+             />
+           </StepCard>
+ 
+-          <StepCard step={4} title="See it in action">
+-            <div className="overflow-hidden rounded-xl border border-border bg-[#0f0f0f]">
+-              <div className="flex items-center gap-2 border-b border-border bg-[#121212] px-4 py-3">
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+-                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
++          <StepCard step={4} title="Approve the action">
++            <CodeTabs tabs={approvalTabs} ariaLabel="Approval flow examples" showCopyButton />
++            <p className="mt-3 text-sm text-secondary">
++              When the guarded action runs, a notification appears in the dashboard. The action stays blocked until this
++              approval step completes.
++            </p>
++            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
++              <div className="flex items-center justify-between gap-3">
++                <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++                  PENDING IN DASHBOARD
++                </p>
++                <span className="text-xs font-medium text-secondary">Action blocked until approved</span>
+               </div>
+-              <div className="space-y-0.5 overflow-x-auto px-4 py-4">
+-                {terminalLines.map((line) => (
+-                  <TerminalLine key={line.text} text={line.text} tone={line.tone} />
+-                ))}
+-              </div>
+-            </div>
+-          </StepCard>
+-
+-          <StepCard step={5} title="Approve the action">
+-            <p className="text-secondary">Open the approval link. Review the action details. Click Approve.</p>
+-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+-              <p className="inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
++              <p className="mt-4 inline-flex rounded-full border border-warning/60 bg-warning/15 px-3 py-1 text-xs font-bold text-warning">
+                 APPROVAL REQUIRED
+               </p>
+               <div className="mt-4 space-y-1">
+@@ -219,36 +216,41 @@
+             </div>
+           </StepCard>
+ 
+-          <StepCard step={6} title="Share your proof">
+-            <div className="rounded-xl border border-border bg-card p-4">
+-              <code className="font-mono break-all text-xs text-signal sm:text-sm">
+-                https://permissionprotocol.com/r/8f91c2
+-              </code>
+-            </div>
+-            <p className="mt-3 text-secondary">
+-              Paste this link anywhere - Slack, GitHub PRs, Jira tickets, compliance docs. Anyone who clicks sees
+-              verified proof of authorization.
+-            </p>
++          <StepCard step={5} title="Verify the receipt">
++            <CodeTabs tabs={receiptTabs} ariaLabel="Receipt verification examples" showCopyButton />
+             <div className="mt-4 rounded-2xl border border-border bg-[#111] p-4">
+               <p className="inline-flex rounded-full border border-[#10B981]/40 bg-[#10B981]/15 px-3 py-1 text-xs font-bold text-[#10B981]">
+-                ACTION AUTHORIZED
++                RECEIPT RETURNED
+               </p>
+-              <p className="mt-3 text-sm font-semibold text-signal">deploy_service -&gt; billing-api</p>
++              <p className="mt-3 text-sm font-semibold text-signal">pp_r_8f91c2</p>
+               <dl className="mt-3 divide-y divide-border/70">
+                 <div className="flex items-center justify-between py-2 text-xs">
++                  <dt className="text-muted">Action</dt>
++                  <dd className="text-signal">deploy_service -&gt; billing-api</dd>
++                </div>
++                <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Approved by</dt>
+                   <dd className="text-signal">sarah.kim</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+-                  <dt className="text-muted">Timestamp</dt>
+-                  <dd className="text-signal">2026-03-03 10:14:22 UTC</dd>
++                  <dt className="text-muted">Verified</dt>
++                  <dd className="text-[#10B981]">true</dd>
+                 </div>
+                 <div className="flex items-center justify-between py-2 text-xs">
+                   <dt className="text-muted">Signature</dt>
+-                  <dd className="text-[#10B981]">Verified</dd>
++                  <dd className="text-[#10B981]">Cryptographically signed</dd>
+                 </div>
+               </dl>
+             </div>
++            <p className="mt-3 text-secondary">
++              Every receipt is cryptographically signed, portable, and auditable, so you can verify exactly what was
++              authorized after the fact.
++            </p>
++            <div className="mt-4">
++              <Link href="/r/demo" className="text-sm font-semibold text-permit hover:text-[#6ac9b7]">
++                See a live example →
++              </Link>
++            </div>
+           </StepCard>
+         </div>
+ 
+
+tokens used
+36,298
+Implemented the quickstart PRD in [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx#L33). Steps 1 and 2 were left intact, and Steps 3 through 5 now match the required flow: approval guard code with Python/TypeScript tabs and copy buttons, a dashboard approval mockup that makes the blocking behavior explicit, and receipt verification with `receipt.verified  # True`, signed/portable/auditable messaging, and a live link to `/r/demo` at [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx#L165).
+
+Validation: `npm run lint` passed. `npm run build` failed for an environment reason unrelated to this page change: Next.js could not fetch Google Fonts from `fonts.googleapis.com` in the sandbox.
+
+I could not create the requested commit because the sandbox denies writes inside `.git` and `git commit` fails with `Unable to create '.git/index.lock': Operation not permitted`. The working tree still contains the page change unstaged in [QuickstartPageClient.tsx](/Users/moltbot/pp-agent-work/factory-idea-044/app/developers/quickstart/QuickstartPageClient.tsx). If you run the commit locally outside this restriction, use: `git add app/developers/quickstart/QuickstartPageClient.tsx && git commit -m "Complete developers quickstart flow"`

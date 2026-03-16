@@ -1,0 +1,1331 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-025
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce957-bd7a-7272-93d8-8f2f72f8afc0
+--------
+user
+Add an AI agent configuration onboarding card to the PP dashboard.
+In `src/app/pp/page.tsx`:
+1. Add an `AiAgentConfigCard` component (define it in the same file, before the main component). It should:
+   - Accept `repos: GitHubAppRepoSummary[]` prop
+   - Return `null` if repos is empty or if `localStorage.getItem('pp-ai-config-dismissed')` is truthy
+   - Render a card with:
+     - Header: "🤖 Detect AI Agent Deployments"
+     - Body: "Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies."
+     - A list of common agent identifiers: `github-actions[bot]`, `dependabot[bot]`, `renovate[bot]`, `codex`, `claude-code`
+     - A code block with a YAML snippet showing how to add `ai-actors` input to the deploy-gate workflow
+     - A "Copy snippet" button that copies the YAML to clipboard
+     - A dismiss "×" button that sets localStorage and hides the card
+   - Use existing UI components: `Card`, `CardContent`, `CardHeader`, `CardTitle` from `../../components/ui/card`
+   - Use existing icon: `Sparkles` from lucide-react (already imported)
+   - Style: border-sky-400/25, matching the existing dashboard card aesthetic
+2. Render `<AiAgentConfigCard repos={connectedRepos} />` after the repos list section (around line 770), inside the same grid layout.
+Follow the existing code patterns in page.tsx (it's a large client component with inline state management). Do NOT create new files.
+Before finishing, run `npx tsc --noEmit` and fix any type errors.
+mcp startup: no servers
+codex
+I’m updating `src/app/pp/page.tsx` in-place, following the existing client-component patterns there. I’ll inspect the file structure first, then add the onboarding card, wire it into the grid, and finish by running `npx tsc --noEmit` to catch any type issues.
+exec
+/bin/zsh -lc "sed -n '1,240p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025exec
+/bin/zsh -lc "sed -n '720,860p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025exec
+/bin/zsh -lc 'rg -n "GitHubAppRepoSummary|connectedRepos|Sparkles|CardTitle|repos list|pp/page.tsx" src/app/pp/page.tsx' in /Users/moltbot/pp-agent-work/factory-idea-025 succeeded in 53ms:
+                              : item.mergeStatus === 'pending_merge'
+                                ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
+                                : ''
+                        }`}>
+                          {item.mergeStatus === 'merged' ? '🟢 Merged' :
+                           item.mergeStatus === 'merge_failed' ? '🔴 Failed' :
+                           item.mergeStatus === 'pending_merge' ? '🟡 Awaiting' : ''}
+                        </span>
+                      ) : null}
+                      <span className="text-xs text-[var(--muted)]">{getActivityTime(item)}</span>
+                    </div>
+                  </Link>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="border-[var(--border)] bg-[var(--card)]">
+              <CardHeader className="flex flex-row items-center justify-between gap-3">
+                <div>
+                  <CardTitle className="text-xl">Connected Repositories</CardTitle>
+ succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Activity,
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  Clock3,
+  Copy,
+  ExternalLink,
+  FolderGit2,
+  GitPullRequest,
+  Loader2,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+  TerminalSquare,
+ succeeded in 53ms:
+19:  Sparkles,
+23:import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+98:interface GitHubAppRepoSummary {
+111:  repos: GitHubAppRepoSummary[];
+299:                    <CardTitle className="text-lg">Step 1: Add the workflow to your repo</CardTitle>
+322:                    <CardTitle className="text-lg">Step 2: Add your API key as a secret</CardTitle>
+354:                    <CardTitle className="text-lg">Step 3: Open a PR and watch it work</CardTitle>
+362:                      <Sparkles className="mt-0.5 h-4 w-4 text-[var(--foreground)]" />
+389:  const [githubRepos, setGitHubRepos] = useState<GitHubAppRepoSummary[]>([]);
+454:  const connectedRepos = githubRepos;
+549:  if (stats.total === 0 && connectedRepos.length === 0) {
+588:            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+628:                <CardTitle className="text-xl">Needs Attention</CardTitle>
+697:                <CardTitle className="text-xl">Recent Activity</CardTitle>
+739:                  <CardTitle className="text-xl">Connected Repositories</CardTitle>
+741:                    {connectedRepos.length} repo{connectedRepos.length === 1 ? '' : 's'} connected through the GitHub App.
+757:                {connectedRepos.length === 0 ? (
+762:                  connectedRepos.slice(0, 3).map((repo) => {
+
+thinking
+**Exploring onboarding components**
+
+I need to check out the current onboarding card patterns, and maybe consider using a toast notification as well. There’s a lot to explore regarding the various components before finalizing anything. I want to ensure that I am thorough in my research, so I'll look into existing designs and gather ideas before moving forward. It’s all about making sure I get this right for the user!
+codex
+I’ve located the repository card section and the shared types/imports. Next I’m reading the component body around existing inline handlers so the new card matches the file’s current state, clipboard, and toast patterns instead of introducing a separate abstraction.
+exec
+/bin/zsh -lc "rg -n \"navigator\\.clipboard|toast\\(|useToast|Copy snippet|dismiss|localStorage\" src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025exec
+/bin/zsh -lc "sed -n '240,460p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025 succeeded in 51ms:
+26:import { useToast } from '@/lib/toast-context';
+381:  const { addToast } = useToast();
+509:    await navigator.clipboard.writeText(WORKFLOW_YAML);
+515:    await navigator.clipboard.writeText(apiKeyLabel);
+ succeeded in 51ms:
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <Card className="border-[var(--border)] bg-[var(--card)]">
+            <CardContent className="space-y-4 p-6">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="space-y-2 rounded-lg border border-[var(--border)] p-4">
+                  <div className="h-5 w-3/5 rounded bg-[var(--border)]" />
+                  <div className="h-4 w-2/5 rounded bg-[var(--border)]" />
+                  <div className="h-9 w-24 rounded bg-[var(--border)]" />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <Card className="border-[var(--border)] bg-[var(--card)]">
+            <CardContent className="space-y-3 p-6">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="h-12 rounded bg-[var(--border)]" />
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+codex
+I found the existing clipboard and toast usage in the main component. I’m mirroring that behavior in the new card, but keeping the card self-contained in the same file as requested so it can manage dismissal without reshaping the page-level state.
+exec
+/bin/zsh -lc "sed -n '460,560p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025exec
+/bin/zsh -lc "sed -n '560,820p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-025 succeeded in 51ms:
+    }
+
+    setApprovingId(requestId);
+    setLeavingIds((current) => [...current, requestId]);
+    setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+    setStats((current) => current
+      ? {
+          ...current,
+          pending: Math.max(0, current.pending - 1),
+          approvedToday: current.approvedToday + 1,
+        }
+      : current
+    );
+
+    try {
+      const response = await fetch(`/api/v1/deploy-requests/${requestId}/approve`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productionConfirmed: true }),
+      });
+ succeeded in 51ms:
+
+  return (
+    <div className="min-h-[calc(100vh-8rem)] bg-[var(--background)] text-[var(--foreground)]" style={DASHBOARD_THEME}>
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#10B981]" />
+              Deploy Gate
+            </div>
+            <h1 className="text-3xl font-semibold tracking-tight">Permission Protocol</h1>
+            <p className="max-w-2xl text-sm text-[var(--muted)]">
+              Review pending approvals, recent deploy activity, and connected repos across your tenant.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            className="border-[var(--border)] bg-[var(--card)]"
+            onClick={() => void loadDashboard(true)}
+            loading={refreshing}
+
+thinking
+**Editing state implementation**
+
+I'm working on implementing some state management with `const [isDismissed, setIsDismissed] = useState<boolean | null>(null);`. I'm also using `useEffect` to check local storage for a value. The thing is, initially, it returns null, which is a bit annoying. I’ll also need to copy the snippet state and utilize `navigator.clipboard`. Time to edit that part! There's a lot to consider here, but I'm getting it figured out.
+codex
+I have enough context to patch the file cleanly. I’m adding a small self-contained card component above the page component, then I’ll insert it directly under the connected repos card in the existing right-hand column and run TypeScript validation.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx
+@@ -128,2 +128,12 @@
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+@@ -379,2 +389,86 @@
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+@@ -791,2 +885,4 @@
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+apply_patch(auto_approved=true) exited 0 in 42ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+codex
+The card is patched in and rendered in the existing right-column stack after the repos section. I’m running TypeScript now to catch any fallout from the new inline component and will fix anything the checker reports before I close out.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-025file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+ exited 2 in 9.90s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+
+thinking
+**Ensuring clean code execution**
+
+I need to make sure there are no new errors in the page file. The user asked me to run `npx tsc` and fix any type errors, but I should mention that the project has unrelated pre-existing errors that could hinder a clean run. I wonder if our specific file has no errors. Maybe I could run a targeted eslint? I'll need to use the command to confirm there are none. Let's proceed!
+codex
+`tsc` did not fail on the new dashboard card; the run is blocked by a large set of pre-existing repo-wide type errors in unrelated areas. I’m checking specifically whether `src/app/pp/page.tsx` introduced any diagnostics so I can separate my change from the existing baseline before I wrap up.
+exec
+/bin/zsh -lc 'npx tsc --noEmit --pretty false 2>&1 | rg "src/app/pp/page.tsx|src/app/pp/deploy-requests/page.tsx"' in /Users/moltbot/pp-agent-work/factory-idea-025file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+ succeeded in 2.47s:
+src/app/pp/deploy-requests/page.tsx(875,24): error TS2367: This comparison appears to be unintentional because the types '"attention"' and '"all"' have no overlap.
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+
+thinking
+**Clarifying TypeScript Errors**
+
+I see there are no issues with the page.tsx, so that’s good! I could note that `tsc` has some unrelated errors, and maybe I should list the first few for clarity. The user had questions before I finished running everything and fixing the type errors. I couldn't fix all the unrelated issues, but I’ll mention there are no new errors from the changed file. However, `tsc` still fails because of existing issues in the repo, possibly related to pp/deploy-requests.
+codex
+Added the AI agent onboarding card in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx). It’s defined in the same file before the main page component, hides itself when there are no connected repos or after `localStorage['pp-ai-config-dismissed']` is set, shows the requested identifiers and YAML snippet, supports clipboard copy, and uses the existing `Card` UI plus `Sparkles` styling with a `border-sky-400/25` treatment.
+
+I also rendered it directly after the connected repositories card in the existing right-column grid stack in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx).
+
+`npx tsc --noEmit` still fails because the repo already has many unrelated type errors outside this change. The new dashboard work did not add any error in `src/app/pp/page.tsx`. The only `pp`-area error surfaced by filtering was in [src/app/pp/deploy-requests/page.tsx#L875](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/deploy-requests/page.tsx#L875), which I did not modify.
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 82e492cdcad37c4f52fa519e9fa5f71dc43998e4..0cda02417350827bf2eae620e1d84918b3503605
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -126,6 +126,16 @@
+         with:
+           api-key: \${{ secrets.PP_API_KEY }}`;
+ 
++const AI_AGENT_CONFIG_YAML = `      - uses: permission-protocol/deploy-gate@v1
++        with:
++          api-key: \${{ secrets.PP_API_KEY }}
++          ai-actors: |
++            github-actions[bot]
++            dependabot[bot]
++            renovate[bot]
++            codex
++            claude-code`;
++
+ const DASHBOARD_THEME = {
+   '--background': '#0a0a0a',
+   '--card': '#111111',
+@@ -377,6 +387,90 @@
+   );
+ }
+ 
++function AiAgentConfigCard({ repos }: { repos: GitHubAppRepoSummary[] }) {
++  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
++  const [copiedSnippet, setCopiedSnippet] = useState(false);
++
++  useEffect(() => {
++    setIsDismissed(Boolean(window.localStorage.getItem('pp-ai-config-dismissed')));
++  }, []);
++
++  if (repos.length === 0 || isDismissed !== false) {
++    return null;
++  }
++
++  const handleCopySnippet = async () => {
++    await navigator.clipboard.writeText(AI_AGENT_CONFIG_YAML);
++    setCopiedSnippet(true);
++    window.setTimeout(() => setCopiedSnippet(false), 1500);
++  };
++
++  const handleDismiss = () => {
++    window.localStorage.setItem('pp-ai-config-dismissed', '1');
++    setIsDismissed(true);
++  };
++
++  return (
++    <Card className="border border-sky-400/25 bg-[var(--card)] shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
++      <CardHeader className="flex flex-row items-start justify-between gap-3">
++        <div className="space-y-2">
++          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
++            <Sparkles className="h-3.5 w-3.5" />
++            Agent Detection
++          </div>
++          <div>
++            <CardTitle className="text-xl">🤖 Detect AI Agent Deployments</CardTitle>
++            <p className="mt-1 text-sm text-[var(--muted)]">
++              Permission Protocol can automatically detect PRs from AI coding agents and apply stricter review policies.
++            </p>
++          </div>
++        </div>
++        <button
++          type="button"
++          aria-label="Dismiss AI agent configuration card"
++          className="rounded-md p-1 text-[var(--muted)] transition-colors hover:bg-[var(--background)] hover:text-[var(--foreground)]"
++          onClick={handleDismiss}
++        >
++          <span className="text-lg leading-none">×</span>
++        </button>
++      </CardHeader>
++      <CardContent className="space-y-4">
++        <div>
++          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Common agent identifiers</p>
++          <div className="mt-3 flex flex-wrap gap-2">
++            {['github-actions[bot]', 'dependabot[bot]', 'renovate[bot]', 'codex', 'claude-code'].map((agent) => (
++              <span
++                key={agent}
++                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-100"
++              >
++                {agent}
++              </span>
++            ))}
++          </div>
++        </div>
++
++        <div className="rounded-lg border border-sky-400/20 bg-[var(--background)]">
++          <div className="flex items-center justify-between border-b border-sky-400/15 px-4 py-2">
++            <span className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--muted)]">Workflow snippet</span>
++            <Button
++              variant="outline"
++              size="sm"
++              className="border-sky-400/25 bg-[var(--card)]"
++              onClick={() => void handleCopySnippet()}
++            >
++              <Copy className="h-4 w-4" />
++              {copiedSnippet ? 'Copied' : 'Copy snippet'}
++            </Button>
++          </div>
++          <pre className="overflow-x-auto px-4 py-4 text-sm leading-6 text-[var(--foreground)]">
++            <code>{AI_AGENT_CONFIG_YAML}</code>
++          </pre>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
++
+ export default function PermissionProtocolPage() {
+   const { addToast } = useToast();
+   const [loading, setLoading] = useState(true);
+@@ -789,6 +883,8 @@
+                 )}
+               </CardContent>
+             </Card>
++
++            <AiAgentConfigCard repos={connectedRepos} />
+           </div>
+         </div>
+       </div>
+
+tokens used
+22,018
+Added the AI agent onboarding card in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx). It’s defined in the same file before the main page component, hides itself when there are no connected repos or after `localStorage['pp-ai-config-dismissed']` is set, shows the requested identifiers and YAML snippet, supports clipboard copy, and uses the existing `Card` UI plus `Sparkles` styling with a `border-sky-400/25` treatment.
+
+I also rendered it directly after the connected repositories card in the existing right-column grid stack in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/page.tsx).
+
+`npx tsc --noEmit` still fails because the repo already has many unrelated type errors outside this change. The new dashboard work did not add any error in `src/app/pp/page.tsx`. The only `pp`-area error surfaced by filtering was in [src/app/pp/deploy-requests/page.tsx#L875](/Users/moltbot/pp-agent-work/factory-idea-025/src/app/pp/deploy-requests/page.tsx#L875), which I did not modify.

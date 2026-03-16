@@ -1,0 +1,3530 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-050
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf22e-7741-7fc0-8973-56f1a738eb15
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting requirements**
+
+I need to inspect the repository, and I'm wondering if there's a skill involved since the user hasn't mentioned one. I think none apply unless I’m creating a skill myself. So, I should start the commentary update, and also, I need to read the Product Requirements Document (PRD) and inspect it closely. It seems essential to fully understand the requirements before moving forward with any tasks or updates.
+codex
+I’m reading the product spec and the current codebase first so I can map each required change to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+# PRD: idea-050 — Dashboard Zero-State Improvement
+
+**Issue:** permission-protocol/app#125  
+**Priority:** P2  
+**Repo:** permission-protocol/app
+
+## Problem
+"Shipped Today: 0 — 0 approved · 0 denied" adds visual noise when nothing happened.
+
+## Requirements
+- When Shipped Today is 0: show "Last shipped: X ago" with relative time of most recent approved/denied request
+- If no requests ever: show "No deploys yet — connect a repo to get started" with link to repos page
+- Keep the card visible (don't hide it) but make zero-state informative rather than blank
+
+## Must NOT Do
+- Don't change other dashboard cards
+- Don't modify the stats API
+ succeeded in 54ms:
+/Users/moltbot/pp-agent-work/factory-idea-050
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+src/lib/services/delegated-accounts.ts
+src/lib/services/deploy-gate-post-approval.ts
+
+thinking
+**Inspecting dashboard components**
+
+I need to inspect the dashboard card component and the source related to it. I’ll do a search for the items that were shipped today to find any updates or relevant information. This will help me understand if there’s anything new to explore or review. I should make sure everything is functioning as expected and up to date!
+codex
+I have the spec: this is a targeted dashboard zero-state change, and the API must stay untouched. I’m tracing the existing “Shipped Today” card and the data already available to it so the change stays local.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/components/ui/dashboard-charts.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,260p' src/app/c/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc 'rg -n "Shipped Today|approved ·|denied|Last shipped|No deploys yet" src' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+export { default } from '@/app/pp/page';
+ succeeded in 53ms:
+// ============================================================================
+// DASHBOARD CHARTS
+// ============================================================================
+// Client component that fetches and displays 7-day trend charts
+// ============================================================================
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { ResponsiveLineChart, ChartDataPoint } from './chart';
+import { Card, CardContent, CardHeader, CardTitle } from './card';
+import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { getActiveCompanyIdFromCookie } from '../../lib/company/active-company-client';
+
+interface ChartData {
+  type: string;
+  data: Array<{ date: string; value: number }>;
+}
+
+ succeeded in 53ms:
+src/lib/company/context.ts:568:          throw new CompanyContextError(`Cannot update ${modelName}: not found or access denied`);
+src/lib/company/context.ts:583:          throw new CompanyContextError(`Cannot delete ${modelName}: not found or access denied`);
+src/lib/reports/daily-report.ts:95:      deniedActions: recentAuditEvents.denied,
+src/lib/reports/daily-report.ts:209:    denied: events.filter(e => e.decision === 'deny').length,
+src/lib/reports/daily-report.ts:376:| Denied Actions (24h) | ${data.riskAndGovernance.deniedActions} |
+src/lib/services/approvals.ts:313:  // Use the approval's action_class so audit trail shows what action was denied
+src/lib/services/approvals.ts:323:      decision: 'deny', // Approval rejected = action denied
+src/lib/services/pr-review.ts:487:    console.error(`[PR Review] Access denied to ${repoFullName}: ${action.denyReason}`);
+src/lib/services/pr-review.ts:571:    console.error(`[PR Review] Access denied to ${repoFullName}: ${action.denyReason}`);
+src/lib/services/delegated-account-requests.ts:409:// HANDLE REJECTION - Create fallback tasks when request is denied
+src/lib/services/kb-packs.ts:342:    throw new Error('Pack not found or access denied');
+src/lib/services/kb-packs.ts:624:    throw new Error('Pack not found or access denied');
+src/lib/services/kb-packs.ts:781:    throw new Error('Pack not found or access denied');
+src/lib/services/kb-packs.ts:836:    throw new Error('Pack not found or access denied');
+src/lib/services/kb-packs.ts:841:    throw new Error('Pack not found or access denied');
+src/lib/services/kb-packs.ts:986:    throw new Error('Pack not found or access denied');
+src/lib/services/pr-outbox.ts:427:      actionResult.denyReason || 'Action denied by Tool Router'
+src/lib/services/pr-outbox.ts:432:      error: actionResult.denyReason || 'Action denied by Tool Router',
+src/lib/services/kb-pack-validation.ts:553:    throw new Error('Pack not found or access denied');
+src/lib/og/deploy-request-metadata.ts:7:  denied: '❌',
+
+thinking
+**Inspecting stats fetching**
+
+I need to look at the `src/app/pp/page.tsx` file to see how stats are being fetched. I'm wondering if the stats API includes recent requests or if it doesn't. I'm feeling a bit unsure about the specifics, so examining the code will help me clarify things. It's important to get this right to ensure everything runs smoothly. Let's open it up and take a closer look!
+codex
+The dashboard card lives in `src/app/pp/page.tsx`; now I’m checking what data it already fetches. If the page can derive “last shipped” client-side from an existing list, I can satisfy the PRD without touching the stats API.
+exec
+/bin/zsh -lc "sed -n '520,980p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,220p' src/app/api/v1/deploy-requests/stats/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '260,520p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,260p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+import { NextResponse } from 'next/server';
+import { withTenant, Roles } from '@/lib/auth/require-tenant';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+
+function buildLaneKey(repo: string, env: string, ref: string): string {
+  return `${repo}|${env}|${ref}`;
+}
+
+function startOfToday(): Date {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+export const GET = withTenant(
+  async (_request, _context, { companyId }) => {
+    const today = startOfToday();
+
+    const [
+      total,
+      pendingRows,
+ succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Activity,
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  Clock3,
+  Copy,
+  ExternalLink,
+  FolderGit2,
+  GitPullRequest,
+  Loader2,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+ succeeded in 53ms:
+      label: 'Block recommended',
+      accentClassName: 'border-red-500/30 bg-red-500/12 text-red-200',
+      accentColor: '#ef4444',
+      what: parsed.what,
+    };
+  }
+  if (parsed.riskLevel === 'medium') {
+    return {
+      icon: '🟡',
+      label: 'Review carefully',
+      accentClassName: 'border-yellow-500/30 bg-yellow-500/12 text-yellow-100',
+      accentColor: '#eab308',
+      what: parsed.what,
+    };
+  }
+  return {
+    icon: '🟢',
+    label: 'Routine',
+    accentClassName: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-100',
+    accentColor: '#10b981',
+ succeeded in 53ms:
+
+function EmptyState({
+  apiKeyLabel,
+  onCopyWorkflow,
+  onCopyApiKey,
+  copiedWorkflow,
+  copiedApiKey,
+}: {
+  apiKeyLabel: string;
+  onCopyWorkflow: () => Promise<void>;
+  onCopyApiKey: () => Promise<void>;
+  copiedWorkflow: boolean;
+  copiedApiKey: boolean;
+}) {
+  return (
+    <div className="min-h-[calc(100vh-8rem)] bg-[var(--background)] text-[var(--foreground)]" style={DASHBOARD_THEME}>
+      <div className="mx-auto flex max-w-5xl items-center px-4 py-8 sm:px-6 lg:px-8">
+        <Card className="w-full border-[var(--border)] bg-[var(--card)] shadow-[0_0_0_1px_rgba(34,34,34,0.8)]">
+          <CardContent className="p-6 sm:p-8">
+            <div className="mb-8 flex items-start gap-4">
+
+
+thinking
+**Developing recent activity features**
+
+I think I need to implement recent activity, which seems like it could be enough for now. I'm considering what the acceptance criteria might be—perhaps just from the Product Requirements Document (PRD). I'll also need to check if there are any existing tests for the dashboard. So, I'll search for that to ensure I cover everything. It feels like I'm making progress!
+thinking
+**Investigating path inconsistencies**
+
+I need to ensure consistency in the paths, particularly with `getCompanyDeployRequestsPath`, which strangely returns '/c/deploy-requests' when the slug is missing. I'm wondering if this points to a bug with the prefix. For the repos page, it seems it should be '/pp/repos', but maybe it needs to be company-specific as in '/c/repos'? I should inspect the exports and possibly check the app/c/repos/page.tsx re-export. Time to look into it further.
+codex
+I’ve confirmed the stats API does not expose a “last shipped” timestamp, but the dashboard already fetches recent deploy requests. I’m using that existing activity feed as the source of truth for the zero-state hint so the API contract remains unchanged.
+exec
+/bin/zsh -lc "sed -n '1,120p' src/app/c/repos/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,120p' src/app/pp/repos/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc 'rg -n "PermissionProtocolPage|Shipped Today|deploy-requests/stats|No deploys yet|Last shipped" tests src/app src/components' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 52ms:
+'use client';
+
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ExternalLink,
+  FolderGit2,
+  Loader2,
+  RefreshCw,
+  ShieldAlert,
+  Wrench,
+  XCircle,
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/lib/toast-context';
+
+type SetupStep = 'workflow' | 'secret' | 'ruleset';
+ succeeded in 52ms:
+export { default } from '@/app/pp/repos/page';
+ succeeded in 53ms:
+src/app/pp/page.tsx:720:export default function PermissionProtocolPage() {
+src/app/pp/page.tsx:743:        fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+src/app/pp/page.tsx:902:            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+
+thinking
+**Considering testing options**
+
+I need to think about whether I should add some helpers and maybe tests. I wonder if unit tests would be appropriate since handling components can sometimes be tricky. There’s a chance the existing testing stack can work with React, but it feels like adding tests is the right way forward if it’s feasible. I should search for render tests for the component, perhaps using testing-library, and take a look at the package.
+codex
+I’ve isolated the change to one dashboard page file. Next step is a small edit: derive the “Shipped Today” card hint from `recentActivity` when today’s shipped count is zero, and leave the other cards untouched.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "rg -n \"@testing-library|render\\(|describe\\(\" tests src | head -n 80" in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ succeeded in 53ms:
+tests/require-tenant.test.ts:25:describe('requireTenant - Membership Resolution', () => {
+tests/require-tenant.test.ts:154:  describe('Membership Lookup Logic', () => {
+tests/require-tenant.test.ts:227:  describe('TenantError Class', () => {
+tests/require-tenant.test.ts:277:  describe('Role Checking', () => {
+tests/require-tenant.test.ts:314:  describe('Phase 0 Security Invariants', () => {
+tests/require-tenant.test.ts:380:  describe('Belt + Suspenders Pattern (companyId in WHERE)', () => {
+tests/require-tenant.test.ts:446:describe('HTTP Error Helpers', () => {
+tests/merge-readiness-route.test.ts:24:describe('merge readiness route', () => {
+tests/mvp-flow.test.ts:200:describe('MVP Flow Integration Tests', () => {
+tests/mvp-flow.test.ts:207:  describe('Flow 1: Internal operations work with freeze ON', () => {
+tests/mvp-flow.test.ts:246:  describe('Flow 2: Execute actions denied when freeze is ON', () => {
+tests/mvp-flow.test.ts:316:  describe('Flow 3: Execute actions allowed when freeze is OFF with approval', () => {
+tests/mvp-flow.test.ts:377:  describe('Flow 4: Approval conditions are enforced', () => {
+tests/mvp-flow.test.ts:452:  describe('Flow 5: Audit trail completeness', () => {
+tests/mvp-flow.test.ts:498:  describe('Critical Invariant: Evaluation Order', () => {
+tests/golden-vectors.test.ts:46:describe('Golden Vector Conformance (Hosted PP)', () => {
+tests/golden-vectors.test.ts:50:  describe('Provenance validation', () => {
+tests/golden-vectors.test.ts:79:  describe('Vector completeness', () => {
+tests/golden-vectors.test.ts:94:  describe('Hash conformance (vectors must match canonicalize.ts)', () => {
+tests/golden-vectors.test.ts:96:      describe(vector.name, () => {
+
+
+thinking
+**Evaluating testing and data strategies**
+
+I think I might not need component tests, but a simple test for a helper function could be useful. I'm considering whether to create these helper functions in the page itself or in a separate utility file since the page is quite large. I'll need to figure out the best way to implement this and also determine the data source, focusing on the recentActivity array. But if I limit to only 10 items, I might miss older approved/denied requests. This could potentially lead to a situation where all top results are still pending, which I should keep in mind.
+thinking
+**Exploring additional endpoints**
+
+I'm considering whether I could fetch from an existing endpoint. I might look into the deploy-requests list to see if it supports status filters and sorting. It sounds like querying for approved or denied statuses with a limit of 1 could work. I think I need to quickly inspect the route and the search parameters to clarify what I can do with this. It seems like there might be some options worth exploring!
+codex
+The edge case I’m checking now is “last shipped” accuracy when the latest 10 activities are all pending. If the list API already supports filtered requests, I can fetch a single resolved record instead of guessing from the visible activity list.
+exec
+/bin/zsh -lc "sed -n '260,520p' src/app/api/v1/deploy-requests/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,260p' src/app/api/v1/deploy-requests/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 52ms:
+      select: { slug: true, name: true },
+    });
+    const statusCounts = await getStatusCounts(companyId);
+
+    if (groupBy === 'lane' && statusFilter === 'pending') {
+      const pendingRows = await prisma.deployGateRequest.findMany({
+        where: {
+          ...baseFilters,
+          status: 'pending',
+        },
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          repo: true,
+          capability: true,
+          env: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          ref: true,
+ succeeded in 52ms:
+import { NextResponse } from 'next/server';
+import { randomUUID, createHash } from 'crypto';
+import { withTenant, Roles } from '@/lib/auth/require-tenant';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+import { computePendingRequestExpiry } from '@/lib/permission-protocol-v1/deploy-gate/ttl';
+import { deriveApprovalStatus } from '@/lib/permission-protocol-v1/deploy-gate/state';
+import { reconcileStaleRequestsIfDue } from '@/lib/services/reconcile-stale-requests';
+
+export const dynamic = 'force-dynamic';
+function sanitizeRerunError(error: string | null): string | null {
+  if (!error) {
+    return null;
+  }
+  const redacted = error
+    .replace(/\bBearer\s+[A-Za-z0-9._-]+\b/gi, 'Bearer [redacted]')
+    .replace(
+      /\b(authorization|token|secret|password|api[_-]?key)\b\s*[:=]\s*([^\s,;]+)/gi,
+      '$1=[redacted]'
+    );
+  const maxLen = 240;
+
+
+
+
+
+
+thinking
+**Evaluating shipping statuses**
+
+I need to determine the last shipment based on the most recent approved or denied request using the updatedAt timestamp. I wonder if redeemed requests should count as approved too since they were initially approved. The requirement states that I should consider the most recent status, which could include approved, denied, or redeemed. If I ignore redeemed, I might miss important context. So, I think statuses should include approved, redeemed, and denied for completeness in tracking.
+thinking
+**Clarifying status resolution**
+
+I'm figuring out how to manage the history endpoint, where the status of approved won't include redeemed. To be thorough, I might fetch all statuses, including redeemed, while limiting it to recent entries. I think it’s crucial to check the statuses for approved, redeemed, and denied. Fetching specific limits for each could provide clear insights. I’m also considering utilizing ReactNode to enhance my interface by defining types and adding helpful functions for better management of request statuses and dashboard loading.
+thinking
+**Determining response handling**
+
+I'm considering using Promise.all to manage approvedData, deniedData, and redeemedData, ensuring they all share the same RecentResponse type. I think I might create a helper function to choose the latest entry among them. Then, I wonder if I need to maintain any state for this process, or if I can derive everything directly within loadDashboard instead. Setting the latestResolvedActivity sounds like a good plan too—it helps keep everything organized.
+thinking
+**Considering deployment responses**
+
+I'm thinking about how to handle deployment responses based on total counts. If total is zero, no deploys yet; if total is greater than zero but no approvals or denials, I might say “No shipped deploys yet.” However, if there are only pending requests with nothing resolved, then I need to say “Awaiting first decision.” It seems like phrasing has to be clear while not being overly specific. I’m weighing my options here.
+thinking
+**Evaluating deployment messaging**
+
+I'm considering how to communicate deployment statuses. If there are only pending requests, it seems I need to clarify that nothing has shipped yet. I could say “Awaiting first approval,” but that might add visual noise if there are no approvals or denials. Instead, I think “Awaiting first decision” might be more appropriate if the total is greater than zero and nothing's resolved. Additionally, I should maybe add a test file for my helper functions to support this.
+thinking
+**Patching the page**
+
+I’m focusing on patching the page and I should only use the apply_patch method for this task. It's important that I follow the correct process to ensure everything works smoothly. I need to make sure I don’t stray from this step, as using the right method is key to success here. Let's stay on track and get this done efficiently!
+codex
+I’m editing `src/app/pp/page.tsx` now. The change is limited to the Shipped Today card data flow and presentation: one new derived hint, one small extra fetch for the latest resolved request, and no changes to the stats API or the other cards.
+
+thinking
+**Inspecting code block**
+
+I need to closely examine the specific block of code around the `loadDashboard` lines. It seems like using `rg` might be a good approach to help me do that. I want to ensure I'm thorough in my inspection so I can understand any potential issues or areas for improvement. Alright, let's see what I can find and how I can resolve any concerns regarding that section!
+codex
+The first patch missed the exact context in the page file, so I’m re-reading the relevant sections and applying a narrower edit. The scope is unchanged.
+exec
+/bin/zsh -lc "sed -n '730,820p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '1,120p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc "sed -n '860,930p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Activity,
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  Clock3,
+  Copy,
+  ExternalLink,
+  FolderGit2,
+  GitPullRequest,
+  Loader2,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+ succeeded in 53ms:
+  const [copiedWorkflow, setCopiedWorkflow] = useState(false);
+  const [copiedApiKey, setCopiedApiKey] = useState(false);
+
+  const loadDashboard = useCallback(async (showRefreshState: boolean) => {
+    if (showRefreshState) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    setError(null);
+
+    try {
+      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
+        fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+        fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+        fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
+        fetch('/api/v1/api-keys').then(async (response) => {
+          if (response.status === 401) {
+            return { keys: [] } satisfies ApiKeysResponse;
+          }
+ succeeded in 53ms:
+        onCopyApiKey={handleCopyApiKey}
+        copiedWorkflow={copiedWorkflow}
+        copiedApiKey={copiedApiKey}
+      />
+    );
+  }
+
+  return (
+    <div className="min-h-[calc(100vh-8rem)] bg-[var(--background)] text-[var(--foreground)]" style={DASHBOARD_THEME}>
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#10B981]" />
+              Deploy Gate
+            </div>
+            <h1 className="text-3xl font-semibold tracking-tight">Permission Protocol</h1>
+            <p className="max-w-2xl text-sm text-[var(--muted)]">
+              Review pending approvals, recent deploy activity, and connected repos across your tenant.
+            </p>
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+@@ -4,3 +4,3 @@
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+@@ -114,2 +114,10 @@
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+@@ -176,2 +184,17 @@
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+apply_patch(auto_approved=true) exited 0 in 45ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..60efdfabae0e0459ceb86e9a753a87e64865ebe7
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..60efdfabae0e0459ceb86e9a753a87e64865ebe7
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+@@ -764,3 +764,3 @@
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+@@ -768,2 +768,5 @@
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+@@ -783,5 +786,12 @@
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+apply_patch(auto_approved=true) exited 0 in 64ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..ce3a610c2af230d3bed0c2844b066e07caba8360
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..ce3a610c2af230d3bed0c2844b066e07caba8360
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+@@ -825,2 +825,11 @@
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+@@ -829,2 +838,48 @@
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
++
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => ([
++    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++    {
++      label: 'Pending',
++      value: String(stats.pending),
++      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++      icon: Clock3,
++      attention: stats.pending > 0,
++    },
++    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++    {
++      label: 'Merge Status',
++      value: stats.awaitingMerge + stats.mergeFailed > 0
++        ? String(stats.awaitingMerge + stats.mergeFailed)
++        : '✓',
++      hint: stats.mergeFailed > 0
++        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++        : stats.awaitingMerge > 0
++          ? `${stats.awaitingMerge} awaiting merge`
++          : 'All merges complete',
++      icon: Activity,
++      attention: stats.mergeFailed > 0,
++    },
++  ]), [connectedRepos.length, shippedTodayHint, stats]);
+ 
+apply_patch(auto_approved=true) exited 0 in 27ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..cd2c5b60a6925cc8093707fa5ddf1ce8f78413a8
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,10 +823,65 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
++
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => ([
++    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++    {
++      label: 'Pending',
++      value: String(stats.pending),
++      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++      icon: Clock3,
++      attention: stats.pending > 0,
++    },
++    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++    {
++      label: 'Merge Status',
++      value: stats.awaitingMerge + stats.mergeFailed > 0
++        ? String(stats.awaitingMerge + stats.mergeFailed)
++        : '✓',
++      hint: stats.mergeFailed > 0
++        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++        : stats.awaitingMerge > 0
++          ? `${stats.awaitingMerge} awaiting merge`
++          : 'All merges complete',
++      icon: Activity,
++      attention: stats.mergeFailed > 0,
++    },
++  ]), [connectedRepos.length, shippedTodayHint, stats]);
+ 
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..cd2c5b60a6925cc8093707fa5ddf1ce8f78413a8
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,10 +823,65 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
++
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => ([
++    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++    {
++      label: 'Pending',
++      value: String(stats.pending),
++      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++      icon: Clock3,
++      attention: stats.pending > 0,
++    },
++    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++    {
++      label: 'Merge Status',
++      value: stats.awaitingMerge + stats.mergeFailed > 0
++        ? String(stats.awaitingMerge + stats.mergeFailed)
++        : '✓',
++      hint: stats.mergeFailed > 0
++        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++        : stats.awaitingMerge > 0
++          ? `${stats.awaitingMerge} awaiting merge`
++          : 'All merges complete',
++      icon: Activity,
++      attention: stats.mergeFailed > 0,
++    },
++  ]), [connectedRepos.length, shippedTodayHint, stats]);
+ 
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+@@ -980,26 +980,3 @@
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+apply_patch(auto_approved=true) exited 0 in 60ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..f6a0e7141f471079ec7b050018a462fc1e9fb176
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,66 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => ([
++    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++    {
++      label: 'Pending',
++      value: String(stats.pending),
++      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++      icon: Clock3,
++      attention: stats.pending > 0,
++    },
++    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++    {
++      label: 'Merge Status',
++      value: stats.awaitingMerge + stats.mergeFailed > 0
++        ? String(stats.awaitingMerge + stats.mergeFailed)
++        : '✓',
++      hint: stats.mergeFailed > 0
++        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++        : stats.awaitingMerge > 0
++          ? `${stats.awaitingMerge} awaiting merge`
++          : 'All merges complete',
++      icon: Activity,
++      attention: stats.mergeFailed > 0,
++    },
++  ]), [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +978,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..f6a0e7141f471079ec7b050018a462fc1e9fb176
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,66 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => ([
++    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++    {
++      label: 'Pending',
++      value: String(stats.pending),
++      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++      icon: Clock3,
++      attention: stats.pending > 0,
++    },
++    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++    {
++      label: 'Merge Status',
++      value: stats.awaitingMerge + stats.mergeFailed > 0
++        ? String(stats.awaitingMerge + stats.mergeFailed)
++        : '✓',
++      hint: stats.mergeFailed > 0
++        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++        : stats.awaitingMerge > 0
++          ? `${stats.awaitingMerge} awaiting merge`
++          : 'All merges complete',
++      icon: Activity,
++      attention: stats.mergeFailed > 0,
++    },
++  ]), [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +978,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+thinking
+**Troubleshooting useMemo and stats**
+
+It looks like I've encountered an issue with hooks and conditional rendering. The stats can't be null when the useMemo accesses `stats.shippedToday`. Existing stat cards are created inside the render function, so I need to handle null values properly. To fix this, I should make the useMemo return fallback values when `stats` is null. The simplest solution would be to return an empty array for stat cards when `!stats` is true. I'll patch this up!
+codex
+I caught one null-safety issue introduced by moving the card config into hooks: `stats` is still `null` during the initial load. I’m tightening that before running verification.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+@@ -839,2 +839,6 @@
+   const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
+     if (stats.shippedToday > 0) {
+@@ -860,26 +864,32 @@
+   }, [latestResolvedActivity, stats]);
+-  const statCards = useMemo<DashboardStatCard[]>(() => ([
+-    { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-    {
+-      label: 'Pending',
+-      value: String(stats.pending),
+-      hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-      icon: Clock3,
+-      attention: stats.pending > 0,
+-    },
+-    { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
+-    {
+-      label: 'Merge Status',
+-      value: stats.awaitingMerge + stats.mergeFailed > 0
+-        ? String(stats.awaitingMerge + stats.mergeFailed)
+-        : '✓',
+-      hint: stats.mergeFailed > 0
+-        ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-        : stats.awaitingMerge > 0
+-          ? `${stats.awaitingMerge} awaiting merge`
+-          : 'All merges complete',
+-      icon: Activity,
+-      attention: stats.mergeFailed > 0,
+-    },
+-  ]), [connectedRepos.length, shippedTodayHint, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
+ 
+apply_patch(auto_approved=true) exited 0 in 66ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+
+thinking
+**Testing and Code Management**
+
+I'm considering running a test. I could use eslint or tsc and maybe check the file with npm lint. There might be a type issue regarding `typeof Activity` since Check and others share a type. I should try `npx eslint src/app/pp/page.tsx`, or perhaps use `npm run lint -- --file src/app/pp/page.tsx`. Running `npx tsc --noEmit` could be slow. I might not need a new test, but exporting `getMostRecentResolvedRequest` could make it easier if I decide to implement changes later.
+thinking
+**Running Targeted Tests**
+
+I think it might be a good idea to run at least one targeted test compile. I could try running lint first, followed by `npm run test -- --run tests/review-page-helpers.test.ts` to avoid unrelated tests. However, maybe that’s not necessary. I should consider using exec_command in the commentary section instead. It feels like I need to ensure I'm focusing only on relevant tests to make this process smoother.
+codex
+The code change is in place. I’m running a focused lint check on the updated page and then I’ll inspect the diff before committing.
+exec
+/bin/zsh -lc 'git diff -- src/app/pp/page.tsx' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 53ms:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e3..337542f 100644
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@ interface GitHubAppReposResponse {
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
+exec
+/bin/zsh -lc 'npm run lint -- --file src/app/pp/page.tsx' in /Users/moltbot/pp-agent-work/factory-idea-050file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+ succeeded in 2.55s:
+
+> permission-protocol@0.1.0 lint
+> next lint --file src/app/pp/page.tsx
+
+✔ No ESLint warnings or errors
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+thinking
+**Considering test and commit process**
+
+I’m thinking about whether I need to add a test. I might be able to skip that for now, but I should inspect the git status first and consider committing my changes. Before that, running targeted unit tests could be unnecessary if I create a small test. Since there aren't any tests yet, I’ll probably only mention linting. The user asked about acceptance, so if there are no tests, I should run it all to check for compile issues.
+codex
+Lint is clean. I’m doing one more verification pass with TypeScript so the dashboard change is checked beyond formatting, then I’ll commit.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-050file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+ exited 2 in 9.35s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+thinking
+**Considering TypeScript errors**
+
+I’ve encountered some unrelated errors with TypeScript. Maybe I should run a targeted test or just type check the specific file. I could try using the command `npx tsc --noEmit src/app/pp/page.tsx` with those options, but it might get messy. It seems like a lint check is probably enough for now. I'll also need to check the git status and make a commit. First things first, I should check the git status.
+codex
+`tsc --noEmit` fails in this repo due to many pre-existing type errors outside the dashboard work, so it isn’t a useful gate for this change. I’m checking the working tree and then committing only the dashboard edit.
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 127ms:
+ M src/app/pp/page.tsx
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+thinking
+**Evaluating commit issues**
+
+I’m trying to figure out why I can’t commit, possibly due to the sandbox. The workspace is writable, but maybe the .git folder isn’t. There seems to be no approval for this either. I should check the permissions. I wonder if running `ls -ld .git .git/index` will give me more information. It looks like I can’t escalate this issue. So, mentioning the sandbox limitation is necessary.
+codex
+The file change is ready, but the sandbox blocked writing `.git/index.lock`, so the commit step failed. I’m verifying that this is a repository permission constraint rather than a problem with the working tree.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/objects .git/refs' in /Users/moltbot/pp-agent-work/factory-idea-050exec
+/bin/zsh -lc 'git diff --stat -- src/app/pp/page.tsx' in /Users/moltbot/pp-agent-work/factory-idea-050 succeeded in 52ms:
+drwxr-xr-x  13 moltbot  staff    416 Mar 15 09:47 .git
+-rw-r--r--   1 moltbot  staff  96062 Mar 15 09:47 .git/index
+drwxr-xr-x   4 moltbot  staff    128 Mar 15 09:47 .git/objects
+drwxr-xr-x   5 moltbot  staff    160 Mar 15 09:47 .git/refs
+ succeeded in 52ms:
+ src/app/pp/page.tsx | 129 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 102 insertions(+), 27 deletions(-)
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+
+thinking
+**Considering git commit issues**
+
+I'm pondering whether I could use `git commit` with `GIT_OPTIONAL_LOCKS=0`, but it seems I still need the lock. Perhaps the filesystem isn't allowing writing to `.git`. I could try creating a test file with `touch .git/test`, but it’s likely denied without permission. There's also no real need for that. I should include a reference to the updated file, like `[src/app/pp/page.tsx]`. I need to mention that linting passed, but there are unrelated existing issues with `tsc`, and the commit is blocked by the sandbox.
+codex
+Implemented the dashboard zero-state change in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx).
+
+The `Shipped Today` card now:
+- keeps the existing `approved · denied` hint when `shippedToday > 0`
+- shows `Last shipped: X ago` when `shippedToday === 0` and there is a prior approved/denied/redeemed request
+- shows `No deploys yet — connect a repo to get started` with a link to `/pp/repos` when there have been no requests at all
+- falls back to `Awaiting first decision` if requests exist but none have been approved or denied yet
+
+I left the stats API untouched and did not change the other dashboard cards. Verification: `npm run lint -- --file src/app/pp/page.tsx` passed. `npx tsc --noEmit` fails in this repo due to many pre-existing unrelated type errors outside this change.
+
+I could not complete the commit step because the sandbox blocks writes inside `.git`:
+`fatal: Unable to create '.git/index.lock': Operation not permitted`
+file update:
+diff --git a/src/app/pp/page.tsx b/src/app/pp/page.tsx
+index 37319e31569e1dda20a980ebdf79486ba8a231a4..337542fb07bb8a8c86529d37c1ccc328eeb35e64
+--- a/src/app/pp/page.tsx
++++ b/src/app/pp/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter } from 'next/navigation';
+-import type { CSSProperties } from 'react';
++import type { CSSProperties, ReactNode } from 'react';
+ import { useCallback, useEffect, useMemo, useState } from 'react';
+ import {
+   Activity,
+@@ -112,6 +112,14 @@
+   repos: GitHubAppRepoSummary[];
+ }
+ 
++interface DashboardStatCard {
++  label: string;
++  value: string;
++  hint: ReactNode;
++  icon: typeof Activity;
++  attention?: boolean;
++}
++
+ const WORKFLOW_YAML = `name: Permission Protocol
+ on:
+   pull_request:
+@@ -174,6 +182,21 @@
+   return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+ }
+ 
++function getMostRecentResolvedRequest(
++  groups: Array<RecentResponse | null | undefined>
++): DeployRequestListItem | null {
++  const resolved = groups
++    .flatMap((group) => group?.requests ?? [])
++    .filter((request): request is DeployRequestListItem => (
++      request.status === 'approved' ||
++      request.status === 'redeemed' ||
++      request.status === 'denied'
++    ))
++    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
++
++  return resolved[0] ?? null;
++}
++
+ function shortenRepo(repo: string): string {
+   const parts = repo.split('/');
+   return parts[parts.length - 1] || repo;
+@@ -739,10 +762,13 @@
+     setError(null);
+ 
+     try {
+-      const [statsData, pendingData, recentData, apiKeysData, githubReposData] = await Promise.all([
++      const [statsData, pendingData, recentData, latestApprovedData, latestDeniedData, latestRedeemedData, apiKeysData, githubReposData] = await Promise.all([
+         fetch('/api/v1/deploy-requests/stats').then((response) => readJson<DashboardStats>(response)),
+         fetch('/api/v1/deploy-requests?status=pending&groupBy=lane&limit=5').then((response) => readJson<PendingResponse>(response)),
+         fetch('/api/v1/deploy-requests?status=all&limit=10').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=approved&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=denied&limit=1').then((response) => readJson<RecentResponse>(response)),
++        fetch('/api/v1/deploy-requests?status=redeemed&limit=1').then((response) => readJson<RecentResponse>(response)),
+         fetch('/api/v1/api-keys').then(async (response) => {
+           if (response.status === 401) {
+             return { keys: [] } satisfies ApiKeysResponse;
+@@ -758,9 +784,16 @@
+       ]);
+ 
+       setStats(statsData);
++      const mostRecentResolved = getMostRecentResolvedRequest([
++        recentData,
++        latestApprovedData,
++        latestDeniedData,
++        latestRedeemedData,
++      ]);
+       setPendingGroups(pendingData.groups ?? []);
+       setRecentActivity(
+-        [...(recentData.requests ?? [])]
++        [mostRecentResolved, ...(recentData.requests ?? [])]
++          .filter((request): request is DeployRequestListItem => Boolean(request))
+           .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+           .slice(0, 10)
+       );
+@@ -790,11 +823,76 @@
+   const apiKeyLabel = useMemo(() => maskApiKey(latestActiveKey?.prefix ?? null), [latestActiveKey]);
+   const connectedRepos = githubRepos;
+   const flatPendingRequests = useMemo(() => pendingGroups.map((group) => group.latestPending), [pendingGroups]);
++  const latestResolvedActivity = useMemo(
++    () =>
++      recentActivity.find((request) => (
++        request.status === 'approved' ||
++        request.status === 'redeemed' ||
++        request.status === 'denied'
++      )) ?? null,
++    [recentActivity]
++  );
+   const companySlug = useMemo(
+     () => flatPendingRequests.find((request) => request.companySlug)?.companySlug ?? recentActivity.find((request) => request.companySlug)?.companySlug ?? null,
+     [flatPendingRequests, recentActivity]
+   );
++  const shippedTodayHint = useMemo<ReactNode>(() => {
++    if (!stats) {
++      return '—';
++    }
++
++    if (stats.shippedToday > 0) {
++      return `${stats.approvedToday} approved · ${stats.deniedToday} denied`;
++    }
+ 
++    if (stats.total === 0) {
++      return (
++        <>
++          No deploys yet <span aria-hidden="true">—</span>{' '}
++          <Link href="/pp/repos" className="underline underline-offset-4 hover:text-[var(--foreground)]">
++            connect a repo to get started
++          </Link>
++        </>
++      );
++    }
++
++    if (latestResolvedActivity) {
++      return `Last shipped: ${formatRelativeTime(latestResolvedActivity.updatedAt)}`;
++    }
++
++    return 'Awaiting first decision';
++  }, [latestResolvedActivity, stats]);
++  const statCards = useMemo<DashboardStatCard[]>(() => {
++    if (!stats) {
++      return [];
++    }
++
++    return [
++      { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
++      {
++        label: 'Pending',
++        value: String(stats.pending),
++        hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
++        icon: Clock3,
++        attention: stats.pending > 0,
++      },
++      { label: 'Shipped Today', value: String(stats.shippedToday), hint: shippedTodayHint, icon: Check },
++      {
++        label: 'Merge Status',
++        value: stats.awaitingMerge + stats.mergeFailed > 0
++          ? String(stats.awaitingMerge + stats.mergeFailed)
++          : '✓',
++        hint: stats.mergeFailed > 0
++          ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
++          : stats.awaitingMerge > 0
++            ? `${stats.awaitingMerge} awaiting merge`
++            : 'All merges complete',
++        icon: Activity,
++        attention: stats.mergeFailed > 0,
++      },
++    ];
++  }, [connectedRepos.length, shippedTodayHint, stats]);
++
+   const handleQuickApprove = useCallback((requestId: string) => {
+     setPendingGroups((current) => current.filter((group) => group.latestPending.id !== requestId));
+     setStats((current) => current
+@@ -890,30 +988,7 @@
+         </div>
+ 
+         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+-          {[
+-            { label: 'PRs Gated', value: String(stats.total), hint: `${connectedRepos.length} connected repos`, icon: Activity },
+-            {
+-              label: 'Pending',
+-              value: String(stats.pending),
+-              hint: stats.oldestPendingAge == null ? 'Nothing waiting' : `Oldest ${formatMinutes(stats.oldestPendingAge)}`,
+-              icon: Clock3,
+-              attention: stats.pending > 0,
+-            },
+-            { label: 'Shipped Today', value: String(stats.shippedToday), hint: `${stats.approvedToday} approved · ${stats.deniedToday} denied`, icon: Check },
+-            {
+-              label: 'Merge Status',
+-              value: stats.awaitingMerge + stats.mergeFailed > 0
+-                ? String(stats.awaitingMerge + stats.mergeFailed)
+-                : '✓',
+-              hint: stats.mergeFailed > 0
+-                ? `${stats.mergeFailed} failed · ${stats.awaitingMerge} awaiting`
+-                : stats.awaitingMerge > 0
+-                  ? `${stats.awaitingMerge} awaiting merge`
+-                  : 'All merges complete',
+-              icon: Activity,
+-              attention: stats.mergeFailed > 0,
+-            },
+-          ].map((stat) => (
++          {statCards.map((stat) => (
+             <Card key={stat.label} className={`border-[var(--border)] bg-[var(--card)] ${stat.attention ? 'ring-1 ring-[#F59E0B]/30' : ''}`}>
+               <CardContent className="p-6">
+                 <div className="mb-4 flex items-center justify-between">
+
+tokens used
+59,497
+Implemented the dashboard zero-state change in [src/app/pp/page.tsx](/Users/moltbot/pp-agent-work/factory-idea-050/src/app/pp/page.tsx).
+
+The `Shipped Today` card now:
+- keeps the existing `approved · denied` hint when `shippedToday > 0`
+- shows `Last shipped: X ago` when `shippedToday === 0` and there is a prior approved/denied/redeemed request
+- shows `No deploys yet — connect a repo to get started` with a link to `/pp/repos` when there have been no requests at all
+- falls back to `Awaiting first decision` if requests exist but none have been approved or denied yet
+
+I left the stats API untouched and did not change the other dashboard cards. Verification: `npm run lint -- --file src/app/pp/page.tsx` passed. `npx tsc --noEmit` fails in this repo due to many pre-existing unrelated type errors outside this change.
+
+I could not complete the commit step because the sandbox blocks writes inside `.git`:
+`fatal: Unable to create '.git/index.lock': Operation not permitted`

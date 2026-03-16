@@ -1,0 +1,469 @@
+You are the Create Factory ideation engine for Permission Protocol (permission-protocol/app).
+
+## Your Task
+Generate exactly 3 product improvement ideas. Output ONLY 3 lines of JSON — one JSON object per line, nothing else. No markdown, no explanation, no code fences.
+
+## Each idea must have these fields:
+- "title": One-line description (concise, specific)
+- "description": 2-3 sentences naming specific files, components, or behaviors to change
+- "persona": "Marco" | "Sarah" | "Both"
+- "complexity": "S" (hours) | "M" (half-day) | "L" (full day)
+
+## Personas
+Marco — Engineering Manager. Cares about speed, trust signals, approving in <5 seconds for routine deploys.
+Sarah — Security Lead. Cares about blast radius, audit trail, what exactly changed, compliance evidence.
+
+## FOCUS Filter (HARD CONSTRAINT)
+Every idea MUST pass this filter. If it doesn't directly help the deploy-gate mission, don't suggest it.
+
+# PP FOCUS — March 8 → April 4, 2026
+
+## The Mission
+**No AI agent deploys code without Permission Protocol.**
+
+## The Filter
+Before doing ANYTHING, ask: **Does this help an AI agent deploy through PP, or get a user who wants that?**
+- YES → do it
+- NO → don't do it
+- MAYBE → probably no
+
+## What's IN
+- Deploy-gate GitHub Action perfection (Codex/Claude Code/Cursor workflow)
+- 30-second demo video (agent blocked → human approves → signed receipt)
+- Content about AI agents deploying code unsafely
+- Finding users in Cursor/Codex/Claude Code communities
+- Review surface improvements for the deploy-gate flow
+- Dogfooding on our own repos
+
+## What's OUT (paused, not killed)
+- Scout pipeline for general leads
+- Broad marketing (thought leadership not tied to deploy-gate)
+- LinkedIn outreach to random companies
+- Brand polish
+- Xdares work
+- New feature development not tied to deploy-gate
+- NIST follow-ups
+- Newsletter setup
+
+## Success Metrics (April 4)
+- [ ] Deploy-gate works end-to-end with at least 1 real coding agent (Codex or Claude Code)
+- [ ] At least 5 external users have installed deploy-gate
+- [ ] At least 1 user has completed the full flow (agent → gate → approve → deploy)
+- [ ] Demo video exists and is shareable
+- [ ] PP shows up when you search "AI agent deploy authorization"
+
+## Weekly Checkpoints
+- **Week 1 (Mar 8-14):** Deploy-gate works perfectly + demo video + dogfood on our repos
+- **Week 2 (Mar 15-21):** Find 10 potential users, get 3 to try it. First design partner deadline.
+- **Week 3 (Mar 22-28):** Iterate based on user feedback. Show HN post.
+- **Week 4 (Mar 29-Apr 4):** 5+ active users. Decision: double down or pivot.
+
+## Charles's Job
+Keep us on track. Every daily briefing, every weekly scorecard, every action — filtered through the mission. If Rod or Charles starts drifting, flag it immediately.
+
+## Current Status
+# PP Status — Last updated 2026-03-12 23:00 MDT
+
+## Active
+- **PR #86** on app: batch 1 UX overhaul (7 specs), pushed, CI running
+- **Batch 2** Codex session `nimble-bison`: approval screen redesign (4 specs), ~90% done on branch `fix/approval-screen-redesign`
+
+## Pending
+- Merge PR #86 after CI green
+- Push + PR batch 2
+- Fix 3 type errors in page.tsx (from batch 1 Codex)
+- Rod: set `PP_SIGNING_PRIVATE_KEY` on Render
+- Demo video → GTM distribution
+
+## Recent Decisions
+- Approval screen = decision flow (4 zones: Context/Assessment/Action/Evidence)
+- 80% of approvals above the fold, no scrolling
+- Environment theming (production=amber, staging=blue)
+- Deny flow collapsed by default
+- URL restructure: `/pp/` → `/c/`
+- Ruleset awareness: repos use rulesets, disable via API for force-merge.
+
+## Blockers
+- Receipt signing: `PP_SIGNING_PRIVATE_KEY` not on Render (Rod action)
+
+## Strategic Context
+
+--- pp-os/FOCUS.md ---
+# PP FOCUS — March 8 → April 4, 2026
+
+## The Mission
+**No AI agent deploys code without Permission Protocol.**
+
+## The Filter
+Before doing ANYTHING, ask: **Does this help an AI agent deploy through PP, or get a user who wants that?**
+- YES → do it
+- NO → don't do it
+- MAYBE → probably no
+
+## What's IN
+- Deploy-gate GitHub Action perfection (Codex/Claude Code/Cursor workflow)
+- 30-second demo video (agent blocked → human approves → signed receipt)
+- Content about AI agents deploying code unsafely
+- Finding users in Cursor/Codex/Claude Code communities
+- Review surface improvements for the deploy-gate flow
+- Dogfooding on our own repos
+
+## What's OUT (paused, not killed)
+- Scout pipeline for general leads
+- Broad marketing (thought leadership not tied to deploy-gate)
+- LinkedIn outreach to random companies
+- Brand polish
+- Xdares work
+- New feature development not tied to deploy-gate
+- NIST follow-ups
+- Newsletter setup
+
+## Success Metrics (April 4)
+- [ ] Deploy-gate works end-to-end with at least 1 real coding agent (Codex or Claude Code)
+- [ ] At least 5 external users have installed deploy-gate
+- [ ] At least 1 user has completed the full flow (agent → gate → approve → deploy)
+- [ ] Demo video exists and is shareable
+- [ ] PP shows up when you search "AI agent deploy authorization"
+
+## Weekly Checkpoints
+- **Week 1 (Mar 8-14):** Deploy-gate works perfectly + demo video + dogfood on our repos
+- **Week 2 (Mar 15-21):** Find 10 potential users, get 3 to try it. First design partner deadline.
+- **Week 3 (Mar 22-28):** Iterate based on user feedback. Show HN post.
+- **Week 4 (Mar 29-Apr 4):** 5+ active users. Decision: double down or pivot.
+
+## Charles's Job
+Keep us on track. Every daily briefing, every weekly scorecard, every action — filtered through the mission. If Rod or Charles starts drifting, flag it immediately.
+
+--- pp-os/STATUS.md ---
+# PP Status — Last updated 2026-03-12 23:00 MDT
+
+## Active
+- **PR #86** on app: batch 1 UX overhaul (7 specs), pushed, CI running
+- **Batch 2** Codex session `nimble-bison`: approval screen redesign (4 specs), ~90% done on branch `fix/approval-screen-redesign`
+
+## Pending
+- Merge PR #86 after CI green
+- Push + PR batch 2
+- Fix 3 type errors in page.tsx (from batch 1 Codex)
+- Rod: set `PP_SIGNING_PRIVATE_KEY` on Render
+- Demo video → GTM distribution
+
+## Recent Decisions
+- Approval screen = decision flow (4 zones: Context/Assessment/Action/Evidence)
+- 80% of approvals above the fold, no scrolling
+- Environment theming (production=amber, staging=blue)
+- Deny flow collapsed by default
+- URL restructure: `/pp/` → `/c/`
+- Ruleset awareness: repos use rulesets, disable via API for force-merge.
+
+## Blockers
+- Receipt signing: `PP_SIGNING_PRIVATE_KEY` not on Render (Rod action)
+
+--- pp-os/master-plan.md ---
+# Permission Protocol – Master Plan
+
+> **Change Policy:** Amendments require PR + PP deploy gate approval.
+> Strategic amendments must include rationale in PR description.
+> If a proposed goals.md objective contradicts a Non-Negotiable, master-plan amendment is required first.
+>
+> **Review Cadence:** Weekly review every Sunday by Charles. Confirm alignment or flag drift.
+> Last reviewed: 2026-03-08
+>
+> **Strategic Pivot (2026-03-04):** See `pp-strategy-v2.md` (approved by Rod).
+> Key shifts: Category = Authority Infrastructure. Primitive = Universal Action Receipt (UAR).
+> Sequence = Marketing → Website → Product. Framing = Accountability, not security.
+> 90-day focus: proof pages, website rebuild, open-source SDK.
+
+---
+
+## Core Thesis
+
+Permission Protocol is the **canonical enforcement layer for autonomous AI actions**.
+
+Every AI agent that touches the real world — deploys code, moves money, sends emails, changes infrastructure — needs explicit, auditable, cryptographically provable authorization. That authorization must live **outside the agent**, in a system the agent cannot override.
+
+PP is that system. Not a framework. Not a best practice. **Infrastructure.**
+
+The same way Stripe became the answer to "how do I accept payments," PP becomes the answer to "how do I prove this AI was allowed to do this."
+
+---
+
+## Wedge
+
+**Deploy Gate** is the entry point.
+
+Code deployment is the highest-stakes, most frequent autonomous action in software. Every company already has CI/CD. Deploy Gate inserts PP as a **required check** — no receipt, no merge. It's:
+
+- Unavoidable (GitHub required status check)
+- Zero-config (one GitHub Action)
+- Immediately valuable (audit trail from day one)
+- Trojan horse (once you have receipts for deploys, you want them for everything)
+
+Deploy Gate is not the product. It's the wedge that makes PP the default.
+
+---
+
+## Non-Negotiables
+
+1. **PP is the canonical Signer of Record.** The receipt is the proof. No receipt = no authorization.
+2. **Authorization must exist outside the agent.** Agents cannot self-authorize. Period.
+3. **Receipts are cryptographic evidence.** Signed, timestamped, immutable. Not logs. Not audit trails. Evidence.
+4. **No receipt, no action.** The enforcement model is binary. There is no "soft mode."
+5. **Single enforcement layer.** One system for all agent actions. Not per-tool, not per-provider.
+
+---
+
+## ICP (Ideal Customer Profile)
+
+**Primary:** AI-native startups (10-100 engineers) shipping autonomous features.
+
+- Already have AI agents in production or near-production
+- Feel the pain of "who approved this?" when things break
+- Engineering-led purchasing decisions
+- Move fast, need governance that doesn't slow them down
+
+**Secondary:** Enterprise AI teams building internal agent platforms.
+
+- Regulated industries (finance, healthcare, legal)
+- Need audit trails for compliance
+- Longer sales cycle but higher contract value
+
+**Entry point for both:** Deploy Gate on one repo → expand to all repos → expand beyond deploys.
+
+---
+
+## What PP Is NOT
+
+- **Not an AI framework.** We don't help you build agents. We help you control them.
+- **Not an observability tool.** We don't monitor. We authorize.
+- **Not a policy engine.** We don't decide what's allowed. We enforce and record what was authorized.
+- **Not a permissions system.** RBAC, ACLs, IAM — those define who can do what. PP proves who *did* authorize what, with cryptographic evidence.
+- **Not optional.** PP is not a "nice to have" governance layer. It's a required check that blocks without a receipt.
+
+---
+
+## 3–5 Year Outcome
+
+Permission Protocol is the **default authorization layer** for autonomous AI systems, the way Stripe is the default for payments.
+
+**Measurable targets:**
+- 10,000+ repos with Deploy Gate required checks enabled
+- Present in 3+ CI/CD ecosystems (GitHub, GitLab, Bitbucket)
+- Expanded beyond deploys: financial transactions, infrastructure changes, customer communications
+- Revenue from enterprise contracts (authorization-as-infrastructure pricing)
+- Industry standard: "Do you have PP receipts?" is a due diligence question
+
+The endgame: **no serious AI system ships without a Signer of Record, and PP is that signer.**
+
+--- pp-os/pp-strategy-v2.md ---
+# PP Strategic Pivot: Authority Infrastructure
+
+**Status:** APPROVED by Rod — 2026-03-04
+**Date:** 2026-03-04
+**Authors:** Rod + Charles
+
+---
+
+## 1. What We Are
+
+Permission Protocol is **Authority Infrastructure** — a new category. Not governance. Not security. Not a policy engine.
+
+**PP issues cryptographic proof that an AI action was authorized before it happened.**
+
+PP sits between AI decisions and real-world execution. Nothing consequential happens without a signed receipt.
+
+**PP protects humans from AI decisions.** The conversation is about accountability, not security.
+
+---
+
+## 2. The Primitive: Universal Action Receipt (UAR)
+
+The core artifact is the **Universal Action Receipt (UAR)** — a portable, verifiable proof of authority that can travel across systems.
+
+- Every approval produces a UAR
+- Every UAR gets a **shareable authority proof page** — beautiful, simple, one screen
+- The proof page is the product's face to the world
+- If receipts become required proof, infrastructure providers can enforce them (long-term gravity — don't build for it yet, keep in mind)
+
+---
+
+## 3. Core Principles
+
+- **Developers adopt primitives, not platforms.** We focus on the primitive.
+- **PP sits between decision and execution.** The most powerful position in the stack.
+- **The proof page must be beautiful and simple.** Like Stripe payment pages. Not enterprise dashboards.
+- **Goal: become the easiest way to require approval for AI agent actions.** A tiny primitive developers love.
+- **Speed matters.** Give developers tools to create viral moments.
+
+---
+
+## 4. Key Decisions
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Category | **Authority Infrastructure** | Not governance, not security. New category. |
+| Primitive | **Universal Action Receipt (UAR)** | Portable, verifiable, cross-system artifact of authority |
+| Issuer vs Verifier | **Issuer** | The company that issues receipts becomes infrastructure |
+| Framing | **Accountability, not security** | Security = optional overhead. Accountability = institutional requirement. |
+| Sequence | **Marketing → Product** | Design site + messaging first. Build exactly what the site promises. |
+| Open source | **SDK open, issuance is not** | "Add approvals to your AI agent in one line of code" |
+| Scope | **90 days only** | Nail the primitive. Everything else later. |
+| Current deploy gate | **Keep as first enforcement point** | Reframe as one integration of the receipt system |
+
+---
+
+## 5. Messaging & Positioning
+
+### The One-Liners
+- "AI agents shouldn't authorize their own actions."
+- "Every AI action should have an authority receipt."
+- "PP sits between AI decisions and real-world execution."
+- "The Signer of Record for AI systems."
+
+### Developer Pitch
+- "PP gives you a cryptographic receipt proving an AI action was authorized."
+- "Add approvals to your AI agent in one line of code."
+
+### The Revealing Question (Sales / Conversations)
+> "If an AI agent deployed broken code to production tonight, how would you prove who authorized it?"
+
+Ask it. Stay quiet. Listen. If they can't answer cleanly — they need PP.
+
+### The Frame Shift
+**Don't say:** PP protects systems from AI mistakes (= security tool, optional)
+**Do say:** PP proves who authorized an AI action (= accountability infrastructure, required)
+
+### Category Language
+- ✅ Authority, Signer of Record, authorization receipts, infrastructure layer, accountability
+- ❌ AI governance, AI safety, policy engine, compliance tooling, security layer
+
+---
+
+## 6. Key Features
+
+### Shareable Authority Proof Page
+`permissionprotocol.com/r/abc123` — public, beautiful, one screen.
+
+Shows: action, resource, who approved, when, policy applied, signature verified badge.
+
+**This is the viral mechanic.** Developers paste it in PRs, Slack, docs. Everyone who clicks sees PP.
+
+### Action Replay Page
+`permissionprotocol.com/replay/abc123` — timeline of an AI action sequence.
+
+Shows: what the agent proposed → PP blocked/approved → receipt issued → action executed.
+
+**This is the "PP just saved my database" moment.** Developers share the replay when something scary gets caught. Beautiful, shareable, designed to go viral.
+
+Example dev post: "My agent tried to drop a table in prod. PP caught it. Check it out → [replay URL]"
+
+
+## Repo Structure (key directories)
+src/app/account/page.tsx
+src/app/activity/page.tsx
+src/app/api/access-requests/route.ts
+src/app/api/activity/route.ts
+src/app/api/ai-team/[roleId]/route.ts
+src/app/api/ai-team/[roleId]/usage/route.ts
+src/app/api/analytics/track/route.ts
+src/app/api/approvals/[id]/route.ts
+src/app/api/approvals/route.ts
+src/app/api/artifacts/[id]/route.ts
+src/app/api/artifacts/route.ts
+src/app/api/audit/route.ts
+src/app/api/auth/[...nextauth]/route.ts
+src/app/api/ceo/apply-plan/route.ts
+src/app/api/ceo/plan-tick/route.ts
+src/app/api/ceo/plans/[id]/route.ts
+src/app/api/ceo/state/route.ts
+src/app/api/companies/[companyId]/route.ts
+src/app/api/companies/route.ts
+src/app/api/company-memory/[id]/approve/route.ts
+src/app/api/company-memory/[id]/reject/route.ts
+src/app/api/company-memory/[id]/review/route.ts
+src/app/api/company-memory/[id]/route.ts
+src/app/api/company-memory/active/route.ts
+src/app/api/company-memory/route.ts
+src/app/api/company-memory/synthesize/route.ts
+src/app/api/company/mode/route.ts
+src/app/api/constitution/[id]/route.ts
+src/app/api/constitution/route.ts
+src/app/api/dashboard/charts/route.ts
+src/app/api/dashboard/setup-state/route.ts
+src/app/api/delegated-accounts/[id]/request-use/route.ts
+src/app/api/delegated-accounts/[id]/route.ts
+src/app/api/delegated-accounts/[id]/sessions/route.ts
+src/app/api/delegated-accounts/feature/route.ts
+src/app/api/delegated-accounts/route.ts
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts
+src/app/api/dev-ai/patches/[patchId]/regenerate/route.ts
+src/app/api/dev-ai/patches/[patchId]/revise/route.ts
+src/app/api/dev-ai/patches/[patchId]/route.ts
+src/app/api/dev-ai/patches/[patchId]/validate/route.ts
+src/app/api/dev-ai/route.ts
+src/app/api/github-app/callback/route.ts
+src/app/api/github-app/install/route.ts
+src/app/api/github-app/webhook/route.ts
+src/app/api/github/connect/route.ts
+src/app/api/github/disconnect/route.ts
+src/app/api/github/route.ts
+src/app/api/health/route.ts
+src/app/api/index/github/[id]/route.ts
+src/app/api/index/github/route.ts
+src/app/api/internal/health/route.ts
+src/app/api/job-runs/[id]/console/route.ts
+src/app/api/job-runs/[id]/route.ts
+src/app/api/job-runs/route.ts
+src/app/api/kb/packs/[id]/docs/[docTypeId]/route.ts
+src/app/api/kb/packs/[id]/route.ts
+src/app/api/kb/packs/[id]/status/route.ts
+src/app/api/kb/packs/[id]/validate/route.ts
+src/app/api/kb/packs/route.ts
+src/app/api/knowledge/indexed-files/[id]/route.ts
+src/app/api/knowledge/indexed-files/bulk/route.ts
+src/app/api/knowledge/route.ts
+src/app/api/llm/stats/route.ts
+src/app/api/migration/claim-companies/route.ts
+src/app/api/og/deploy-request/[id]/route.tsx
+src/app/api/permission/v1/execute/route.ts
+src/app/api/pr-outbox/[id]/refresh/route.ts
+src/app/api/pr-outbox/[id]/review/route.ts
+src/app/api/pr-outbox/[id]/route.ts
+src/app/api/pr-outbox/route.ts
+src/app/api/readiness/route.ts
+src/app/api/reports/route.ts
+src/app/api/requests/[requestId]/route.ts
+src/app/api/requests/re-request/route.ts
+src/app/api/scheduler/route.ts
+src/app/api/search/route.ts
+src/app/api/settings/general/route.ts
+src/app/api/settings/llm/credentials/[id]/route.ts
+src/app/api/settings/llm/credentials/route.ts
+
+## Existing Ideas (DO NOT DUPLICATE — suggest genuinely different improvements)
+- idea-013: GitHub Action marketplace README overhaul — screenshot, 30-second setup, copy-paste workflow — The deploy-gate Action is the top-of-funnel for every developer who finds PP. The marketplace README needs: a hero scree
+- idea-018: 30-second onboarding wizard — GitHub App install → first gate in 3 clicks — New users hit a wall between 'this sounds cool' and 'it works on my repo.' Build a guided onboarding flow: (1) Install G
+- idea-025: Post-Install AI Agent Config Guide — After a user installs the GitHub App, if no AI agent-specific configuration is found in their `.github/workflows/deploy-
+- idea-004: Rich gate-failure CI output — file summary, risk badge, and direct approve URL — When deploy-gate blocks a PR in CI, the GitHub Action output is the first thing Marco sees. Make it count: show a markdo
+- idea-019: Inline diff viewer on approval page — see code changes without leaving PP — Sarah shouldn't have to context-switch to GitHub to see what changed. Embed a syntax-highlighted diff viewer directly on
+- idea-003: One-click approve via direct URL — no dashboard navigation needed — Marco wants to approve in under 5 seconds. Create a direct approval endpoint: /approve/[requestId]?token=[one-time-token
+- idea-021: Clearly label AI agent source on approval screen — Enhance the approval screen's 'Context' zone (e.g., in `app/components/approval-screen/context-zone.tsx`) to prominently
+- idea-002: Blast radius indicator on approval page — file risk categorization — Sarah needs to know what she's approving at a glance. Add a blast radius section to the approval detail page that catego
+- idea-001: PR comment with receipt link + 1-line AI summary on auto-approved PRs — Deploy-gate v2 creates a request for every PR. Auto-approved ones should get a PR comment showing the receipt link and a
+- idea-023: Display related CI workflow status on approval page — Integrate the status of the associated GitHub Actions workflow run (e.g., `CI Status: ✅ Passed`) into the approval scree
+- idea-026: Approval Screen Diff Highlight for AI Changes — On the approval detail screen, when displaying file changes, visually distinguish lines or files that were exclusively m
+- idea-008: Slack webhook notification on gate block — with approve link — Most engineering teams live in Slack. When deploy-gate blocks a PR, fire a webhook to a configurable Slack incoming webh
+- idea-011: Deny-with-reason flow — require explanation on rejection, post to PR — When Sarah denies a deploy request, she should be forced to say why. Add a required 'reason' text field to the deny acti
+- idea-022: Environment-specific quick approval button — Add a context-aware "Approve for [Environment]" button (e.g., "Approve for Staging") to the `Action` zone of the approva
+- idea-024: AI Agent PR Context in GitHub Action Output — Enhance the `deploy-gate.yml` GitHub Action to detect PRs from known AI agents (e.g., `github-actions[bot]`, `codex-bot`
+- idea-027: Pre-merge checklist stuck on 'Checking' — branch/conflict status never resolves — After PP approval and all GitHub checks passing (6/6 green), the PP review page pre-merge checklist still shows 'Checkin
+- idea-028: PAT permission error on pre-merge checklist — 'Resource not accessible by personal access token' — The PP review page shows a red error 'Resource not accessible by personal access token' in the pre-merge checklist. The 
+
+## Ideation Prompt
+What are the top 3 product improvements you could build with Codex TODAY that would make Permission Protocol better for both Marco and Sarah? Be specific — name the file, the component, the behavior change. Each idea must be completable in a single Codex session.
+
+## Output Format
+Exactly 3 lines, each a valid JSON object. Example:
+{"title":"Example title","description":"Example description naming specific files.","persona":"Marco","complexity":"S"}
+{"title":"Another title","description":"Another description.","persona":"Sarah","complexity":"M"}
+{"title":"Third title","description":"Third description.","persona":"Both","complexity":"S"}

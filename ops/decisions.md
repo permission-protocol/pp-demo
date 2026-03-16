@@ -89,3 +89,46 @@ Linked to source threads for traceability.
 - Added branch protection to `permission-protocol/app` main: required check "Permission Protocol", `strict: true`, admin bypass allowed
 - Triggered by PR #47 race condition (update branch + PP merge clicked simultaneously, merge went through before CI finished)
 - Now matches `permissionprotocol-site` protection config
+
+## 2026-03-13 — Upgrade MacOs (thread: #rc-main › Upgrade MacOs)
+- macOS Tahoe 26.3.1 chosen over Sonoma 14.8.4 patch — Peekaboo required macOS 15+
+- Charles (MacBook) = visual/creative workstation (Peekaboo, demos, screenshots); Maria (droplet) = headless workhorse
+- Workspace backup repo: Roca-Ventures/charles-workspace-backup (private)
+- M1/8GB is fine for Tahoe; trim background processes if sluggish
+
+## 2026-03-11 — Analytics Pipeline (Thread: #rc-product › Analytics)
+- PostHog is the analytics platform (free tier: 1M events/mo, 5K recordings/mo)
+- All custom events use `pp_` prefix for easy filtering
+- UTM params stored in `sessionStorage` — clears on tab close (correct attribution behavior)
+- Contact form alerts route to 📬 Inbound Leads thread in #rc-main via webhook `?thread_id=`
+- Discord `thread_name` only works in forum channels — use `?thread_id=` query param for regular channels
+- Vercel env vars: `DISCORD_CONTACT_WEBHOOK` + `DISCORD_CONTACT_THREAD_ID`
+- PRD at `pp-os/specs/prd-analytics-pipeline.md`
+- Issue 5 (PostHog funnels/dashboard) deferred — UI config, no code
+
+## 2026-03-13 — Ideal Approval Screen (thread: #rc-product › Ideal Approval Screen)
+- **Approval = trust decision, not code review.** Mobile approver answers "should this go live?" — AI summary + trust signals replace code reading.
+- **Hold-to-confirm for production + high-risk**: 1-second press with progress indicator instead of confirmation modals.
+- **5-second undo window on approve**: Optimistic UI, card disappears immediately.
+- **Hybrid rerun strategy**: Try `check_run` rerequest first (lighter), fall back to `actions/runs` rerun.
+- **Batch approve safety gate**: Only when ALL pending are low-risk + non-production.
+- **Urgency-based sort** (not chronological): Production + high risk + oldest → top of queue.
+- **blast_radius = AI-generated string**, not file path array.
+- **AI prompt returns JSON**: `{"summary","blast_radius","dangerous_operations"}` via Gemini.
+- **SHA-based enrichment caching**: Keyed by `repo#prNumber@headSha`.
+- **Large diff fallback**: PRs with >500 files or >10000 lines skip AI, get deterministic summary.
+- **Reconciliation is display-only**: Site can't write to PP DB; use sessionStorage for stale IDs.
+- **Timeline built client-side**: From existing request data, no new API; updates on 15s poll.
+- **Extract `triggerGitHubRerun` to shared lib** (`app/api/review/lib/rerun.ts`) for reuse.
+- **Monthly "steal audit"**: Diff PP app vs site feature sets, file issues for gaps.
+- **Process rules**: Never use `/tmp` for agent worktrees. Store prompts in workspace. Sequential agents for shared files. Pre-merge build gate (next build + layout.tsx check + push + no conflict markers).
+- PRs: #175 (Phase 1), #178 (Phase 2), #180 (auto-rerun), #190 (superseded+rerun), #191 (timeline+reconcile) — all merged.
+- Issues: #171-174 (4 phases), #181, #183-184 (closed), #194-196 (queue enhancements, backlog).
+
+## 2026-03-13 — Fix Issues (thread: #rc-product › Fix Issues)
+- Monitor Codex agents via `git status`/`git log`, NOT `process log` (PTY buffering makes process logs unreliable)
+- Use persistent worktree directories (`~/Projects/worktrees/`), never `/tmp/` — OS cleanup wipes them
+- Always check remote branches before re-launching agents — previous run may have auto-pushed
+- Pre-flight batch Codex: verify package manager, check existing branches, use persistent dirs
+- Codex auto-creates PRs sometimes — check remote before assuming failure
+- One type-fix commit after Codex is fine — don't re-run whole agent for minor issues

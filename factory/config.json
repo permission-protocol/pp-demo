@@ -1,0 +1,19 @@
+{
+  "gemini_model": "gemini-2.5-flash",
+  "gemini_key_path": "~/.openclaw/secrets/gemini-api.json",
+  "codex_timeout_seconds": 1800,
+  "qa_check_timeout_seconds": 300,
+  "max_retries": 3,
+  "max_active_ideas": 20,
+  "max_organized_ideas": 15,
+  "mobile_qa_enabled": false,
+  "mobile_qa_script": "~/.openclaw/workspace/scripts/iphone-qa.sh",
+  "mobile_qa_screenshot_analysis_model": "gemini-2.5-flash",
+  "immune_statuses": ["build-wip", "build-ready", "qa-wip", "qa-passed", "shipped"],
+  "discord_channels": {
+    "control": "1482047784550006896",
+    "pipeline": "1482047785435009105",
+    "wip": "1482086246745374942",
+    "done": "1482047787624431738"
+  }
+}

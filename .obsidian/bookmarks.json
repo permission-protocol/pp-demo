@@ -1,0 +1,12 @@
+{
+  "items": [
+    { "type": "file", "path": "MEMORY.md", "title": "Long-Term Memory" },
+    { "type": "file", "path": "SOUL.md", "title": "Soul" },
+    { "type": "file", "path": "AGENTS.md", "title": "Agents" },
+    { "type": "file", "path": "USER.md", "title": "About Rod" },
+    { "type": "file", "path": "TOOLS.md", "title": "Tools & Infra" },
+    { "type": "folder", "path": "memory", "title": "Daily Notes" },
+    { "type": "folder", "path": "goals", "title": "Goals" },
+    { "type": "folder", "path": "pp-os", "title": "Permission Protocol" }
+  ]
+}

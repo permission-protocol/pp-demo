@@ -1,0 +1,1031 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-033
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce978-81a0-7031-b195-9329c6bf5b1f
+--------
+user
+Add an AI verdict banner to the PP deploy request review page. Read FACTORY-PRD.md for full context.
+In `src/app/pp/deploy-requests/[requestId]/page.tsx`:
+1. Create a `VerdictBanner` component (define near the top of the file, after imports). Props:
+   - `enrichment: ReviewEnrichment | null`
+   - `enrichmentLoading: boolean`
+   - `assessmentSummary: { riskLevel: string; action: string; what: string } | null`
+2. Logic:
+   - If `enrichmentLoading`: return a subtle shimmer bar (same width, 40px height)
+   - If no `assessmentSummary`: return null
+   - Determine verdict from `assessmentSummary.riskLevel` and `assessmentSummary.action`:
+     - riskLevel 'high' OR action 'Block recommended' → 🔴 HIGH RISK (red styling)
+     - riskLevel 'medium' OR action 'Review carefully' → 🟡 REVIEW CAREFULLY (yellow styling)
+     - else → 🟢 ROUTINE (green styling)
+   - Display: `{emoji} {LABEL} — {assessmentSummary.what}`
+3. Styling:
+   - `sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm`
+   - Green: `border-emerald-500/30 bg-emerald-500/10 text-emerald-100`
+   - Yellow: `border-yellow-500/30 bg-yellow-500/10 text-yellow-100`
+   - Red: `border-red-500/30 bg-red-500/10 text-red-200`
+4. Render the VerdictBanner as the VERY FIRST element in the main return of the `DeployRequestReviewPage` component. Pass `enrichment`, `enrichmentLoading`, and `assessmentSummary` (which is already computed around line 800 via `parseAiSummary()`).
+5. The `assessmentSummary` variable is currently computed inside a conditional block. You may need to hoist it so it's available at the top level of the component for the VerdictBanner. The `enrichment` and `enrichmentLoading` state variables are already at the top level (lines ~431-432).
+IMPORTANT: The `parseAiSummary` function and `assessmentSummary` computation is inside `AiSummaryCard` component (line ~152). You need to also compute it in the parent `DeployRequestReviewPage` component from `enrichment?.summary`. Look at how `AiSummaryCard` does it and replicate that logic in the parent.
+Before finishing, run `npx tsc --noEmit` and fix any type errors.
+mcp startup: no servers
+codex
+I’m reading the product/context doc and the target page first, then I’ll patch the page to add the verdict banner and verify with TypeScript.
+exec
+/bin/zsh -lc "sed -n '1,220p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "sed -n '260,520p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "sed -n '1,260p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 53ms:
+# PRD: idea-033 — AI "Should I worry?" verdict on deploy requests
+
+## Summary
+Add a prominent single-line AI verdict banner at the very top of the review page that instantly tells the approver whether this deploy request needs careful attention or is routine. This is the #1 feature for enabling fast phone-based approvals.
+
+## Problem
+The review page shows an AI summary section with risk level, signals, and analysis. But the approver has to READ it and mentally synthesize "should I care about this?" That takes 15-30 seconds. For routine changes (most factory PRs), that's wasted time.
+
+## Solution
+Add a `VerdictBanner` component that renders ABOVE everything else on the review page — before the environment banner, before the header. One line, impossible to miss.
+
+Three states:
+- 🟢 **ROUTINE** — "UI change only, no API/auth/data impact" → approve confidently in 2 seconds
+- 🟡 **REVIEW CAREFULLY** — "Touches API routes / auth logic / environment config" → read the AI summary
+- 🔴 **HIGH RISK** — "Changes payment, secrets, or security-critical paths" → read everything, consider denying
+
+## User Journey
+1. Rod opens PP review page on his phone
+2. First thing he sees: 🟢 **ROUTINE — UI component added, no backend changes**
+3. Glances at the visual preview (future feature) → looks right
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+codex
+The PRD is straightforward: banner goes above everything and derives directly from the parsed AI summary. I hit zsh globbing on the route path, so I’m reopening the page with the path quoted and then I’ll patch it.
+exec
+/bin/zsh -lc "sed -n '620,1040p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "sed -n '260,620p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 53ms:
+              title={signal.reason}
+            >
+              <span className="font-semibold uppercase tracking-[0.12em]">{signal.severity}</span>
+              <span>{signal.category}</span>
+              {signal.files[0] ? <span className="truncate font-mono text-[11px] opacity-80">{signal.files[0]}</span> : null}
+            </div>
+          ))}
+          {contextSignals.map((signal) => (
+            <div
+              key={`${signal.code}-${signal.label}`}
+              className={`inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${getSeverityClasses(signal.severity)}`}
+              title={signal.why}
+            >
+              <span className="font-semibold uppercase tracking-[0.12em]">{signal.severity}</span>
+              <span>{signal.label}</span>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+ succeeded in 53ms:
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchRequest().then((nextRequest) => {
+      void fetchContext(nextRequest);
+      void fetchEnrichment(nextRequest);
+      void fetchMergeReadiness(nextRequest);
+    });
+  }, [fetchContext, fetchEnrichment, fetchMergeReadiness, fetchRequest]);
+
+  useEffect(() => {
+    if (request?.status !== 'approved') {
+      setMergeReadinessUnknownSince(null);
+    }
+  }, [request?.status]);
+
+  useEffect(() => {
+    if (!request?.company?.slug || !request.id) {
+
+thinking
+**Considering assessment summary**
+
+I need to determine if the main return location will be necessary later. I'm thinking about whether types should relate to an assessmentSummary, which I might have set to null currently. It seems like the assessmentSummary for the banner should only be parsed if a summary exists, otherwise it should be null. I'll look into the existing usage of assessmentSummary and see if I should create a separate variable for aiAssessmentSummary.
+codex
+I’ve got the relevant state and the current summary parsing. Next I’m checking how `assessmentSummary` is used lower in the page so I can hoist the banner summary cleanly without regressing the existing cards.
+exec
+/bin/zsh -lc "sed -n '1040,1520p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "rg -n \"assessmentSummary|return \\(\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 53ms:
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reason: decisionNote.trim(),
+          reasonCategory: denyCategory,
+          requireNewRequest: denyRequireNewRequest,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error?.message || 'Deny failed');
+      }
+      setDecisionState({ status: 'denied' });
+      const nextRequest = await fetchRequest({ silent: true });
+      await Promise.all([fetchContext(nextRequest), fetchEnrichment(nextRequest)]);
+    } catch (err) {
+      setDecisionState({ status: 'error', message: err instanceof Error ? err.message : 'Deny failed' });
+    }
+  }, [decisionNote, denyCategory, denyRequireNewRequest, fetchContext, fetchEnrichment, fetchRequest, request]);
+
+ succeeded in 53ms:
+71:  return (
+85:  return (
+102:  return (
+133:  return (
+155:      return (
+189:      return (
+250:    return (
+308:    return (
+357:                    return (
+669:    return () => window.clearInterval(interval);
+693:    return () => window.clearInterval(interval);
+756:    return () => {
+836:  const assessmentSummary = enrichment?.summary
+853:    assessmentSummary.riskLevel === 'high'
+855:      : assessmentSummary.riskLevel === 'medium'
+859:    assessmentSummary.riskLevel === 'high' ? '🔴' : assessmentSummary.riskLevel === 'medium' ? '🟡' : '🟢';
+861:    assessmentSummary.riskLevel === 'high' ? 'High' : assessmentSummary.riskLevel === 'medium' ? 'Medium' : 'Low';
+1158:    return (
+1168:    return (
+1203:    return (
+codex
+I found the current `assessmentSummary` is already top-level, but it’s a fallback object used by other UI. For the banner I’m going to add a separate parsed summary derived only from `enrichment?.summary`, so the banner stays hidden when AI enrichment is unavailable as required.
+exec
+/bin/zsh -lc "rg -n \"export function parseAiSummary|function parseAiSummary|type Parsed|interface Parsed\" 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts'" in /Users/moltbot/pp-agent-work/factory-idea-033 exited 2 in 52ms:
+rg: src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts: IO error for operation on src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts: No such file or directory (os error 2)
+ exited 1 in 52ms:
+sed: src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts: No such file or directory
+codex
+The page imports helpers from a sibling module, so I’m locating that file now to confirm the parse shape before editing.
+exec
+/bin/zsh -lc "ls -la 'src/app/pp/deploy-requests/[requestId]'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "rg --files | rg 'review-page-helpers'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 51ms:
+total 264
+drwxr-xr-x  5 moltbot  staff     160 Mar 13 17:11 .
+drwxr-xr-x  4 moltbot  staff     128 Mar 13 17:11 ..
+-rw-r--r--  1 moltbot  staff     545 Mar 13 17:11 layout.tsx
+-rw-r--r--  1 moltbot  staff  106058 Mar 13 17:11 page.tsx
+-rw-r--r--  1 moltbot  staff   20731 Mar 13 17:11 review-page-helpers.tsx
+ succeeded in 53ms:
+tests/review-page-helpers.test.ts
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+exec
+/bin/zsh -lc "sed -n '620,760p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "rg -n \"parseAiSummary|type Parsed|interface Parsed\" 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 53ms:
+    return `Code review: ${summary.approvals} approved on GitHub`;
+  }
+
+  return 'Code review: No code review on GitHub';
+}
+
+export function RequestMetaRow({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="grid gap-1 sm:grid-cols-[140px_minmax(0,1fr)] sm:items-start">
+      <div className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">{label}</div>
+      <div className="min-w-0 text-sm text-[var(--foreground)]">{value}</div>
+    </div>
+  );
+}
+
+export function ShimmerBlock({ className }: { className: string }) {
+  return <div className={`animate-pulse rounded-md bg-[rgba(255,255,255,0.06)] ${className}`} />;
+}
+ succeeded in 52ms:
+196:export type ParsedAiRiskLevel = 'low' | 'medium' | 'high';
+198:export interface ParsedAiSummary {
+519:export function parseAiSummary(summary: string): ParsedAiSummary {
+exec
+/bin/zsh -lc "sed -n '188,235p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 53ms:
+
+export interface ReviewEnrichment {
+  summary: string;
+  riskSignals: EnrichmentRiskSignal[];
+  diff: EnrichmentDiff;
+  generatedAt: string;
+}
+
+export type ParsedAiRiskLevel = 'low' | 'medium' | 'high';
+
+export interface ParsedAiSummary {
+  what: string;
+  action: string;
+  riskLevel: ParsedAiRiskLevel;
+  riskReason: string;
+  details: string;
+}
+
+const INTEGRITY_CONCERN_FAILURE_CODES = new Set([
+  'SIGNATURE_INVALID',
+codex
+I have enough context. I’m editing the page now to add the new top-level `VerdictBanner`, compute a parent-level parsed AI summary for it, and leave the existing fallback assessment object in place for the rest of the page UI.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -59,2 +59,51 @@
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+@@ -835,2 +884,3 @@
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+@@ -1226,2 +1276,7 @@
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+apply_patch(auto_approved=true) exited 0 in 47ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+codex
+The page patch is in. I’m running TypeScript now and will fix whatever it surfaces before I stop.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-033file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+ exited 2 in 9.09s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+
+thinking
+**Evaluating file integrity**
+
+I'm considering that the file might actually be fine. I could inspect the line references to check more closely. It could be that the repo-wide TypeScript compiler fails because of pre-existing, unrelated errors. So, maybe I don't need any more edits. It's also worth noting that the command didn't show any errors in the changed file. I just need to get the relevant line numbers to verify everything.
+codex
+`tsc` completed, but the workspace has many existing unrelated type errors outside this page, so there’s no clean repo-wide pass available from this branch. I’m checking the exact diff and line numbers now so I can give you the precise change and call out that the page itself didn’t introduce a new reported TS error.
+exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '1,120p'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '820,900p'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "nl -ba 'src/app/pp/deploy-requests/[requestId]/page.tsx' | sed -n '1260,1305p'" in /Users/moltbot/pp-agent-work/factory-idea-033exec
+/bin/zsh -lc "git diff -- 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-033 succeeded in 52ms:
+   820	  const actorLabel = request?.prAuthor ?? contextDetails?.commitSummary?.author ?? request?.createdByRef ?? 'Unknown';
+   821	  const actorDescriptor = getActorDescriptor(request);
+   822	  const isPendingExpired =
+   823	    request?.status === 'pending' &&
+   824	    Boolean(request?.expiresAt && new Date(request.expiresAt).getTime() <= Date.now());
+   825	  const isRequestExpired = Boolean(request && (request.status === 'expired' || isPendingExpired));
+   826	  const isProduction = request?.env.toLowerCase() === 'production';
+   827	  const requiresRiskAcceptance = Boolean(
+   828	    request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   829	  );
+   830	  const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+   831	  const readinessChecksPassing =
+   832	    mergeReadiness?.checks_total === 0 ||
+   833	    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
+   834	  const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   835	  const showMergeReadinessRefresh = Boolean(
+   836	    request?.status === 'approved' &&
+   837	    mergeReadinessUnknownSince &&
+   838	    Date.now() - mergeReadinessUnknownSince >= 30_000 &&
+   839	    request.mergeStatus !== 'merged' &&
+ succeeded in 52ms:
+     1	'use client';
+     2	
+     3	import Link from 'next/link';
+     4	import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+     5	import { useParams, useRouter, useSearchParams } from 'next/navigation';
+     6	import {
+     7	  AlertTriangle,
+     8	  CheckCircle2,
+     9	  ChevronDown,
+    10	  ChevronRight,
+    11	  ExternalLink,
+    12	  FileCode2,
+    13	  GitBranch,
+    14	  GitPullRequest,
+    15	  Lock,
+    16	  RefreshCw,
+    17	  ShieldCheck,
+    18	  XCircle,
+    19	} from 'lucide-react';
+    20	import { Button } from '@/components/ui/button';
+ succeeded in 51ms:
+  1260	            </CardTitle>
+  1261	          </CardHeader>
+  1262	          <CardContent className="space-y-4">
+  1263	            <p className="text-sm text-[var(--muted)]">{error || 'Deploy request not found.'}</p>
+  1264	            <Link href="/c/deploy-requests">
+  1265	              <Button variant="secondary" className="w-full">
+  1266	                Back to Queue
+  1267	              </Button>
+  1268	            </Link>
+  1269	          </CardContent>
+  1270	        </Card>
+  1271	      </div>
+  1272	    );
+  1273	  }
+  1274	
+  1275	  return (
+  1276	    <>
+  1277	      <VerdictBanner
+  1278	        enrichment={enrichment}
+  1279	        enrichmentLoading={enrichmentLoading}
+ succeeded in 52ms:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a..62f1a7e 100644
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@ import {
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+codex
+Added the AI verdict banner to the top of the deploy request review page in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L60). It now shows a sticky red/yellow/green verdict based on the parsed AI summary, renders a 40px shimmer while enrichment is loading, and stays hidden when no AI summary is available.
+
+I also computed a parent-level parsed summary from `enrichment?.summary` at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L885) and passed it into the banner as the first element in the page return at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L1275).
+
+I ran `npx tsc --noEmit`. It does not pass repo-wide because of many unrelated existing type errors elsewhere in the workspace, but it did not report a new error in the modified deploy request page.
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..62f1a7efea432da6cd2f75e365ad6008b1e95860
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -57,6 +57,55 @@
+   type UpdateBranchState,
+ } from './review-page-helpers';
+ 
++function VerdictBanner({
++  enrichment,
++  enrichmentLoading,
++  assessmentSummary,
++}: {
++  enrichment: ReviewEnrichment | null;
++  enrichmentLoading: boolean;
++  assessmentSummary: { riskLevel: string; action: string; what: string } | null;
++}) {
++  if (enrichmentLoading) {
++    return (
++      <div className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/10 px-4 backdrop-blur-sm">
++        <ShimmerBlock className="h-10 w-full" />
++      </div>
++    );
++  }
++
++  if (!assessmentSummary || !enrichment) {
++    return null;
++  }
++
++  const verdict =
++    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
++      ? {
++          emoji: '🔴',
++          label: 'HIGH RISK',
++          className: 'border-red-500/30 bg-red-500/10 text-red-200',
++        }
++      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
++        ? {
++            emoji: '🟡',
++            label: 'REVIEW CAREFULLY',
++            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
++          }
++        : {
++            emoji: '🟢',
++            label: 'ROUTINE',
++            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
++          };
++
++  return (
++    <div
++      className={`sticky top-0 z-50 w-full border-b px-4 py-3 text-center text-sm font-semibold backdrop-blur-sm ${verdict.className}`}
++    >
++      {`${verdict.emoji} ${verdict.label} — ${assessmentSummary.what}`}
++    </div>
++  );
++}
++
+ function EnvironmentBanner({
+   environment,
+   isProduction,
+@@ -833,6 +882,7 @@
+   const isPostApprovalLayout = Boolean(request?.status === 'approved' || decisionState.status === 'approved');
+   const isDecisionFlowLayout = Boolean(request && request.status === 'pending' && !isPendingExpired);
+   const hasRiskSignalsSection = Boolean((enrichment?.riskSignals.length ?? 0) || (contextDetails?.riskSignals.length ?? 0));
++  const verdictAssessmentSummary = enrichment?.summary ? parseAiSummary(enrichment.summary) : null;
+   const assessmentSummary = enrichment?.summary
+     ? parseAiSummary(enrichment.summary)
+     : {
+@@ -1224,6 +1274,11 @@
+ 
+   return (
+     <>
++      <VerdictBanner
++        enrichment={enrichment}
++        enrichmentLoading={enrichmentLoading}
++        assessmentSummary={verdictAssessmentSummary}
++      />
+       <EnvironmentBanner environment={request.env} isProduction={isProduction} />
+       <div className="approval-surface bg-[var(--background)] px-4 pb-24 pt-6 sm:px-6">
+         <div className="mx-auto max-w-5xl space-y-6">
+
+tokens used
+55,033
+Added the AI verdict banner to the top of the deploy request review page in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L60). It now shows a sticky red/yellow/green verdict based on the parsed AI summary, renders a 40px shimmer while enrichment is loading, and stays hidden when no AI summary is available.
+
+I also computed a parent-level parsed summary from `enrichment?.summary` at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L885) and passed it into the banner as the first element in the page return at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-033/src/app/pp/deploy-requests/[requestId]/page.tsx#L1275).
+
+I ran `npx tsc --noEmit`. It does not pass repo-wide because of many unrelated existing type errors elsewhere in the workspace, but it did not report a new error in the modified deploy request page.

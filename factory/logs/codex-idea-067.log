@@ -1,0 +1,1758 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-067
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf738-9351-79d1-9c18-85d76d6536dc
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting repo and planning updates**
+
+I'm planning to inspect the repository and likely read through FACTORY-PRD.md for context. I also need to kick off the commentary update and maybe think about a plan moving forward. It seems like I'll have to use the exec_command for the commentary process. First things first, I’ll dive into the files to get a clearer picture of what needs to be updated. Let’s get started on that!
+codex
+I’m reading the product doc and the current codebase first so I can map each required change to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 52ms:
+# PRD: idea-067 — Deploy Queue: Skeleton Loading + Pull-to-Refresh + Optimistic UI
+
+**Issue:** permission-protocol/site#196
+**Priority:** P2
+**Repo:** permission-protocol/site
+**Size:** M
+
+## Problem
+Deploy queue shows a spinner while loading. On mobile, there's no pull-to-refresh. After approving/denying, the user waits for a full re-fetch before seeing the update.
+
+## Current State
+- `app/review/ReviewDashboard.tsx` (888 lines)
+- Fetches from `/api/reviews` on mount
+- Re-fetches after approve/deny actions
+- No skeleton loading, likely a spinner or blank state
+- Has TouchEvent import — may already have some touch handling
+
+## Requirements
+
+### 1. Skeleton Loading
+ succeeded in 53ms:
+/Users/moltbot/pp-agent-work/factory-idea-067
+src/lib/auth.ts
+src/lib/receiptData.ts
+src/lib/artifactDemo.ts
+src/components/CodeBlock.tsx
+src/components/CopyCommandButton.tsx
+src/components/CTABanner.tsx
+src/components/UseCaseGrid.tsx
+src/components/DiagramFlow.tsx
+src/components/StackDiagram.tsx
+src/components/SectionBlock.tsx
+src/components/ComparisonTable.tsx
+src/components/LayoutChrome.tsx
+src/components/ReceiptCard.tsx
+src/components/SiteHeader.tsx
+src/components/ReceiptShareButtons.tsx
+src/components/Hero.tsx
+favicon.svg
+REMAINING-PAGES-INSTRUCTIONS.md
+BRANDING-PASS-INSTRUCTIONS.md
+
+thinking
+**Inspecting ReviewDashboard**
+
+I’m planning to inspect the ReviewDashboard soon. I think I'll use the `rg` command to manage loading and actions like touching. This might involve looking at the various components to ensure everything is functioning as it should. It's crucial to check for any errors or issues that might pop up during the actions. I’m focusing on making sure this process goes smoothly!
+codex
+I have the scope narrowed to one file. Next I’m tracing the existing loading state, touch handling, and approve/deny flow so the implementation lands on the current patterns instead of fighting them.
+exec
+/bin/zsh -lc "sed -n '1,260p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc "sed -n '561,980p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc "sed -n '261,560p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc 'rg -n "loading|spinner|touch|TouchEvent|approve|deny|reject|refresh|fetchReviews|setReviews|status" app/review/ReviewDashboard.tsx' in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 53ms:
+"use client";
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { AlertTriangle, CheckCircle2, Clock, GitPullRequest, Plus, RefreshCw, ShieldCheck } from "lucide-react";
+import { FormEvent, TouchEvent, useEffect, useMemo, useState } from "react";
+import { timeAgo } from "@/lib/time";
+
+type RequestSummary = {
+  id: string;
+  status: string;
+  repo: string;
+  env: string;
+  pr_number: number | null;
+  pr_title: string | null;
+  actor: string;
+  capability: string;
+  risk_tier: string;
+  created_at: string;
+};
+ succeeded in 53ms:
+Total output lines: 420
+
+          <div
+            className="pointer-events-none absolute left-1/2 top-0 z-10 flex -translate-x-1/2 -translate-y-8 items-center gap-2 rounded-full border border-border bg-card/95 px-3 py-1.5 text-xs text-secondary shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+            style={{ opacity: refreshing ? 1 : refreshProgress }}
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} style={{ transform: refreshing ? undefined : `rotate(${refreshProgress * 180}deg)` }} />
+            <span>{refreshing ? "Refreshing..." : pullDistance > 60 ? "Release to refresh" : "Pull to refresh"}</span>
+          </div>
+        ) : null}
+
+        {showSkeleton ? (
+          <ReviewSkeletonCards />
+        ) : error ? (
+        <div className="rounded-xl border border-danger/50 bg-danger/10 p-6 text-center">
+          <p className="text-sm text-danger">{error}</p>
+        </div>
+      ) : requests.length === 0 ? (
+        <div className="rounded-xl border border-border bg-card p-12 text-center">
+          <CheckCircle2 className="mx-auto h-12 w-12 text-[#10B981]/50" />
+ succeeded in 50ms:
+    setShowManualCreate(true);
+  }, []);
+
+  async function submitDecision(requestId: string, action: "approve" | "reject") {
+    const request = requests.find((item) => item.id === requestId);
+    if (!request) return;
+
+    const nextStatus = action === "approve" ? "approved" : "denied";
+    setActionErrors((prev) => {
+      const next = { ...prev };
+      delete next[requestId];
+      return next;
+    });
+    setOptimisticDecisions((prev) => ({
+      ...prev,
+      [requestId]: {
+        previousStatus: request.status,
+        status: nextStatus,
+        pending: true,
+      },
+ succeeded in 50ms:
+6:import { FormEvent, TouchEvent, useEffect, useMemo, useState } from "react";
+11:  status: string;
+43:  status: string;
+52:  status?: string;
+108:function statusIcon(status: string) {
+109:  if (status === "pending") return <Clock className="h-4 w-4 text-warning" />;
+110:  if (status === "approved") return <CheckCircle2 className="h-4 w-4 text-[#10B981]" />;
+117:  const [loading, setLoading] = useState(true);
+118:  const [refreshing, setRefreshing] = useState(false);
+120:  const [refreshError, setRefreshError] = useState<string | null>(null);
+122:  const [statusFilter, setStatusFilter] = useState<string>("all");
+130:  const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+131:    status: "idle",
+140:  const [manualSubmitState, setManualSubmitState] = useState<{ status: "idle" | "submitting" | "success" | "error"; message?: string }>({
+141:    status: "idle",
+154:  async function refreshReviews(mode: "initial" | "refresh" = "refresh") {
+187:    void refreshReviews("initial");
+191:    const pendingIds = requests.filter((request) => request.status === "pending" && !optimisticDecisions[request.id]).map((request) => request.id);
+241:      setIsTouchViewport(media.matches && (navigator.maxTouchPoints > 0 || "ontouchstart" in window));
+264:  async function submitDecision(requestId: string, action: "approve" | "reject") {
+
+thinking
+**Evaluating RequestCard adjustments**
+
+I think I need to focus on making the lower part of the RequestCard and the skeleton more relevant. Maybe I'm considering truncating certain sections to streamline what’s important. Using targeted reads around the various sections could help clarify what needs to change. It feels like I’m really honing in on making this more effective, so I’m looking forward to seeing how those adjustments improve the overall presentation!
+codex
+The file already has partial pull-to-refresh and optimistic status scaffolding. I’m checking the gaps against the PRD now: whether refresh currently hides content, whether the optimistic state truly shows immediately, and where the skeleton/card shapes need to match the live layout.
+exec
+/bin/zsh -lc "sed -n '640,860p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc "sed -n '860,1120p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 53ms:
+                    key={repo}
+                    type="button"
+                    onClick={() => setRepoFilter(repo)}
+                    className={`min-h-11 rounded-full border px-4 py-2 text-xs transition-colors ${
+                      repoFilter === repo
+                        ? "border-permit bg-permit/15 text-permit"
+                        : "border-border bg-card text-secondary hover:border-permit/40 hover:text-signal"
+                    }`}
+                  >
+                    {repo}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          {activePending.length >= 2 ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3">
+              <div className="flex flex-wrap gap-2">
+                <button
+ succeeded in 53ms:
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void load();
+    return () => controller.abort();
+  }, [request.id]);
+
+  const isSummaryStale = Boolean(detail?.summary_sha && detail?.current_head_sha && detail.summary_sha !== detail.current_head_sha);
+  const authorTrustCopy = authorTrackRecord && authorTrackRecord.clean_deploys > 0
+    ? `✅ Author: ${authorTrackRecord.clean_deploys} clean deploys (streak: ${authorTrackRecord.streak})`
+    : "⚠️ New author: first deploy";
+
+  function handleTouchStart(event: TouchEvent<HTMLDivElement>) {
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+    setTranslateX(0);
+  }
+
+
+thinking
+**Analyzing card status behavior**
+
+I'm thinking that the PRD on the card instantly shows the status pill as approved or denied, but it seems a bit complex with the stack card functionalities. The current submitDecision just sets optimisticDecisions, yet that makes the card switch immediately without showing the approved opacity pending state. It raises the question of whether the card should preserve its position until confirmed. Maybe in stack mode, it should stay visible and only switch once success is confirmed?
+thinking
+**Examining card visibility and opacity**
+
+I’m considering if keeping the card visible in the approved section is okay, even if the user sees it a bit lower down. The phrase "card instantly shows approved" suggests it could be okay anywhere without a full re-fetch. When success occurs, the opacity should be removed, and if it's in the approved section, that opacity needs to be false. There might be a gap with refresh logic that hides all content, but maybe adding a fade-in effect after loading could work well. I’ll need to check the package scripts and run some tests!
+codex
+The main behavioral gap is in stack mode: an optimistic decision immediately changes the filtered collections, so the card can disappear from the pending stack before the user sees the pending-confirmation state. I’m fixing that while tightening the skeleton and refresh behavior to match the acceptance criteria exactly.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 53ms:
+{
+  "name": "pp-website-v3",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.511.0",
+    "next": "^14.2.30",
+    "next-auth": "^4.24.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+ succeeded in 51ms:
+
+
+thinking
+**Evaluating stack behavior**
+
+After a successful update, I notice the optimistic deletion and approval can lead to the fallback disappearing. This allows the currentStackRequest to move on to the next pending item, which is good. But when there's a failure, the optimistic deletion means the status reverts to pending, thus including it back in activePending. I need to ensure that the stackIndex isn’t auto-reset when the length of activePending shrinks—though it probably will be okay in practice.
+codex
+I’m editing `app/review/ReviewDashboard.tsx` now. The changes are focused on three things: minimum initial skeleton timing, stack-mode optimistic confirmation that stays visible until the request resolves, and skeleton/status badge refinements to match the PRD more closely.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx
+@@ -66,2 +66,3 @@
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+@@ -113,2 +114,13 @@
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+@@ -129,2 +141,3 @@
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+@@ -163,3 +176,6 @@
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+@@ -401,4 +417,16 @@
+ 
++  useEffect(() => {
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
+ 
+@@ -921,9 +949,3 @@
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+@@ -1009,3 +1031,2 @@
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+@@ -1046,3 +1067,3 @@
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+@@ -1073,9 +1094,3 @@
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+apply_patch(auto_approved=true) exited 0 in 46ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..aa28aac361f4589b16f185a03b72af2244fe5b66
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,20 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -919,13 +947,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1029,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1065,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1092,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..aa28aac361f4589b16f185a03b72af2244fe5b66
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,20 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -919,13 +947,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1029,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1065,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1092,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+codex
+The first pass exposed one edge case: after an optimistic approve/reject in stack mode, the stack could still collapse back to list mode because the pending count drops immediately. I’m tightening that state transition so the in-flight card stays visible until the API call resolves.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx
+@@ -418,2 +418,5 @@
+   useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
+     const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
+@@ -424,3 +427,3 @@
+     }
+-  }, [activePending, stackIndex]);
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
+ 
+@@ -431,2 +434,3 @@
+   const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+@@ -731,3 +735,3 @@
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+apply_patch(auto_approved=true) exited 0 in 64ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+exec
+/bin/zsh -lc 'npm run lint' in /Users/moltbot/pp-agent-work/factory-idea-067file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+ succeeded in 2.35s:
+
+> pp-website-v3@1.0.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+codex
+The implementation is in place. I’m running the repo’s lint pass now to catch any type or React issues before I commit.
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+
+thinking
+**Preparing for git commit**
+
+I’m thinking about checking the git diff to inspect the code snippets. I wonder if there are any issues to address before I commit. It’s always a good practice to ensure everything is in order, right? I want to avoid any surprises later on. I’ll go ahead and review what I've changed carefully. If everything looks good, then I can proceed with committing the changes confidently!
+exec
+/bin/zsh -lc 'git diff -- app/review/ReviewDashboard.tsx' in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 53ms:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14b..7077d0a 100644
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@ type StackRequestDetail = {
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@ function statusIcon(status: string) {
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+ succeeded in 52ms:
+ M app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+codex
+The diff is clean and lint passes. I’m creating the commit now with just the dashboard changes required by the PRD.
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+codex
+The code change is finished, but commit creation hit a sandbox restriction: this workspace can edit files but cannot write into `.git`, so Git can’t create `index.lock`. I’m confirming that constraint, then I’ll give you the exact status and the commit command to run locally if the restriction remains.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/refs' in /Users/moltbot/pp-agent-work/factory-idea-067exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-067 succeeded in 53ms:
+drwxr-xr-x  16 moltbot  staff    512 Mar 16 09:16 .git
+-rw-r--r--   1 moltbot  staff  14972 Mar 16 09:16 .git/index
+drwxr-xr-x   5 moltbot  staff    160 Mar 15 14:48 .git/refs
+ succeeded in 52ms:
+ M app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+codex
+Implemented the deploy queue changes in [ReviewDashboard.tsx](/Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx): initial load now guarantees a 200ms skeleton state, refresh still shows skeleton cards plus the pull-to-refresh indicator, and optimistic approve/deny keeps the in-flight status pill visible in stack mode until the API call resolves. I also tightened the skeleton card shape to match the requested repo/risk/title/actor-time layout and moved the pending opacity cue onto the status pill itself.
+
+Verification: `npm run lint` passed.
+
+I could not create the Git commit because the sandbox blocks writes inside `.git`:
+`fatal: Unable to create '.git/index.lock': Operation not permitted`
+
+If you want the commit applied locally, run:
+```bash
+git add app/review/ReviewDashboard.tsx
+git commit -m "Implement deploy queue loading and optimistic updates"
+```
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index 700c14be6ac8d66109e2576df76d0f9d0b7c204b..7077d0ad6578f73c8baaa85d384335f2f148ced6
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -64,6 +64,7 @@
+ const inputClass =
+   "mt-1 w-full rounded-lg border border-border bg-ash px-3 py-2 text-sm text-signal placeholder:text-secondary/70 focus:border-permit focus:outline-none focus:ring-2 focus:ring-permit/30";
+ const RECONCILE_DEBOUNCE_MS = 5 * 60 * 1000;
++const INITIAL_SKELETON_MS = 200;
+ let lastReconcileAt = 0;
+ let cachedStaleIds = new Set<string>();
+ 
+@@ -111,6 +112,17 @@
+   return <AlertTriangle className="h-4 w-4 text-muted" />;
+ }
+ 
++function statusBadgeClass(status: string, pending = false) {
++  const baseClass =
++    status === "approved"
++      ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
++      : status === "denied"
++        ? "border-danger/40 bg-danger/10 text-danger"
++        : "border-warning/40 bg-warning/10 text-warning";
++
++  return `${baseClass} ${pending ? "opacity-70" : ""}`;
++}
++
+ export function ReviewDashboard() {
+   const [requests, setRequests] = useState<RequestSummary[]>([]);
+   const [staleIds, setStaleIds] = useState<string[]>([]);
+@@ -127,6 +139,7 @@
+   const [isTouchViewport, setIsTouchViewport] = useState(false);
+   const [pullStartY, setPullStartY] = useState<number | null>(null);
+   const [pullDistance, setPullDistance] = useState(0);
++  const [focusedStackRequestId, setFocusedStackRequestId] = useState<string | null>(null);
+   const [approveAllState, setApproveAllState] = useState<{ status: "idle" | "submitting" | "error"; message?: string }>({
+     status: "idle",
+   });
+@@ -161,7 +174,10 @@
+     }
+ 
+     try {
+-      const res = await fetch("/api/reviews", { cache: "no-store" });
++      const [res] = await Promise.all([
++        fetch("/api/reviews", { cache: "no-store" }),
++        mode === "initial" ? new Promise((resolve) => setTimeout(resolve, INITIAL_SKELETON_MS)) : Promise.resolve(),
++      ]);
+       if (!res.ok) {
+         const message = "Failed to load requests.";
+         if (mode === "initial") setError(message);
+@@ -399,8 +415,24 @@
+     }
+   }, [activePending.length, stackIndex]);
+ 
++  useEffect(() => {
++    if (focusedStackRequestId && optimisticDecisions[focusedStackRequestId]?.pending) {
++      return;
++    }
++    const nextFocusedRequest = activePending[Math.min(stackIndex, Math.max(0, activePending.length - 1))];
++    if (nextFocusedRequest) {
++      setFocusedStackRequestId(nextFocusedRequest.id);
++    } else if (activePending.length === 0) {
++      setFocusedStackRequestId(null);
++    }
++  }, [activePending, focusedStackRequestId, optimisticDecisions, stackIndex]);
++
++  const optimisticFocusedRequest = focusedStackRequestId
++    ? displayRequests.find((request) => request.id === focusedStackRequestId && optimisticDecisions[request.id]?.pending)
++    : undefined;
+   const currentStackIndex = Math.min(stackIndex, Math.max(0, activePending.length - 1));
+-  const currentStackRequest = activePending[currentStackIndex];
++  const currentStackRequest = optimisticFocusedRequest ?? activePending[currentStackIndex];
++  const showStackView = viewMode === "stack" && Boolean(currentStackRequest) && (activePending.length >= 2 || Boolean(optimisticFocusedRequest));
+ 
+   async function approveAllPending() {
+     setApproveAllState({ status: "submitting" });
+@@ -701,7 +733,7 @@
+                 <Clock className="h-3.5 w-3.5" />
+                 Pending Approval ({activePending.length})
+               </h2>
+-              {viewMode === "stack" && activePending.length >= 2 && currentStackRequest ? (
++              {showStackView ? (
+                 <StackReviewCard
+                   request={currentStackRequest}
+                   index={currentStackIndex}
+@@ -919,13 +951,7 @@
+               {request.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                request.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : request.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              } ${pendingDecision ? "opacity-60" : ""}`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(request.status, pendingDecision)}`}
+             >
+               {request.status}
+             </span>
+@@ -1007,7 +1033,6 @@
+             </div>
+             <div className="flex shrink-0 gap-2">
+               <div className="h-6 w-16 animate-pulse rounded-full bg-border/50" />
+-              <div className="h-6 w-20 animate-pulse rounded-full bg-border/50" />
+             </div>
+           </div>
+         </div>
+@@ -1044,7 +1069,7 @@
+             : "border-border bg-card hover:border-permit/40 hover:bg-card/80"
+         } ${
+           r.status === "pending" && !isStale ? "border-l-4 border-l-warning pl-3" : ""
+-        } ${pendingDecision ? "opacity-60" : ""}`}
++        }`}
+       >
+         <div className="flex items-start justify-between gap-3">
+           <div className="flex items-start gap-3 min-w-0">
+@@ -1071,13 +1096,7 @@
+               {r.risk_tier}
+             </span>
+             <span
+-              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+-                r.status === "approved"
+-                  ? "border-[#10B981]/40 bg-[#10B981]/10 text-[#10B981]"
+-                  : r.status === "denied"
+-                    ? "border-danger/40 bg-danger/10 text-danger"
+-                    : "border-warning/40 bg-warning/10 text-warning"
+-              }`}
++              className={`inline-flex rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${statusBadgeClass(r.status, pendingDecision)}`}
+             >
+               {r.status}
+             </span>
+
+tokens used
+28,848
+Implemented the deploy queue changes in [ReviewDashboard.tsx](/Users/moltbot/pp-agent-work/factory-idea-067/app/review/ReviewDashboard.tsx): initial load now guarantees a 200ms skeleton state, refresh still shows skeleton cards plus the pull-to-refresh indicator, and optimistic approve/deny keeps the in-flight status pill visible in stack mode until the API call resolves. I also tightened the skeleton card shape to match the requested repo/risk/title/actor-time layout and moved the pending opacity cue onto the status pill itself.
+
+Verification: `npm run lint` passed.
+
+I could not create the Git commit because the sandbox blocks writes inside `.git`:
+`fatal: Unable to create '.git/index.lock': Operation not permitted`
+
+If you want the commit applied locally, run:
+```bash
+git add app/review/ReviewDashboard.tsx
+git commit -m "Implement deploy queue loading and optimistic updates"
+```

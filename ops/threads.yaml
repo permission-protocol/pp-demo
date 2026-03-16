@@ -3,6 +3,212 @@
 # Git-backed. No database.
 
 threads:
+  - id: "1483125897161605121"
+    title: "OpenClaw Update"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-16
+    owner: Rod
+    priority: medium
+    created: 2026-03-16
+    last_updated: 2026-03-16
+    summary: "Updated OpenClaw from 2026.3.2 → 2026.3.13. Backed up workspace + config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup. Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver)."
+    open_tasks: []
+    decisions:
+      - "OpenClaw updated to 2026.3.13 from 2026.3.2"
+      - "Config backup at ~/.openclaw/openclaw.json.backup-pre-update-2026-03-16"
+      - "openclaw doctor --fix added to maintenance toolkit"
+      - "Mobile QA pipeline unaffected by update — USB + WebDriver is the right approach"
+      - "macOS DMG available on GitHub releases; iOS app in internal preview"
+  - id: "1482835612909306130"
+    title: "/drploy-date"
+    channel: "control-room-2"
+    status: ARCHIVED
+    archived: 2026-03-15
+    owner: Rod
+    priority: medium
+    created: 2026-03-15
+    last_updated: 2026-03-15
+    summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run bypass, #19 review URL) — both already fixed by v2 rewrite and PR #20. Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license) and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes license)."
+    open_tasks: []
+    decisions:
+      - "v1 tag on deploy-gate should track HEAD of main (force-update after merges)"
+      - "Both deploy-gate bugs were pre-v2 artifacts — no code changes needed"
+      - "Enable auto-delete of head branches on deploy-gate repo to prevent stale branch accumulation"
+  - id: "1481991166093430931"
+    title: "Fix Issues"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-13
+    last_updated: 2026-03-13
+    summary: "Batch execution of 4 open GitHub issues via parallel Codex agents. #27 OG meta tags, #61 PR Gate rerun fix, #183 superseded+rerun, #184 timeline+stale. All merged and deployed. Retro led to Batch Codex Protocol in AGENTS.md."
+    open_tasks: []
+    decisions:
+      - "Monitor Codex via git status, not process logs (PTY buffering unreliable)"
+      - "Use persistent worktree dirs, never /tmp"
+      - "Always check remote branches before re-launching agents"
+      - "Pre-flight: verify package manager, check existing branches"
+      - "One type-fix commit after Codex is acceptable"
+    memory_candidates: []
+  - id: "1481392726070005770"
+    title: "Ideal Approval Screen"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-11
+    last_updated: 2026-03-13
+    summary: "Designed and implemented mobile-first approval screen + deploy queue for PP marketing site. Two PRDs, 8 GitHub issues, 5 merged PRs. Ported 6 patterns from PP app. Retrospective led to AGENTS.md and pp-os/PROCESS.md updates."
+    open_tasks: []
+    decisions:
+      - "Approval = trust decision, not code review. 5-second mobile-first design."
+      - "Deploy queue = card-based inbox with urgency sort, not table."
+      - "Auto-rerun Deploy Gate after PP approval (hybrid check_run → actions_run)"
+      - "Port patterns systematically from PP app to marketing site (monthly audit)"
+      - "Never use /tmp for agent worktrees — use persistent dirs"
+      - "Sequential agents for shared files, parallel for independent ones"
+      - "Pre-merge gate: build pass, layout.tsx match, pushed, no conflicts"
+    memory_candidates: []
+  - id: "1482059289911885864"
+    title: "Review"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: medium
+    created: 2026-03-13
+    last_updated: 2026-03-13
+    summary: "Rod reviewed pp-demo deploy request (rate limiting middleware). AI summary flagged valid concerns but irrelevant for demo repo. Rod also reported PR #98 build failure — mockHttp missing .text() method caused 403/404 misclassification. Charles pushed fix, build passed."
+    open_tasks: []
+    decisions:
+      - "Test Response mocks must include text() and headers — incomplete mocks cause silent misclassification"
+    memory_candidates: []
+  - id: "1481631886324273152"
+    title: "Exec Summary"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: medium
+    created: 2026-03-12
+    last_updated: 2026-03-13
+    summary: "Rod requested executive summary of past weeks + current status. Charles compiled full report (Mar 4-12) covering strategic pivot, website launch, SDKs, deploy-gate dogfood, UX sprint, metrics. Delivered as markdown file."
+    open_tasks: []
+    decisions:
+      - "Exec summary format: markdown file with TL;DR, weekly breakdown, current state tables, metrics, architecture diagram"
+    memory_candidates: []
+  - id: "1481686307246702783"
+    title: "rc-sales"
+    channel: "gtm-strategy"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-12
+    last_updated: 2026-03-13
+    summary: "Approval screen overhaul for RC sales prospects (Marco=EM, Sarah=Security). Rod's 4 questions answered. 11 specs written (batch 1: 7, batch 2: 4). PRs #86 and #88 merged. Decision flow layout deployed: 4 zones (Context/Assessment/Action/Evidence), 80% above fold, environment theming, trust signals, decluttered. Before/after screenshots captured."
+    open_tasks: []
+    decisions:
+      - "Approval screen = decision flow, not document (4 zones)"
+      - "80% of approvals happen without scrolling"
+      - "Environment theming: production=amber, staging=blue"
+      - "Deny flow collapsed by default"
+      - "12 non-essential elements removed"
+      - "Trust signals added: GitHub PR review status, actor type, blast radius, post-approval workflow"
+      - "Verification warnings suppressed when caused by missing config"
+    memory_candidates: []
+  - id: "1481344471747657748"
+    title: "QA Sprint"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-11
+    last_updated: 2026-03-13
+    summary: "QA Sprint #2 on PP app. 14 issues shipped across 3 repos in one afternoon. Queue UI redesigned (row polish, click area, PR# alignment). Review page converged from marketing site UX (sticky bar, reason presets, inline merge). Embedded worker mode added. Expired request UX fixed. Process improvements captured in AGENTS.md."
+    open_tasks: []
+    decisions:
+      - "Embedded worker is default; separate worker opt-in (WORKER_MODE=external)"
+      - "Single review surface in app; marketing site redirects"
+      - "Sticky bar > modals for approval flow"
+      - "Always review Codex output against PRD before pushing"
+      - "PRDs must include User Journey + Customer Test gate"
+      - "Two surfaces for same feature = tech debt, merge immediately"
+    memory_candidates: []
+  - id: "1481327876610461786"
+    title: "Analytics"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-11
+    last_updated: 2026-03-13
+    summary: "Full analytics pipeline for permissionprotocol.com. Fixed broken contact form, added UTM tracking, PostHog session recordings, Next.js pageview tracking, CTA data-track. Contact alerts route to 📬 Inbound Leads thread in #rc-main. 6 PRs merged (#162, #164, #167, #168, #170, #177)."
+    open_tasks:
+      - "Issue 5: PostHog funnels + weekly dashboard (deferred, UI config only)"
+    decisions:
+      - "PostHog is the analytics platform (free tier: 1M events/mo, 5K recordings)"
+      - "All events use pp_ prefix"
+      - "UTM stored in sessionStorage (clears on tab close)"
+      - "Contact alerts go to 📬 Inbound Leads thread in #rc-main (thread ID 1481388810989338724)"
+      - "Discord webhook thread_name only works in forum channels — use ?thread_id= for regular channels"
+      - "Vercel env vars: DISCORD_CONTACT_WEBHOOK + DISCORD_CONTACT_THREAD_ID"
+    memory_candidates: []
+  - id: "1481409554939121764"
+    title: "GitHub Marketplace"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: low
+    created: 2026-03-11
+    last_updated: 2026-03-13
+    summary: "Rod asked about publishing deploy-gate Action to GitHub Marketplace. Confirmed it's a good move (discovery, credibility, zero cost, funnel). Added to Rod's todo list — he'll do it when he gets to it."
+    open_tasks: []
+    decisions:
+      - "Publish deploy-gate Action to GitHub Marketplace (Rod's todo, not urgent)"
+    memory_candidates: []
+  - id: "1481733146310607091"
+    title: "Public Receipt"
+    channel: "rc-product"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: high
+    created: 2026-03-12
+    last_updated: 2026-03-13
+    summary: "Receipt page showed false 'ACTION AUTHORIZED' for pending/unverified requests. 6 bugs found and fixed in PR #188 (merged). Status badge, signature, actor, timeline, approved_at fallthrough, raw data leak all corrected."
+    open_tasks: []
+    decisions:
+      - "Receipt page must show honest status — never default to authorized"
+      - "API key actors display as 'CI/CD Pipeline', not raw tenant IDs"
+      - "Verification failures surfaced with human-readable messages"
+      - "Raw API internals stripped from public-facing technical JSON"
+      - "approved_at must not fall through to updatedAt"
+    memory_candidates: []
+  - id: "1482003596919836784"
+    title: "Upgrade MacOs"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-13
+    owner: Rod
+    priority: medium
+    created: 2026-03-13
+    last_updated: 2026-03-13
+    summary: "Upgraded macOS Sonoma 14.8.2 → Tahoe 26.3.1. Peekaboo (UI automation) now works — was crashing on Sonoma (built for macOS 15+). Workspace backed up to Roca-Ventures/charles-workspace-backup. Recovery instructions provided. All tools verified post-upgrade."
+    open_tasks: []
+    decisions:
+      - "macOS Tahoe 26.3.1 chosen over Sonoma patch — Peekaboo required macOS 15+"
+      - "Charles = visual/creative workstation (Peekaboo), Maria = headless workhorse"
+      - "Workspace backup repo: Roca-Ventures/charles-workspace-backup (private)"
+      - "M1/8GB is fine for Tahoe — trim background processes if sluggish"
+    memory_candidates: []
   - id: "1480594719296978974"
     title: "Deploy Gate Primitive"
     channel: "rc-product"

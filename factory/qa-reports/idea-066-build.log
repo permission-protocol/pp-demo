@@ -1,0 +1,1203 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-066
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf735-397c-7a71-bd37-72543ed84937
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting the repository**
+
+I need to take a closer look at the repository and see if the AGENTS are related or if they have the skills I'm looking for. I should start updating my commentary as well. Reading through the file and inspecting its contents is essential. I’m considering using a parallel approach here, which might save time and help me get a clearer understanding quickly. Let's dive in and see what I can find!
+codex
+I’m reading the PRD and scanning the repo structure first so I can implement the requested changes against the existing code rather than guessing.
+exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 53ms:
+# PRD: idea-066 — Deploy Queue: Pulse Bar + Urgency Sort
+
+**Issue:** permission-protocol/site#194
+**Priority:** P2
+**Repo:** permission-protocol/site
+**Size:** M
+
+## Problem
+Deploy queue shows all pending requests equally. Sarah can't quickly see which ones are urgent. Production deploys waiting 2 hours look the same as staging deploys from 5 minutes ago.
+
+## Current State
+- `app/review/ReviewDashboard.tsx` (888 lines) — main deploy queue
+- Already has `riskBadge()` function for risk tier colors
+- Has `waitLabel()` and `averageWait()` — knows how long things have been waiting
+- Has `RequestSummary` type with `env`, `risk_tier`, `created_at`
+- Two view modes: "list" and "stack"
+
+## Requirements
+
+### 1. Urgency Sort (default)
+ succeeded in 52ms:
+/Users/moltbot/pp-agent-work/factory-idea-066
+src/lib/auth.ts
+src/lib/receiptData.ts
+src/lib/artifactDemo.ts
+src/components/CodeBlock.tsx
+src/components/CopyCommandButton.tsx
+src/components/CTABanner.tsx
+src/components/UseCaseGrid.tsx
+src/components/DiagramFlow.tsx
+src/components/StackDiagram.tsx
+src/components/SectionBlock.tsx
+src/components/ComparisonTable.tsx
+src/components/LayoutChrome.tsx
+src/components/ReceiptCard.tsx
+src/components/SiteHeader.tsx
+src/components/ReceiptShareButtons.tsx
+src/components/Hero.tsx
+favicon.svg
+REMAINING-PAGES-INSTRUCTIONS.md
+BRANDING-PASS-INSTRUCTIONS.md
+
+thinking
+**Checking file and changes**
+
+I need to inspect the relevant file, as I suspect some tests might not be present. To get started, it seems sensible to check the current status in my Git repository first. I might consider running a `git status` command to see what changes are tracked. After that, I can proceed with committing any necessary changes I find. Let's make sure everything’s in order!
+codex
+I have the PRD. Next I’m reading the review dashboard implementation and current styling hooks so I can fit the urgency logic into the existing list view without disturbing stack view or API behavior.
+exec
+/bin/zsh -lc "sed -n '561,980p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc "sed -n '261,560p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc "sed -n '1,260p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 52ms:
+"use client";
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { AlertTriangle, CheckCircle2, Clock, GitPullRequest, Plus, ShieldCheck } from "lucide-react";
+import { FormEvent, TouchEvent, useEffect, useMemo, useState } from "react";
+import { timeAgo } from "@/lib/time";
+
+type RequestSummary = {
+  id: string;
+  status: string;
+  repo: string;
+  env: string;
+  pr_number: number | null;
+  pr_title: string | null;
+  actor: string;
+  capability: string;
+  risk_tier: string;
+  created_at: string;
+};
+ succeeded in 52ms:
+    event.preventDefault();
+    setManualSubmitState({ status: "submitting" });
+
+    try {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          repo: manualRequest.repo.trim(),
+          prNumber: Number(manualRequest.prNumber),
+          commitSha: manualRequest.commitSha.trim(),
+          description: manualRequest.description.trim(),
+        }),
+      });
+
+      const body = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        request?: RequestSummary;
+      };
+
+ succeeded in 52ms:
+                >
+                  Stack
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={`min-h-11 rounded-full border px-4 py-2 text-xs transition-colors ${
+                    viewMode === "list"
+                      ? "border-permit bg-permit/15 text-permit"
+                      : "border-border bg-void/50 text-secondary hover:border-permit/40 hover:text-signal"
+                  }`}
+                >
+                  List
+                </button>
+              </div>
+              {canApproveAll ? (
+                <button
+                  type="button"
+                  disabled={approveAllState.status === "submitting"}
+                  onClick={() => void approveAllPending()}
+ succeeded in 53ms:
+
+exec
+/bin/zsh -lc "sed -n '981,1120p' app/review/ReviewDashboard.tsx" in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 53ms:
+      </Link>
+    </motion.div>
+  );
+}
+
+thinking
+**Verifying CSS Keyframes**
+
+I think it might already be implemented, but I need to verify if the CSS keyframes exist. It’s possible that they’re from previous changes. To check, I’ll need to inspect the globals for the queue-card-pulse classes. It seems like there’s a little uncertainty because I want to ensure everything is in order before moving forward. Let's explore the CSS and see what’s there!
+codex
+The dashboard code already contains most of the logic the PRD calls for, but I need to verify whether the pulse classes actually exist and then close any gaps against the acceptance criteria.
+exec
+/bin/zsh -lc "sed -n '1,260p' app/globals.css" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'rg -n "queue-card-pulse|pulse-urgent|danger|warning" app/globals.css public/styles.css' in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 53ms:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(:target) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  @apply bg-void text-signal font-sans antialiased;
+  background-image:
+    radial-gradient(circle at 50% -5%, rgba(68, 170, 153, 0.16), transparent 38%),
+    radial-gradient(circle at 20% 10%, rgba(68, 170, 153, 0.1), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(68, 170, 153, 0.08), transparent 35%),
+ succeeded in 53ms:
+app/globals.css:89:@keyframes pulse-urgent-red {
+app/globals.css:99:@keyframes pulse-urgent-amber {
+app/globals.css:109:.queue-card-pulse-red {
+app/globals.css:110:  animation: pulse-urgent-red 1.8s ease-in-out infinite;
+app/globals.css:113:.queue-card-pulse-amber {
+app/globals.css:114:  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
+public/styles.css:2039:.dark-brand-page .btn-danger {
+public/styles.css:3298:.dark-brand-page .btn-danger {
+codex
+I found the pulse styles already present in `app/globals.css`. The remaining work is to tighten the implementation against the PRD rather than building this from scratch.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc "nl -ba app/globals.css | sed -n '70,130p'" in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc "nl -ba app/review/ReviewDashboard.tsx | sed -n '1,220p'" in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 53ms:
+{
+  "name": "pp-website-v3",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.511.0",
+    "next": "^14.2.30",
+    "next-auth": "^4.24.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+ succeeded in 53ms:
+    70	}
+    71	
+    72	.btn-primary {
+    73	  @apply inline-flex items-center rounded-xl bg-permit px-5 py-3 font-semibold text-void transition-all duration-200;
+    74	}
+    75	
+    76	.btn-primary:hover {
+    77	  transform: scale(1.02);
+    78	  box-shadow: 0 0 20px rgba(68, 170, 153, 0.3);
+    79	}
+    80	
+    81	.btn-secondary {
+    82	  @apply inline-flex items-center rounded-xl border border-border px-5 py-3 font-semibold text-signal transition-all duration-200;
+    83	}
+    84	
+    85	.btn-secondary:hover {
+    86	  @apply border-permit/60 bg-permit/10;
+    87	}
+    88	
+    89	@keyframes pulse-urgent-red {
+ succeeded in 53ms:
+     1	"use client";
+     2	
+     3	import Link from "next/link";
+     4	import { motion } from "framer-motion";
+     5	import { AlertTriangle, CheckCircle2, Clock, GitPullRequest, Plus, ShieldCheck } from "lucide-react";
+     6	import { FormEvent, TouchEvent, useEffect, useMemo, useState } from "react";
+     7	import { timeAgo } from "@/lib/time";
+     8	
+     9	type RequestSummary = {
+    10	  id: string;
+    11	  status: string;
+    12	  repo: string;
+    13	  env: string;
+    14	  pr_number: number | null;
+    15	  pr_title: string | null;
+    16	  actor: string;
+    17	  capability: string;
+    18	  risk_tier: string;
+    19	  created_at: string;
+    20	};
+
+
+thinking
+**Implementing CSS Improvements**
+
+I need to implement more precise CSS using existing tokens for danger or warning colors, since they're already present. The user asked for changes, so I should modify something. I think we could enhance this by utilizing the generic @keyframes pulse-urgent with CSS vars, adding reduced motion, and possibly an aria label for an urgent chip with a lightning icon. Also, I should consider displaying active sort labels to improve usability. Let's aim for a clearer, organized display based on urgency or recentness.
+thinking
+**Patching CSS for Performance**
+
+I need to update globals.css to incorporate the generic keyframes for pulse-urgent along with handling for reduced motion. This is important for enhancing the user experience. By ensuring we properly implement these changes, we'll create a more accessible and visually engaging interface. It's a straightforward task but crucial for maintaining consistency and improving usability. So, let's go ahead and patch this up!
+codex
+I’m making a small targeted edit set now: one pass in the dashboard for the sort label and urgent chip, and one pass in global CSS to normalize the pulse animation to a single `pulse-urgent` keyframe.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-066/app/review/ReviewDashboard.tsx
+@@ -597,5 +597,11 @@
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+@@ -948,3 +954,3 @@
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+apply_patch(auto_approved=true) exited 0 in 47ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-066/app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+file update:
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-066/app/globals.css
+@@ -88,15 +88,7 @@
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+@@ -104,3 +96,5 @@
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+@@ -109,3 +103,4 @@
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+@@ -113,3 +108,11 @@
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+apply_patch(auto_approved=true) exited 0 in 54ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-066/app/globals.css
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+
+thinking
+**Considering lint and build processes**
+
+I’m thinking about whether I need to run linting or building processes next. It might be tricky if lint isn't supported, but I could just use `npm run lint` to manage things. I wonder if that will clarify whether I need to do any builds afterward or not. My goal is to keep everything on track, so I'll make sure to check these steps thoroughly!
+codex
+The edits are in. I’m running validation now to catch any typing or styling regressions before I commit.
+exec
+/bin/zsh -lc 'npm run lint' in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'npm run build' in /Users/moltbot/pp-agent-work/factory-idea-066file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+ succeeded in 2.57s:
+
+> pp-website-v3@1.0.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+ exited 1 in 3.27s:
+
+> pp-website-v3@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+request to https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 1/3...
+request to https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 1/3...
+request to https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 2/3...
+request to https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+
+Retrying 2/3...
+request to https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap failed, reason: getaddrinfo ENOTFOUND fonts.googleapis.com
+codex
+The validation jobs are still running. I’m waiting for both to finish so I can commit a known-good state instead of guessing from partial output.
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+codex
+Lint passed. The production build is blocked by the sandbox’s lack of network access because `next/font` is trying to fetch Google Fonts from `app/layout.tsx`; that failure is environmental, not caused by this change set.
+exec
+/bin/zsh -lc 'git diff -- app/review/ReviewDashboard.tsx app/globals.css' in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-066 succeeded in 53ms:
+ M app/globals.css
+ M app/review/ReviewDashboard.tsx
+ succeeded in 53ms:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2b..157e9f9 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@ summary:focus-visible {
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+codex
+The diff is tight and limited to the requested queue behavior. I’m committing these changes now with a focused message.
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+codex
+The code changes are complete. Git commit is blocked by the environment: the sandbox is refusing writes under `.git` and `git commit` failed on `.git/index.lock`. I’m confirming the repo state so I can report exactly what remains blocked.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/index.lock' in /Users/moltbot/pp-agent-work/factory-idea-066exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-066 exited 1 in 53ms:
+ls: .git/index.lock: No such file or directory
+drwxr-xr-x  16 moltbot  staff    512 Mar 16 09:13 .git
+-rw-r--r--   1 moltbot  staff  14972 Mar 16 09:13 .git/index
+ succeeded in 52ms:
+ M app/globals.css
+ M app/review/ReviewDashboard.tsx
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+
+thinking
+**Summarizing requirements**
+
+I need to create a final, concise summary that references the relevant files while also mentioning that the commit was blocked. It’s important to include information about the tests and any build failures in the environment, though I might avoid including the commit hash. I want to ensure every detail is clear and relevant for whoever is looking at it. I've got to be thorough yet straightforward in my explanation!
+codex
+Implemented the remaining PRD-aligned polish for the deploy queue in [app/review/ReviewDashboard.tsx](/Users/moltbot/pp-agent-work/factory-idea-066/app/review/ReviewDashboard.tsx) and [app/globals.css](/Users/moltbot/pp-agent-work/factory-idea-066/app/globals.css). The queue already had the core urgency sort, pulse tiering, wait-time color cues, and list-only behavior in place; I tightened the visible sort label so it reflects the active mode and updated the red-tier chip to the optional `⚡ urgent` treatment. I also normalized the pulse animation to a single `@keyframes pulse-urgent` implementation with per-tier CSS variables and added reduced-motion handling.
+
+Validation: `npm run lint` passed. `npm run build` failed for an environmental reason unrelated to this change: Next.js could not fetch Google Fonts from `fonts.googleapis.com` in the sandboxed environment.
+
+Commit was not possible here. `git commit` failed because the sandbox denies writes inside `.git` (`fatal: Unable to create '.git/index.lock': Operation not permitted`).
+file update:
+diff --git a/app/globals.css b/app/globals.css
+index 9473b2bebbae67682f85b9c227c85bb1230be94b..157e9f973b75bfe3f7539da809d7f6572c3530c5
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,30 +86,33 @@
+   @apply border-permit/60 bg-permit/10;
+ }
+ 
+-@keyframes pulse-urgent-red {
+-  0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 0.85), 0 12px 30px rgba(239, 68, 68, 0.12);
+-  }
+-
+-  50% {
+-    box-shadow: inset 4px 0 0 rgba(239, 68, 68, 1), 0 16px 34px rgba(239, 68, 68, 0.2);
+-  }
+-}
+-
+-@keyframes pulse-urgent-amber {
++@keyframes pulse-urgent {
+   0%, 100% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.8), 0 10px 24px rgba(245, 158, 11, 0.1);
++    box-shadow:
++      inset 4px 0 0 color-mix(in srgb, var(--pulse-color) 85%, transparent),
++      0 12px 30px color-mix(in srgb, var(--pulse-color) 12%, transparent);
+   }
+ 
+   50% {
+-    box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.95), 0 14px 30px rgba(245, 158, 11, 0.18);
++    box-shadow:
++      inset 4px 0 0 var(--pulse-color),
++      0 16px 34px color-mix(in srgb, var(--pulse-color) 20%, transparent);
+   }
+ }
+ 
+ .queue-card-pulse-red {
+-  animation: pulse-urgent-red 1.8s ease-in-out infinite;
++  --pulse-color: rgb(239 68 68);
++  animation: pulse-urgent 1.8s ease-in-out infinite;
+ }
+ 
+ .queue-card-pulse-amber {
+-  animation: pulse-urgent-amber 2.2s ease-in-out infinite;
++  --pulse-color: rgb(245 158 11);
++  animation: pulse-urgent 2.2s ease-in-out infinite;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .queue-card-pulse-red,
++  .queue-card-pulse-amber {
++    animation: none;
++  }
+ }
+diff --git a/app/review/ReviewDashboard.tsx b/app/review/ReviewDashboard.tsx
+index bf376c2512f995f49403fb41860eb941553fdf0c..19b1210af8afea0a1676b850a61290bd4cabb962
+--- a/app/review/ReviewDashboard.tsx
++++ b/app/review/ReviewDashboard.tsx
+@@ -595,9 +595,15 @@
+                 <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-warning">
+                   <Clock className="h-3.5 w-3.5" />
+                   Pending Approval ({activePending.length})
+-                  {viewMode === "list" && pendingSortMode === "urgency" ? (
+-                    <span className="rounded-full border border-warning/40 bg-warning/10 px-2 py-1 text-[10px] text-warning">
+-                      sorted by urgency
++                  {viewMode === "list" ? (
++                    <span
++                      className={`rounded-full border px-2 py-1 text-[10px] ${
++                        pendingSortMode === "urgency"
++                          ? "border-warning/40 bg-warning/10 text-warning"
++                          : "border-border bg-void/50 text-secondary"
++                      }`}
++                    >
++                      {pendingSortMode === "urgency" ? "sorted by urgency" : "sorted by newest"}
+                     </span>
+                   ) : null}
+                 </h2>
+@@ -946,7 +952,7 @@
+                 </p>
+                 {urgencyPulse === "red" ? (
+                   <span className="inline-flex rounded-full border border-danger/50 bg-danger/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-danger">
+-                    urgent
++                    ⚡ urgent
+                   </span>
+                 ) : null}
+               </div>
+
+tokens used
+24,919
+Implemented the remaining PRD-aligned polish for the deploy queue in [app/review/ReviewDashboard.tsx](/Users/moltbot/pp-agent-work/factory-idea-066/app/review/ReviewDashboard.tsx) and [app/globals.css](/Users/moltbot/pp-agent-work/factory-idea-066/app/globals.css). The queue already had the core urgency sort, pulse tiering, wait-time color cues, and list-only behavior in place; I tightened the visible sort label so it reflects the active mode and updated the red-tier chip to the optional `⚡ urgent` treatment. I also normalized the pulse animation to a single `@keyframes pulse-urgent` implementation with per-tier CSS variables and added reduced-motion handling.
+
+Validation: `npm run lint` passed. `npm run build` failed for an environmental reason unrelated to this change: Next.js could not fetch Google Fonts from `fonts.googleapis.com` in the sandboxed environment.
+
+Commit was not possible here. `git commit` failed because the sandbox denies writes inside `.git` (`fatal: Unable to create '.git/index.lock': Operation not permitted`).

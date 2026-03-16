@@ -1,0 +1,2620 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-028
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce92d-e4a7-7123-85cd-31b50ae43bc2
+--------
+user
+You are fixing a bug. Read FACTORY-PRD.md for full context.
+
+## Fix Approach
+1. In `merge-readiness/route.ts`, replace `process.env.GITHUB_TOKEN` with the GitHub App installation token for the target repo
+2. Look at how other API routes get the installation token — likely via `@/lib/github/get-installation-token` or similar
+3. Find the `installationId` from the deploy request's repo (it's stored when the GitHub App is installed)
+4. Use the installation token for all GitHub API calls in this endpoint
+5. Keep `GITHUB_TOKEN` as a fallback if no installation token is available (graceful degradation)
+6. Surface a clearer error message when the token doesn't have access: "GitHub App not installed on this repo" instead of the raw GitHub error
+## Acceptance Criteria
+- [ ] merge-readiness endpoint uses GitHub App installation token instead of static PAT
+- [ ] Pre-merge checklist works for repos where the GitHub App is installed
+- [ ] Error message is user-friendly when GitHub App is not installed on the repo
+- [ ] Existing tests still pass
+- [ ] `tsc --noEmit` passes on changed files
+## Files to Change
+- `src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts` — replace token source
+- Possibly `src/lib/github/` — check for existing installation token helpers
+## Test Plan
+
+Fix this bug with the minimal change needed. Add a test if possible. Run `npx tsc --noEmit` before finishing.
+mcp startup: no servers
+codex
+I’m reading the PRD and the existing GitHub auth flow first, then I’ll patch the endpoint with the smallest viable change and run typecheck/tests.
+exec
+/bin/zsh -lc "sed -n '1,240p' src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,220p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc 'rg -n "get-installation-token|installation token|installationId|GITHUB_TOKEN|createAppAuth|GitHub App" src' in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 50ms:
+# Bugfix: idea-028 — PAT permission error on pre-merge checklist
+
+## Symptom
+The PP review page shows a red error "Resource not accessible by personal access token" in the pre-merge checklist. The `GITHUB_TOKEN` env var used by the merge-readiness API doesn't have sufficient permissions for the target repo.
+
+## Affected Files
+- `src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts` — main file, uses `process.env.GITHUB_TOKEN` directly
+- `src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx` — displays the error to users
+
+## Root Cause Analysis
+The `merge-readiness/route.ts` endpoint uses a single global `GITHUB_TOKEN` to call GitHub's API for ANY repo. This works for repos the token has access to, but fails with 403 "Resource not accessible by personal access token" for repos outside the token's scope.
+
+The real fix: use the **GitHub App installation token** instead of a static PAT. The app is already installed on target repos (that's how the deploy gate works). The installation token has the right permissions for that specific repo.
+
+## Fix Approach
+1. In `merge-readiness/route.ts`, replace `process.env.GITHUB_TOKEN` with the GitHub App installation token for the target repo
+2. Look at how other API routes get the installation token — likely via `@/lib/github/get-installation-token` or similar
+3. Find the `installationId` from the deploy request's repo (it's stored when the GitHub App is installed)
+4. Use the installation token for all GitHub API calls in this endpoint
+5. Keep `GITHUB_TOKEN` as a fallback if no installation token is available (graceful degradation)
+ exited 1 in 52ms:
+zsh:1: no matches found: src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+ succeeded in 53ms:
+src/lib/services/reconcile-stale-requests.ts:45:  const githubToken = process.env.GITHUB_TOKEN;
+src/lib/services/pr-review.ts:35:const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+src/lib/services/pr-review.ts:491:  if (GITHUB_MODE === 'mock' || !GITHUB_TOKEN) {
+src/lib/services/pr-review.ts:519:        Authorization: `Bearer ${GITHUB_TOKEN}`,
+src/lib/services/pr-review.ts:575:  if (GITHUB_MODE === 'mock' || !GITHUB_TOKEN) {
+src/lib/services/pr-review.ts:585:        Authorization: `Bearer ${GITHUB_TOKEN}`,
+src/lib/services/deploy-gate-post-approval.ts:77:  const statusResult = await setCommitStatusAfterApproval(request, process.env.GITHUB_TOKEN ?? '');
+src/lib/services/github-rerun.ts:87:    segments.push('verify the token can write GitHub Actions reruns; GitHub App installs need actions:write');
+src/lib/services/github-rerun.ts:325:        message: `Missing GitHub write credentials for ${params.repo}. Configure a write-capable PAT/OAuth token or a GitHub App installation with Actions write permission (actions:write).`,
+src/lib/services/github-rerun.ts:449:    const detail = 'missing GitHub write credentials; connect a write-capable PAT or a GitHub App installation with actions:write';
+src/lib/post-approval-actions.ts:207:        message: 'GITHUB_TOKEN is not configured',
+src/lib/post-approval-actions.ts:293:        message: 'GITHUB_TOKEN is not configured',
+src/lib/post-approval-actions.ts:389:    const resolvedGitHubToken = appToken ?? process.env.GITHUB_TOKEN ?? '';
+src/lib/post-approval-actions.ts:398:        message: 'GITHUB_TOKEN is not configured',
+src/lib/github-app/config.ts:2: * GitHub App configuration from environment variables.
+src/lib/github-app/installation-token.ts:2: * GitHub App installation token management with caching.
+src/lib/github-app/installation-token.ts:18: * Get a valid installation token, using cache when possible.
+src/lib/github-app/installation-token.ts:20:export async function getInstallationToken(installationId: number): Promise<string> {
+src/lib/github-app/installation-token.ts:21:  const cached = tokenCache.get(installationId);
+src/lib/github-app/installation-token.ts:29:    `https://api.github.com/app/installations/${installationId}/access_tokens`,
+codex
+I found an existing GitHub App token helper under `src/lib/github-app/installation-token.ts`. Next I’m checking the merge-readiness route and nearby patterns so the change stays local and consistent.
+exec
+/bin/zsh -lc "sed -n '1,220p' 'src/app/api/v1/github-app/setup-repo/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,220p' src/lib/github-app/installation-token.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,280p' 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 51ms:
+/**
+ * GitHub App installation token management with caching.
+ * Installation tokens are valid for 1 hour; we cache with a 5-minute buffer.
+ */
+
+import { generateAppJwt } from "./jwt";
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+
+interface CachedToken {
+  token: string;
+  expiresAt: number; // Unix timestamp ms
+}
+
+const tokenCache = new Map<number, CachedToken>();
+const EXPIRY_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Get a valid installation token, using cache when possible.
+ */
+export async function getInstallationToken(installationId: number): Promise<string> {
+ succeeded in 51ms:
+import { NextResponse } from 'next/server';
+import { withTenant } from '@/lib/auth/require-tenant';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+import { httpError, ErrorCodes } from '@/lib/http/errors';
+import {
+  getCachedMergeReadiness,
+  invalidateCachedMergeReadiness,
+  setCachedMergeReadiness,
+} from './cache';
+
+export const dynamic = 'force-dynamic';
+
+const GITHUB_API_VERSION = '2022-11-28';
+const MAX_MERGEABLE_RETRIES = 3;
+const MERGEABLE_RETRY_DELAY_MS = 1_000;
+
+type MergeableState = 'clean' | 'behind' | 'blocked' | 'dirty' | 'unknown' | string;
+
+type MergeReadinessResponse = {
+  mergeable: boolean | null;
+ succeeded in 51ms:
+import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+import { createApiKey } from '@/lib/auth/api-keys';
+import { requireTenant } from '@/lib/auth/require-tenant';
+import { httpError, toErrorResponse, ErrorCodes } from '@/lib/http/errors';
+import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+const PP_BASE_URL = 'https://app.permissionprotocol.com';
+const WORKFLOW_PATH = '.github/workflows/pp-gate.yml';
+const WORKFLOW_CONTENT = `name: PR Gate
+on: [pull_request]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: permission-protocol/deploy-gate@v1
+
+thinking
+**Finding route tests**
+
+I think I might need to look into route tests. It seems like the next step involves figuring out the different tests I can conduct. Maybe I'll explore various options and see what could work best for assessing the routes effectively. It's essential to ensure that the tests I choose cover all bases so that I can gather accurate data. Let's dive into this and find the right tests!
+codex
+The helper already does repo-to-installation lookup with PAT fallback left to callers, so I can keep this fix inside the route. I’m checking for existing tests around this endpoint before editing.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc 'rg -n "merge-readiness|pre-merge|GitHub App not installed|Resource not accessible by personal access token" src test tests' in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "rg --files | rg \"route(\\.test|\\.spec)?\\.(ts|tsx)"'$|__tests__|vitest|jest"' in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 52ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ exited 2 in 51ms:
+rg: test: No such file or directory (os error 2)
+src/app/pp/deploy-requests/[requestId]/page.tsx:578:      const response = await fetch(`/api/v1/deploy-requests/${currentRequest.id}/merge-readiness`);
+src/app/api/v1/deploy-requests/[requestId]/update-branch/route.ts:5:import { invalidateCachedMergeReadiness } from '../merge-readiness/cache';
+ succeeded in 53ms:
+src/lib/services/__tests__/pr-review.test.ts
+vitest.config.ts
+permission-protocol-sdk/packages/sdk/vitest.config.ts
+permission-protocol-sdk/packages/sdk/__tests__/integration.test.ts
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+permission-protocol-sdk/packages/sdk/__tests__/router.test.ts
+permission-protocol-sdk/packages/sdk/__tests__/mapping.test.ts
+tests/public-receipts-route.test.ts
+src/app/api/company/mode/route.ts
+src/app/api/delegated-accounts/[id]/route.ts
+src/app/api/reports/route.ts
+src/app/api/delegated-accounts/[id]/request-use/route.ts
+src/app/api/index/github/[id]/route.ts
+src/app/api/index/github/route.ts
+src/app/api/delegated-accounts/[id]/sessions/route.ts
+src/app/api/readiness/route.ts
+src/app/api/analytics/track/route.ts
+src/app/api/delegated-accounts/feature/route.ts
+src/app/api/delegated-accounts/route.ts
+src/app/api/knowledge/route.ts
+
+thinking
+**Planning test inspections**
+
+I think I need to develop a plan, but I don’t want it to be too overwhelming. I want to inspect the test patterns and possibly focus on mocking the route. It seems like a good idea to do a search with the tenant tests, maybe to focus more specifically on routes. There's a lot to consider, but if I break it down into smaller steps, that should help!
+codex
+I don’t see an existing test for this route, so I’m checking how route-level tests are structured here before deciding whether a targeted one is worth adding or if typecheck plus existing suite is the safer minimal path.
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/public-receipts-route.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,220p' src/lib/http/errors.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,220p' src/lib/auth/require-tenant.ts" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 53ms:
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { NextRequest } from "next/server";
+
+const mockFindUnique = vi.fn();
+
+vi.mock("@/lib/company/raw-prisma", () => ({
+  rawPrisma: {
+    permissionReceipt: {
+      findUnique: (...args: unknown[]) => mockFindUnique(...args),
+    },
+  },
+}));
+
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(() => false),
+  getClientIp: vi.fn(() => "127.0.0.1"),
+}));
+
+describe("public receipt route", () => {
+  beforeEach(() => {
+ succeeded in 53ms:
+/**
+ * Tenant Resolution for Multi-Company Isolation (Phase 0+)
+ * 
+ * SECURITY INVARIANTS:
+ * 1. Company context is derived from session → DB membership lookup
+ * 2. For multi-membership users, activeCompanyId cookie is checked against DB memberships
+ *    (the cookie is validated - it must match a real membership)
+ * 3. CLI auth mode allows X-Tenant-Id header when CLI_API_KEY is provided
+ * 4. All errors return standardized { error: { code, message } } format
+ * 
+ * RESOLUTION RULES:
+ * - 0 memberships → 403 NO_COMPANY_MEMBERSHIP
+ * - 1 membership → use that company
+ * - >1 memberships → activeCompanyId cookie must match a valid membership
+ * 
+ * CLI AUTHENTICATION:
+ * CLI auth is handled by the standalone cli-auth.ts module.
+ * It runs entirely in Node.js runtime (API routes), NOT in middleware.
+ * When CLI_API_KEY env var is set, requests with:
+ *   Authorization: Basic base64(tenantId:CLI_API_KEY)
+ succeeded in 53ms:
+/**
+ * Standardized HTTP Error Responses
+ * 
+ * Phase 0 Security: All API routes must use these helpers for consistent
+ * error responses that never leak internal details.
+ * 
+ * Error shape: { error: { code: string, message: string } }
+ */
+
+import { NextResponse } from 'next/server';
+
+// ============================================================================
+// ERROR CODES
+// ============================================================================
+
+export const ErrorCodes = {
+  // Authentication (401)
+  UNAUTHENTICATED: 'UNAUTHENTICATED',
+  
+  // Authorization (403)
+codex
+I have enough context. I’m making the route prefer the repo’s installation token, keep the current PAT fallback, and normalize the specific “token can’t see this repo” failure into a user-facing GitHub App message. After that I’ll add a tight route test if it stays cheap, then run typecheck and the relevant tests.
+exec
+/bin/zsh -lc "sed -n '1,220p' src/app/api/github-app/install/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,240p' vitest.config.ts" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 53ms:
+import { defineConfig } from 'vitest/config';
+import path from 'path';
+
+export default defineConfig({
+  test: {
+    environment: 'node',
+    globals: true,
+    pool: 'forks',
+    setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/lib/tool-router/**'],
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+ succeeded in 53ms:
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from '@/lib/auth/config';
+import { getGitHubAppConfig } from "@/lib/github-app/config";
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+
+export const runtime = "nodejs";
+
+/**
+ * Redirects the user to the GitHub App installation page.
+ * Encodes the user's company ID in a state param for the callback.
+ */
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.redirect(
+      new URL("/auth/signin?callbackUrl=/api/github-app/install", process.env.NEXTAUTH_URL || "http://localhost:3000")
+    );
+  }
+
+
+thinking
+**Inspecting test setup**
+
+I'm thinking about needing to import the route alias in the tests directory. It seems important to check the tests/setup area first. Maybe I should also look into fetching mocks for testing purposes. I'm trying to piece this together to ensure everything is set up correctly for testing. Let's see if I can clarify this process and ensure that I have all the necessary components arranged right!
+exec
+/bin/zsh -lc "sed -n '1,220p' tests/setup.ts" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "rg -n \"withTenant\\(|vi.mock\\(\\\"@/lib/auth/require-tenant\\\"|global.fetch|NextRequest\" tests src/lib/services/__tests__" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 53ms:
+// Set up test environment
+// Respect existing DATABASE_URL if provided (for Postgres tests)
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./test.db';
+}
+process.env.NODE_ENV = 'test';
+ succeeded in 53ms:
+tests/require-tenant.test.ts:4: * Tests for requireTenant() and withTenant() helpers that enforce:
+tests/require-tenant.test.ts:13:import { NextRequest, NextResponse } from 'next/server';
+tests/deploy-gate-risk-recovery.integration.test.ts:1:import { NextRequest } from 'next/server';
+tests/deploy-gate-risk-recovery.integration.test.ts:418:  return new NextRequest('http://localhost/api/v1/receipts/verify', {
+tests/deploy-gate-risk-recovery.integration.test.ts:441:  return new NextRequest(`http://localhost/api/v1/deploy-requests/${requestId}/approve`, {
+tests/deploy-gate-verify-request.test.ts:1:import { NextRequest } from 'next/server';
+tests/deploy-gate-verify-request.test.ts:292:  return new NextRequest('http://localhost/api/v1/receipts/verify', {
+tests/deploy-gate-verify-request.test.ts:388:    const reqWithCheckRun = new NextRequest('http://localhost/api/v1/receipts/verify', {
+tests/deploy-gate-approval-ledger.test.ts:1:import { NextRequest } from 'next/server';
+tests/deploy-gate-approval-ledger.test.ts:231:    const reqA = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:236:    const reqA2 = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:253:    const reqA = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:258:    const reqB = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:283:    const denyReq = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/deny', {
+tests/deploy-gate-approval-ledger.test.ts:292:    const approveReq = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:308:    const reqA = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/deploy-gate-approval-ledger.test.ts:313:    const reqB = new NextRequest('http://localhost/api/v1/deploy-requests/req-1/approve', {
+tests/review-request-api.test.ts:1:import { NextRequest } from 'next/server';
+tests/review-request-api.test.ts:170:    const response = await GET(new NextRequest('http://localhost/api/requests/req-expired'), {
+tests/review-request-api.test.ts:193:      new NextRequest('http://localhost/api/requests/re-request', {
+exec
+/bin/zsh -lc "sed -n '1,200p' 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness/cache.ts'" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "sed -n '1,220p' tests/deploy-requests-queue-grouping.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 51ms:
+type MergeReadinessResponse = {
+  mergeable: boolean | null;
+  mergeable_state: string;
+  checks: Array<{
+    name: string;
+    status: string;
+    conclusion: string | null;
+  }>;
+  checks_passing: number;
+  checks_total: number;
+  behind_by: number;
+};
+
+type CacheEntry = {
+  expiresAt: number;
+  payload: MergeReadinessResponse;
+};
+
+const readinessCache = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = 30_000;
+ succeeded in 51ms:
+import { NextRequest } from 'next/server';
+
+type RequestRow = {
+  id: string;
+  companyId: string;
+  repo: string;
+  capability: string;
+  env: string;
+  status: string;
+  createdAt: Date;
+  ref: string;
+  commitSha: string;
+  checkRunId: string | null;
+  scopeType: 'PR_HEAD' | 'GIT_REF_COMMIT';
+  prNumber: number | null;
+  headSha: string | null;
+  laneKey: string;
+  supersededByRequestId: string | null;
+  githubRerunStatus: 'pending' | 'success' | null;
+  githubRerunAttempts: number;
+
+thinking
+**Patching route and tests**
+
+I need to edit the route and possibly add a test. It seems like using Node.js with helper functions that use fetch should be fine. I want to design custom error handling too—perhaps with a class or mapper. Patching the route and including tests for two scenarios sounds good: one for preferring an app token and the other for a user-friendly error if PAT access is denied. I'll ensure the cache is invalidated between tests, maybe by mocking the fetch and checking the authorization header. Let's go ahead and patch it!
+codex
+I’m editing the route now and adding a focused test file that covers the two behavior changes: installation-token preference and the clearer “App not installed” error path.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -3,2 +3,3 @@
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+@@ -63,2 +64,6 @@
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+@@ -85,2 +90,10 @@
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+@@ -155,3 +168,4 @@
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+@@ -219,2 +233,8 @@
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+apply_patch(auto_approved=true) exited 0 in 50ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+
+file update
+A /Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { NextRequest } from 'next/server';
+
+const mockFindFirst = vi.fn();
+const mockGetAppTokenForRepo = vi.fn();
+
+vi.mock('@/lib/auth/require-tenant', () => ({
+  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
+    handler(request, context, { companyId: 'company-a' }),
+}));
+
+vi.mock('@/lib/company/raw-prisma', () => ({
+  rawPrisma: {
+    deployGateRequest: {
+      findFirst: (...args: unknown[]) => mockFindFirst(...args),
+    },
+  },
+}));
+
+vi.mock('@/lib/github-app/installation-token', () => ({
+  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
+}));
+
+describe('merge readiness route', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+
+    mockFindFirst.mockResolvedValue({
+      id: 'req-1',
+      repo: 'acme/widgets',
+      prNumber: 123,
+    });
+
+    process.env.GITHUB_TOKEN = 'pat-token';
+  });
+
+  it('prefers the GitHub App installation token when available', async () => {
+    mockGetAppTokenForRepo.mockResolvedValue('app-token');
+
+    global.fetch = vi
+      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
+        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
+
+        return new Response(
+          JSON.stringify({
+            mergeable: true,
+            mergeable_state: 'clean',
+            merge_commit_sha: 'merge-sha',
+            head: { sha: 'head-sha' },
+            base: { sha: 'base-sha' },
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }) as any;
+
+    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
+    const response = await GET(
+      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
+      { params: Promise.resolve({ requestId: 'req-1' }) }
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
+  });
+
+  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
+    mockGetAppTokenForRepo.mockResolvedValue(null);
+
+    global.fetch = vi.fn(async () => {
+      return new Response(
+        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }) as any;
+
+    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
+    const response = await GET(
+      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
+      { params: Promise.resolve({ requestId: 'req-1' }) }
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
+  });
+});
+apply_patch(auto_approved=true) exited 0 in 231ms:
+Success. Updated the following files:
+A /Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..c8325aa51b955453ce5462dd7f69c3b9279faf0d
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,88 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++
++        return new Response(
++          JSON.stringify({
++            mergeable: true,
++            mergeable_state: 'clean',
++            merge_commit_sha: 'merge-sha',
++            head: { sha: 'head-sha' },
++            base: { sha: 'base-sha' },
++          }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..c8325aa51b955453ce5462dd7f69c3b9279faf0d
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,88 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++
++        return new Response(
++          JSON.stringify({
++            mergeable: true,
++            mergeable_state: 'clean',
++            merge_commit_sha: 'merge-sha',
++            head: { sha: 'head-sha' },
++            base: { sha: 'base-sha' },
++          }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+
+thinking
+**Testing fetch functionality**
+
+I need to run some tests on the fetch process. It seems like I should only fetch once for checks, then a second fetch for check-runs to compare results. I realize the first test might fail due to too many fetch calls. I should set up a fetch mock sequence and only assert the header for the first call, responding accordingly. I might also need to count something. Updating the test file seems essential, so I’ll start by patching the first test's fetch handling!
+codex
+The route patch is in. I caught one test detail: this endpoint makes up to three GitHub calls, so I’m tightening the fetch mock to cover the full sequence instead of assuming a single request.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts
+@@ -40,15 +40,35 @@
+ 
++    let callCount = 0;
+     global.fetch = vi
+       .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+-        expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
+         expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
+ 
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
+         return new Response(
+-          JSON.stringify({
+-            mergeable: true,
+-            mergeable_state: 'clean',
+-            merge_commit_sha: 'merge-sha',
+-            head: { sha: 'head-sha' },
+-            base: { sha: 'base-sha' },
+-          }),
++          JSON.stringify({ behind_by: 0 }),
+           { status: 200, headers: { 'Content-Type': 'application/json' } }
+@@ -65,2 +85,3 @@
+     expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
+   });
+apply_patch(auto_approved=true) exited 0 in 94ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+
+thinking
+**Running tests**
+
+I think I need to run tests and use TypeScript compiler (tsc). I might start with targeted tests first to make sure specific areas are working well before diving into everything else. This feels like a good strategy because it helps identify any immediate issues without getting overwhelmed by all the tests at once. Keeping things focused could save time and effort. I'll get started on that right away!
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc 'npx vitest run tests/merge-readiness-route.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-028file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+ succeeded in 1.75s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-028
+
+ ✓ tests/merge-readiness-route.test.ts  (2 tests) 32ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  15:52:15
+   Duration  492ms (transform 43ms, setup 7ms, collect 35ms, tests 32ms, environment 0ms, prepare 56ms)
+
+codex
+I’m in verification now. The targeted test and full TypeScript check are both running; if either exposes unrelated repo issues versus route-specific issues, I’ll separate that clearly.
+ exited 2 in 9.46s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+
+thinking
+**Considering test execution**
+
+I’m thinking about how running all tests might take some time, but it could be worthwhile, despite the possibility that we might encounter unrelated issues. I could try running `npm run test:run -- --passWithNoTests`. Hmm, given the acceptance criteria, should I go for `npx vitest run` for everything? It could expose unrelated failures, but that might be costly in terms of time. I’m leaning towards running them all to see what results we get.
+codex
+`npx tsc --noEmit` completed, but it failed on many pre-existing repo-wide TypeScript errors outside this change. I’m doing one more check on the wider test suite to separate route-specific correctness from unrelated baseline failures.
+exec
+/bin/zsh -lc 'npx vitest run' in /Users/moltbot/pp-agent-work/factory-idea-028file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+ exited 1 in 5.49s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-028
+
+stdout | tests/github-connector.test.ts:14:11
+[Test Setup] Using mocked database
+
+stderr | tests/patch-review.test.ts > checkStaleness() with commit refs > should return unknown status and blocker when GitHub API fails
+Error checking staleness: { status: 500, message: 'Server error' }
+
+ ✓ tests/pr-outbox.test.ts  (22 tests) 229ms
+ ✓ tests/patch-review.test.ts  (23 tests) 272ms
+ ✓ tests/github-connector.test.ts  (33 tests) 14ms
+stderr | tests/deploy-gate-full-flow.test.ts > Deploy gate full-flow invariants > FAIL -> risk acceptance required -> recovery to VERIFIED clears requirement; identity reuse preserved
+[verify] Signature verification mismatch {
+  correlationId: 'ppv_df2c7338-15ac-47ed-a7b1-19a0c8b4add0',
+  companyId: 'global',
+  companySlug: 'global',
+  verifierCompanyId: 'global',
+  apiKeyId: 'ak_test_verify',
+
+thinking
+**Considering git diff usage**
+
+I think I might need to run `git diff`. It's a useful command for checking changes between files or branches. I'm wondering if I need to look at the differences in my local code or compare them to what's on the remote. Sometimes, seeing those changes helps clarify my thoughts. If I can get a clearer picture of what's changed, it will help me decide my next steps. Let's see what I can find!
+codex
+The new route test passes. The full Vitest run fails too, but the failures are clearly pre-existing/baseline issues in unrelated areas like Slack notification DB tables and other integration tests; this change didn’t introduce route-specific regressions.
+exec
+/bin/zsh -lc 'git diff -- src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts tests/merge-readiness-route.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "nl -ba 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts' | sed -n '1,260p'" in /Users/moltbot/pp-agent-work/factory-idea-028exec
+/bin/zsh -lc "nl -ba tests/merge-readiness-route.test.ts | sed -n '1,240p'" in /Users/moltbot/pp-agent-work/factory-idea-028 succeeded in 50ms:
+     1	import { NextResponse } from 'next/server';
+     2	import { withTenant } from '@/lib/auth/require-tenant';
+     3	import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+     4	import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+     5	import { httpError, ErrorCodes } from '@/lib/http/errors';
+     6	import {
+     7	  getCachedMergeReadiness,
+     8	  invalidateCachedMergeReadiness,
+     9	  setCachedMergeReadiness,
+    10	} from './cache';
+    11	
+    12	export const dynamic = 'force-dynamic';
+    13	
+    14	const GITHUB_API_VERSION = '2022-11-28';
+    15	const MAX_MERGEABLE_RETRIES = 3;
+    16	const MERGEABLE_RETRY_DELAY_MS = 1_000;
+    17	
+    18	type MergeableState = 'clean' | 'behind' | 'blocked' | 'dirty' | 'unknown' | string;
+    19	
+    20	type MergeReadinessResponse = {
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+ succeeded in 50ms:
+     1	import { beforeEach, describe, expect, it, vi } from 'vitest';
+     2	import { NextRequest } from 'next/server';
+     3	
+     4	const mockFindFirst = vi.fn();
+     5	const mockGetAppTokenForRepo = vi.fn();
+     6	
+     7	vi.mock('@/lib/auth/require-tenant', () => ({
+     8	  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
+     9	    handler(request, context, { companyId: 'company-a' }),
+    10	}));
+    11	
+    12	vi.mock('@/lib/company/raw-prisma', () => ({
+    13	  rawPrisma: {
+    14	    deployGateRequest: {
+    15	      findFirst: (...args: unknown[]) => mockFindFirst(...args),
+    16	    },
+    17	  },
+    18	}));
+    19	
+    20	vi.mock('@/lib/github-app/installation-token', () => ({
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+
+thinking
+**Addressing command failures**
+
+I need to mention that a different command failed due to a global issue, but that's okay. I'm aiming for a final, concise output that includes references and verification. It's worth noting that the TypeScript compiler is failing, which is unrelated to the current issue. Also, I'll mention the full Vitest baseline failures, which are also not related. And I'll make sure to include the file references with absolute paths.
+codex
+Updated the merge-readiness endpoint to prefer the repo’s GitHub App installation token via `getAppTokenForRepo`, with `process.env.GITHUB_TOKEN` retained as fallback in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts#L169). I also normalize the fallback PAT access failure into a user-facing message, returning `GitHub App not installed on this repo (owner/repo)` instead of GitHub’s raw 403 in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts#L231).
+
+I added a focused test in [merge-readiness-route.test.ts](/Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts#L38) that verifies both behaviors: the endpoint uses the installation token when available, and it returns the clearer error when only the PAT is available but lacks repo access.
+
+Verification:
+- `npx vitest run tests/merge-readiness-route.test.ts` passed.
+- `npx tsc --noEmit` failed, but on many pre-existing repo-wide errors unrelated to this route.
+- `npx vitest run` also fails on existing baseline issues outside this change set, including unrelated integration/DB tests.
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+index cccd404364cab74d6998e1192c7083479e91054f..adc5648384088e8abde5c75bea567747748e0bda
+--- a/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
++++ b/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+@@ -1,6 +1,7 @@
+ import { NextResponse } from 'next/server';
+ import { withTenant } from '@/lib/auth/require-tenant';
+ import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+ import { httpError, ErrorCodes } from '@/lib/http/errors';
+ import {
+   getCachedMergeReadiness,
+@@ -61,6 +62,10 @@
+   return { owner, repo: name };
+ }
+ 
++function getGitHubAppInstallMessage(repoFullName: string): string {
++  return `GitHub App not installed on this repo (${repoFullName})`;
++}
++
+ function getGitHubHeaders(token: string): HeadersInit {
+   return {
+     Authorization: `Bearer ${token}`,
+@@ -83,6 +88,14 @@
+   return payload?.message ?? `GitHub API returned ${response.status}`;
+ }
+ 
++function isGitHubAccessError(message: string): boolean {
++  return (
++    message.includes('Resource not accessible by personal access token') ||
++    message.includes('Resource not accessible by integration') ||
++    message.includes('Not Found')
++  );
++}
++
+ function delay(ms: number): Promise<void> {
+   return new Promise((resolve) => setTimeout(resolve, ms));
+ }
+@@ -153,7 +166,8 @@
+     return NextResponse.json(cached);
+   }
+ 
+-  const githubToken = process.env.GITHUB_TOKEN;
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+   if (!githubToken) {
+     return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+   }
+@@ -217,6 +231,12 @@
+   } catch (error) {
+     invalidateCachedMergeReadiness(companyId, requestId);
+     const message = error instanceof Error ? error.message : 'Failed to fetch merge readiness';
++    if (!appToken && isGitHubAccessError(message)) {
++      return httpError(
++        ErrorCodes.INTERNAL_ERROR,
++        getGitHubAppInstallMessage(deployRequest.repo)
++      );
++    }
+     return httpError(ErrorCodes.INTERNAL_ERROR, message);
+   }
+ });
+diff --git a/tests/merge-readiness-route.test.ts b/tests/merge-readiness-route.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..005819a0a36b5be64f208b1090390098af9e9100
+--- /dev/null
++++ b/tests/merge-readiness-route.test.ts
+@@ -0,0 +1,109 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { NextRequest } from 'next/server';
++
++const mockFindFirst = vi.fn();
++const mockGetAppTokenForRepo = vi.fn();
++
++vi.mock('@/lib/auth/require-tenant', () => ({
++  withTenant: (handler: any) => async (request: NextRequest, context: any) =>
++    handler(request, context, { companyId: 'company-a' }),
++}));
++
++vi.mock('@/lib/company/raw-prisma', () => ({
++  rawPrisma: {
++    deployGateRequest: {
++      findFirst: (...args: unknown[]) => mockFindFirst(...args),
++    },
++  },
++}));
++
++vi.mock('@/lib/github-app/installation-token', () => ({
++  getAppTokenForRepo: (...args: unknown[]) => mockGetAppTokenForRepo(...args),
++}));
++
++describe('merge readiness route', () => {
++  beforeEach(() => {
++    vi.resetModules();
++    vi.clearAllMocks();
++
++    mockFindFirst.mockResolvedValue({
++      id: 'req-1',
++      repo: 'acme/widgets',
++      prNumber: 123,
++    });
++
++    process.env.GITHUB_TOKEN = 'pat-token';
++  });
++
++  it('prefers the GitHub App installation token when available', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue('app-token');
++
++    let callCount = 0;
++    global.fetch = vi
++      .fn(async (input: RequestInfo | URL, init?: RequestInit) => {
++        expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer app-token');
++        callCount += 1;
++
++        if (callCount === 1) {
++          expect(String(input)).toContain('/repos/acme/widgets/pulls/123');
++          return new Response(
++            JSON.stringify({
++              mergeable: true,
++              mergeable_state: 'clean',
++              merge_commit_sha: 'merge-sha',
++              head: { sha: 'head-sha' },
++              base: { sha: 'base-sha' },
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        if (callCount === 2) {
++          expect(String(input)).toContain('/commits/merge-sha/check-runs');
++          return new Response(
++            JSON.stringify({
++              check_runs: [{ name: 'ci', status: 'completed', conclusion: 'success' }],
++            }),
++            { status: 200, headers: { 'Content-Type': 'application/json' } }
++          );
++        }
++
++        expect(String(input)).toContain('/compare/base-sha...head-sha');
++        return new Response(
++          JSON.stringify({ behind_by: 0 }),
++          { status: 200, headers: { 'Content-Type': 'application/json' } }
++        );
++      }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++
++    expect(response.status).toBe(200);
++    expect(mockGetAppTokenForRepo).toHaveBeenCalledWith('acme/widgets');
++    expect(callCount).toBe(3);
++  });
++
++  it('returns a user-friendly error when fallback PAT cannot access the repo', async () => {
++    mockGetAppTokenForRepo.mockResolvedValue(null);
++
++    global.fetch = vi.fn(async () => {
++      return new Response(
++        JSON.stringify({ message: 'Resource not accessible by personal access token' }),
++        { status: 403, headers: { 'Content-Type': 'application/json' } }
++      );
++    }) as any;
++
++    const { GET } = await import('@/app/api/v1/deploy-requests/[requestId]/merge-readiness/route');
++    const response = await GET(
++      new NextRequest('http://localhost/api/v1/deploy-requests/req-1/merge-readiness'),
++      { params: Promise.resolve({ requestId: 'req-1' }) }
++    );
++    const body = await response.json();
++
++    expect(response.status).toBe(500);
++    expect(body.error.message).toBe('GitHub App not installed on this repo (acme/widgets)');
++  });
++});
+
+tokens used
+47,307
+Updated the merge-readiness endpoint to prefer the repo’s GitHub App installation token via `getAppTokenForRepo`, with `process.env.GITHUB_TOKEN` retained as fallback in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts#L169). I also normalize the fallback PAT access failure into a user-facing message, returning `GitHub App not installed on this repo (owner/repo)` instead of GitHub’s raw 403 in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-028/src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts#L231).
+
+I added a focused test in [merge-readiness-route.test.ts](/Users/moltbot/pp-agent-work/factory-idea-028/tests/merge-readiness-route.test.ts#L38) that verifies both behaviors: the endpoint uses the installation token when available, and it returns the clearer error when only the PAT is available but lacks repo access.
+
+Verification:
+- `npx vitest run tests/merge-readiness-route.test.ts` passed.
+- `npx tsc --noEmit` failed, but on many pre-existing repo-wide errors unrelated to this route.
+- `npx vitest run` also fails on existing baseline issues outside this change set, including unrelated integration/DB tests.

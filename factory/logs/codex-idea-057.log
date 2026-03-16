@@ -1,0 +1,1553 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-057
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf32c-f852-7f82-bf5f-e20d6977b66e
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Evaluating repository needs**
+
+I need to inspect the repository, perhaps looking at the AGENTS section to see if any skills apply, but it seems like no. I'll need to read the file and likely make some modifications. It’s important to use commentary updates during this process, and of course, I must remember to commit my changes afterward. There's definitely a lot of inspecting to do overall!
+codex
+I’m reading the PRD and the current codebase first so I can map each requirement to the existing implementation before changing anything.
+exec
+/bin/zsh -lc "sed -n '1,260p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 53ms:
+# PRD: idea-057 — Fix escape control characters in enrichment JSON response
+
+**Issue:** permission-protocol/app#22
+**Priority:** P2
+**Repo:** permission-protocol/app
+**Size:** S
+
+## Problem
+The enrichment endpoint returns diff patches containing unescaped control characters (tabs, newlines in code). This causes `jq` and strict JSON parsers to fail:
+```bash
+curl /api/v1/deploy-requests/{id}/enrichment | jq .
+# Error: Invalid string: control characters from U+0000 through U+001F must be escaped
+```
+
+## User Journey
+1. Developer/agent calls enrichment API
+2. Response contains raw diff patches with control chars (U+0000–U+001F)
+3. `jq`, strict JSON parsers, and some HTTP clients choke
+4. Browsers handle it fine (lenient parsing), so it went unnoticed
+
+ succeeded in 52ms:
+/Users/moltbot/pp-agent-work/factory-idea-057
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+src/lib/services/delegated-accounts.ts
+src/lib/services/deploy-gate-post-approval.ts
+
+thinking
+**Inspecting and testing files**
+
+I need to look over the file and possibly run some tests. There's also something about searching for enrichment, so I’ll keep that in mind while I go through everything. It feels like a good idea to make sure I’m thorough in checking the details and confirming that everything is working as it should. I just want to be sure I'm catching anything important as I dive into this!
+codex
+I have the requirement isolated: only the enrichment response should change, with control-character sanitization that preserves readable diffs. Next I’m tracing where those strings are assembled and what tests already exist around that path.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/enrichment/enrich.ts" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "sed -n '1,220p' src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "rg -n \"enrichment|patch|diff\" tests src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts src/lib/enrichment -g '"'!**/node_modules/**'"'" in /Users/moltbot/pp-agent-work/factory-idea-057 exited 1 in 53ms:
+zsh:1: no matches found: src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts
+ succeeded in 53ms:
+const GITHUB_API_BASE = 'https://api.github.com';
+const GEMINI_MODEL = 'gemini-3.1-flash-lite-preview';
+const MAX_FILES = 10;
+const MAX_PATCH_CHARS_PER_FILE = 2000;
+const MAX_PATCH_CHARS_TOTAL = 8000;
+
+export type PrFile = {
+  filename: string;
+  status: string;
+  sha: string;
+  additions: number;
+  deletions: number;
+  changes: number;
+  patch: string | null;
+  previousFilename?: string | null;
+};
+
+export type PrDiff = {
+  owner: string;
+  repo: string;
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts
+codex
+The enrichment builder is where GitHub file patches are copied into the response. I’m reading the rest of that module and the API route now so I can patch the right layer and add a targeted regression test instead of a broad change.
+exec
+/bin/zsh -lc "sed -n '260,520p' src/lib/enrichment/enrich.ts" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "sed -n '1,220p' 'src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "rg -n \"fetchPrDiff|ReviewEnrichment|/enrichment|promptDiff|patch:\" tests src -g '"'!**/node_modules/**'"'" in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 52ms:
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/config';
+import { deployGatePrisma } from '@/lib/company/deploy-gate-db';
+import { httpError, ErrorCodes } from '@/lib/http/errors';
+import { validateApiKey } from '@/lib/auth/api-keys';
+import { hasApiKeyScope } from '@/lib/auth/api-key-scopes';
+import { tryCliAuth } from '@/lib/auth/cli-auth';
+import { enrichDeployRequest, type ReviewEnrichment } from '@/lib/enrichment/enrich';
+
+export const dynamic = 'force-dynamic';
+const API_KEY_HEADER = 'x-pp-api-key';
+
+type ActorContext =
+  | { kind: 'apiKey'; actorId: string; companyId: string }
+  | { kind: 'user'; actorId: string; companyId: string }
+  | { kind: 'cli'; actorId: string; companyId: string };
+
+async function resolveActorContext(
+  request: NextRequest,
+ succeeded in 52ms:
+      severity: rule.severity,
+      reason: rule.reason,
+      files: matchedFiles.sort(),
+    } satisfies RiskSignal;
+  }).filter((value): value is RiskSignal => value !== null);
+
+  return matches.sort(compareRiskSignals);
+}
+
+export async function generateAiSummary(diff: PrDiff): Promise<string> {
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (!geminiKey) {
+    throw new Error('GEMINI_API_KEY is not configured');
+  }
+
+  const prompt = [
+    'What does this change do and should it go live?',
+    'Respond in 2-4 sentences.',
+    'Focus on user and operational impact, rollout risk, and any reason to be cautious.',
+    '',
+ succeeded in 53ms:
+src/lib/services/pr-review.ts:76:  patch: CodePatchV1,
+src/lib/services/pr-review.ts:208:  patch: CodePatchV1,
+src/lib/services/pr-review.ts:242:      patch: patchContent,
+src/lib/services/pr-review.ts:444:      patch: `@@ -0,0 +1,${c.contentUtf8.split('\n').length} @@\n${c.contentUtf8.split('\n').map(l => '+' + l).join('\n')}`,
+src/lib/services/pr-review.ts:456:      patch: '@@ -0,0 +1,10 @@\n+export function helper() {\n+  return "hello";\n+}',
+src/lib/services/pr-review.ts:605:    patch: f.patch as string | undefined,
+src/lib/services/pr-review.ts:656:  let patch: CodePatchV1;
+src/lib/services/deploy-gate-post-approval.ts:2:import type { ReviewEnrichment } from '@/lib/enrichment/enrich';
+src/lib/services/deploy-gate-post-approval.ts:34:function parseEnrichment(raw: string | null): ReviewEnrichment | null {
+src/lib/services/deploy-gate-post-approval.ts:40:    const parsed = JSON.parse(raw) as Partial<ReviewEnrichment>;
+src/lib/services/deploy-gate-post-approval.ts:45:      return parsed as ReviewEnrichment;
+tests/permission-protocol-v1/patcher.test.ts:50:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:68:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:84:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:103:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:116:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:143:        patch: {
+tests/permission-protocol-v1/patcher.test.ts:166:        const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:211:      const patch: PolicyPatch = {
+tests/permission-protocol-v1/patcher.test.ts:242:      const patch: PolicyPatch = {
+
+thinking
+**Evaluating test options**
+
+I need to think about adding tests for my project—maybe even some enrichment ones. First, I’ll inspect the package scripts to see what’s already there. I might consider using Vitest for testing, so I’ll search for examples related to the API route. It's important to make sure I have everything set up properly, and I’m curious to see what other people have done with their testing setups. Let’s explore this together!
+codex
+I’ve confirmed the bug surface: raw GitHub patch text is stored in `diff.files[].patch` and mirrored into `promptDiff`. The clean fix is to sanitize inside `src/lib/enrichment/enrich.ts` so both freshly generated responses and cached JSON writes stay valid without touching the route schema.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "ls tests | sed -n '1,120p'" in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc "sed -n '1,220p' tests/review-page-helpers.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 52ms:
+import { describe, expect, it } from 'vitest';
+import {
+  areAllChecksPassing,
+  getBranchStatus,
+  getTimelineEvents,
+  isRequestMergedExternally,
+  isRequestPrMerged,
+  type DeployGateRequest,
+} from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+
+describe('getBranchStatus', () => {
+  it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+    expect(
+      getBranchStatus(
+        {
+          mergeable: null,
+          mergeable_state: 'unknown',
+          checks: [],
+          checks_passing: 0,
+          checks_total: 0,
+ succeeded in 52ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ succeeded in 52ms:
+api-keys-create-tenant-binding.test.ts
+are-we-done.integration.test.ts
+audit-presentation.test.ts
+ceo-indexing.test.ts
+ceo-planning.test.ts
+company-memory.test.ts
+cross-company-access.test.ts
+deploy-gate-approval-ledger.test.ts
+deploy-gate-full-flow.test.ts
+deploy-gate-github-rerun.test.ts
+deploy-gate-merge-renew.test.ts
+deploy-gate-risk-recovery.integration.test.ts
+deploy-gate-state.test.ts
+deploy-gate-verify-request.test.ts
+deploy-request-tenant-safe-flow.test.ts
+deploy-requests-queue-grouping.test.ts
+github-app-repo-status.test.ts
+github-connector.test.ts
+golden-vectors.test.ts
+helpers
+
+Reconnecting... 1/5 (stream disconnected before completion: Transport error: network error: error decoding response body)
+
+thinking
+**Considering testing for GitHub functions**
+
+I’m thinking about using fetchPrDiff for fields from GitHub and enrichDeployRequest for summaries. It seems I might need to add some new tests in enrichments.test.ts. I should check if I can test sanitizeControlChars removal and if JSON.stringify parsing is effective. I wonder if I need to utilize a function for that. I think I’ll inspect the vitest alias config to see if it works as expected.
+codex
+I’m moving from inspection to edits now. The change will add a narrow sanitizer in `enrich.ts`, apply it to GitHub-derived strings before they enter `diff`/`promptDiff`, and add a regression test that proves control characters are removed while tabs/newlines stay intact.
+exec
+/bin/zsh -lc 'cat vitest.config.ts' in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 52ms:
+import { defineConfig } from 'vitest/config';
+import path from 'path';
+
+export default defineConfig({
+  test: {
+    environment: 'node',
+    globals: true,
+    pool: 'forks',
+    setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/lib/tool-router/**'],
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+ succeeded in 53ms:
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+
+thinking
+**Considering editing options**
+
+I need to avoid touching anything untracked, which seems important. I'll go ahead and use "apply_patch" instead. Maybe it makes sense to add an export for the helper functions? That could streamline things. Overall, it sounds like a good plan to proceed with this patch. It feels like I'm aligning things correctly, so here's to making it work smoothly!
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-057/src/lib/enrichment/enrich.ts
+@@ -5,2 +5,3 @@
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+@@ -219,5 +220,5 @@
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+@@ -225,4 +226,4 @@
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+@@ -230,14 +231,14 @@
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+@@ -347,3 +348,3 @@
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+@@ -413 +414,9 @@
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+apply_patch(auto_approved=true) exited 0 in 51ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-057/src/lib/enrichment/enrich.ts
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+
+
+thinking
+I’m thinking about the need for tests and realizing I should create a new test file for that purpose. It's vital to ensure that everything functions as expected, but I sometimes worry about forgetting steps or not being thorough enough. I wonder what specific tests I need to focus on and if I have everything in place. I’ll get started on that new test file soon, making sure it addresses the key areas!
+file update
+A /Users/moltbot/pp-agent-work/factory-idea-057/tests/enrichment.test.ts
+import { describe, expect, it } from 'vitest';
+import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
+
+describe('sanitizeControlChars', () => {
+  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
+    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
+  });
+});
+
+describe('fetchPrDiff', () => {
+  it('sanitizes patch content before returning diff data', async () => {
+    process.env.GITHUB_TOKEN = 'test-token';
+
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          title: 'PR title\u0000',
+          body: 'body\u000Btext',
+          html_url: 'https://github.com/acme/repo/pull/12',
+          state: 'open',
+          user: { login: 'octocat\u0000' },
+          head: { ref: 'feature\tbranch', sha: 'headsha' },
+          base: { ref: 'main', sha: 'basesha' },
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => [
+          {
+            filename: 'src/file.ts',
+            status: 'modified',
+            sha: 'filesha',
+            additions: 1,
+            deletions: 1,
+            changes: 2,
+            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
+            previous_filename: 'src/old.ts\u0000',
+          },
+        ],
+      });
+
+    const originalFetch = global.fetch;
+    vi.stubGlobal('fetch', fetchMock);
+
+    try {
+      const diff = await fetchPrDiff('acme', 'repo', 12);
+
+      expect(diff.title).toBe('PR title');
+      expect(diff.body).toBe('bodytext');
+      expect(diff.author).toBe('octocat');
+      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
+      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
+      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
+
+      const serialized = JSON.stringify(diff);
+      expect(() => JSON.parse(serialized)).not.toThrow();
+    } finally {
+      vi.stubGlobal('fetch', originalFetch);
+    }
+  });
+});
+apply_patch(auto_approved=true) exited 0 in 81ms:
+Success. Updated the following files:
+A /Users/moltbot/pp-agent-work/factory-idea-057/tests/enrichment.test.ts
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+
+thinking
+**Considering test options**
+
+I need to figure out whether to use `vi import` with `globals true.` I think `unstubAllGlobals` might be a better choice for clarity. I’m wondering if that's the right approach. I should focus on running tests that are targeted to get the best results. It’s all about making sure the tests are set up correctly, so I want to double-check my options before moving forward.
+codex
+The code changes are in place. I’m running a focused test pass on the new enrichment regression coverage first, then I’ll check the git diff and commit once it’s clean.
+exec
+/bin/zsh -lc 'git diff -- src/lib/enrichment/enrich.ts tests/enrichment.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 53ms:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc646..c62b7fc 100644
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@ const GEMINI_MODEL = 'gemini-3.1-flash-lite-preview';
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@ export async function fetchPrDiff(owner: string, repo: string, prNumber: number)
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
+exec
+/bin/zsh -lc 'npm test -- --run tests/enrichment.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-057file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+ succeeded in 1.21s:
+
+> permission-protocol@0.1.0 test
+> vitest --run tests/enrichment.test.ts
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-057
+
+ ✓ tests/enrichment.test.ts  (2 tests) 2ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  14:27:13
+   Duration  362ms (transform 29ms, setup 7ms, collect 23ms, tests 2ms, environment 0ms, prepare 47ms)
+
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+
+thinking
+I'm thinking about whether I need to run a broader check, though maybe it's not necessary. Sometimes I wonder if being targeted is enough for what I'm working on. I guess I should just commit what I've done and then check the git status. It’s straightforward, but there's always that little voice asking if I've covered everything. I’ll aim for clarity in my process to make sure I'm on the right path!
+codex
+The targeted regression test passed. I’m doing one last status check, then I’ll create the commit without touching the user’s unrelated untracked files.
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 53ms:
+ M src/lib/enrichment/enrich.ts
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+?? tests/enrichment.test.ts
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+
+thinking
+**Troubleshooting git permissions**
+
+I’m thinking that I might not be able to write to the .git directory because of sandbox restrictions. Maybe that’s why git add is getting denied? I could try using git commit -a, but it’s still related to .git, so I need to check the permissions. I should inspect the .git directory to see if it’s writable. It's possible that the inability to commit is due to these sandbox limitations, and I wonder how to confirm that.
+codex
+The code is ready, but the sandbox blocked writes inside `.git`, so `git add`/`git commit` failed on `.git/index.lock`. I’m verifying that this is an environment restriction rather than a repo issue, then I’ll report the exact blocker and the finished file changes.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/objects' in /Users/moltbot/pp-agent-work/factory-idea-057exec
+/bin/zsh -lc 'git diff --cached' in /Users/moltbot/pp-agent-work/factory-idea-057 succeeded in 52ms:
+drwxr-xr-x  15 moltbot  staff    480 Mar 15 14:25 .git
+-rw-r--r--   1 moltbot  staff  97066 Mar 15 14:25 .git/index
+drwxr-xr-x   4 moltbot  staff    128 Mar 15 14:25 .git/objects
+ succeeded in 52ms:
+
+file update:
+diff --git a/src/lib/enrichment/enrich.ts b/src/lib/enrichment/enrich.ts
+index dafc6464a3d48f1839d473bd0cbf1d8389026dab..c62b7fc75d7c7b9068808a9f459fceb6670eba9f
+--- a/src/lib/enrichment/enrich.ts
++++ b/src/lib/enrichment/enrich.ts
+@@ -3,6 +3,7 @@
+ const MAX_FILES = 10;
+ const MAX_PATCH_CHARS_PER_FILE = 2000;
+ const MAX_PATCH_CHARS_TOTAL = 8000;
++const INVALID_JSON_CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F]/g;
+ 
+ export type PrFile = {
+   filename: string;
+@@ -217,29 +218,29 @@
+   const files = ((await filesResponse.json()) as GitHubPrFileResponse[])
+     .slice(0, MAX_FILES)
+     .map((file) => ({
+-      filename: file.filename ?? 'unknown',
+-      status: file.status ?? 'modified',
+-      sha: file.sha ?? '',
++      filename: sanitizeControlChars(file.filename ?? 'unknown'),
++      status: sanitizeControlChars(file.status ?? 'modified'),
++      sha: sanitizeControlChars(file.sha ?? ''),
+       additions: file.additions ?? 0,
+       deletions: file.deletions ?? 0,
+       changes: file.changes ?? 0,
+-      patch: truncateText(file.patch ?? null, MAX_PATCH_CHARS_PER_FILE),
+-      previousFilename: file.previous_filename ?? null,
++      patch: truncateText(sanitizeNullableControlChars(file.patch ?? null), MAX_PATCH_CHARS_PER_FILE),
++      previousFilename: sanitizeNullableControlChars(file.previous_filename ?? null),
+     }));
+ 
+   return {
+-    owner,
+-    repo,
++    owner: sanitizeControlChars(owner),
++    repo: sanitizeControlChars(repo),
+     prNumber,
+-    title: pr.title ?? `PR #${prNumber}`,
+-    author: pr.user?.login ?? null,
+-    body: pr.body ?? null,
+-    url: pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`,
+-    state: pr.state ?? 'open',
+-    baseRef: pr.base?.ref ?? 'unknown',
+-    baseSha: pr.base?.sha ?? '',
+-    headRef: pr.head?.ref ?? 'unknown',
+-    headSha: pr.head?.sha ?? '',
++    title: sanitizeControlChars(pr.title ?? `PR #${prNumber}`),
++    author: sanitizeNullableControlChars(pr.user?.login ?? null),
++    body: sanitizeNullableControlChars(pr.body ?? null),
++    url: sanitizeControlChars(pr.html_url ?? `https://github.com/${owner}/${repo}/pull/${prNumber}`),
++    state: sanitizeControlChars(pr.state ?? 'open'),
++    baseRef: sanitizeControlChars(pr.base?.ref ?? 'unknown'),
++    baseSha: sanitizeControlChars(pr.base?.sha ?? ''),
++    headRef: sanitizeControlChars(pr.head?.ref ?? 'unknown'),
++    headSha: sanitizeControlChars(pr.head?.sha ?? ''),
+     files,
+     promptDiff: buildPromptDiff(files),
+   };
+@@ -345,7 +346,7 @@
+   const summary = await generateAiSummary(diff);
+ 
+   return {
+-    summary,
++    summary: sanitizeControlChars(summary),
+     riskSignals,
+     diff,
+     generatedAt: new Date().toISOString(),
+@@ -411,3 +412,11 @@
+ function redactGeminiKey(value: string): string {
+   return value.replace(/AIza[A-Za-z0-9_-]{35}/g, '[REDACTED]');
+ }
++
++export function sanitizeControlChars(value: string): string {
++  return value.replace(INVALID_JSON_CONTROL_CHARS, '');
++}
++
++function sanitizeNullableControlChars(value: string | null): string | null {
++  return value == null ? null : sanitizeControlChars(value);
++}
+diff --git a/tests/enrichment.test.ts b/tests/enrichment.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df03d25623e85153fdcdb9c63907913c34a178c
+--- /dev/null
++++ b/tests/enrichment.test.ts
+@@ -0,0 +1,63 @@
++import { describe, expect, it } from 'vitest';
++import { fetchPrDiff, sanitizeControlChars } from '@/lib/enrichment/enrich';
++
++describe('sanitizeControlChars', () => {
++  it('removes invalid JSON control characters while preserving tabs and newlines', () => {
++    expect(sanitizeControlChars('before\u0000\tline 1\nline 2\u000Bafter')).toBe('before\tline 1\nline 2after');
++  });
++});
++
++describe('fetchPrDiff', () => {
++  it('sanitizes patch content before returning diff data', async () => {
++    process.env.GITHUB_TOKEN = 'test-token';
++
++    const fetchMock = vi
++      .fn()
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => ({
++          title: 'PR title\u0000',
++          body: 'body\u000Btext',
++          html_url: 'https://github.com/acme/repo/pull/12',
++          state: 'open',
++          user: { login: 'octocat\u0000' },
++          head: { ref: 'feature\tbranch', sha: 'headsha' },
++          base: { ref: 'main', sha: 'basesha' },
++        }),
++      })
++      .mockResolvedValueOnce({
++        ok: true,
++        json: async () => [
++          {
++            filename: 'src/file.ts',
++            status: 'modified',
++            sha: 'filesha',
++            additions: 1,
++            deletions: 1,
++            changes: 2,
++            patch: '@@ -1 +1 @@\n-line\u0000\n+\tline\u000B',
++            previous_filename: 'src/old.ts\u0000',
++          },
++        ],
++      });
++
++    const originalFetch = global.fetch;
++    vi.stubGlobal('fetch', fetchMock);
++
++    try {
++      const diff = await fetchPrDiff('acme', 'repo', 12);
++
++      expect(diff.title).toBe('PR title');
++      expect(diff.body).toBe('bodytext');
++      expect(diff.author).toBe('octocat');
++      expect(diff.files[0]?.patch).toBe('@@ -1 +1 @@\n-line\n+\tline');
++      expect(diff.files[0]?.previousFilename).toBe('src/old.ts');
++      expect(diff.promptDiff).toContain('@@ -1 +1 @@\n-line\n+\tline');
++
++      const serialized = JSON.stringify(diff);
++      expect(() => JSON.parse(serialized)).not.toThrow();
++    } finally {
++      vi.stubGlobal('fetch', originalFetch);
++    }
++  });
++});
+
+

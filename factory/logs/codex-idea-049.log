@@ -1,0 +1,1709 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-049
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf239-47bd-7433-90f2-888d67d7db8c
+--------
+user
+IMPORTANT: This is retry #1. The previous build failed QA. Fix these issues FIRST before implementing the rest:
+
+**Failures:** typescript:1_errors
+**TypeScript errors:**
+```
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+```
+
+---
+
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Reviewing implementation needs**
+
+I need to inspect the repository and determine any skills needed for the user's request to implement changes, even though no specific skills are obvious right now. I’ll read the FACTORY-PRD and look into any errors. First, it's important to send a commentary update before moving forward. I'll consider using parallel processes for the reads to streamline everything. That should help ensure I'm fully prepared to assist the user effectively!
+codex
+I’m starting by reading `FACTORY-PRD.md`, checking the current workspace state, and inspecting the files behind the TypeScript failures so I can fix the blocking errors before implementing the requested changes.
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "pwd && rg --files -g 'FACTORY-PRD.md' -g 'package.json' -g 'tsconfig*.json' -g 'minimal-agent.ts' -g 'types.ts' -g 'index.ts' -g 'output.ts' -g 'invalid-receipt.ts' -g 'message.ts' -g 'prod-write.ts' -g 'hash.test.ts' -g 'golden-vectors.json'" in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+ succeeded in 53ms:
+/Users/moltbot/pp-agent-work/factory-idea-049
+src/lib/onboarding/types.ts
+src/lib/notifications/types.ts
+src/lib/operating-mode/index.ts
+src/lib/github-app/index.ts
+src/lib/errors/types.ts
+src/lib/indexing/types.ts
+src/lib/readiness/types.ts
+src/lib/permission-protocol-v1/policy/types.ts
+src/lib/permission-protocol-v1/engine/types.ts
+src/lib/permission-protocol-v1/approvals/index.ts
+src/lib/permission-protocol-v1/approvals/types.ts
+src/lib/permission-protocol-v1/challenge/index.ts
+src/lib/permission-protocol-v1/challenge/types.ts
+src/lib/permission-protocol-v1/index.ts
+src/lib/permission-protocol-v1/api/types.ts
+src/lib/permission-protocol-v1/killSwitch/index.ts
+src/lib/permission-protocol-v1/killSwitch/types.ts
+src/lib/permission-protocol-v1/adapters/index.ts
+src/lib/permission-protocol-v1/adapters/types.ts
+codex
+I’ve confirmed the repo is mostly clean aside from the PRD file and a prompt artifact. Next I’m reading the PRD and the affected TypeScript/package config files to fix module resolution and typing issues before I implement the product changes.
+exec
+/bin/zsh -lc "sed -n '1,240p' reference-demo/tsconfig.json" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/package.json" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,240p' tsconfig.json" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/packages/sdk/package.json" in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 52ms:
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+ succeeded in 52ms:
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2022"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+ succeeded in 52ms:
+# PRD: idea-049 — Color-Code Environment Badges
+
+**Issue:** permission-protocol/app#124  
+**Priority:** P2  
+**Repo:** permission-protocol/app
+
+## Problem
+Environment label on deploy request detail is plain text, easy to miss. No visual differentiation between production and staging.
+
+## Requirements
+- Production badge: amber/warm background (`bg-amber-500/20 text-amber-400 border-amber-500/30`)
+- Staging badge: blue/cool background (`bg-blue-500/20 text-blue-400 border-blue-500/30`)  
+- Development badge: green (`bg-green-500/20 text-green-400 border-green-500/30`)
+- Badge should be prominent — same visual weight as the status badge (Approved/Denied)
+- Apply everywhere environment appears: detail page, queue list, dashboard activity
+
+## Must NOT Do
+- Don't change the data model
+- Don't add new environment types
+
+ succeeded in 52ms:
+{
+  "name": "permission-protocol-sdk-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=@permission-protocol/sdk",
+    "test": "npm run test --workspace=@permission-protocol/sdk",
+    "test:golden": "npm run test:golden --workspace=@permission-protocol/sdk"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
+ succeeded in 51ms:
+{
+  "name": "@permission-protocol/sdk",
+  "version": "0.1.0-alpha.3",
+  "description": "Standardized authorization and receipts for autonomous AI actions",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/permission-protocol/permission-protocol",
+
+thinking
+**Inspecting project structure**
+
+I think I need to inspect target files and possibly examine the project structure for environment badges. It sounds like I should also search for a relevant environment user interface. It’s interesting how these elements interplay within the overall project. I want to make sure that everything is organized and functioning properly. There’s quite a bit to consider here; it might take a little time to get it all sorted!
+exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/packages/sdk/src/types.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/packages/examples/minimal-agent.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/src/scenarios/invalid-receipt.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/src/scenarios/message.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/src/output.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/src/index.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/src/scenarios/prod-write.ts" in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 51ms:
+/**
+ * Output Formatting
+ * 
+ * Beautiful CLI output with boxed results.
+ */
+
+import type { ExecuteResult, PermissionReceipt } from '@permission-protocol/sdk';
+
+const BOX_WIDTH = 65;
+const COLORS = {
+  reset: '\x1b[0m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  white: '\x1b[37m',
+  bold: '\x1b[1m',
+  dim: '\x1b[2m',
+ succeeded in 53ms:
+/**
+ * Minimal Agent Example
+ * 
+ * Demonstrates how to use the Permission Protocol SDK
+ * to request authorization before executing actions.
+ * 
+ * Run with: npx ts-node minimal-agent.ts
+ */
+
+import { PermissionRouter } from '@permission-protocol/sdk';
+
+// ============================================================================
+// Configuration
+// ============================================================================
+
+// For production: configure with hosted Permission Protocol
+PermissionRouter.configure({
+  endpoint: process.env.PP_ENDPOINT ?? 'https://api.permissionprotocol.com',
+  apiKey: process.env.PP_API_KEY ?? '',
+  
+ succeeded in 52ms:
+/**
+ * Scenario: Fail-Closed Behavior
+ * 
+ * Demonstrates that the SDK fails closed when it cannot verify authorization.
+ * This is NOT a 4th status - it's an exception path that blocks execution.
+ * 
+ * When the Permission Protocol is unreachable, returns an error, or the
+ * receipt cannot be verified, the SDK throws an exception and the action
+ * MUST NOT proceed.
+ * 
+ * This shows: "No receipt = No deploy"
+ */
+
+import { PermissionRouter, PermissionProtocolError } from '@permission-protocol/sdk';
+import { formatFailClosed } from '../output.js';
+
+export const SCENARIO_NAME = 'Fail-Closed Behavior';
+export const TOOL = 'test.invalid';
+export const OPERATION = 'trigger_error';
+// Note: This is NOT a status - it's an exception path
+ succeeded in 53ms:
+/**
+ * Permission Protocol SDK Types
+ * 
+ * Public types for the SDK. Internal types are not exported.
+ */
+
+// Re-export HashablePayloadV1 from hash.ts
+export { HashablePayloadV1 } from './hash';
+
+// ============================================================================
+// Configuration
+// ============================================================================
+
+export interface ConfigureOptions {
+  /**
+   * The Permission Protocol API endpoint.
+   * Example: 'https://api.permissionprotocol.com'
+   */
+  endpoint: string;
+
+ succeeded in 51ms:
+/**
+ * Scenario: Messaging Customers
+ * 
+ * Demonstrates a REQUIRES_APPROVAL decision with REQUIRES_FOUNDER_VETO reason.
+ * AI agents cannot message customers without founder approval.
+ */
+
+import { PermissionRouter, type ExecuteResult } from '@permission-protocol/sdk';
+import { sendCampaignMessage, type SendResult, type SendCampaignInput } from '../mock-tools/messaging.js';
+import { formatResult } from '../output.js';
+
+export const SCENARIO_NAME = 'Messaging Customers';
+export const TOOL = 'messaging.send';
+export const OPERATION = 'send_campaign_message';
+export const EXPECTED_STATUS = 'REQUIRES_APPROVAL';
+
+const input: SendCampaignInput = {
+  audienceId: 'segment_all_customers',
+  subject: 'Important Update: New Feature Launch!',
+  body: 'Dear valued customer, we are excited to announce...',
+ succeeded in 53ms:
+/**
+ * HashablePayload v1 Conformance Tests
+ * 
+ * PHASE 0 BLOCKING: These tests MUST pass before any other implementation work.
+ * 
+ * The SDK must conform to the golden vectors generated from hosted PP.
+ * If these tests fail, either:
+ * - The SDK's hash.ts needs to be fixed, OR
+ * - The vectors are stale (regenerate from hosted PP)
+ */
+
+import { describe, it, expect } from 'vitest';
+import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+import goldenVectorsFile from '../../spec/golden-vectors.json';
+
+interface GoldenVector {
+  name: string;
+  description?: string;
+  payload: HashablePayloadV1;
+  expectedCanonical: string;
+ succeeded in 51ms:
+#!/usr/bin/env node
+/**
+ * Permission Protocol Reference Demo
+ * 
+ * Demonstrates authority boundaries for AI agents:
+ * - DENIED: Spending money
+ * - REQUIRES_APPROVAL: Writing to production
+ * - REQUIRES_APPROVAL (Founder Veto): Messaging customers
+ * - ERROR: Invalid receipt (fail-closed)
+ * - TRUST TESTS: Manual real-world sanity checks
+ * 
+ * Usage:
+ *   pnpm demo:run --scenario spend
+ *   pnpm demo:run --scenario prod
+ *   pnpm demo:run --scenario message
+ *   pnpm demo:run --scenario invalid-receipt
+ *   pnpm demo:run --scenario trust-tests
+ *   pnpm demo:run --all
+ */
+
+ succeeded in 51ms:
+/**
+ * Scenario: Writing to Production
+ * 
+ * Demonstrates a REQUIRES_APPROVAL decision.
+ * AI agents cannot write to production without human approval.
+ */
+
+import { PermissionRouter, type ExecuteResult } from '@permission-protocol/sdk';
+import { writeRecord, type WriteResult, type WriteRecordInput } from '../mock-tools/db.js';
+import { formatResult } from '../output.js';
+
+export const SCENARIO_NAME = 'Writing to Production';
+export const TOOL = 'db.write';
+export const OPERATION = 'upsert_record';
+export const EXPECTED_STATUS = 'REQUIRES_APPROVAL';
+
+const input: WriteRecordInput = {
+  table: 'users',
+  record: {
+    id: 'user_67890',
+codex
+I have the PRD and the failing files. The immediate blockers look like workspace/module-resolution gaps in the SDK demo packages, plus one `export type` issue and one unsafe `catch` path. I’m now locating the environment badges in the app so I can make the UI change once the build is green.
+exec
+/bin/zsh -lc "sed -n '1,220p' package.json" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc 'rg -n "environment|env badge|Approved|Denied|REQUIRES_APPROVAL|staging|production|development" src permission-protocol-sdk reference-demo' in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ succeeded in 53ms:
+Total output lines: 513
+
+reference-demo/src/index.ts:7: * - REQUIRES_APPROVAL: Writing to production
+reference-demo/src/index.ts:8: * - REQUIRES_APPROVAL (Founder Veto): Messaging customers
+reference-demo/src/index.ts:26:// Load environment variables
+reference-demo/src/index.ts:29:// Validate environment
+reference-demo/src/index.ts:37:    console.error('Error: PP_ENDPOINT environment variable is required');
+reference-demo/src/index.ts:43:    console.error('Error: PP_API_KEY environment variable is required');
+reference-demo/src/index.ts:49:    console.error('Error: PP_TENANT_ID environment variable is required');
+reference-demo/src/index.ts:132:      console.log('  prod            - Writing to production (expected: REQUIRES_APPROVAL)');
+reference-demo/src/index.ts:133:      console.log('  message         - Messaging customers (expected: REQUIRES_APPROVAL)');
+permission-protocol-sdk/packages/examples/minimal-agent.ts:16:// For production: configure with hosted Permission Protocol
+permission-protocol-sdk/packages/examples/minimal-agent.ts:44:  // Request authorization (use mode: 'dev' for local development)
+permission-protocol-sdk/packages/examples/minimal-agent.ts:55:    // Use 'dev' for local development without hosted PP
+permission-protocol-sdk/packages/examples/minimal-agent.ts:62:      console.log('✓ Approved!');
+permission-protocol-sdk/packages/examples/minimal-agent.ts:71:    case 'REQUIRES_APPROVAL':
+permission-protocol-sdk/packages/examples/minimal-agent.ts:86:      console.log('✗ Denied');
+reference-demo/src/scenarios/invalid-receipt.ts:21:// The SDK's 3-state model is: APPROVED, REQUIRES_APPROVAL, DENIED
+reference-demo/src/scenarios/invalid-receipt.ts:76:    // In production: process.exit(1);
+reference-demo/src/scenarios/message.ts:4: * Demonstrates a REQUIRES_APPROVAL decision with REQUIRES_FOUNDER_VETO reason.
+
+thinking
+**Inspecting EnvironmentBadge**
+
+I need to check the EnvironmentBadge and see if it already exists. It might be insufficient, so I'll look at relevant files to understand its usage better. It's important to confirm this because I want to make sure that I'm aware of any existing issues or gaps. I'll also want to clarify what changes or improvements can be made. Let's see what I can find in those files!
+codex
+I found an existing `EnvironmentBadge` component already used on the Permission Protocol page. I’m checking whether it covers all three surfaces in the PRD and whether its styling matches the acceptance criteria, then I’ll patch both the SDK TS issues and the UI paths together.
+exec
+/bin/zsh -lc "sed -n '1,220p' src/components/ui/environment-badge.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '920,980p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '340,430p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '430,520p' src/app/pp/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc 'rg -n "EnvironmentBadge" src/app src/components' in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 52ms:
+import { clsx } from 'clsx';
+
+const ENVIRONMENT_STYLES: Record<string, string> = {
+  production: 'border-amber-500/30 bg-amber-500/20 text-amber-400',
+  staging: 'border-blue-500/30 bg-blue-500/20 text-blue-400',
+  development: 'border-green-500/30 bg-green-500/20 text-green-400',
+};
+
+const PANEL_STYLES: Record<string, string> = {
+  production: 'border-amber-500/25 bg-amber-500/[0.06]',
+  staging: 'border-blue-500/25 bg-blue-500/[0.05]',
+  development: 'border-green-500/25 bg-green-500/[0.05]',
+};
+
+export function getEnvironmentBadgeClasses(environment: string): string {
+  return ENVIRONMENT_STYLES[environment.toLowerCase()] ?? 'border-[var(--border)] bg-[var(--card-hover)] text-[var(--foreground)]';
+}
+
+export function getEnvironmentPanelClasses(environment: string): string {
+  return PANEL_STYLES[environment.toLowerCase()] ?? 'border-[var(--border)] bg-[var(--card)]';
+ succeeded in 51ms:
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productionConfirmed: true }),
+      });
+      const data = await response.json();
+      if (data?.error?.code === 'UNAUTHENTICATED') {
+        const callbackUrl = `${window.location.pathname}${window.location.search}`;
+        router.push(`/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+        return;
+      }
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error?.message || 'Approval failed');
+      }
+      onApproved(request.id);
+    } catch (error) {
+      addToast({
+        type: 'error',
+        title: 'Approval failed',
+        message: error instanceof Error ? error.message : 'Could not approve deploy request.',
+      });
+ succeeded in 52ms:
+          ))}
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
+          <Card className="border-[var(--border)] bg-[var(--card)]">
+            <CardHeader className="flex flex-row items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-xl">Needs Attention</CardTitle>
+                <p className="mt-1 text-sm text-[var(--muted)]">Pending deploy approvals across your repos.</p>
+              </div>
+              <Link href={getCompanyDeployRequestsPath(companySlug)} className="text-sm text-[var(--muted)] hover:text-[var(--foreground)]">
+                View all
+              </Link>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <DeployQueueCards requests={flatPendingRequests} companySlug={companySlug ?? ''} onApproved={handleQuickApprove} />
+            </CardContent>
+          </Card>
+
+          <div className="space-y-6">
+ succeeded in 52ms:
+      [...requests].sort((a, b) => {
+        const aProduction = a.env.toLowerCase() === 'production' ? 0 : 1;
+        const bProduction = b.env.toLowerCase() === 'production' ? 0 : 1;
+        if (aProduction !== bProduction) {
+          return aProduction - bProduction;
+        }
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      }),
+    [requests]
+  );
+
+  if (sortedRequests.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-[var(--border)] bg-[var(--background)] px-4 py-10 text-center text-sm text-[var(--muted)]">
+        No pending approvals 🎉
+      </div>
+    );
+  }
+
+  const visibleRequests = sortedRequests.slice(0, 5);
+ succeeded in 53ms:
+src/components/ui/environment-badge.tsx:15:export function getEnvironmentBadgeClasses(environment: string): string {
+src/components/ui/environment-badge.tsx:32:interface EnvironmentBadgeProps {
+src/components/ui/environment-badge.tsx:37:export function EnvironmentBadge({ environment, className }: EnvironmentBadgeProps) {
+src/components/ui/environment-badge.tsx:42:        getEnvironmentBadgeClasses(environment),
+src/app/pp/deploy-requests/page.tsx:9:import { EnvironmentBadge } from '@/components/ui/environment-badge';
+src/app/pp/deploy-requests/page.tsx:443:          <EnvironmentBadge environment={request.env} />
+src/app/pp/deploy-requests/[requestId]/page.tsx:23:  EnvironmentBadge,
+src/app/pp/deploy-requests/[requestId]/page.tsx:116:          <EnvironmentBadge
+src/app/pp/deploy-requests/[requestId]/page.tsx:1914:                  <EnvironmentBadge
+src/app/pp/deploy-requests/[requestId]/page.tsx:1930:                      <EnvironmentBadge environment={request.env} />
+src/app/pp/deploy-requests/[requestId]/page.tsx:2139:                    <RequestMetaRow label="Environment" value={<EnvironmentBadge environment={request.env} className="font-mono" />} />
+src/app/pp/deploy-requests/[requestId]/page.tsx:2204:                        <EnvironmentBadge environment={request.env} />
+src/app/pp/deploy-requests/[requestId]/page.tsx:2288:                        <RequestMetaRow label="Environment" value={<EnvironmentBadge environment={request.env} className="font-mono" />} />
+src/app/pp/deploy-requests/[requestId]/page.tsx:2347:                      <RequestMetaRow label="Environment" value={<EnvironmentBadge environment={request.env} className="font-mono" />} />
+src/app/pp/page.tsx:26:import { EnvironmentBadge } from '@/components/ui/environment-badge';
+src/app/pp/page.tsx:389:        <EnvironmentBadge environment={request.env} />
+src/app/pp/page.tsx:957:                          <EnvironmentBadge environment={item.env} />
+exec
+/bin/zsh -lc "sed -n '90,150p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '2120,2155p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1890,1955p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '430,460p' src/app/pp/deploy-requests/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-049 exited 1 in 51ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 51ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 51ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ succeeded in 53ms:
+      className={`group block cursor-pointer rounded-r-xl rounded-l-none border border-[var(--border)] border-l-2 bg-[var(--card)] px-4 py-3 shadow-sm transition-colors hover:bg-[var(--card-hover)] ${getStatusAccentClasses(request.status)}`}
+    >
+      <div className="flex min-w-0 items-center gap-3 text-sm">
+        <span
+          aria-hidden="true"
+          className={`h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDotClasses(request.status)}`}
+        />
+        <span className="min-w-0 shrink truncate text-[var(--muted)]">{request.repo}</span>
+        <div className="min-w-0 flex-1 truncate font-medium text-[var(--foreground)]">
+          <span className="truncate">{displayTitle}</span>
+        </div>
+        <span className="w-16 shrink-0 text-right text-[var(--muted)]">{prNumber ? `#${prNumber}` : ''}</span>
+        <div className="flex shrink-0 items-center gap-2">
+          <EnvironmentBadge environment={request.env} />
+          {shouldShowRiskPill(request.riskLevel) ? (
+            <span
+              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize ${getRiskTone(request.riskLevel)}`}
+            >
+              {request.riskLevel}
+            </span>
+codex
+The first pass confirms the badge component already has the PRD’s color mapping, but its size/weight is lighter than the status pills and I still need to verify the detail page surfaces. I’m opening those routes with proper quoting now, then I’ll edit both the shared badge and the TS package config in one pass.
+exec
+/bin/zsh -lc "sed -n '90,150p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '2128,2155p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1890,1955p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '2190,2215p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+                      label="Commit"
+                      value={
+                        commitUrl ? (
+                          <a href={commitUrl} target="_blank" rel="noreferrer" className="font-mono text-blue-300 hover:text-blue-200 hover:underline">
+                            {request.commitSha}
+                          </a>
+                        ) : (
+                          <span className="font-mono">{request.commitSha}</span>
+                        )
+                      }
+                    />
+                    <RequestMetaRow label="Environment" value={<EnvironmentBadge environment={request.env} className="font-mono" />} />
+                    <RequestMetaRow label="Capability" value={<span className="break-all font-mono">{request.capability}</span>} />
+                    <RequestMetaRow
+                      label="Created"
+                      value={`${formatDateTime(request.createdAt)}${formatTimeAgo(request.createdAt) ? ` · ${formatTimeAgo(request.createdAt)}` : ''}`}
+                    />
+                    {contextDetails?.commitSummary ? (
+                      <RequestMetaRow
+                        label="Commit Summary"
+ succeeded in 53ms:
+
+        {isDecisionFlowLayout ? (
+          <div className="space-y-5">
+            <section className={`rounded-3xl border p-5 ${environmentPanelClassName}`}>
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="space-y-2">
+                    <h1 className="text-3xl font-semibold tracking-tight text-white">{reviewTitle}</h1>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[var(--muted)]">
+                      <span>{request.repo}</span>
+                      {prNumber && prUrl ? (
+                        <>
+                          <span aria-hidden="true">·</span>
+                          <a href={prUrl} target="_blank" rel="noreferrer" className="text-blue-300 hover:text-blue-200 hover:underline">
+                            PR #{prNumber}
+                          </a>
+                        </>
+                      ) : null}
+                      <span aria-hidden="true">·</span>
+                      <span>by {actorLabel}</span>
+ succeeded in 53ms:
+                      </>
+                    ) : null}
+                    <span aria-hidden="true">·</span>
+                    <span>{actorLabel}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{formatTimeAgo(request.createdAt)}</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-[var(--muted)]">
+                    <span className={requestStatusClassName}>{request.status}</span>
+                    <span>·</span>
+                    <span>{changedFiles.length} file{changedFiles.length !== 1 ? 's' : ''}</span>
+                    {request.env ? (
+                      <>
+                        <span>·</span>
+                        <EnvironmentBadge environment={request.env} />
+                      </>
+                    ) : null}
+                  </div>
+                  <div className="text-sm text-[var(--muted)]">
+                    {actorDescriptor.icon} {actorDescriptor.label}
+ succeeded in 53ms:
+    assessmentSummary.riskLevel === 'high' || assessmentSummary.action === 'Block recommended'
+      ? {
+          emoji: '🔴',
+          label: 'HIGH RISK',
+          className: 'border-red-500/30 bg-red-500/10 text-red-200',
+        }
+      : assessmentSummary.riskLevel === 'medium' || assessmentSummary.action === 'Review carefully'
+        ? {
+            emoji: '🟡',
+            label: 'REVIEW CAREFULLY',
+            className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-100',
+          }
+        : {
+            emoji: '🟢',
+            label: 'ROUTINE',
+            className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
+          };
+
+  return (
+    <div
+
+thinking
+**Evaluating status badge implementation**
+
+I see I need to compare the weight of the status badge, ensuring the visual weight is consistent across the environment. It’s possible I should increase the base class. Should I also consider duplicating the small badge on the detail page? It seems acceptance should apply across all environments where it appears, like the detail, queue list, and dashboard activity. Existing components could be included. I might also adjust the shared component globally and need to fix TypeScript errors next. I should inspect the reference demo and package details.
+exec
+/bin/zsh -lc "sed -n '1,240p' permission-protocol-sdk/packages/sdk/tsconfig.json" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' permission-protocol-sdk/packages/sdk/src/index.ts" in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc "sed -n '1,220p' reference-demo/package.json" in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+/**
+ * Permission Protocol SDK
+ * 
+ * Standardized authorization for AI agents.
+ * 
+ * This SDK:
+ * - Requests authorization from hosted Permission Protocol
+ * - Returns decisions and receipts
+ * - Fails closed on errors
+ * 
+ * This SDK does NOT:
+ * - Make decisions
+ * - Execute tools
+ * - Store receipts
+ * - Implement policy logic
+ * 
+ * @packageDocumentation
+ */
+
+// Main entry point
+ succeeded in 53ms:
+{
+  "name": "permission-protocol-reference-demo",
+  "version": "1.0.0",
+  "description": "Reference demo showing Permission Protocol authority boundaries",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "demo": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo:run": "tsx src/index.ts",
+    "demo:spend": "tsx src/index.ts --scenario spend",
+    "demo:prod": "tsx src/index.ts --scenario prod",
+    "demo:message": "tsx src/index.ts --scenario message",
+    "demo:invalid": "tsx src/index.ts --scenario invalid-receipt",
+    "demo:trust": "tsx src/index.ts --scenario trust-tests",
+    "demo:all": "tsx src/index.ts --all"
+  },
+  "dependencies": {
+ succeeded in 53ms:
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "__tests__"]
+}
+
+thinking
+I'm considering adjusting the component classes to text-sm. I want to examine the sizes of the status badges, which are currently set at px-2.5 py-0.5 with text-xs and a medium font. The status pills could be px-2.5 py-1 with text-xs and medium weight, or px-3 py-1.5 with text-sm. According to the PRD, they should have the same visual weight as the status badges. The shared environment badge may need to be px-3 py-1 with text-xs, font-semibold, uppercase, and slight tracking.
+codex
+I’ve got enough context to patch. The TS fixes are straightforward: add a root path mapping for the local SDK, correct one broken JSON import path, switch one re-export to `export type`, and tighten two inferred `unknown`/`any` spots. For the PRD, I’m updating the shared `EnvironmentBadge` so every existing use picks up the required colors with stronger prominence, which covers the detail page, queue list, and dashboard activity without changing data flow.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-049/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -60,4 +60,3 @@
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -7,3 +7,3 @@
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -13,3 +13,3 @@
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+M /Users/moltbot/pp-agent-work/factory-idea-049/tsconfig.json
+@@ -18,3 +18,4 @@
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -9,3 +9,3 @@
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+@@ -24,3 +24,3 @@
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+M /Users/moltbot/pp-agent-work/factory-idea-049/src/components/ui/environment-badge.tsx
+@@ -40,3 +40,3 @@
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+apply_patch(auto_approved=true) exited 0 in 84ms:
+Success. Updated the following files:
+M /Users/moltbot/pp-agent-work/factory-idea-049/tsconfig.json
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/src/types.ts
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+M /Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/examples/minimal-agent.ts
+M /Users/moltbot/pp-agent-work/factory-idea-049/reference-demo/src/scenarios/invalid-receipt.ts
+M /Users/moltbot/pp-agent-work/factory-idea-049/src/components/ui/environment-badge.tsx
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+
+thinking
+**Evaluating typecheck needs**
+
+I’m considering whether I need to run a typecheck or maybe do a build. I might want to check the remaining PRD for any additional changes, but I should also verify if the environment badge is used on all surfaces. It seems likely that the queue list page might utilize it too. Running the TypeScript compiler could be helpful, considering that the root typecheck command might be missing. I could use `npx tsc -p tsconfig.json`.
+codex
+The edits are in. I’m running TypeScript now to confirm the QA blockers are actually resolved, then I’ll do a quick pass on the environment-badge surfaces and commit if clean.
+exec
+/bin/zsh -lc 'git diff -- src/components/ui/environment-badge.tsx permission-protocol-sdk/packages/examples/minimal-agent.ts permission-protocol-sdk/packages/sdk/src/types.ts permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts reference-demo/src/scenarios/invalid-receipt.ts tsconfig.json' in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a271..8eea6c7 100644
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@ PermissionRouter.configure({
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+exec
+/bin/zsh -lc 'npx tsc -p tsconfig.json' in /Users/moltbot/pp-agent-work/factory-idea-049file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+ exited 2 in 3.96s:
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/delegated-accounts/[id]/route.ts(32,27): error TS2552: Cannot find name 'getDelegatedAccount'. Did you mean 'deleteDelegatedAccount'?
+src/app/api/delegated-accounts/feature/route.ts(26,27): error TS2552: Cannot find name 'isDelegatedAccountsEnabled'. Did you mean 'setDelegatedAccountsEnabled'?
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(263,37): error TS2339: Property 'constitutionDocument' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(371,11): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(473,11): error TS2353: Object literal may only specify known properties, and 'decidedAt' does not exist in type '(Without<ApprovalUpdateInput, ApprovalUncheckedUpdateInput> & ApprovalUncheckedUpdateInput) | (Without<...> & ApprovalUpdateInput)'.
+src/app/api/dev-ai/patches/[patchId]/approve/route.ts(489,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/regenerate/route.ts(93,9): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Without<TaskCreateInput, TaskUncheckedCreateInput> & TaskUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/regenerate/route.ts(113,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/revise/route.ts(134,9): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Without<TaskCreateInput, TaskUncheckedCreateInput> & TaskUncheckedCreateInput'.
+src/app/api/dev-ai/patches/[patchId]/revise/route.ts(154,9): error TS2353: Object literal may only specify known properties, and 'eventType' does not exist in type 'Without<AuditEventCreateInput, AuditEventUncheckedCreateInput> & AuditEventUncheckedCreateInput'.
+src/app/api/job-runs/route.ts(38,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/job-runs/route.ts(151,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/kb/packs/[id]/docs/[docTypeId]/route.ts(32,24): error TS2304: Cannot find name 'getPack'.
+src/app/api/kb/packs/[id]/route.ts(29,24): error TS2304: Cannot find name 'getPack'.
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+
+
+thinking
+**Considering type checking errors**
+
+I see there are many unrelated errors with type checking. I might want to run a targeted `tsc` to verify that only the listed errors are fixed. Maybe I can use `npx tsc --noEmit` with a specific file list. I should examine the failing files and perhaps focus on those. It could be easier to compile with a root tsconfig and file list instead. Additionally, I might want to ensure the page list/detail uses uppercase and inspect for any more UI changes needed.
+thinking
+**Evaluating type checking options**
+
+I need to check if the `PermissionReceipt` type in `output.ts` is unused, and I should verify this using `tsc`, potentially without the `noUnusedLocals` flag. It might be a good idea to run targeted type checks using the root `tsconfig`. I could try a command like `npx tsc --noEmit` combined with specific file references, but I’m unsure if the output will help. It seems simpler to run `tsc` and then pipe the output through `rg` to filter results. I'll proceed with that and see if any issues remain.
+codex
+The full repo typecheck is currently red in many unrelated areas outside this task, so I’m validating the original QA failure set directly. That lets me confirm whether the retry blockers are fixed without pretending the rest of the workspace is clean.
+exec
+/bin/zsh -lc 'npx tsc -p tsconfig.json --pretty false 2>&1 | rg "permission-protocol-sdk/packages/examples/minimal-agent.ts|permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts|permission-protocol-sdk/packages/sdk/src/types.ts|reference-demo/src/index.ts|reference-demo/src/output.ts|reference-demo/src/scenarios/invalid-receipt.ts|reference-demo/src/scenarios/message.ts|reference-demo/src/scenarios/prod-write.ts"' in /Users/moltbot/pp-agent-work/factory-idea-049file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+ exited 1 in 2.56s:
+
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+
+thinking
+**Evaluating git commit process**
+
+I see that I need to make sure the target errors are resolved before committing. I should probably inspect the git diff stats and mention any unrelated errors that haven’t been fixed yet. I might need to consider running tests, although that seems a bit uncertain. Ultimately, I need to perform a git add and then commit the changes since the user has asked for that explicitly.
+codex
+The original QA TypeScript failures are no longer present. I’m doing a final diff check and then I’ll create the requested commit, with a note that the repo still has unrelated pre-existing type errors outside the files from this retry.
+exec
+/bin/zsh -lc 'git diff --stat' in /Users/moltbot/pp-agent-work/factory-idea-049exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-049 succeeded in 53ms:
+ permission-protocol-sdk/packages/examples/minimal-agent.ts  | 4 ++--
+ permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts | 2 +-
+ permission-protocol-sdk/packages/sdk/src/types.ts           | 2 +-
+ reference-demo/src/scenarios/invalid-receipt.ts             | 3 +--
+ src/components/ui/environment-badge.tsx                     | 2 +-
+ tsconfig.json                                               | 3 ++-
+ 6 files changed, 8 insertions(+), 8 deletions(-)
+ succeeded in 53ms:
+ M permission-protocol-sdk/packages/examples/minimal-agent.ts
+ M permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+ M permission-protocol-sdk/packages/sdk/src/types.ts
+ M reference-demo/src/scenarios/invalid-receipt.ts
+ M src/components/ui/environment-badge.tsx
+ M tsconfig.json
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+
+thinking
+**Clarifying commit requirements**
+
+I need to track only the files that are committed and not the PRD, since the user asked for a read. So, maybe I should keep the PRD untracked? But the request is clearly about reading, not committing. I'll commit with a message that explains what I've done, ensuring that the relevant files are included. It’s important to keep things organized!
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+
+thinking
+**Evaluating changes and errors**
+
+I think I should mention the original errors that were resolved with the filtered TSC command. The user asked for implementing all changes described, so even though we did minimal UI changes, I need to ensure that the detail page, queue list, and dashboard activity are covered, especially due to shared component usage. I realize I shouldn't commit yet because of the sandbox, and I need to highlight the inability to commit and issues with unrelated repository types.
+codex
+Implemented the PRD change by strengthening the shared environment badge in [src/components/ui/environment-badge.tsx](/Users/moltbot/pp-agent-work/factory-idea-049/src/components/ui/environment-badge.tsx). The existing production/staging/development color mapping already matched the required Tailwind classes, so I raised the badge prominence globally with stronger padding, weight, uppercase styling, and tracking. Because the app already uses this component on the deploy detail page, queue list, and dashboard activity, those surfaces all pick up the change automatically.
+
+I also fixed the retry’s listed TypeScript blockers:
+[tsconfig.json](/Users/moltbot/pp-agent-work/factory-idea-049/tsconfig.json) adds a local path mapping for `@permission-protocol/sdk`,
+[permission-protocol-sdk/packages/sdk/src/types.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/src/types.ts) switches to `export type`,
+[permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts) fixes the JSON path,
+[permission-protocol-sdk/packages/examples/minimal-agent.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/examples/minimal-agent.ts) adds the missing receipt type annotation, and
+[reference-demo/src/scenarios/invalid-receipt.ts](/Users/moltbot/pp-agent-work/factory-idea-049/reference-demo/src/scenarios/invalid-receipt.ts) fixes the `unknown` catch narrowing.
+
+Validation: the original QA failure files no longer appear in `tsc` output. A full repo `npx tsc -p tsconfig.json` still fails because of many unrelated pre-existing errors elsewhere in the workspace.
+
+I could not create the requested commit because the sandbox blocks writes inside `.git` and `git commit` fails with `Unable to create '.git/index.lock': Operation not permitted`.
+file update:
+diff --git a/permission-protocol-sdk/packages/examples/minimal-agent.ts b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+index 973a2711e58127729be43a93634f8d2126290811..8eea6c75d5b516830b4e54fd80f3be3a1d59a0ef
+--- a/permission-protocol-sdk/packages/examples/minimal-agent.ts
++++ b/permission-protocol-sdk/packages/examples/minimal-agent.ts
+@@ -7,7 +7,7 @@
+  * Run with: npx ts-node minimal-agent.ts
+  */
+ 
+-import { PermissionRouter } from '@permission-protocol/sdk';
++import { PermissionRouter, type PermissionReceipt } from '@permission-protocol/sdk';
+ 
+ // ============================================================================
+ // Configuration
+@@ -22,7 +22,7 @@
+   timeoutMs: 15_000,
+   
+   // Optional: receipt verification hook (for future signature verification)
+-  verifyReceipt: (receipt) => {
++  verifyReceipt: (receipt: PermissionReceipt) => {
+     // Could verify signatures here when available
+     return receipt.receiptId.length > 0;
+   },
+diff --git a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+index 93fcf9e99471c4ac3fd44ab8600a535da032986b..5b747ed2eaa290a33ccb84a29adaba5bb34154e3
+--- a/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
++++ b/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts
+@@ -11,7 +11,7 @@
+ 
+ import { describe, it, expect } from 'vitest';
+ import { canonicalize, computeHash, HashablePayloadV1 } from '../src/hash';
+-import goldenVectorsFile from '../../spec/golden-vectors.json';
++import goldenVectorsFile from '../../../spec/golden-vectors.json';
+ 
+ interface GoldenVector {
+   name: string;
+diff --git a/permission-protocol-sdk/packages/sdk/src/types.ts b/permission-protocol-sdk/packages/sdk/src/types.ts
+index d427561a8785e25bcc15aadc647c39f400e4619d..fdfa9b3bd4035694357c07c017f4cbe548a05cf5
+--- a/permission-protocol-sdk/packages/sdk/src/types.ts
++++ b/permission-protocol-sdk/packages/sdk/src/types.ts
+@@ -5,7 +5,7 @@
+  */
+ 
+ // Re-export HashablePayloadV1 from hash.ts
+-export { HashablePayloadV1 } from './hash';
++export type { HashablePayloadV1 } from './hash';
+ 
+ // ============================================================================
+ // Configuration
+diff --git a/reference-demo/src/scenarios/invalid-receipt.ts b/reference-demo/src/scenarios/invalid-receipt.ts
+index 7c94661628f96ee4ec6526a3ba0b8090a16434a9..ff75dbcae8ebf7eb2226e48463133423202139dd
+--- a/reference-demo/src/scenarios/invalid-receipt.ts
++++ b/reference-demo/src/scenarios/invalid-receipt.ts
+@@ -58,8 +58,7 @@
+     process.exit(1);
+   } catch (error) {
+     // This is the EXPECTED path - fail closed
+-    const isPermissionError = error instanceof PermissionProtocolError;
+-    const errorCode = isPermissionError ? error.code : 'UNKNOWN';
++    const errorCode = error instanceof PermissionProtocolError ? error.code : 'UNKNOWN';
+     const errorMessage = error instanceof Error ? error.message : String(error);
+ 
+     console.log(formatFailClosed({
+diff --git a/src/components/ui/environment-badge.tsx b/src/components/ui/environment-badge.tsx
+index 10916571f77006e3bab8f568a37c5f0fe2d927d6..40e9ab51db34a13200180d7cf20fd30d68e242f8
+--- a/src/components/ui/environment-badge.tsx
++++ b/src/components/ui/environment-badge.tsx
+@@ -38,7 +38,7 @@
+   return (
+     <span
+       className={clsx(
+-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
++        'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+         getEnvironmentBadgeClasses(environment),
+         className
+       )}
+diff --git a/tsconfig.json b/tsconfig.json
+index 6f28e8a402e0e091c36218a88a55c85dbf3c23cd..ff3f030f7e619bd9a51cca90c132053caff449b3
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,8 @@
+     "downlevelIteration": true,
+     "baseUrl": ".",
+     "paths": {
+-      "@/*": ["./src/*"]
++      "@/*": ["./src/*"],
++      "@permission-protocol/sdk": ["./permission-protocol-sdk/packages/sdk/src/index.ts"]
+     },
+     "plugins": [
+       {
+
+tokens used
+79,827
+Implemented the PRD change by strengthening the shared environment badge in [src/components/ui/environment-badge.tsx](/Users/moltbot/pp-agent-work/factory-idea-049/src/components/ui/environment-badge.tsx). The existing production/staging/development color mapping already matched the required Tailwind classes, so I raised the badge prominence globally with stronger padding, weight, uppercase styling, and tracking. Because the app already uses this component on the deploy detail page, queue list, and dashboard activity, those surfaces all pick up the change automatically.
+
+I also fixed the retry’s listed TypeScript blockers:
+[tsconfig.json](/Users/moltbot/pp-agent-work/factory-idea-049/tsconfig.json) adds a local path mapping for `@permission-protocol/sdk`,
+[permission-protocol-sdk/packages/sdk/src/types.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/src/types.ts) switches to `export type`,
+[permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts) fixes the JSON path,
+[permission-protocol-sdk/packages/examples/minimal-agent.ts](/Users/moltbot/pp-agent-work/factory-idea-049/permission-protocol-sdk/packages/examples/minimal-agent.ts) adds the missing receipt type annotation, and
+[reference-demo/src/scenarios/invalid-receipt.ts](/Users/moltbot/pp-agent-work/factory-idea-049/reference-demo/src/scenarios/invalid-receipt.ts) fixes the `unknown` catch narrowing.
+
+Validation: the original QA failure files no longer appear in `tsc` output. A full repo `npx tsc -p tsconfig.json` still fails because of many unrelated pre-existing errors elsewhere in the workspace.
+
+I could not create the requested commit because the sandbox blocks writes inside `.git` and `git commit` fails with `Unable to create '.git/index.lock': Operation not permitted`.

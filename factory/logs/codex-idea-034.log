@@ -1,0 +1,4854 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-034
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019ce9b2-750f-7e83-aaa9-7b2e1da4f507
+--------
+user
+Add a visual preview section to the PP deploy request review page. Read FACTORY-PRD.md for full context.
+**Step 1: Create the preview URL API endpoint**
+Create a new file `src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts`:
+- Use `withTenant` auth wrapper (same pattern as merge-readiness/route.ts)
+- Look up the deploy request by `requestId` and `companyId`
+- If the deploy request has a `headSha` or `commitSha`, call GitHub's Deployments API:
+  ```
+  GET https://api.github.com/repos/{owner}/{repo}/deployments?sha={sha}&per_page=5
+  ```
+- For each deployment, fetch its statuses:
+  ```
+  GET https://api.github.com/repos/{owner}/{repo}/deployments/{id}/statuses
+  ```
+- Find the first status with `environment_url` that looks like a Vercel preview (contains 'vercel.app' or the environment is 'Preview')
+- Return `{ previewUrl: string | null, status: 'ready' | 'building' | 'not_found' }`
+- Use the GitHub App installation token (same as merge-readiness endpoint — use `getAppTokenForRepo()` if available, fallback to `process.env.GITHUB_TOKEN`)
+- Add simple in-memory caching (same pattern as merge-readiness cache)
+**Step 2: Add VisualPreview component to the review page**
+In `src/app/pp/deploy-requests/[requestId]/page.tsx`:
+- Create a `VisualPreview` component (in the same file)
+- Props: `requestId: string`
+- On mount, fetch `/api/v1/deploy-requests/${requestId}/preview-url`
+- States:
+  - Loading: show a shimmer block (same height as the iframe will be)
+  - Ready + previewUrl: show iframe + "Open in new tab" link
+  - Building: show "Preview deploying..." with a subtle animation
+  - Not found: show "No preview available" with link to PR
+- Iframe styling: `w-full rounded-2xl border border-[var(--border)] bg-black` with height 500px (desktop) / 350px (mobile)
+- Add an expand/collapse toggle and "Open in new tab" external link icon
+- Render the VisualPreview component after the AI Summary section (after `AiSummaryCard`) and before the action buttons
+Before finishing, run `npx tsc --noEmit` and fix any type errors.
+mcp startup: no servers
+codex
+I’m reading the existing review page, the merge-readiness endpoint, and the product doc first so I can match the repo’s patterns before editing.
+exec
+/bin/zsh -lc "sed -n '1,280p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1,240p' src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1,240p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc 'rg -n "getAppTokenForRepo|withTenant|merge-readiness cache|AiSummaryCard|deploy request" src -S' in /Users/moltbot/pp-agent-work/factory-idea-034 exited 1 in 53ms:
+zsh:1: no matches found: src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ succeeded in 52ms:
+# PRD: idea-034 — Visual preview in PP review page
+
+## Summary
+Show a live visual preview of the PR's changes embedded in the PP review page. Instead of reading a diff, the approver sees the actual deployed preview and can visually confirm the change looks right. This eliminates the "what does this actually look like?" mental overhead.
+
+## Problem
+Reading code diffs is slow and requires mental compilation. For UI changes (which most factory PRs are), the approver needs to see the result, not the code. Currently they'd have to find the Vercel preview link, open it in a new tab, navigate to the affected page, and compare with production. That's 1-2 minutes per PR.
+
+## Solution
+Add a `VisualPreview` section to the review page that shows an iframe of the Vercel preview deployment URL. The preview URL is available from GitHub's deployment status API for any PR that triggers a Vercel deployment.
+
+### Why iframe, not screenshot?
+- **Interactive** — approver can scroll, click, navigate within the preview
+- **Always fresh** — no stale screenshots, shows the live deployment
+- **No infrastructure** — no screenshot service needed, just an iframe pointing to the Vercel preview URL
+- **Mobile-friendly** — iframe scales to viewport
+
+### Fallback
+If no preview deployment is found (non-Vercel repos, or deployment not ready), show a message: "No preview deployment found. Check the PR for deployment links." with a link to the PR.
+
+ succeeded in 53ms:
+src/lib/services/github-rerun.ts:302:      message: 'No check run ID or workflow run ID is stored on this deploy request.',
+src/lib/services/deploy-provider-trigger.ts:5: * a deploy request is approved, when the provider has autoTrigger enabled.
+src/lib/post-approval-actions.ts:3:import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+src/lib/post-approval-actions.ts:197:    const appToken = await getAppTokenForRepo(request.repo);
+src/lib/post-approval-actions.ts:285:    const appToken = await getAppTokenForRepo(request.repo);
+src/lib/post-approval-actions.ts:388:    const appToken = await getAppTokenForRepo(request.repo);
+src/lib/github-app/index.ts:6:  getAppTokenForRepo,
+src/lib/github-app/installation-token.ts:82:export async function getAppTokenForRepo(
+src/lib/og/deploy-request-metadata.ts:66:    description: 'Review and approve deploy requests with Permission Protocol.',
+src/lib/ops/route-gates.ts:96: * export const POST = withTenant(async (req, ctx, tenant) => {
+src/lib/ops/route-gates.ts:260: * have been migrated to withTenant() and are now SAFE.
+src/lib/connectors/github-auth.ts:8:import { getAppTokenForRepo, getInstallationToken } from '../github-app/installation-token';
+src/lib/connectors/github-auth.ts:50:    const repoToken = await getAppTokenForRepo(repoFullName);
+src/lib/scheduler/index.ts:126:      console.log(`[Scheduler] Expired ${expired.count} stale deploy request(s)`);
+src/lib/scheduler/index.ts:129:    console.error('[Scheduler] Failed deploy request expiry sweep:', error);
+src/lib/auth/require-tenant.ts:75: * Handler function type for withTenant wrapper.
+src/lib/auth/require-tenant.ts:84: * Options for withTenant wrapper.
+src/lib/auth/require-tenant.ts:244: * export const GET = withTenant(async (request, { params }, { companyId, db }) => {
+src/lib/auth/require-tenant.ts:256: * export const DELETE = withTenant(
+src/lib/auth/require-tenant.ts:264:export function withTenant<TParams = unknown>(
+codex
+I’ve got the product intent. Next I’m pulling the actual endpoint and page code with quoted paths so I can patch against the real types and existing UI structure.
+exec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '260,620p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1,320p' 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '620,2100p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 53ms:
+import { NextResponse } from 'next/server';
+import { withTenant } from '@/lib/auth/require-tenant';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+import { httpError, ErrorCodes } from '@/lib/http/errors';
+import {
+  getCachedMergeReadiness,
+  invalidateCachedMergeReadiness,
+  setCachedMergeReadiness,
+} from './cache';
+
+export const dynamic = 'force-dynamic';
+
+const GITHUB_API_VERSION = '2022-11-28';
+const MAX_MERGEABLE_RETRIES = 5;
+const MERGEABLE_RETRY_DELAY_MS = 2_000;
+
+type MergeableState = 'clean' | 'behind' | 'blocked' | 'dirty' | 'unknown' | string;
+
+type MergeReadinessResponse = {
+ succeeded in 53ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+ succeeded in 53ms:
+              title={signal.reason}
+            >
+              <span className="font-semibold uppercase tracking-[0.12em]">{signal.severity}</span>
+              <span>{signal.category}</span>
+              {signal.files[0] ? <span className="truncate font-mono text-[11px] opacity-80">{signal.files[0]}</span> : null}
+            </div>
+          ))}
+          {contextSignals.map((signal) => (
+            <div
+              key={`${signal.code}-${signal.label}`}
+              className={`inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${getSeverityClasses(signal.severity)}`}
+              title={signal.why}
+            >
+              <span className="font-semibold uppercase tracking-[0.12em]">{signal.severity}</span>
+              <span>{signal.label}</span>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+ succeeded in 52ms:
+Total output lines: 1481
+
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchRequest().then((nextRequest) => {
+      void fetchContext(nextRequest);
+      void fetchEnrichment(nextRequest);
+      void fetchMergeReadiness(nextRequest);
+    });
+  }, [fetchContext, fetchEnrichment, fetchMergeReadiness, fetchRequest]);
+
+  useEffect(() => {
+    if (request?.status !== 'approved') {
+      setMergeReadinessUnknownSince(null);
+    }
+  }, [request?.status]);
+
+
+thinking
+**Considering action button layout**
+
+I’m thinking about creating a page for placement and action buttons, and I wonder if that might be sufficient. I should look into the helper type for the DeployGateRequest, including elements like prUrl and headSha. It seems necessary to inspect the helper types to see how they fit into the request model I'll use. Getting this right is important to ensure everything functions well!
+codex
+I have the page structure now. I’m checking the request shape and existing cache conventions so the new endpoint and component don’t guess at fields or duplicate patterns incorrectly.
+exec
+/bin/zsh -lc "sed -n '1,220p' 'src/lib/github-app/installation-token.ts'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1,220p' 'src/app/api/v1/deploy-requests/[requestId]/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "ls -la 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness' && sed -n '1,220p' 'src/app/api/v1/deploy-requests/[requestId]/merge-readiness/cache.ts'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "rg -n \"type DeployGateRequest|interface DeployGateRequest|headSha|prUrl\" 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts' src -S" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 53ms:
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/config';
+import { deployGatePrisma as prisma } from '@/lib/company/deploy-gate-db';
+import { httpError, httpErrorWithMeta, ErrorCodes } from '@/lib/http/errors';
+import { computePendingRequestExpiry } from '@/lib/permission-protocol-v1/deploy-gate/ttl';
+import { validateApiKey } from '@/lib/auth/api-keys';
+import { hasApiKeyScope } from '@/lib/auth/api-key-scopes';
+import { deriveApprovalStatus } from '@/lib/permission-protocol-v1/deploy-gate/state';
+import {
+  canReapproveDeployGateRequest,
+  getReapprovalEligibilityReason,
+  parseStoredPostApprovalResult,
+} from '@/lib/deploy-gate-approval';
+
+export const dynamic = 'force-dynamic';
+const API_KEY_HEADER = 'x-pp-api-key';
+
+function getRequiredQuorum(env: string): number {
+  const isProd = env.toLowerCase() === 'production';
+ succeeded in 53ms:
+/**
+ * GitHub App installation token management with caching.
+ * Installation tokens are valid for 1 hour; we cache with a 5-minute buffer.
+ */
+
+import { generateAppJwt } from "./jwt";
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+
+interface CachedToken {
+  token: string;
+  expiresAt: number; // Unix timestamp ms
+}
+
+const tokenCache = new Map<number, CachedToken>();
+const EXPIRY_BUFFER_MS = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Get a valid installation token, using cache when possible.
+ */
+export async function getInstallationToken(installationId: number): Promise<string> {
+ succeeded in 52ms:
+total 24
+drwxr-xr-x   4 moltbot  staff   128 Mar 13 18:14 .
+drwxr-xr-x  14 moltbot  staff   448 Mar 13 18:14 ..
+-rw-r--r--   1 moltbot  staff  1306 Mar 13 18:14 cache.ts
+-rw-r--r--   1 moltbot  staff  7697 Mar 13 18:14 route.ts
+type MergeReadinessResponse = {
+  mergeable: boolean | null;
+  mergeable_state: string;
+  checks: Array<{
+    name: string;
+    status: string;
+    conclusion: string | null;
+  }>;
+  checks_passing: number;
+  checks_total: number;
+  behind_by: number;
+};
+
+type CacheEntry = {
+  expiresAt: number;
+ exited 2 in 52ms:
+rg: src/app/pp/deploy-requests/[requestId]/review-page-helpers.ts: No such file or directory (os error 2)
+src/lib/services/pr-review.ts:160:    headSha: prHeadSha,
+src/lib/services/pr-review.ts:204:    prUrl: string;
+src/lib/services/pr-review.ts:260:      prUrl: outboxItem.prUrl!,
+src/lib/services/pr-review.ts:274:      headSha: prMetadata.headSha,
+src/lib/services/pr-review.ts:358:Head SHA: ${reviewPacket.prActual.headSha}
+src/lib/services/pr-review.ts:424:    headSha: 'abc123def456',
+src/lib/services/pr-review.ts:503:      headSha: 'mockhead123456',
+src/lib/services/pr-review.ts:538:    headSha: data.head.sha,
+src/lib/services/pr-review.ts:643:  if (!outboxItem.prNumber || !outboxItem.prUrl) {
+src/lib/services/pr-review.ts:715:  const drift = detectDrift(patch, prFiles, prMetadata.baseSha, prMetadata.headSha);
+src/lib/services/pr-review.ts:725:      prUrl: outboxItem.prUrl,
+src/lib/services/pr-review.ts:810:      prHeadSha: prMetadata.headSha,
+src/lib/services/pr-review.ts:816:      lastReviewHeadSha: prMetadata.headSha,
+src/lib/services/pr-review.ts:875:                  outboxItem.lastReviewHeadSha !== prMetadata.headSha;
+src/lib/services/pr-review.ts:881:      prHeadSha: prMetadata.headSha,
+src/lib/services/__tests__/pr-review.test.ts:263:      expect(result.headSha).toBe(HEAD_SHA);
+src/lib/services/pr-outbox.ts:267:  prUrl?: string;
+src/lib/services/pr-outbox.ts:289:      prUrl: outboxItem.prUrl || undefined,
+src/lib/services/pr-outbox.ts:469:        prUrl: prResult.prUrl,
+exec
+/bin/zsh -lc "sed -n '1,180p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1,220p' 'src/app/api/v1/deploy-requests/[requestId]/enrichment/route.ts'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "rg -n \"<Button|action buttons|Approve for|Open in new tab|iframe\" 'src/app/pp/deploy-requests/[requestId]/page.tsx' -S" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 51ms:
+344:                    <Button size="sm" variant="secondary" onClick={onToggleShowAllChangedFiles}>
+1192:              <Button variant="secondary" className="w-full">
+1215:              <Button variant="secondary" className="w-full">
+1303:                  <Button
+1311:                  <Button
+1499:                  <Button
+1515:                    <Button
+1527:                      <Button
+1546:                      <Button
+1587:                <Button
+1757:                  <Button
+1769:                      : `Approve for ${request.env}`}
+1771:                  <Button
+ succeeded in 52ms:
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/config';
+import { deployGatePrisma } from '@/lib/company/deploy-gate-db';
+import { httpError, ErrorCodes } from '@/lib/http/errors';
+import { validateApiKey } from '@/lib/auth/api-keys';
+import { hasApiKeyScope } from '@/lib/auth/api-key-scopes';
+import { tryCliAuth } from '@/lib/auth/cli-auth';
+import { enrichDeployRequest, type ReviewEnrichment } from '@/lib/enrichment/enrich';
+
+export const dynamic = 'force-dynamic';
+const API_KEY_HEADER = 'x-pp-api-key';
+
+type ActorContext =
+  | { kind: 'apiKey'; actorId: string; companyId: string }
+  | { kind: 'user'; actorId: string; companyId: string }
+  | { kind: 'cli'; actorId: string; companyId: string };
+
+async function resolveActorContext(
+  request: NextRequest,
+ succeeded in 52ms:
+import type { ReactNode } from 'react';
+
+export type DeployRequestStatus =
+  | 'pending'
+  | 'approved'
+  | 'denied'
+  | 'expired'
+  | 'redeemed'
+  | 'superseded'
+  | 'cancelled';
+
+export type GitHubRerunStatus =
+  | 'pending'
+  | 'success'
+  | 'failed_transient'
+  | 'failed_permanent'
+  | 'manual_required';
+
+export type VerificationStatus = 'NOT_ATTEMPTED' | 'VERIFIED' | 'FAILED';
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+thinking
+I'm focusing on finding the right placement for action buttons in the post-approval layout. My process involves looking closely at the lines around 1470 to 1590 to ensure everything lines up correctly. I want to make sure these buttons are strategically placed for the best user experience. This requires careful attention to detail, as even a small misalignment could impact functionality or ease of use. Let's see what I can find in those lines!
+codex
+I’ve narrowed the insertion point. I’m checking the post-approval action area so the preview lands exactly between the AI summary block and the action buttons, not somewhere lower in the page.
+exec
+/bin/zsh -lc "sed -n '1888,1975p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034exec
+/bin/zsh -lc "sed -n '1460,1615p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 53ms:
+                        value={
+                          <div className="space-y-1">
+                            <div>{contextDetails.commitSummary.message}</div>
+                            <div className="text-xs text-[var(--muted)]">
+                              {contextDetails.commitSummary.author} · {formatDateTime(contextDetails.commitSummary.timestamp)}
+                            </div>
+                          </div>
+                        }
+                      />
+                    ) : null}
+                    {contextDetails?.fallbackMessage ? (
+                      <RequestMetaRow label="GitHub Context" value={<span className="text-[var(--muted)]">{contextDetails.fallbackMessage}</span>} />
+                    ) : null}
+                  </CardContent>
+                </Card>
+              </ReferenceAccordion>
+
+              {hasAiSummarySection ? (
+                <ReferenceAccordion title="Full AI Analysis">
+                  <MemoizedAiSummaryCard
+ succeeded in 53ms:
+                              : checksFailing
+                                ? getCheckSummary(mergeReadiness, request.status)
+                                : getCheckSummary(mergeReadiness, request.status)
+                          }
+                        />
+                        <ChecklistStatusRow
+                          label="Branch up to date"
+                          status={branchUpToDateStatus}
+                          detail={branchUpToDateDetail}
+                        />
+                        <ChecklistStatusRow
+                          label="No conflicts"
+                          status={noConflictsStatus}
+                          detail={noConflictsDetail}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+
+thinking
+**Planning layout adjustments**
+
+I'm considering how to enhance the layout. It seems like having action buttons in a sidebar, separate from the main column, could work well. For the post-approval layout, I might stack everything in a single column and insert a visual preview between the AI summary and the sidebar action card. I need to inspect the layout starting around the 1180 mark to see how these changes will fit together.
+exec
+/bin/zsh -lc "sed -n '1160,1495p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 53ms:
+        <ShimmerBlock className="h-8 w-40" />
+        <ShimmerBlock className="h-40 w-full rounded-2xl" />
+        <ShimmerBlock className="h-28 w-full rounded-2xl" />
+      </div>
+    );
+  }
+
+  if (accessDenied) {
+    return (
+      <div className="mx-auto max-w-lg p-6">
+        <Card className="rounded-2xl border-[#EF4444]/30 bg-[var(--card)]">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-red-300">
+              <Lock className="h-5 w-5" />
+              Access Denied
+            </CardTitle>
+            <CardDescription>You do not have access to this deploy request.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-[var(--foreground)]">
+            <div className="rounded-xl border border-[#EF4444]/20 bg-[#EF4444]/10 p-4">
+codex
+I’m at the edit step. I’m adding a cached preview-url route modeled on merge-readiness, then wiring a same-file `VisualPreview` client component into the review page near the AI summary area.
+file update
+A /Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+import { NextResponse } from 'next/server';
+import { withTenant } from '@/lib/auth/require-tenant';
+import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
+import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
+import { httpError, ErrorCodes } from '@/lib/http/errors';
+import {
+  getCachedPreviewUrl,
+  invalidateCachedPreviewUrl,
+  setCachedPreviewUrl,
+  type PreviewUrlResponse,
+} from './cache';
+
+export const dynamic = 'force-dynamic';
+
+const GITHUB_API_VERSION = '2022-11-28';
+
+type GitHubDeployment = {
+  id?: number;
+  environment?: string | null;
+};
+
+type GitHubDeploymentStatus = {
+  state?: string | null;
+  environment?: string | null;
+  environment_url?: string | null;
+};
+
+function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
+  const [owner, name] = repo.split('/');
+  if (!owner || !name) {
+    return null;
+  }
+  return { owner, repo: name };
+}
+
+function getGitHubHeaders(token: string): HeadersInit {
+  return {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    'X-GitHub-Api-Version': GITHUB_API_VERSION,
+  };
+}
+
+async function safeJson<T>(response: Response): Promise<T | null> {
+  try {
+    return (await response.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
+async function readGitHubError(response: Response): Promise<string> {
+  const payload = await safeJson<{ message?: string }>(response);
+  return payload?.message ?? `GitHub API returned ${response.status}`;
+}
+
+function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
+  const environment = status.environment?.toLowerCase() ?? '';
+  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
+  return environmentUrl.includes('vercel.app') || environment === 'preview';
+}
+
+function isBuildingState(state: string | null | undefined): boolean {
+  return state === 'pending' || state === 'in_progress' || state === 'queued';
+}
+
+function getResolvedPreviewStatus(
+  statuses: GitHubDeploymentStatus[],
+  deploymentEnvironment: string | null | undefined
+): PreviewUrlResponse {
+  for (const status of statuses) {
+    if (status.environment_url && isPreviewStatus(status)) {
+      return {
+        previewUrl: status.environment_url,
+        status: 'ready',
+      };
+    }
+  }
+
+  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
+  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
+    ? statuses.some((status) => isBuildingState(status.state))
+    : false;
+
+  return {
+    previewUrl: null,
+    status: isBuilding ? 'building' : 'not_found',
+  };
+}
+
+export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
+  const { requestId } = await params;
+
+  const deployRequest = await prisma.deployGateRequest.findFirst({
+    where: {
+      id: requestId,
+      companyId,
+    },
+    select: {
+      id: true,
+      repo: true,
+      headSha: true,
+      commitSha: true,
+    },
+  });
+
+  if (!deployRequest) {
+    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
+  }
+
+  const cached = getCachedPreviewUrl(companyId, requestId);
+  if (cached) {
+    return NextResponse.json(cached);
+  }
+
+  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
+  if (!sha) {
+    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
+    setCachedPreviewUrl(companyId, requestId, payload);
+    return NextResponse.json(payload);
+  }
+
+  const repo = parseRepoFullName(deployRequest.repo);
+  if (!repo) {
+    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
+  }
+
+  const appToken = await getAppTokenForRepo(deployRequest.repo);
+  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
+  if (!githubToken) {
+    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
+  }
+
+  const headers = getGitHubHeaders(githubToken);
+
+  try {
+    const deploymentsResponse = await fetch(
+      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
+      { headers, cache: 'no-store' }
+    );
+
+    if (!deploymentsResponse.ok) {
+      throw new Error(await readGitHubError(deploymentsResponse));
+    }
+
+    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
+
+    let sawBuildingPreview = false;
+
+    for (const deployment of deployments) {
+      if (!deployment.id) {
+        continue;
+      }
+
+      const statusesResponse = await fetch(
+        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
+        { headers, cache: 'no-store' }
+      );
+
+      if (!statusesResponse.ok) {
+        throw new Error(await readGitHubError(statusesResponse));
+      }
+
+      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
+      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
+      if (resolved.status === 'ready') {
+        setCachedPreviewUrl(companyId, requestId, resolved);
+        return NextResponse.json(resolved);
+      }
+      if (resolved.status === 'building') {
+        sawBuildingPreview = true;
+      }
+    }
+
+    const payload: PreviewUrlResponse = {
+      previewUrl: null,
+      status: sawBuildingPreview ? 'building' : 'not_found',
+    };
+    setCachedPreviewUrl(companyId, requestId, payload);
+    return NextResponse.json(payload);
+  } catch (error) {
+    invalidateCachedPreviewUrl(companyId, requestId);
+    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
+    return httpError(ErrorCodes.INTERNAL_ERROR, message);
+  }
+});
+A /Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+type PreviewStatus = 'ready' | 'building' | 'not_found';
+
+export type PreviewUrlResponse = {
+  previewUrl: string | null;
+  status: PreviewStatus;
+};
+
+type CacheEntry = {
+  expiresAt: number;
+  payload: PreviewUrlResponse;
+};
+
+const previewUrlCache = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = 30_000;
+
+function getCacheKey(companyId: string, requestId: string): string {
+  return `${companyId}:${requestId}`;
+}
+
+export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
+  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
+  if (!cached) {
+    return null;
+  }
+  if (cached.expiresAt <= Date.now()) {
+    previewUrlCache.delete(getCacheKey(companyId, requestId));
+    return null;
+  }
+  return cached.payload;
+}
+
+export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
+  previewUrlCache.set(getCacheKey(companyId, requestId), {
+    expiresAt: Date.now() + CACHE_TTL_MS,
+    payload,
+  });
+}
+
+export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
+  previewUrlCache.delete(getCacheKey(companyId, requestId));
+}
+M /Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -414,2 +414,136 @@
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+@@ -1963,2 +2097,4 @@
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+apply_patch(auto_approved=true) exited 0 in 78ms:
+Success. Updated the following files:
+A src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+A src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+M src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..5ea65be9ac88455f278a29e380923a9b29e36210
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,140 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2095,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..5ea65be9ac88455f278a29e380923a9b29e36210
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,140 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2095,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+codex
+The endpoint and component are in place. I’m running the typecheck now and will fix anything it surfaces before I stop.
+exec
+/bin/zsh -lc 'npx tsc --noEmit' in /Users/moltbot/pp-agent-work/factory-idea-034file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..5ea65be9ac88455f278a29e380923a9b29e36210
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,140 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2095,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..5ea65be9ac88455f278a29e380923a9b29e36210
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,140 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2095,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+ exited 2 in 8.93s:
+permission-protocol-sdk/packages/examples/minimal-agent.ts(10,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+permission-protocol-sdk/packages/examples/minimal-agent.ts(25,19): error TS7006: Parameter 'receipt' implicitly has an 'any' type.
+permission-protocol-sdk/packages/sdk/__tests__/hash.test.ts(14,31): error TS2307: Cannot find module '../../spec/golden-vectors.json' or its corresponding type declarations.
+permission-protocol-sdk/packages/sdk/src/types.ts(8,10): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+reference-demo/src/index.ts(23,34): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/output.ts(7,55): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(14,59): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/invalid-receipt.ts(62,43): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/message.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/prod-write.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/spend.ts(8,54): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(20,96): error TS2307: Cannot find module '@permission-protocol/sdk' or its corresponding type declarations.
+reference-demo/src/scenarios/trust-tests.ts(189,36): error TS18046: 'error' is of type 'unknown'.
+reference-demo/src/scenarios/trust-tests.ts(190,39): error TS18046: 'error' is of type 'unknown'.
+scripts/evaluate-company-memory.ts(115,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+scripts/evaluate-company-memory.ts(138,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/app/api/ceo/plan-tick/route.ts(13,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+src/app/api/dashboard/setup-state/route.ts(17,33): error TS2304: Cannot find name 'requireAuthorizedCompanyAccess'.
+codex
+`tsc` completed, but the workspace already has a large number of unrelated pre-existing type errors outside this task. I’m doing one quick pass on the changed files only and tightening one small state detail before I wrap.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -434,2 +434,3 @@
+     const loadPreview = async () => {
++      setPreview(null);
+       setError(null);
+apply_patch(auto_approved=true) exited 0 in 102ms:
+Success. Updated the following files:
+M src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+exec
+/bin/zsh -lc "git diff -- 'src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts' 'src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 52ms:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a..96a4275 100644
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@ const MemoizedChangedFilesCard = memo(
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
+exec
+/bin/zsh -lc "npx tsc --noEmit --pretty false 2>&1 | rg \"src/app/api/v1/deploy-requests/\\[requestId\\]/preview-url|src/app/pp/deploy-requests/\\[requestId\\]/page.tsx\"" in /Users/moltbot/pp-agent-work/factory-idea-034file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+ exited 1 in 3.11s:
+
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+
+thinking
+**Evaluating git status**
+
+I’m checking for any matches, and it seems there aren’t any, which is good! I wonder if I need to inspect the route difference, but I realize that `git diff` doesn’t include new untracked files. It might be okay for now, but I should probably run `git status --short` to get a clearer picture of what's happening with my files. It looks like I'm on the right track!
+exec
+/bin/zsh -lc "git status --short -- 'src/app/api/v1/deploy-requests/[requestId]/preview-url' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-034 succeeded in 53ms:
+ M src/app/pp/deploy-requests/[requestId]/page.tsx
+?? src/app/api/v1/deploy-requests/[requestId]/preview-url/
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+
+thinking
+**Evaluating repo-wide issues**
+
+I should consider mentioning any pre-existing failures in the TSC repository. It's also worth noting that there are no errors in the touched files when using a grep check. I want to make sure my final summary is concise and references these files clearly. I'll ensure I point out these key details to provide a complete picture of the situation.
+codex
+Added the preview API and review-page UI.
+
+The new endpoint is in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts) with a matching in-memory cache in [cache.ts](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts). It uses `withTenant`, scopes the lookup by `companyId`, resolves `headSha`/`commitSha`, calls GitHub Deployments plus deployment statuses with an app installation token fallback to `GITHUB_TOKEN`, and returns `{ previewUrl, status }` with `ready | building | not_found`.
+
+On the page side, I added a same-file `VisualPreview` component in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx#L412) and render it after the AI summary block in the post-approval layout at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx#L2096). It handles loading shimmer, ready iframe, building state, not-found fallback with PR link, plus expand/collapse and external-link controls.
+
+`npx tsc --noEmit` still fails repo-wide because of many pre-existing unrelated errors elsewhere. I verified there were no TypeScript errors reported for the new preview route or the edited review page.
+file update:
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..358d5bcd60a5253dfcbdebb091fc48a50d07a5a3
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts
+@@ -0,0 +1,41 @@
++type PreviewStatus = 'ready' | 'building' | 'not_found';
++
++export type PreviewUrlResponse = {
++  previewUrl: string | null;
++  status: PreviewStatus;
++};
++
++type CacheEntry = {
++  expiresAt: number;
++  payload: PreviewUrlResponse;
++};
++
++const previewUrlCache = new Map<string, CacheEntry>();
++const CACHE_TTL_MS = 30_000;
++
++function getCacheKey(companyId: string, requestId: string): string {
++  return `${companyId}:${requestId}`;
++}
++
++export function getCachedPreviewUrl(companyId: string, requestId: string): PreviewUrlResponse | null {
++  const cached = previewUrlCache.get(getCacheKey(companyId, requestId));
++  if (!cached) {
++    return null;
++  }
++  if (cached.expiresAt <= Date.now()) {
++    previewUrlCache.delete(getCacheKey(companyId, requestId));
++    return null;
++  }
++  return cached.payload;
++}
++
++export function setCachedPreviewUrl(companyId: string, requestId: string, payload: PreviewUrlResponse): void {
++  previewUrlCache.set(getCacheKey(companyId, requestId), {
++    expiresAt: Date.now() + CACHE_TTL_MS,
++    payload,
++  });
++}
++
++export function invalidateCachedPreviewUrl(companyId: string, requestId: string): void {
++  previewUrlCache.delete(getCacheKey(companyId, requestId));
++}
+diff --git a/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4f08ed9dd86ce373c6b903af1cd9551fb87f104
+--- /dev/null
++++ b/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts
+@@ -0,0 +1,187 @@
++import { NextResponse } from 'next/server';
++import { withTenant } from '@/lib/auth/require-tenant';
++import { rawPrisma as prisma } from '@/lib/company/raw-prisma';
++import { getAppTokenForRepo } from '@/lib/github-app/installation-token';
++import { httpError, ErrorCodes } from '@/lib/http/errors';
++import {
++  getCachedPreviewUrl,
++  invalidateCachedPreviewUrl,
++  setCachedPreviewUrl,
++  type PreviewUrlResponse,
++} from './cache';
++
++export const dynamic = 'force-dynamic';
++
++const GITHUB_API_VERSION = '2022-11-28';
++
++type GitHubDeployment = {
++  id?: number;
++  environment?: string | null;
++};
++
++type GitHubDeploymentStatus = {
++  state?: string | null;
++  environment?: string | null;
++  environment_url?: string | null;
++};
++
++function parseRepoFullName(repo: string): { owner: string; repo: string } | null {
++  const [owner, name] = repo.split('/');
++  if (!owner || !name) {
++    return null;
++  }
++  return { owner, repo: name };
++}
++
++function getGitHubHeaders(token: string): HeadersInit {
++  return {
++    Authorization: `Bearer ${token}`,
++    Accept: 'application/vnd.github+json',
++    'Content-Type': 'application/json',
++    'X-GitHub-Api-Version': GITHUB_API_VERSION,
++  };
++}
++
++async function safeJson<T>(response: Response): Promise<T | null> {
++  try {
++    return (await response.json()) as T;
++  } catch {
++    return null;
++  }
++}
++
++async function readGitHubError(response: Response): Promise<string> {
++  const payload = await safeJson<{ message?: string }>(response);
++  return payload?.message ?? `GitHub API returned ${response.status}`;
++}
++
++function isPreviewStatus(status: GitHubDeploymentStatus): boolean {
++  const environment = status.environment?.toLowerCase() ?? '';
++  const environmentUrl = status.environment_url?.toLowerCase() ?? '';
++  return environmentUrl.includes('vercel.app') || environment === 'preview';
++}
++
++function isBuildingState(state: string | null | undefined): boolean {
++  return state === 'pending' || state === 'in_progress' || state === 'queued';
++}
++
++function getResolvedPreviewStatus(
++  statuses: GitHubDeploymentStatus[],
++  deploymentEnvironment: string | null | undefined
++): PreviewUrlResponse {
++  for (const status of statuses) {
++    if (status.environment_url && isPreviewStatus(status)) {
++      return {
++        previewUrl: status.environment_url,
++        status: 'ready',
++      };
++    }
++  }
++
++  const deploymentLooksLikePreview = (deploymentEnvironment?.toLowerCase() ?? '') === 'preview';
++  const isBuilding = statuses.some((status) => isPreviewStatus(status) || deploymentLooksLikePreview)
++    ? statuses.some((status) => isBuildingState(status.state))
++    : false;
++
++  return {
++    previewUrl: null,
++    status: isBuilding ? 'building' : 'not_found',
++  };
++}
++
++export const GET = withTenant<{ requestId: string }>(async (_request, { params }, { companyId }) => {
++  const { requestId } = await params;
++
++  const deployRequest = await prisma.deployGateRequest.findFirst({
++    where: {
++      id: requestId,
++      companyId,
++    },
++    select: {
++      id: true,
++      repo: true,
++      headSha: true,
++      commitSha: true,
++    },
++  });
++
++  if (!deployRequest) {
++    return httpError(ErrorCodes.NOT_FOUND, 'Deploy request not found');
++  }
++
++  const cached = getCachedPreviewUrl(companyId, requestId);
++  if (cached) {
++    return NextResponse.json(cached);
++  }
++
++  const sha = deployRequest.headSha ?? deployRequest.commitSha ?? null;
++  if (!sha) {
++    const payload: PreviewUrlResponse = { previewUrl: null, status: 'not_found' };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  }
++
++  const repo = parseRepoFullName(deployRequest.repo);
++  if (!repo) {
++    return httpError(ErrorCodes.VALIDATION_ERROR, `Invalid repo format: ${deployRequest.repo}`);
++  }
++
++  const appToken = await getAppTokenForRepo(deployRequest.repo);
++  const githubToken = appToken ?? process.env.GITHUB_TOKEN;
++  if (!githubToken) {
++    return httpError(ErrorCodes.INTERNAL_ERROR, 'GITHUB_TOKEN is not configured');
++  }
++
++  const headers = getGitHubHeaders(githubToken);
++
++  try {
++    const deploymentsResponse = await fetch(
++      `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments?sha=${encodeURIComponent(sha)}&per_page=5`,
++      { headers, cache: 'no-store' }
++    );
++
++    if (!deploymentsResponse.ok) {
++      throw new Error(await readGitHubError(deploymentsResponse));
++    }
++
++    const deployments = (await safeJson<GitHubDeployment[]>(deploymentsResponse)) ?? [];
++
++    let sawBuildingPreview = false;
++
++    for (const deployment of deployments) {
++      if (!deployment.id) {
++        continue;
++      }
++
++      const statusesResponse = await fetch(
++        `https://api.github.com/repos/${repo.owner}/${repo.repo}/deployments/${deployment.id}/statuses`,
++        { headers, cache: 'no-store' }
++      );
++
++      if (!statusesResponse.ok) {
++        throw new Error(await readGitHubError(statusesResponse));
++      }
++
++      const statuses = (await safeJson<GitHubDeploymentStatus[]>(statusesResponse)) ?? [];
++      const resolved = getResolvedPreviewStatus(statuses, deployment.environment);
++      if (resolved.status === 'ready') {
++        setCachedPreviewUrl(companyId, requestId, resolved);
++        return NextResponse.json(resolved);
++      }
++      if (resolved.status === 'building') {
++        sawBuildingPreview = true;
++      }
++    }
++
++    const payload: PreviewUrlResponse = {
++      previewUrl: null,
++      status: sawBuildingPreview ? 'building' : 'not_found',
++    };
++    setCachedPreviewUrl(companyId, requestId, payload);
++    return NextResponse.json(payload);
++  } catch (error) {
++    invalidateCachedPreviewUrl(companyId, requestId);
++    const message = error instanceof Error ? error.message : 'Failed to fetch preview URL';
++    return httpError(ErrorCodes.INTERNAL_ERROR, message);
++  }
++});
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index 057ac9a6b18a2aa0c9130c73681d9d550570ea5f..96a4275e2ebf2ddba78a3c4b80bd07f25f8f9559
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -412,6 +412,141 @@
+     JSON.stringify(prev.expandedDiffFiles) === JSON.stringify(next.expandedDiffFiles)
+ );
+ 
++type VisualPreviewData = {
++  previewUrl: string | null;
++  status: 'ready' | 'building' | 'not_found';
++};
++
++function VisualPreview({
++  requestId,
++  prUrl,
++}: {
++  requestId: string;
++  prUrl?: string | null;
++}) {
++  const [preview, setPreview] = useState<VisualPreviewData | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [expanded, setExpanded] = useState(true);
++
++  useEffect(() => {
++    let cancelled = false;
++
++    const loadPreview = async () => {
++      setPreview(null);
++      setError(null);
++      try {
++        const response = await fetch(`/api/v1/deploy-requests/${requestId}/preview-url`);
++        const data = (await response.json()) as VisualPreviewData & {
++          error?: { message?: string };
++        };
++        if (!response.ok) {
++          throw new Error(data?.error?.message || 'Failed to load preview');
++        }
++        if (!cancelled) {
++          setPreview(data);
++        }
++      } catch (err) {
++        if (!cancelled) {
++          setPreview(null);
++          setError(err instanceof Error ? err.message : 'Failed to load preview');
++        }
++      }
++    };
++
++    void loadPreview();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [requestId]);
++
++  return (
++    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
++      <CardHeader className="pb-3">
++        <div className="flex flex-wrap items-center justify-between gap-3">
++          <div>
++            <CardTitle className="text-white">Visual Preview</CardTitle>
++            <CardDescription>
++              Live Vercel preview for this deploy request.
++            </CardDescription>
++          </div>
++          <div className="flex items-center gap-2">
++            {preview?.status === 'ready' && preview.previewUrl ? (
++              <a
++                href={preview.previewUrl}
++                target="_blank"
++                rel="noreferrer"
++                className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
++              >
++                Open in new tab
++                <ExternalLink className="h-3.5 w-3.5" />
++              </a>
++            ) : null}
++            <Button
++              type="button"
++              variant="secondary"
++              onClick={() => setExpanded((current) => !current)}
++              className="rounded-2xl"
++            >
++              {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
++              {expanded ? 'Collapse' : 'Expand'}
++            </Button>
++          </div>
++        </div>
++      </CardHeader>
++      {expanded ? (
++        <CardContent className="space-y-4">
++          {!preview && !error ? (
++            <ShimmerBlock className="h-[350px] rounded-2xl md:h-[500px]" />
++          ) : null}
++
++          {error ? (
++            <div className="rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-red-200">
++              {error}
++            </div>
++          ) : null}
++
++          {preview?.status === 'ready' && preview.previewUrl ? (
++            <div className="space-y-3">
++              <iframe
++                title="Deploy request visual preview"
++                src={preview.previewUrl}
++                className="h-[350px] w-full rounded-2xl border border-[var(--border)] bg-black md:h-[500px]"
++              />
++            </div>
++          ) : null}
++
++          {preview?.status === 'building' ? (
++            <div className="flex h-[350px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 text-sm text-[var(--foreground)] md:h-[500px]">
++              <span className="inline-flex items-center gap-2">
++                <RefreshCw className="h-4 w-4 animate-spin text-blue-300" />
++                <span className="animate-pulse">Preview deploying...</span>
++              </span>
++            </div>
++          ) : null}
++
++          {preview?.status === 'not_found' ? (
++            <div className="flex h-[350px] flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--background)]/70 px-6 text-center text-sm text-[var(--muted)] md:h-[500px]">
++              <span>No preview available.</span>
++              {prUrl ? (
++                <a
++                  href={prUrl}
++                  target="_blank"
++                  rel="noreferrer"
++                  className="inline-flex items-center gap-1 text-blue-300 transition-colors hover:text-blue-200"
++                >
++                  Check the PR
++                  <ExternalLink className="h-3.5 w-3.5" />
++                </a>
++              ) : null}
++            </div>
++          ) : null}
++        </CardContent>
++      ) : null}
++    </Card>
++  );
++}
++
+ export default function DeployGateRequestPage() {
+   const params = useParams<{ requestId: string; companySlug?: string }>();
+   const router = useRouter();
+@@ -1961,6 +2096,8 @@
+                       </ReferenceAccordion>
+                     ) : null}
+ 
++                    <VisualPreview requestId={request.id} prUrl={prUrl} />
++
+                     {hasRiskSignalsSection ? (
+                       <ReferenceAccordion title="Risk Signals">
+                         <MemoizedRiskSignalsCard
+
+tokens used
+97,016
+Added the preview API and review-page UI.
+
+The new endpoint is in [route.ts](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/route.ts) with a matching in-memory cache in [cache.ts](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/api/v1/deploy-requests/[requestId]/preview-url/cache.ts). It uses `withTenant`, scopes the lookup by `companyId`, resolves `headSha`/`commitSha`, calls GitHub Deployments plus deployment statuses with an app installation token fallback to `GITHUB_TOKEN`, and returns `{ previewUrl, status }` with `ready | building | not_found`.
+
+On the page side, I added a same-file `VisualPreview` component in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx#L412) and render it after the AI summary block in the post-approval layout at [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-034/src/app/pp/deploy-requests/[requestId]/page.tsx#L2096). It handles loading shimmer, ready iframe, building state, not-found fallback with PR link, plus expand/collapse and external-link controls.
+
+`npx tsc --noEmit` still fails repo-wide because of many pre-existing unrelated errors elsewhere. I verified there were no TypeScript errors reported for the new preview route or the edited review page.

@@ -1,0 +1,15 @@
+{
+  "name": "Permission Protocol Site",
+  "repo": "permission-protocol/site",
+  "personas": [
+    "Marco — Engineering Manager. Cares about speed, trust signals, approving in <5 seconds for routine deploys.",
+    "Sarah — Security Lead. Cares about blast radius, audit trail, what exactly changed, compliance evidence."
+  ],
+  "context_files": [
+    "pp-os/FOCUS.md",
+    "pp-os/STATUS.md"
+  ],
+  "branch_prefix": "factory/",
+  "ideate_prompt": "What are the top 3 improvements to the Permission Protocol marketing site and review surface that would improve the experience for both Marco and Sarah?",
+  "clone_cmd": "gh repo clone permission-protocol/site"
+}

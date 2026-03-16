@@ -1,0 +1,3178 @@
+OpenAI Codex v0.104.0 (research preview)
+--------
+workdir: /Users/moltbot/pp-agent-work/factory-idea-054
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: auto
+session id: 019cf2a2-9132-71a0-8a88-acb811c31b1a
+--------
+user
+Read FACTORY-PRD.md and implement all changes described. Follow the acceptance criteria exactly. Commit your changes when done.
+mcp startup: no servers
+
+thinking
+**Inspecting repository**
+
+I need to inspect the repository, but I'm not sure if I need any specific skills for this. It seems like an initial commentary might be useful. I will probably need to read through the files, so I’m considering using an update plan. Let’s take a closer look and see what we can find! It’s a bit of a puzzle, but I’m curious to dive in.
+codex
+I’m reading the product spec and scanning the codebase first so I can map each required change to the existing implementation before editing anything.
+exec
+/bin/zsh -lc "sed -n '1,260p' FACTORY-PRD.md" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+# PRD: idea-054 — Fix check-status spinner race condition
+
+**Issue:** permission-protocol/app#134
+**Priority:** P2
+**Repo:** permission-protocol/app
+
+## Problem
+"Setting up checks..." spinner shows alongside "All checks passed ✓" in the pre-merge checklist. Contradictory UI.
+
+## Root Cause
+Race condition: `mergeReadiness.checks_passing === checks_total` (all passed) while `mergeable_state` is still `unknown` or refreshing. The spinner is gated on mergeable_state, not check results.
+
+## Requirements
+- If all checks are passing (`checks_passing === checks_total && checks_total > 0`), hide the "Setting up checks..." spinner regardless of `mergeable_state`
+- Only show "Setting up checks..." when `checks_total === 0` AND `mergeReadiness` is still loading
+- If `mergeable_state === 'unknown'` but checks are passing, show "Waiting for GitHub to confirm mergeability..." (no spinner, just subtle text)
+
+## Files Likely Touched
+- `src/app/pp/deploy-requests/[requestId]/page.tsx` — the pre-merge checklist rendering section
+
+ succeeded in 52ms:
+Total output lines: 749
+
+/Users/moltbot/pp-agent-work/factory-idea-054
+src/instrumentation.ts
+src/lib/company/service.ts
+src/lib/company/raw-prisma.ts
+src/lib/company/api-keys-store.ts
+src/lib/company/active-company-client.ts
+src/lib/company/context.ts
+src/lib/company/deploy-gate-db.ts
+src/lib/reports/generate-daily.ts
+src/lib/reports/daily-report.ts
+src/lib/toast-context.tsx
+src/lib/onboarding/service.ts
+src/lib/onboarding/types.ts
+src/lib/services/company-memory-types.ts
+src/lib/services/reconcile-stale-requests.ts
+src/lib/services/tasks.ts
+src/lib/services/approvals.ts
+src/lib/services/pr-review.ts
+
+thinking
+**Searching for file paths**
+
+I need to locate the actual file path, and I'm thinking it might be different than what I expected. It's essential to search for the right phrase to find it. I wonder if there are alternative keywords I should consider to refine my search. I want to make sure I’m getting the most accurate results so the user can access the correct file without any issues. Let’s keep digging!
+codex
+I have the spec. Next I’m locating the actual checklist component and the current spinner/mergeability gating so I can make the smallest change that satisfies the acceptance criteria without touching the API or polling.
+exec
+/bin/zsh -lc 'rg -n "Setting up checks|All checks passed|mergeable_state|Waiting for GitHub to confirm mergeability" src/app src/components src/lib' in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+src/app/pp/deploy-requests/[requestId]/page.tsx:802:        nextReadiness.mergeable === null || nextReadiness.mergeable_state === 'unknown'
+src/app/pp/deploy-requests/[requestId]/page.tsx:882:        if (readiness.mergeable_state === 'clean' && checksReady) {
+src/app/pp/deploy-requests/[requestId]/page.tsx:988:  const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+src/app/pp/deploy-requests/[requestId]/page.tsx:989:  const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
+src/app/pp/deploy-requests/[requestId]/page.tsx:1005:    ? 'All checks passed'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1074:    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1086:              : mergeReadiness?.mergeable_state !== 'clean'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1134:    mergeReadiness?.mergeable_state === 'clean' &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1167:                label: 'All checks passed — ready to merge',
+src/app/pp/deploy-requests/[requestId]/page.tsx:1177:                  label: 'Setting up checks...',
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:148:  mergeable_state: string;
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:412:  switch (readiness.mergeable_state) {
+src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts:22:  mergeable_state: MergeableState;
+src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts:35:  mergeable_state: MergeableState | null;
+src/app/api/v1/deploy-requests/[requestId]/merge-readiness/route.ts:222:      mergeable_state: pull.mergeable_state ?? 'unknown',
+src/app/api/v1/deploy-requests/[requestId]/merge-readiness/cache.ts:3:  mergeable_state: string;
+ succeeded in 52ms:
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+codex
+The checklist logic is in the path the PRD predicted. I’m reading the readiness/status block and the surrounding derived state so I can adjust the conditions coherently instead of patching just the label text.
+exec
+/bin/zsh -lc "sed -n '780,930p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "sed -n '960,1215p' src/app/pp/deploy-requests/[requestId]/page.tsx" in /Users/moltbot/pp-agent-work/factory-idea-054 exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+ exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+exec
+/bin/zsh -lc "sed -n '960,1215p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "sed -n '780,930p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+  const commitUrl = githubBase && request ? `${githubBase}/commit/${request.commitSha}` : null;
+  const diffFiles = enrichment?.diff.files ?? [];
+  const changedFiles = diffFiles.length > 0 ? diffFiles.map((file) => file.filename) : contextDetails?.changedFiles ?? [];
+  const reviewTitle = request
+    ? request.prTitle?.trim() || enrichment?.diff.title?.trim() || (prNumber ? `Pull Request #${prNumber}` : request.capability)
+    : '';
+  const actorLabel = request?.prAuthor ?? contextDetails?.commitSummary?.author ?? request?.createdByRef ?? 'Unknown';
+  const actorDescriptor = getActorDescriptor(request);
+  const isPendingExpired =
+    request?.status === 'pending' &&
+    Boolean(request?.expiresAt && new Date(request.expiresAt).getTime() <= Date.now());
+  const isRequestExpired = Boolean(request && (request.status === 'expired' || isPendingExpired));
+  const isProduction = request?.env.toLowerCase() === 'production';
+  const requiresRiskAcceptance = Boolean(
+    request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+  );
+  const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+  const readinessChecksPassing =
+    mergeReadiness?.checks_total === 0 ||
+    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
+ succeeded in 51ms:
+  }, []);
+
+  const fetchMergeReadiness = useCallback(async (currentRequest: DeployGateRequest | null, options?: { silent?: boolean }) => {
+    if (!currentRequest?.id || !currentRequest.prNumber || currentRequest.status !== 'approved') {
+      setMergeReadiness(null);
+      setMergeReadinessError(null);
+      setMergeReadinessUnknownSince(null);
+      return null;
+    }
+    if (!options?.silent) {
+      setMergeReadinessLoading(true);
+    }
+    setMergeReadinessError(null);
+    try {
+      const response = await fetch(`/api/v1/deploy-requests/${currentRequest.id}/merge-readiness`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error?.message || 'Failed to load merge readiness');
+      }
+      const nextReadiness = data as MergeReadiness;
+
+thinking
+**Inspecting rendering issues**
+
+I need to take a closer look at the exact rendering, possibly creating a list of items around 1160. I'm thinking about helper statuses that might need changing, including labels and the spinner. It seems like we could benefit from having a pending item status too. Overall, I'm considering inspecting the render fragment to ensure everything is displaying correctly. This could improve the user experience substantially!
+codex
+I’ve isolated the derived state. The bug is exactly what the PRD described: the banner and checklist use `mergeable_state`/empty-check defaults in a way that treats “unknown” as spinner-worthy even after checks have fully passed. I’m reading the render block now to make sure both the spinner and the fallback text align.
+exec
+/bin/zsh -lc "sed -n '1138,1215p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "sed -n '1040,1115p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 53ms:
+        action: 'Review carefully',
+        riskLevel: hasRiskSignalsSection ? 'medium' as const : 'low' as const,
+        riskReason: hasRiskSignalsSection ? 'Risk signals were detected in the request context.' : 'No significant risk signals detected.',
+        details: contextDetails?.fallbackMessage ?? 'AI analysis is still loading.',
+      };
+  const hasAiSummarySection = enrichmentLoading || Boolean(enrichment?.summary) || Boolean(enrichmentError);
+  const environmentPanelClassName = getEnvironmentPanelClasses(request?.env ?? '');
+  const assessmentRiskClassName =
+    assessmentSummary.riskLevel === 'high'
+      ? 'border-red-500/30 bg-red-500/12 text-red-200'
+      : assessmentSummary.riskLevel === 'medium'
+        ? 'border-yellow-500/30 bg-yellow-500/12 text-yellow-100'
+        : 'border-emerald-500/25 bg-emerald-500/10 text-emerald-100';
+  const assessmentRiskIcon =
+    assessmentSummary.riskLevel === 'high' ? '🔴' : assessmentSummary.riskLevel === 'medium' ? '🟡' : '🟢';
+  const assessmentRiskLabel =
+    assessmentSummary.riskLevel === 'high' ? 'High' : assessmentSummary.riskLevel === 'medium' ? 'Medium' : 'Low';
+  const riskSignalCounts = {
+    high: [...(enrichment?.riskSignals ?? []), ...(contextDetails?.riskSignals ?? [])].filter((signal) =>
+      signal.severity === 'high' || signal.severity === 'critical'
+ succeeded in 53ms:
+      ? {
+          tone: 'error' as const,
+          label: request.post_approval_result?.message?.includes('GitHub App')
+            ? 'GitHub App not installed on this repo'
+            : request.post_approval_result?.message?.includes('GITHUB_TOKEN')
+              ? 'GitHub token not configured'
+              : request.post_approval_result?.message ?? 'Post-approval action failed',
+          actionUrl: request.post_approval_result?.message?.includes('GitHub App') || request.post_approval_result?.message?.includes('GITHUB_TOKEN')
+            ? 'https://github.com/apps/permission-protocol/installations/select_target'
+            : `https://github.com/${request.repo}/pull/${request.prNumber}`,
+          actionLabel: request.post_approval_result?.message?.includes('GitHub App')
+            ? 'Install GitHub App →'
+            : request.post_approval_result?.message?.includes('GITHUB_TOKEN')
+              ? 'Configure token →'
+              : 'View on GitHub →',
+        }
+      : request.mergeStatus === 'merged' || request.mergedAt || mergeState.status === 'merged'
+        ? {
+            tone: 'success' as const,
+            label: 'PR merged successfully',
+
+thinking
+I’m thinking I need to create a specific checklist for rendering, and maybe it should include a spinner icon. I’ll have to consider how to use search labels effectively too. It feels important to ensure everything is well-organized and user-friendly. I want to make sure the user has a seamless experience, so these details matter. Let’s see… I can move forward by gathering some examples or best practices for checklist designs!
+exec
+/bin/zsh -lc "sed -n '1590,1715p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "rg -n \"checksSummaryLabel|Setting up checks|All checks passed — ready to merge|Waiting for GitHub checks|pre-merge checklist|checklist\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+1004:  const checksSummaryLabel = checksPassed
+1008:      : 'Waiting for GitHub checks';
+1167:                label: 'All checks passed — ready to merge',
+1177:                  label: 'Setting up checks...',
+1643:                        <p className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Pre-merge checklist</p>
+1647:                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+2457:                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+ succeeded in 53ms:
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-300 transition-colors hover:text-blue-200"
+                          >
+                            {request.verificationStatus === 'FAILED' ? (
+                              <AlertTriangle className="h-3.5 w-3.5 text-amber-300" />
+                            ) : (
+                              <ShieldCheck className="h-3.5 w-3.5 text-emerald-300" />
+                            )}
+                            Receipt
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        ) : null}
+                      </div>
+                      {request.mergeStatus === 'merged' || request.mergedAt || mergeState.status === 'merged' ? (
+                        <div className="rounded-xl border border-[#10B981]/35 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981]">
+                          ✓ PR merged on GitHub{request.mergeCommitSha ? ` · ${shortSha(request.mergeCommitSha)}` : ''}
+                        </div>
+                      ) : null}
+                    </div>
+codex
+There’s a duplicated checklist summary later in the file, so I’m going to centralize the derived booleans/text and apply the fix in both render locations. Then I’ll run the relevant tests before committing.
+exec
+/bin/zsh -lc 'cat package.json' in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "sed -n '2425,2475p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+{
+  "name": "permission-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run db:setup && next dev",
+    "build": "npm run db:check && next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint",
+    "db:setup": "npx tsx scripts/setup-prisma-schema.ts",
+    "postinstall": "npm run db:setup && prisma generate",
+    "db:generate": "npm run db:setup && prisma generate",
+    "db:migrate": "npm run db:setup && prisma migrate dev",
+    "db:migrate:deploy": "npm run db:setup && prisma migrate deploy",
+    "db:push": "npm run db:setup && prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "npm run db:setup && prisma studio",
+    "db:reset": "npm run db:setup && prisma migrate reset --force && npm run db:seed",
+    "db:check": "npx tsx scripts/check-migrations.ts",
+    "test": "vitest",
+ succeeded in 51ms:
+                      </div>
+                      {shareableReceiptUrl ? (
+                        <a href={shareableReceiptUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200">
+                          {request.verificationStatus === 'FAILED' ? (
+                            <AlertTriangle className="h-3.5 w-3.5 text-amber-300" />
+                          ) : (
+                            <ShieldCheck className="h-3.5 w-3.5 text-emerald-300" />
+                          )}
+                          Receipt link
+                          <span className="text-xs text-[var(--muted)]">
+                            {request.verificationStatus === 'FAILED' ? 'Verification failed' : 'Verified'}
+                          </span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      ) : null}
+                    </CardContent>
+                  </Card>
+
+                  {request.status === 'approved' && request.prNumber ? (
+                    <Card className="rounded-3xl border-[var(--border)] bg-[var(--card)]">
+
+thinking
+**Considering adding tests**
+
+I'm thinking about whether there are any tests for the review page helpers. It seems like it might be useful to check for specific strings in those tests. If there aren't any, maybe we should consider adding some tests to ensure everything works correctly. I’ll look through the files and see what I can find to make sure we have proper coverage. It’s important to keep things thorough and reliable!
+codex
+I’m checking for existing page-level tests around merge readiness. If there’s no narrow coverage already, I’ll add a focused unit test for the new derived states instead of relying only on manual inspection.
+exec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc 'rg -n "Setting up checks|merge readiness|All checks passed|mergeable_state|Waiting for GitHub to confirm mergeability" tests src/app/pp/deploy-requests' in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+import type { ReactNode } from 'react';
+
+export type DeployRequestStatus =
+  | 'pending'
+  | 'approved'
+  | 'denied'
+  | 'expired'
+  | 'redeemed'
+  | 'superseded'
+  | 'cancelled';
+
+export type GitHubRerunStatus =
+  | 'pending'
+  | 'success'
+  | 'failed_transient'
+  | 'failed_permanent'
+  | 'manual_required';
+
+export type VerificationStatus = 'NOT_ATTEMPTED' | 'VERIFIED' | 'FAILED';
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+ succeeded in 53ms:
+tests/merge-readiness-route.test.ts:24:describe('merge readiness route', () => {
+tests/merge-readiness-route.test.ts:52:              mergeable_state: 'clean',
+src/app/pp/deploy-requests/[requestId]/page.tsx:797:        throw new Error(data?.error?.message || 'Failed to load merge readiness');
+src/app/pp/deploy-requests/[requestId]/page.tsx:802:        nextReadiness.mergeable === null || nextReadiness.mergeable_state === 'unknown'
+src/app/pp/deploy-requests/[requestId]/page.tsx:809:      setMergeReadinessError(err instanceof Error ? err.message : 'Failed to load merge readiness');
+src/app/pp/deploy-requests/[requestId]/page.tsx:882:        if (readiness.mergeable_state === 'clean' && checksReady) {
+src/app/pp/deploy-requests/[requestId]/page.tsx:988:  const branchBehind = mergeReadiness?.mergeable_state === 'behind';
+src/app/pp/deploy-requests/[requestId]/page.tsx:989:  const hasConflict = mergeReadiness?.mergeable_state === 'dirty' || mergeReadiness?.mergeable === false;
+src/app/pp/deploy-requests/[requestId]/page.tsx:1005:    ? 'All checks passed'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1074:    (mergeReadiness?.mergeable_state === 'clean' || mergeReadinessError) &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1086:              : mergeReadiness?.mergeable_state !== 'clean'
+src/app/pp/deploy-requests/[requestId]/page.tsx:1134:    mergeReadiness?.mergeable_state === 'clean' &&
+src/app/pp/deploy-requests/[requestId]/page.tsx:1167:                label: 'All checks passed — ready to merge',
+src/app/pp/deploy-requests/[requestId]/page.tsx:1177:                  label: 'Setting up checks...',
+src/app/pp/deploy-requests/[requestId]/page.tsx:1310:        throw new Error(data?.error?.message || 'Failed to refresh merge readiness');
+src/app/pp/deploy-requests/[requestId]/page.tsx:1314:      setMergeReadinessError(err instanceof Error ? err.message : 'Failed to refresh merge readiness');
+src/app/pp/deploy-requests/[requestId]/page.tsx:2452:                            Fetching merge readiness...
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:148:  mergeable_state: string;
+src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx:412:  switch (readiness.mergeable_state) {
+tests/review-page-helpers.test.ts:10:          mergeable_state: 'unknown',
+
+thinking
+**Considering helper functions**
+
+I'm thinking about adding a helper function in the review-page-helpers. First, I need to inspect the existing helper tests to ensure my new function aligns with the style already in place. It’s important to keep consistency throughout the codebase, right? I just want to make sure everything feels cohesive and follows the same patterns! Alright, let’s dive into those tests and see what I can find!
+exec
+/bin/zsh -lc "sed -n '380,470p' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "sed -n '1,220p' tests/review-page-helpers.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 53ms:
+import { describe, expect, it } from 'vitest';
+import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+
+describe('getBranchStatus', () => {
+  it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+    expect(
+      getBranchStatus(
+        {
+          mergeable: null,
+          mergeable_state: 'unknown',
+          checks: [],
+          checks_passing: 0,
+          checks_total: 0,
+          behind_by: 0,
+        },
+        'approved'
+      )
+    ).toEqual({
+      tone: 'pending',
+      label: 'Checks re-running after approval...',
+ succeeded in 53ms:
+
+export function isFailingCheck(check: MergeReadinessCheck): boolean {
+  return check.status === 'completed' && !isPassingCheck(check);
+}
+
+export function isRawActorId(value: string | null | undefined): boolean {
+  if (!value) return false;
+  return value.startsWith('cm') && value.length > 20 && !/\s/.test(value);
+}
+
+export function getApprovedByText(decidedBy: string | null | undefined): string | null {
+  if (!decidedBy || isRawActorId(decidedBy)) {
+    return null;
+  }
+  return decidedBy;
+}
+
+export function getCheckSummary(readiness: MergeReadiness | null, requestStatus?: string): string {
+  if (!readiness) return 'Checking GitHub status...';
+  if (readiness.checks_total === 0) {
+
+thinking
+I’m considering creating a helper function for managing checklist states in my helper file. This could streamline things. I also need to inspect the imports from the helper to make sure everything is in order. It seems like a good way to improve efficiency, and testing it properly will be crucial to ensure it works as intended. Let’s see how this all comes together!
+codex
+I found an existing helper test file for this page, which is the right place to pin this behavior down. I’m moving the checklist/banner state logic behind a small helper so the race-condition rules are explicit and testable.
+exec
+/bin/zsh -lc "sed -n '1,120p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "rg -n \"from './review-page-helpers'|from \\\"./review-page-helpers\\\"\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 50ms:
+62:} from './review-page-helpers';
+ succeeded in 51ms:
+'use client';
+
+import Link from 'next/link';
+import { memo, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  ExternalLink,
+  FileCode2,
+  GitBranch,
+  GitPullRequest,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  XCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+thinking
+**Considering banner improvements**
+
+I'm thinking about rendering text in a different way. I could make a banner with an informative tone and use a span without a spinner. However, the existing types are just success, error, and pending, which makes it a bit tricky. Maybe I could simplify it by setting the postApprovalBanner to 'info' and adjusting the type for that. Alternatively, I could opt for the existing pending card without needing to add a spinner.
+codex
+I’m editing the helper and page now. The change is limited to derived UI state: separate “checks are still setting up” from “checks passed but GitHub hasn’t finalized mergeability,” and suppress spinners in the latter case.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -407,2 +407,11 @@
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+apply_patch(auto_approved=true) exited 0 in 42ms:
+Success. Updated the following files:
+M src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -35,2 +35,3 @@
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+@@ -976,5 +977,4 @@
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+@@ -996,8 +996,3 @@
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+@@ -1008,2 +1003,14 @@
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+@@ -1017,3 +1024,5 @@
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+@@ -1172,7 +1181,15 @@
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
+               ? {
+                   tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
++              ? {
++                  tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+apply_patch(auto_approved=true) exited 0 in 58ms:
+Success. Updated the following files:
+M src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..e20bea2991ad5d4ec0c06c1f9334e84055b10740
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,25 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1022,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
+               ? {
+                   tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
++              ? {
++                  tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..e20bea2991ad5d4ec0c06c1f9334e84055b10740
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,25 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1022,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
+               ? {
+                   tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
++              ? {
++                  tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+
+thinking
+I need to make sure the inferred type is okay. I also have to adjust the render spots for the showSpinner and checksPending spinner. It looks like I need to do a patch. Okay, I'll focus on making those adjustments for clarity in the rendering process. Ensuring everything functions as expected is crucial, so I’ll probably check that those components display correctly in different scenarios. Let’s get to work on the necessary changes!
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -1630,3 +1630,7 @@
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+@@ -1663,3 +1667,3 @@
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+@@ -2473,6 +2477,10 @@
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+apply_patch(auto_approved=true) exited 0 in 81ms:
+Success. Updated the following files:
+M src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..b648ec1efb6f976b49d6c2f0b34b7c2b8f4c5824
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,25 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1022,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..b648ec1efb6f976b49d6c2f0b34b7c2b8f4c5824
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,25 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1022,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+
+thinking
+**Exploring checksPending usage**
+
+I’m considering other potential uses for checksPending. It seems like I should search for more context on this. I wonder what other scenarios this could apply to and how it might help clarify things further. It’s interesting to think about the various applications that could come from understanding checksPending better. I’ll look into different resources to see how it’s usually used!
+exec
+/bin/zsh -lc "sed -n '995,1195p' 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc "rg -n \"checksAreSettingUp|waitingForMergeabilityConfirmation|postApprovalBanner.showSpinner|checksPending\" 'src/app/pp/deploy-requests/[requestId]/page.tsx'" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+  const checksPassed =
+    request?.githubRerunStatus === 'success' ||
+    allChecksPassing;
+  const checksPending = !checksPassed && !checksFailing;
+  const checksSummaryLabel = checksPassed
+    ? 'All checks passed'
+    : checksFailing
+      ? 'Some checks are failing'
+      : 'Waiting for GitHub checks';
+  const checksAreSettingUp = Boolean(
+    mergeReadinessLoading &&
+    ((mergeReadiness?.checks_total ?? 0) === 0) &&
+    !checksPassed &&
+    !checksFailing
+  );
+  const waitingForMergeabilityConfirmation = Boolean(
+    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
+  );
+  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+    ? 'Waiting for GitHub to confirm mergeability...'
+ succeeded in 51ms:
+998:  const checksPending = !checksPassed && !checksFailing;
+1004:  const checksAreSettingUp = Boolean(
+1010:  const waitingForMergeabilityConfirmation = Boolean(
+1013:  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
+1025:          : waitingForMergeabilityConfirmation
+1184:            : waitingForMergeabilityConfirmation
+1190:            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+1631:                          postApprovalBanner.showSpinner ? (
+1668:                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+2478:                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+2481:                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..b648ec1efb6f976b49d6c2f0b34b7c2b8f4c5824
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,25 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
++    allChecksPassing;
+   const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1022,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+codex
+I’ve got the race-condition logic in place. I’m doing one cleanup pass now for TypeScript consistency and to preserve existing spinner behavior for unrelated pending states like “Merging PR...”.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -997,3 +997,2 @@
+     allChecksPassing;
+-  const checksPending = !checksPassed && !checksFailing;
+   const checksSummaryLabel = checksPassed
+@@ -1171,2 +1170,3 @@
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+apply_patch(auto_approved=true) exited 0 in 85ms:
+Success. Updated the following files:
+M src/app/pp/deploy-requests/[requestId]/page.tsx
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+
+
+thinking
+**Updating tests for review page helpers**
+
+I need to add some tests. My first priority is updating the test for review-page-helpers, specifically the areAllChecksPassing function. I’m considering if there’s a need for tests related to page-specific scenarios too. It seems like making some focused helper tests would also be beneficial. This feels important to ensure everything functions as expected! Let's make sure we cover these areas thoroughly.
+file update
+M /Users/moltbot/pp-agent-work/factory-idea-054/tests/review-page-helpers.test.ts
+@@ -1,3 +1,3 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+@@ -23 +23,30 @@
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+apply_patch(auto_approved=true) exited 0 in 72ms:
+Success. Updated the following files:
+M tests/review-page-helpers.test.ts
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+
+thinking
+**Considering test strategies**
+
+I think I need to run targeted tests and maybe consider type checking. Using "npm test" might be overkill for this situation. I could run "npx vitest" targeted specifically, perhaps with a focus on the review-page-helpers tests. I'll think about linting as well. Maybe building could be useful, but for now, focusing on targeted tests seems like it might be enough to move forward effectively.
+codex
+The code edits are in. I’m running a narrow test pass against the helper coverage first; if that’s clean, I’ll review the diff and commit.
+exec
+/bin/zsh -lc 'git diff -- src/app/pp/deploy-requests/[requestId]/page.tsx src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx tests/review-page-helpers.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-054 exited 1 in 53ms:
+zsh:1: no matches found: src/app/pp/deploy-requests/[requestId]/page.tsx
+exec
+/bin/zsh -lc 'npx vitest run tests/review-page-helpers.test.ts' in /Users/moltbot/pp-agent-work/factory-idea-054file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+ succeeded in 1.43s:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/moltbot/pp-agent-work/factory-idea-054
+
+ ✓ tests/review-page-helpers.test.ts  (2 tests) 2ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:57:13
+   Duration  388ms (transform 32ms, setup 8ms, collect 26ms, tests 2ms, environment 0ms, prepare 58ms)
+
+codex
+The targeted test run is still executing. I hit a shell-globbing issue on the diff command because of the bracketed route path, so I’m re-running that with quoted paths while the test finishes.
+exec
+/bin/zsh -lc "git diff -- 'src/app/pp/deploy-requests/[requestId]/page.tsx' 'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx' tests/review-page-helpers.test.ts" in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 52ms:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2..492a7de 100644
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@ import {
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@ export default function DeployGateRequestPage() {
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+
+thinking
+**Considering version control steps**
+
+I see that I need to run some tests and possibly linting. I'm wondering if targeted linting is necessary, but there might be a bigger linting issue later. It seems like checking the git status and committing changes would be a good next step. I should only commit the relevant changes, not the ones for FACTORY-PRD. It would be wise to commit with a clear message after using git to add the files.
+codex
+The targeted tests passed. I’m doing a final status check and then creating a commit with only the implementation files and the focused test, leaving the PRD file uncommitted.
+exec
+/bin/zsh -lc 'git status --short' in /Users/moltbot/pp-agent-work/factory-idea-054 succeeded in 53ms:
+ M src/app/pp/deploy-requests/[requestId]/page.tsx
+ M src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+ M tests/review-page-helpers.test.ts
+?? .factory-prompt.txt
+?? FACTORY-PRD.md
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+codex
+The implementation is complete, but the sandbox is blocking writes inside `.git`, so `git add`/`git commit` can’t create the index lock. I’m verifying that this is a sandbox limitation rather than a stale lock, then I’ll give you the exact status and commit command to run locally if needed.
+exec
+/bin/zsh -lc 'ls -ld .git .git/index .git/index.lock' in /Users/moltbot/pp-agent-work/factory-idea-054exec
+/bin/zsh -lc 'git rev-parse --short HEAD' in /Users/moltbot/pp-agent-work/factory-idea-054 exited 1 in 51ms:
+ls: .git/index.lock: No such file or directory
+drwxr-xr-x  13 moltbot  staff    416 Mar 15 11:54 .git
+-rw-r--r--   1 moltbot  staff  96723 Mar 15 11:54 .git/index
+ succeeded in 53ms:
+e0b6260
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+
+thinking
+**Considering git diff summary**
+
+I think I should include a summary of the git diff, perhaps referencing specific lines. It might be important to mention any blocked commits as well. I also want to provide the necessary command and reference the relevant files. It's crucial to keep this concise and organized without using nested bullets. Lastly, I should ensure to note that all tests have passed in my summary.
+codex
+Implemented the PRD in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/page.tsx) and [review-page-helpers.tsx](/Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx), with focused coverage in [review-page-helpers.test.ts](/Users/moltbot/pp-agent-work/factory-idea-054/tests/review-page-helpers.test.ts).
+
+The UI behavior now matches the acceptance criteria:
+- “Setting up checks...” only shows with a spinner when merge readiness is still loading and `checks_total === 0`.
+- If all checks are passing, the spinner is suppressed even when `mergeable_state === 'unknown'`.
+- In that `unknown + checks passing` case, the page shows `Waiting for GitHub to confirm mergeability...` as subtle non-spinner text.
+
+Verification: `npx vitest run tests/review-page-helpers.test.ts` passed.
+
+I could not create the requested git commit because the sandbox blocks writes inside `.git` and `git add` failed with `Unable to create '.git/index.lock': Operation not permitted`. The commit you can run locally is:
+
+```bash
+git add 'src/app/pp/deploy-requests/[requestId]/page.tsx' \
+        'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx' \
+        tests/review-page-helpers.test.ts
+git commit -m "Fix merge readiness checks spinner race"
+```
+file update:
+diff --git a/src/app/pp/deploy-requests/[requestId]/page.tsx b/src/app/pp/deploy-requests/[requestId]/page.tsx
+index e03b4d2c81e7efb6c69f5083164e704d2218b4bf..492a7de8c2c2e3aaec2521a543c76bc72d27e139
+--- a/src/app/pp/deploy-requests/[requestId]/page.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/page.tsx
+@@ -33,6 +33,7 @@
+   formatExpiryDuration,
+   formatTimeAgo,
+   getActorDescriptor,
++  areAllChecksPassing,
+   getAfterApprovalText,
+   getApprovedByText,
+   getBlastRadiusText,
+@@ -974,9 +975,8 @@
+     request?.verificationStatus === 'FAILED' && isVerificationIntegrityConcern(request.verificationFailureCode)
+   );
+   const shareableReceiptUrl = request?.receiptId ? `https://permissionprotocol.com/r/${request.receiptId}` : null;
+-  const readinessChecksPassing =
+-    mergeReadiness?.checks_total === 0 ||
+-    mergeReadiness?.checks_passing === mergeReadiness?.checks_total;
++  const allChecksPassing = areAllChecksPassing(mergeReadiness);
++  const readinessChecksPassing = mergeReadiness?.checks_total === 0 || allChecksPassing;
+   const branchStatus = getBranchStatus(mergeReadiness, request?.status);
+   const showMergeReadinessRefresh = Boolean(
+     request?.status === 'approved' &&
+@@ -994,18 +994,24 @@
+   );
+   const checksPassed =
+     request?.githubRerunStatus === 'success' ||
+-    Boolean(
+-      mergeReadiness &&
+-      mergeReadiness.checks_total > 0 &&
+-      readinessChecksPassing &&
+-      mergeReadiness.checks.every((check) => !isFailingCheck(check))
+-    );
+-  const checksPending = !checksPassed && !checksFailing;
++    allChecksPassing;
+   const checksSummaryLabel = checksPassed
+     ? 'All checks passed'
+     : checksFailing
+       ? 'Some checks are failing'
+       : 'Waiting for GitHub checks';
++  const checksAreSettingUp = Boolean(
++    mergeReadinessLoading &&
++    ((mergeReadiness?.checks_total ?? 0) === 0) &&
++    !checksPassed &&
++    !checksFailing
++  );
++  const waitingForMergeabilityConfirmation = Boolean(
++    allChecksPassing && mergeReadiness?.mergeable_state === 'unknown'
++  );
++  const mergeabilityStatusLabel = waitingForMergeabilityConfirmation
++    ? 'Waiting for GitHub to confirm mergeability...'
++    : branchStatus.label;
+   const branchUpToDateStatus =
+     mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : mergeReadiness.behind_by > 0 || branchBehind ? 'fail' : 'pass';
+   const branchUpToDateDetail =
+@@ -1015,7 +1021,9 @@
+         ? 'Branch is up to date with the base branch'
+         : branchUpToDateStatus === 'fail'
+           ? branchStatus.label
+-          : 'Waiting for GitHub mergeability status';
++          : waitingForMergeabilityConfirmation
++            ? 'Waiting for GitHub to confirm mergeability...'
++            : 'Waiting for GitHub mergeability status';
+   const noConflictsStatus = mergeReadinessError ? 'pass' : !mergeReadiness ? 'pending' : hasConflict ? 'fail' : 'pass';
+   const noConflictsDetail =
+     mergeReadinessError
+@@ -1160,6 +1168,7 @@
+           ? {
+               tone: 'pending' as const,
+               label: 'Merging PR...',
++              showSpinner: true,
+             }
+           : readyToMerge
+             ? {
+@@ -1170,11 +1179,19 @@
+             ? {
+                 tone: 'pending' as const,
+                 label: 'Re-running checks after approval...',
++                showSpinner: true,
+               }
+-            : request.postApprovalActionStatus === 'pending' || !mergeReadiness || mergeReadiness.checks_total === 0
++            : waitingForMergeabilityConfirmation
++              ? {
++                  tone: 'pending' as const,
++                  label: 'Waiting for GitHub to confirm mergeability...',
++                  showSpinner: false,
++                }
++            : request.postApprovalActionStatus === 'pending' || checksAreSettingUp
+               ? {
+                   tone: 'pending' as const,
+                   label: 'Setting up checks...',
++                  showSpinner: true,
+                 }
+               : null
+     : null;
+@@ -1611,7 +1628,11 @@
+                     {postApprovalBanner ? (
+                       <div className={`rounded-2xl border px-4 py-3 text-sm ${postApprovalBannerClassName}`}>
+                         {postApprovalBanner.tone === 'pending' ? (
+-                          <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          postApprovalBanner.showSpinner ? (
++                            <LoadingInlineLabel>{postApprovalBanner.label}</LoadingInlineLabel>
++                          ) : (
++                            <span className="text-[var(--muted)]">{postApprovalBanner.label}</span>
++                          )
+                         ) : postApprovalBanner.tone === 'success' ? (
+                           <span className="inline-flex items-center gap-2">
+                             <CheckCircle2 className="h-4 w-4" />
+@@ -1644,7 +1665,7 @@
+                         <div className="mt-3 space-y-3 text-sm">
+                           <div className="flex items-start justify-between gap-3">
+                             <div className={checksPassed ? 'text-[#10B981]' : checksFailing ? 'text-[#EF4444]' : 'text-[var(--muted)]'}>
+-                              {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                              {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                             </div>
+                             {mergeReadiness?.checks?.length ? (
+                               <button
+@@ -2454,10 +2475,14 @@
+                         ) : null}
+                         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                           <div className="text-white">
+-                            {checksPending ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
++                            {checksAreSettingUp ? <LoadingInlineLabel>{checksSummaryLabel}</LoadingInlineLabel> : checksSummaryLabel}
+                           </div>
+                           <div className="mt-2 text-[var(--muted)]">
+-                            {branchStatus.tone === 'pending' ? <LoadingInlineLabel tone="muted">{branchStatus.label}</LoadingInlineLabel> : branchStatus.label}
++                            {branchStatus.tone === 'pending' && !waitingForMergeabilityConfirmation ? (
++                              <LoadingInlineLabel tone="muted">{mergeabilityStatusLabel}</LoadingInlineLabel>
++                            ) : (
++                              mergeabilityStatusLabel
++                            )}
+                           </div>
+                           {mergeBlockedReason ? <div className="mt-2 text-[#EF4444]">{mergeBlockedReason}</div> : null}
+                         </div>
+diff --git a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+index 1eb31b96f0edcf989b656c1c6b2fe3a6b8d31e24..fcf808ac6aa8a15f8ffd49f9d5ac3df959fd0276
+--- a/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
++++ b/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx
+@@ -405,6 +405,15 @@
+   return `${readiness.checks_total - readiness.checks_passing} check${readiness.checks_total - readiness.checks_passing === 1 ? '' : 's'} not passing`;
+ }
+ 
++export function areAllChecksPassing(readiness: MergeReadiness | null): boolean {
++  return Boolean(
++    readiness &&
++    readiness.checks_total > 0 &&
++    readiness.checks_passing === readiness.checks_total &&
++    readiness.checks.every((check) => !isFailingCheck(check))
++  );
++}
++
+ export function getBranchStatus(readiness: MergeReadiness | null, requestStatus?: string): { tone: 'ok' | 'warn' | 'error' | 'pending'; label: string } {
+   if (!readiness) {
+     return { tone: 'pending', label: 'Waiting for GitHub mergeability status...' };
+diff --git a/tests/review-page-helpers.test.ts b/tests/review-page-helpers.test.ts
+index 9b3fcfdbbf567e3380a58ecb2dbec8ba6c5e074f..b62ff6caf837c89774ff80356509ef3c5c02d01c
+--- a/tests/review-page-helpers.test.ts
++++ b/tests/review-page-helpers.test.ts
+@@ -1,5 +1,5 @@
+ import { describe, expect, it } from 'vitest';
+-import { getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
++import { areAllChecksPassing, getBranchStatus } from '@/app/pp/deploy-requests/[requestId]/review-page-helpers';
+ 
+ describe('getBranchStatus', () => {
+   it('shows approval-specific pending copy while GitHub recomputes mergeability', () => {
+@@ -21,3 +21,32 @@
+     });
+   });
+ });
++
++describe('areAllChecksPassing', () => {
++  it('returns true only when GitHub reports at least one check and all are passing', () => {
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [
++          { name: 'build', status: 'completed', conclusion: 'success' },
++          { name: 'test', status: 'completed', conclusion: 'neutral' },
++        ],
++        checks_passing: 2,
++        checks_total: 2,
++        behind_by: 0,
++      })
++    ).toBe(true);
++
++    expect(
++      areAllChecksPassing({
++        mergeable: null,
++        mergeable_state: 'unknown',
++        checks: [],
++        checks_passing: 0,
++        checks_total: 0,
++        behind_by: 0,
++      })
++    ).toBe(false);
++  });
++});
+
+tokens used
+38,014
+Implemented the PRD in [page.tsx](/Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/page.tsx) and [review-page-helpers.tsx](/Users/moltbot/pp-agent-work/factory-idea-054/src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx), with focused coverage in [review-page-helpers.test.ts](/Users/moltbot/pp-agent-work/factory-idea-054/tests/review-page-helpers.test.ts).
+
+The UI behavior now matches the acceptance criteria:
+- “Setting up checks...” only shows with a spinner when merge readiness is still loading and `checks_total === 0`.
+- If all checks are passing, the spinner is suppressed even when `mergeable_state === 'unknown'`.
+- In that `unknown + checks passing` case, the page shows `Waiting for GitHub to confirm mergeability...` as subtle non-spinner text.
+
+Verification: `npx vitest run tests/review-page-helpers.test.ts` passed.
+
+I could not create the requested git commit because the sandbox blocks writes inside `.git` and `git add` failed with `Unable to create '.git/index.lock': Operation not permitted`. The commit you can run locally is:
+
+```bash
+git add 'src/app/pp/deploy-requests/[requestId]/page.tsx' \
+        'src/app/pp/deploy-requests/[requestId]/review-page-helpers.tsx' \
+        tests/review-page-helpers.test.ts
+git commit -m "Fix merge readiness checks spinner race"
+```
