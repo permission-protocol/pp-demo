@@ -26,7 +26,7 @@ MONTH=$(date +"%b %Y")
 DATE_ISO=$(date +"%Y-%m")
 
 echo "=== Cloning repo..."
-git clone --depth 1 git@github.com:Roca-Ventures/permissionprotocol-site.git "$REPO_DIR" 2>&1 | tail -1
+git clone --depth 1 git@github.com:permission-protocol/site.git "$REPO_DIR" 2>&1 | tail -1
 
 echo "=== Copying image..."
 cp "$IMAGE" "$REPO_DIR/public/blog/${SLUG}.png"

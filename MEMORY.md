@@ -51,6 +51,18 @@ Rodrigo Carvalho. System-builder at the frontier of AI, infrastructure, and crea
 ### 2026-03-14 — Cron Timeout ≠ Cron Failure
 - `cron run` with short `timeoutMs` returns "gateway timeout" but the job still launches. Verify with a second `cron run` — if "already-running", it's fine.
 
+### 2026-03-15 — Documentation Hygiene
+- Maintain detailed records of fixes, updates, and decisions for consistency and clarity. (R1 Curation)
+
+### 2026-03-15 — PR Factory: Batch Conflict Management
+- **Conflict Cascades**: Merging many PRs (10+) into the same repo creates conflict cascades.
+- **Lesson**: Merge in dependency order and rebase remaining branches after each merge to keep pipeline moving.
+- **Factory Retries**: Blind retries without error context fail. Pipe actual `stderr` into the Codex retry prompt.
+
+### 2026-03-15 — Environment Visibility Fixes
+- **Silent Config Bugs**: `pr-gate.yml` was targeting `staging` instead of `production` for months.
+- **Lesson**: Adding UI environment badges (Wave 2 of audit) made the config bug visible. UX polish surfaces technical debt.
+
 ---
 
 ## Systems Built
@@ -90,9 +102,9 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 ## Open Threads
 
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
-- [ ] Merge PR #119 (Webhook Auth Fix) — **CRITICAL** (GitHub App can't receive events)
+- [x] Merge PR #119 (Webhook Auth Fix) — **DONE** (2026-03-15)
 - [ ] Fix Prisma FK bug (idea-032) — **CRITICAL** (deploy request creation broken)
-- [ ] Merge deploy-gate PR #20 (URL fix) + bump v1 tag
+- [x] Merge deploy-gate PR #20 (URL fix) + bump v1 tag — **DONE** (2026-03-15)
 - [ ] Demo video for deploy-gate
 - [ ] Build ship.sh for factory "Done" transitions
 - [ ] Enable mobile QA in factory config (after 5 clean cron runs)

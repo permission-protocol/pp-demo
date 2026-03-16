@@ -59,4 +59,25 @@ _Items Charles wants to implement but needs a decision on._
 
 ---
 
-_Last updated: 2026-03-10 by nightly-self-improvement cron_
+## [6] Factory Pipeline: Error-Aware Retry
+
+**Problem:** When a Create Factory build fails (e.g., TypeScript error), the `qa.sh` auto-retry prompt to Codex is generic ("It failed, try again"). This leads to repeated identical failures because the agent lacks context on *why* it failed.
+
+**Proposed Fix:** Modify `qa.sh` to capture the `stdout`/`stderr` of the failed command (e.g., `npm run build` or `tsc`) and include the last 20 lines of the error log in the retry prompt.
+
+**Estimated effort:** Low (bash script update).
+
+---
+
+## [7] Factory Pipeline: Sequential Merge Orchestrator
+
+**Problem:** Merging 7+ PRs into one repo (like today's UI audit) causes "Conflict Cascades." Each merge moves `main`, making all other open branches stale and prone to merge conflicts.
+
+**Proposed Fix:** Create a script `scripts/factory-merge.sh` that:
+1. Merges PR #1.
+2. Waits for CI green.
+3. Automatically rebases PR #2 onto `main` and pushes.
+4. Repeats for all PRs in the queue.
+
+**Estimated effort:** Medium (git/gh CLI orchestration).
+

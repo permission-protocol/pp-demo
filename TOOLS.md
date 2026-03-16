@@ -138,7 +138,7 @@ Status file at `/tmp/agent-status-<issue>.json` shows phase + detail + files cha
 
 ### 3. Pre-merge visual review (BEFORE merging)
 ```bash
-bash scripts/pre-merge-review.sh Roca-Ventures/permissionprotocol-site 42
+bash scripts/pre-merge-review.sh permission-protocol/site 42
 ```
 Then screenshot with browser tool:
 - Desktop viewport of each changed page
@@ -149,6 +149,8 @@ Then screenshot with browser tool:
 - **Codex first, always.** Claude Code only for single complex tasks where Codex fails.
 - **Screenshot before merge**, not after.
 - **Never move to Done** — executor moves to QA Review, pipeline verifies.
+- **Environment Parity**: Check for the "Environment Badge" on the dashboard (introduced 2026-03-15) to ensure the current deployment matches the expected environment.
+- **Factory Archive**: Auto-archive factory threads in Discord once a task is merged to keep #factory-wip clean.
 
 ---
 
