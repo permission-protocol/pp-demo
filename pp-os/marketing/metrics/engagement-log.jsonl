@@ -50,3 +50,12 @@
 {"timestamp":"2026-03-14T23:00:40Z","platform":"twitter","action":"follow","target_handle":"cgtwts","target_followers":16365}
 {"timestamp":"2026-03-14T23:00:45Z","platform":"twitter","action":"follow","target_handle":"Dinosn","target_followers":152556}
 {"timestamp":"2026-03-14T23:00:50Z","platform":"twitter","action":"follow","target_handle":"Dreytyy","target_followers":1889}
+{"timestamp":"2026-03-16T15:10:00Z","platform":"twitter","action":"tweet","target_tweet":null,"target_followers":null,"our_tweet":"https://x.com/PermissionPrtcl/status/2033560200050008409","text":"The Pentagon's designation of Anthropic as a supply chain risk is the definitive signal: 'embedded' agents are unmanaged liabilities. If you can't granularly audit and revoke tool access in real-time, you've lost control of the perimeter. 🛡️🦾 #AIAgents #Pentagon"}
+{"timestamp":"2026-03-16T15:10:05Z","platform":"twitter","action":"tweet","target_tweet":null,"target_followers":null,"our_tweet":"https://x.com/PermissionPrtcl/status/2033560201752981599","text":"Governance (like @rungalileo's Control platform) is vital, but enforcement is the missing half. The agentic enterprise needs a deterministic gatekeeper to turn policy into immutable audit trails and real-time intervention. 🛡️🦾 #AIAgents #EnterpriseAI"}
+{"timestamp":"2026-03-16T15:12:00Z","platform":"twitter","action":"follow","target_handle":"sukh_saroy","target_followers":11934}
+{"timestamp":"2026-03-16T15:12:05Z","platform":"twitter","action":"follow","target_handle":"rocklambros","target_followers":723}
+{"timestamp":"2026-03-16T15:12:10Z","platform":"twitter","action":"follow","target_handle":"rungalileo","target_followers":1500}
+{"timestamp":"2026-03-16T15:12:15Z","platform":"twitter","action":"follow","target_handle":"zenterasystems","target_followers":1504}
+{"timestamp":"2026-03-16T15:12:20Z","platform":"twitter","action":"follow","target_handle":"Oracle","target_followers":825349}
+{"timestamp":"2026-03-16T15:12:25Z","platform":"twitter","action":"follow","target_handle":"wef","target_followers":4337277}
+{"timestamp":"2026-03-16T15:12:30Z","platform":"twitter","action":"follow","target_handle":"botnewsnetwork","target_followers":23}
