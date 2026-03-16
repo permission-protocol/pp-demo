@@ -28,8 +28,13 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Repos_Protected-3-blueviolet?style=flat-square" alt="Repos Protected">
-  <img src="https://img.shields.io/badge/Approvals_Issued-12-blue?style=flat-square" alt="Approvals Issued">
+  <img src="https://img.shields.io/badge/❌_No_Receipt_→_No_Merge-ENFORCED-ef4444?style=for-the-badge" alt="No Receipt → No Merge">
+  <img src="https://img.shields.io/github/forks/permission-protocol/pp-demo?style=for-the-badge&label=Forks&color=0ea5e9" alt="Fork count">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Protects-7_Repos-blueviolet?style=for-the-badge" alt="Protects 7 Repos">
+  <img src="https://img.shields.io/badge/Approvals_Issued-268-blue?style=for-the-badge" alt="Approvals Issued">
 </p>
 
 ---
