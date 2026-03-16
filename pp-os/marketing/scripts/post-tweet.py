@@ -63,6 +63,8 @@ if __name__ == "__main__":
         post_tweet(sys.argv[3], reply_to=sys.argv[2])
     elif mode == "quote":
         post_tweet(sys.argv[3], quote_id=sys.argv[2])
+    elif mode == "quote":
+        post_tweet(sys.argv[3], quote_id=sys.argv[2])
     elif mode == "thread":
         post_thread(sys.argv[2:])
     elif mode == "delete":

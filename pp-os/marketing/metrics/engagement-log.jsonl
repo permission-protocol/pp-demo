@@ -59,3 +59,13 @@
 {"timestamp":"2026-03-16T15:12:20Z","platform":"twitter","action":"follow","target_handle":"Oracle","target_followers":825349}
 {"timestamp":"2026-03-16T15:12:25Z","platform":"twitter","action":"follow","target_handle":"wef","target_followers":4337277}
 {"timestamp":"2026-03-16T15:12:30Z","platform":"twitter","action":"follow","target_handle":"botnewsnetwork","target_followers":23}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"quote_tweet","target_tweet":"https://x.com/garrytan/status/2033407306084327877","target_followers":701129,"our_tweet":"https://x.com/PermissionPrtcl/status/2033619688710934582","text":"Markdown as code is the only way to manage agent intent at scale. When the plan lives in git, it becomes auditable. We're taking it one step further: deterministic authority gates for those plan actions. 🛡️🦾"}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"hn","action":"comment","target_item":"47400261","target_points":77,"text":"Whether it's MCP or a CLI, the bottleneck for agents in production isn't just context—it's authority. How does the agent prove its identity and verify its permission to run that CLI command in a multi-tenant environment? We're seeing a shift where authority is being decoupled from the agent itself and moved to a deterministic enforcement layer. Shell access shouldn't be open-ended just because the 'context' is small."}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"garrytan","target_followers":701129}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"Atenov_D","target_followers":9167}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"apideck","target_followers":4000}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"yoheinakajima","target_followers":50000}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"hwchase17","target_followers":60000}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"karpathy","target_followers":1000000}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"sh_reya","target_followers":20000}
+{"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"amanrsanger","target_followers":30000}
