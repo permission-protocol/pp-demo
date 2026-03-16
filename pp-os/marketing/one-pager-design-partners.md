@@ -1,6 +1,6 @@
 # Permission Protocol — Design Partner One-Pager
 
-*Draft — for Rod's review*
+*Draft v2 — for Rod's review*
 
 ---
 
@@ -8,13 +8,13 @@
 
 AI agents are shipping to production without answers to three basic questions:
 
-**Who approved this agent's access?** → Most teams can't point to a specific authorization for what their agents can do.
+**Who approved this agent's access?** Most teams can't point to a specific authorization for what their agents can do. There's no name, timestamp, or policy behind the access — it just exists.
 
-**What happens when it goes wrong?** → No kill switch. No escalation. The agent just keeps going at 3 AM.
+**What happens when it goes wrong?** No kill switch. No escalation path. When an agent makes a bad call at 3 AM, it keeps running.
 
-**Can you prove it to your board?** → No audit trail. When a regulator or customer asks "how do you control your AI?", the answer is "we ran a scan once."
+**Can you prove it to your board?** When a regulator or customer asks "how do you control your AI agents?", most teams don't have a live audit trail to show them.
 
-Scanning tools tell you what's broken. Nothing stops it from breaking.
+Security scanners find vulnerabilities. But finding a problem and preventing it are different things.
 
 ---
 
@@ -51,7 +51,7 @@ No authority receipt → no execution. Every action gated. Every decision logged
 
 ## Who This Is For
 
-Teams shipping AI agents that touch real systems — deploy code, send emails, access databases, make payments, interact with customers.
+Teams shipping AI agents that touch real systems — deploying code, sending emails, accessing databases, making payments, interacting with customers.
 
 If your agent can cause damage, it needs a permission layer.
 
@@ -73,18 +73,18 @@ We're looking for **5 teams** to integrate Permission Protocol and shape the pro
 - 30 minutes/week for feedback
 - Permission to reference you as an early adopter (optional, your call)
 
-**Timeline:** Integration takes <1 day. First authority receipts flowing within hours.
+**Timeline:** Integration takes less than a day. First authority receipts flowing within hours.
 
 ---
 
 ## Why Now
 
-- **OpenAI acquired Promptfoo** (AI security scanning) — $X00M+ signal that agent security is a category
-- **Onyx Security raised $40M** (agent security control plane) — but focused on discovery/monitoring, not enforcement
+- **OpenAI acquired Promptfoo** — signal that agent security is becoming a major category
+- **Onyx Security raised $40M** — agent security control plane focused on discovery and monitoring
 - **OWASP Agentic Security Top 10** published — enterprises now have a framework to evaluate agent risk
-- **EU AI Act enforcement begins 2026** — compliance isn't optional anymore
+- **EU AI Act enforcement begins 2026** — compliance requirements are arriving
 
-The assessment layer is getting crowded. The enforcement layer is empty. We're building it.
+The assessment layer is getting crowded. The enforcement layer is wide open. We're building it.
 
 ---
 

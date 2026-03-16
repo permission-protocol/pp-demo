@@ -69,3 +69,16 @@
 {"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"karpathy","target_followers":1000000}
 {"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"sh_reya","target_followers":20000}
 {"timestamp":"2026-03-16T19:02:16Z","platform":"twitter","action":"follow","target_handle":"amanrsanger","target_followers":30000}
+{"timestamp":"2026-03-16T23:03:00Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/tcrawford/status/2033679729832665208","target_followers":20623,"our_tweet":"https://x.com/PermissionPrtcl/status/2033680251973148715","text":"Personal AI agents are effectively an 'insider threat' with infinite speed. When agents use your creds, the bottleneck isn't just data access—it's operational authority. We're building the layer to gate those actions, not just the data. 🛡️🦾"}
+{"timestamp":"2026-03-16T23:03:10Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/meetblossomapp/status/2033679146430197775","target_followers":45397,"our_tweet":"https://x.com/PermissionPrtcl/status/2033680253898355183","text":"As NVIDIA and Adobe standardize the 'Agent Toolkit', the missing piece is the enforcement layer. 'Always-on' agents shouldn't mean 'always-authorized.' Deterministic tool-level gates are the only way to scale these workflows safely. 🛡️🦾"}
+{"timestamp":"2026-03-16T23:03:20Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/StanfordGSB/status/2033680057244279021","target_followers":507543,"our_tweet":"https://x.com/PermissionPrtcl/status/2033680255802626537","text":"Agent 'skepticism' often stems from the gap between requested task and available authority. If an agent can't verify its own permissions, it gets stuck. Deterministic authority gates solve this—giving agents the confidence to act (or stop). 🛡️🦾"}
+{"timestamp":"2026-03-16T23:03:30Z","platform":"twitter","action":"follow","target_handle":"tcrawford","target_followers":20623}
+{"timestamp":"2026-03-16T23:03:31Z","platform":"twitter","action":"follow","target_handle":"meetblossomapp","target_followers":45397}
+{"timestamp":"2026-03-16T23:03:32Z","platform":"twitter","action":"follow","target_handle":"StanfordGSB","target_followers":507543}
+{"timestamp":"2026-03-16T23:03:33Z","platform":"twitter","action":"follow","target_handle":"JulianGoldieSEO","target_followers":152670}
+{"timestamp":"2026-03-16T23:03:34Z","platform":"twitter","action":"follow","target_handle":"PayRam","target_followers":0}
+{"timestamp":"2026-03-16T23:03:35Z","platform":"twitter","action":"follow","target_handle":"konnex_world","target_followers":0}
+{"timestamp":"2026-03-16T23:03:36Z","platform":"twitter","action":"follow","target_handle":"SuperpowersAI","target_followers":0}
+{"timestamp":"2026-03-16T23:03:37Z","platform":"twitter","action":"follow","target_handle":"ivanburazin","target_followers":0}
+{"timestamp":"2026-03-16T23:03:38Z","platform":"twitter","action":"follow","target_handle":"OpenClaw_Dev","target_followers":0}
+{"timestamp":"2026-03-16T23:03:39Z","platform":"twitter","action":"follow","target_handle":"x402_protocol","target_followers":0}

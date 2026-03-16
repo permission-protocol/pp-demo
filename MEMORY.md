@@ -59,6 +59,12 @@ Rodrigo Carvalho. System-builder at the frontier of AI, infrastructure, and crea
 - **Lesson**: Merge in dependency order and rebase remaining branches after each merge to keep pipeline moving.
 - **Factory Retries**: Blind retries without error context fail. Pipe actual `stderr` into the Codex retry prompt.
 
+### 2026-03-16 — Factory JSONL Drift (14 Stale Ideas)
+- **Problem**: 14 ideas stayed in `qa-passed`/`build-ready` after their PRs were merged. 3 ideas duplicated already-built features. Backlog looked 2x larger than reality.
+- **Root Cause**: No feedback loop from GitHub merges → `ideas.jsonl`. Manual merges and factory merges both left JSONL untouched.
+- **Fix**: Built `factory/scripts/reconcile.sh` — runs on every heartbeat, cross-refs merged PRs against JSONL, auto-marks done, flags stale items.
+- **Lesson**: Every pipeline needs a reconciliation step. Source of truth drift is invisible until it causes cost or confusion.
+
 ### 2026-03-15 — Environment Visibility Fixes
 - **Silent Config Bugs**: `pr-gate.yml` was targeting `staging` instead of `production` for months.
 - **Lesson**: Adding UI environment badges (Wave 2 of audit) made the config bug visible. UX polish surfaces technical debt.
@@ -99,16 +105,24 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 
 ---
 
+## Architecture: Permission Protocol (as of 2026-03-16)
+
+- **Marketing site** (permissionprotocol.com): Landing pages, public receipt viewer (`/r/[id]`), redirects to app for all auth flows
+- **App** (app.permissionprotocol.com): ALL authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail, enrichment pipeline
+- **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend
+- Review surface **fully consolidated to app** on 2026-03-16 (6,116 lines removed from site repo, 301 redirects added)
+
 ## Open Threads
 
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
-- [x] Merge PR #119 (Webhook Auth Fix) — **DONE** (2026-03-15)
+- [ ] **Marco user requirements DONE** — `pp-os/specs/marco-user-requirements.md` (29 reqs, 5 sprints)
+- [ ] **Sarah user requirements** — needs same deep treatment as Marco
+- [ ] **Sprint 1 implementation specs** — break Marco M1-M6 into buildable tickets
 - [ ] Fix Prisma FK bug (idea-032) — **CRITICAL** (deploy request creation broken)
-- [x] Merge deploy-gate PR #20 (URL fix) + bump v1 tag — **DONE** (2026-03-15)
 - [ ] Demo video for deploy-gate
 - [ ] Build ship.sh for factory "Done" transitions
 - [ ] Enable mobile QA in factory config (after 5 clean cron runs)
 - [ ] Xdares goal executor budget — needs Rod approval to resume
 - [ ] McKinsey Lilli breach — content opportunity (alert sent 2026-03-15)
 
-*Updated: 2026-03-15*
+*Updated: 2026-03-16*

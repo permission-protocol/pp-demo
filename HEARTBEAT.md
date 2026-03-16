@@ -103,6 +103,18 @@ cat ~/.openclaw/workspace/ops/threads.yaml
 3. **Status drift:** If a thread's Discord activity contradicts its YAML status (e.g., marked WAITING but has new messages), update the YAML status.
 
 ## Factory Pipeline Health
+
+### Auto-Reconcile (run every heartbeat)
+```bash
+bash ~/.openclaw/workspace/factory/scripts/reconcile.sh
+```
+- Cross-references `ideas.jsonl` against merged GitHub PRs
+- Auto-marks merged factory ideas as `done`
+- Flags stale items (qa-passed >48h, build-ready >7d, build-failed >48h, prd-wip >7d)
+- If `changes > 0`: report what was reconciled
+- If `warnings > 0`: report stale items that need attention
+
+### Stuck Item Check
 Check `factory/ideas.jsonl` for stuck items. Use `updated_at` timestamps vs current time.
 
 ```bash
