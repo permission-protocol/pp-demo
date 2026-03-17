@@ -106,3 +106,14 @@
 {"timestamp": "2026-03-17T19:05:35Z", "platform": "twitter", "action": "follow", "target_handle": "ASI_Alliance", "target_followers": 50000}
 {"timestamp": "2026-03-17T19:05:40Z", "platform": "twitter", "action": "follow", "target_handle": "CVAgentlauncher", "target_followers": 200}
 {"timestamp": "2026-03-17T19:05:45Z", "platform": "twitter", "action": "follow", "target_handle": "insightpartners", "target_followers": 30000}
+{"timestamp":"2026-03-17T23:08:00Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/LouisColumbus/status/2034041426250731793","target_followers":29249,"our_tweet":"https://x.com/PermissionPrtcl/status/2034042431638007834","text":"The \"agent-to-agent trust gap\" is the real governance bottleneck. You can't solve it with better model alignment. You need an independent, deterministic authority layer that signs and audits every cross-agent tool call before it hits the wire. 🛡️🦾"}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "LouisColumbus", "target_followers": 29249}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "SenatorSlotkin", "target_followers": 152742}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "tedmurphy", "target_followers": 28543}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "benitoz", "target_followers": 16133}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "rohanpaul_ai", "target_followers": 141658}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "boomi", "target_followers": 101362}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "edgeaivision", "target_followers": 2859}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "bestwebstrategy", "target_followers": 44063}
+{"timestamp": "2026-03-17T23:08:00Z", "platform": "twitter", "action": "follow", "target_handle": "nicoloboschi", "target_followers": 572}
+{"timestamp":"2026-03-17T23:09:00Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/tedmurphy/status/2034023797750214822","target_followers":28543,"our_tweet":"https://x.com/PermissionPrtcl/status/2034042622638231917","text":"Anthropic Cowork is a huge UX step, but governance is still the real question. If you can't granularly audit and revoke agent tool access in real-time, you've lost control of the perimeter. Deterministic authority is the missing half. 🛡️🦾"}

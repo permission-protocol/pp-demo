@@ -439,6 +439,11 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 ## Coding Agent QA Protocol
 **Learned from QA Sprint #2 (March 11, 2026). These are hard rules.**
 
+### Git Hygiene (HARD RULES)
+- **NEVER `git add -A` or `git add .` in a shared worktree.** Always `git add <specific files>`.
+- **Run `git status` before creating a branch.** If untracked junk exists, clean it or `.gitignore` it first.
+- **Review `git diff --stat` before pushing.** If the file count doesn't match your changes, something's wrong.
+
 ### Post-Codex Checklist (before pushing)
 1. **Read the diff** — `git diff main --stat` then skim the actual changes
 2. **Check against each PRD requirement** — every "must have" in the spec should map to a change
