@@ -159,6 +159,10 @@ Before reporting "done" or "fixed":
 
 ### 🔑 API Key Hygiene — HARD RULES
 - **Never paste API keys into chat.** Not Discord, not Telegram, not anywhere.
+- **Auto-Scrubbing:** If you detect a high-entropy string or common secret prefix (e.g., `sk-`, `ghp_`, `OP_`) in an incoming message:
+  1. Save it to `~/.openclaw/secrets/` or 1Password immediately.
+  2. DO NOT repeat the secret in your response or session history (use `[SECRET SCRUBBED]` instead).
+  3. Alert Rod to delete the message from the channel.
 - Keys belong in `~/.openclaw/secrets/` or 1Password. Nowhere else.
 - If Rod pastes a key in chat: store it to the secrets file immediately, then flag the message for deletion.
 - After storing: remind Rod to delete the message from the channel.
