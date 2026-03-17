@@ -82,3 +82,27 @@
 {"timestamp":"2026-03-16T23:03:37Z","platform":"twitter","action":"follow","target_handle":"ivanburazin","target_followers":0}
 {"timestamp":"2026-03-16T23:03:38Z","platform":"twitter","action":"follow","target_handle":"OpenClaw_Dev","target_followers":0}
 {"timestamp":"2026-03-16T23:03:39Z","platform":"twitter","action":"follow","target_handle":"x402_protocol","target_followers":0}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"tweet","target_tweet":null,"target_followers":330000,"our_tweet":"https://x.com/PermissionPrtcl/status/2033922593473106124","text":"@techradar's report on @Okta's agent management blueprint validates the core thesis: identity is the 'who', but the enterprise needs a 'what'. Managing what an agent is *allowed to do* at the tool level is the next perimeter. 🛡️🦾 #AIAgents"}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"MikeLongTerm","target_followers":12800}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"techradar","target_followers":330110}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"BleepinComputer","target_followers":249137}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"TheTokenSec","target_followers":48}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"xiangrenNLP","target_followers":13439}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"PhalaNetwork","target_followers":143092}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"DivergSec","target_followers":33}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"Nethermind","target_followers":32148}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"sh_reya","target_followers":20000}
+{"timestamp":"2026-03-17T15:06:10Z","platform":"twitter","action":"follow","target_handle":"amanrsanger","target_followers":30000}
+{"timestamp":"2026-03-17T19:00:35Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/levie/status/1954309317202747616","target_followers":450000,"our_tweet":"https://x.com/PermissionPrtcl/status/2033981888302379333","text":"Aaron Levie is right—the transition to \"agent-first\" is an architecture shift. Traditional guardrails focus on what agents say; we need a deterministic layer for what they *do*. The execution layer is the new perimeter. 🛡️🦾 #AIAgents #CyberSecurity"}
+{"timestamp":"2026-03-17T19:00:40Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/Reuters/status/2029762647793545444","target_followers":25000000,"our_tweet":"https://x.com/PermissionPrtcl/status/2033981896632197133","text":"The Pentagon designating @AnthropicAI a \"supply chain risk\" highlights a shift: AI security is moving from \"conversation safety\" to \"operational authority.\" If you cant granularly audit and revoke agent tool access in real-time, youre at risk. 🛡️🦾"}
+{"timestamp":"2026-03-17T19:00:45Z","platform":"twitter","action":"tweet","target_tweet":"https://thehackernews.com/2026/02/claude-code-flaws-allow-remote-code.html","target_followers":800000,"our_tweet":"https://x.com/PermissionPrtcl/status/2033981905972969696","text":"Recent #ClaudeCode vulnerabilities (CVE-2025-59536, CVE-2026-21852) show why the AI supply chain begins with the automation layer. Configuration files like .claude/settings.json are now part of the execution layer. Authority must be deterministic. 🛡️🦾"}
+{"timestamp": "2026-03-17T19:05:00Z", "platform": "twitter", "action": "follow", "target_handle": "levie", "target_followers": 450000}
+{"timestamp": "2026-03-17T19:05:05Z", "platform": "twitter", "action": "follow", "target_handle": "Reuters", "target_followers": 25000000}
+{"timestamp": "2026-03-17T19:05:10Z", "platform": "twitter", "action": "follow", "target_handle": "TheHackersNews", "target_followers": 800000}
+{"timestamp": "2026-03-17T19:05:15Z", "platform": "twitter", "action": "follow", "target_handle": "graham_depenros", "target_followers": 500}
+{"timestamp": "2026-03-17T19:05:20Z", "platform": "twitter", "action": "follow", "target_handle": "ArmanHezarkhani", "target_followers": 1500}
+{"timestamp": "2026-03-17T19:05:25Z", "platform": "twitter", "action": "follow", "target_handle": "GaetanobyArobi", "target_followers": 100}
+{"timestamp": "2026-03-17T19:05:30Z", "platform": "twitter", "action": "follow", "target_handle": "BrendanPlayford", "target_followers": 12000}
+{"timestamp": "2026-03-17T19:05:35Z", "platform": "twitter", "action": "follow", "target_handle": "ASI_Alliance", "target_followers": 50000}
+{"timestamp": "2026-03-17T19:05:40Z", "platform": "twitter", "action": "follow", "target_handle": "CVAgentlauncher", "target_followers": 200}
+{"timestamp": "2026-03-17T19:05:45Z", "platform": "twitter", "action": "follow", "target_handle": "insightpartners", "target_followers": 30000}

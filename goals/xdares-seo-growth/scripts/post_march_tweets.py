@@ -31,7 +31,7 @@ tweets = [
 • Bracket drinking bingo
 • "Cinderella" bonus rules
 
-Full rules: blog.xdares.com/march-madness-drinking-games/
+Full rules: blog.xdares.com/march-madness-drinking-games-2/
 
 #MarchMadness #DrinkingGames #Basketball""",
 

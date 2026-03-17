@@ -137,6 +137,21 @@ When integrating physical devices (phones, hardware, IoT):
 - **Vision on cron → always cheap model.** Screenshots are huge token-wise. One 3x DPR screenshot on Opus costs more than an entire Flash audit.
 - **Structured data is free.** Collect metrics via JS/bash (zero tokens), analyze with LLM only when needed.
 
+### 🛑 Debugging Circuit Breaker
+
+**If you've sent 5+ messages on the same bug without a concrete fix (code change, PR, or verified root cause with commit-level evidence), STOP.**
+1. Post a single summary: what you tried, what you found, what's still unknown.
+2. Tag Rod and escalate. Do not continue investigating.
+3. If the bug involves deployed code, **diff the deployed commit against the previous deploy** before theorizing about scope, caching, or runtime behavior. The answer is usually in the diff.
+
+### 🤐 No Thinking Out Loud
+
+**Never post "let me check..." / "let me find..." / "let me look at..." messages.** Do the work silently, then post ONE message with the result.
+- ❌ "Let me check the middleware..." → (new message) → "Found it, let me check the env vars..." → (new message) → "Let me see..."
+- ✅ *(silence while working)* → "Root cause: middleware redirects `/pp/` → `/c/`, and the deployed commit is missing the variable definition. Fix: [link]"
+
+**The rule:** If you don't have a conclusion, don't post. Thinking out loud in chat wastes everyone's time and creates noise.
+
 ### ✅ Verify Implementation, Not Intent
 
 Before reporting "done" or "fixed":

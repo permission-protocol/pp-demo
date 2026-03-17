@@ -112,6 +112,10 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend
 - Review surface **fully consolidated to app** on 2026-03-16 (6,116 lines removed from site repo, 301 redirects added)
 
+## Key Milestones
+
+- **2026-03-09 (or before):** NIST RFI submitted by Rod before deadline. PP is on record with federal AI agent authorization standards. 🎯
+
 ## Open Threads
 
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
@@ -122,7 +126,7 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - [ ] Draft and send 5 personalized outreach messages
 - [ ] Build ship.sh for factory "Done" transitions
 - [ ] Enable mobile QA in factory config (after 5 clean cron runs)
-- [ ] Xdares goal executor budget — needs Rod approval to resume
+- [x] ~~Xdares goal executor budget~~ — approved Mar 17, re-enabled
 - [ ] McKinsey Lilli breach — content opportunity (alert sent 2026-03-15)
 
 *Updated: 2026-03-16*

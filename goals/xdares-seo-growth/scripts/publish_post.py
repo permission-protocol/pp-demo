@@ -256,7 +256,9 @@ def main():
     gate_script = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts", "quality-gate.sh")
     if os.path.exists(gate_script):
         print("🔍 Running quality gate...")
-        gate_result = subprocess.run(["bash", gate_script, html_path], capture_output=True, text=True, timeout=180, errors='replace')
+        env = os.environ.copy()
+        env["SPARK_MODEL"] = "llama3.1:8b"
+        gate_result = subprocess.run(["bash", gate_script, html_path], capture_output=True, text=True, timeout=180, errors='replace', env=env)
         if gate_result.returncode == 1:
             print(f"🚫 Quality gate REJECTED this post:")
             print(gate_result.stdout)
