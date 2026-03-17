@@ -1,42 +1,32 @@
-# PP Status — Updated 2026-03-16
+# PP Status — Updated 2026-03-16 (Post-Correction)
 
-## Active
-- **Marco User Requirements** — Final draft v2 complete (`pp-os/specs/marco-user-requirements.md`). 29 requirements, 5 sprints. Sarah requirements next.
-- **App is now the single approval surface** — all review/approve/reject flows consolidated to app.permissionprotocol.com
+## ⚠️ STRATEGY CORRECTION (March 16)
+Acknowledged drift from primitive-first to app-first. 8 days spent on dashboard/UX polish instead of the SDK + onboarding + demo. Sunk cost accepted. Remaining 20 days refocused on the primitive.
 
-## Recently Completed (2026-03-16)
-- **Review surface consolidated to app** — Marketing site review/approve/replay pages deleted, 301 redirects added. 6,116 lines removed from site repo. Site now only hosts: landing pages, public receipt viewer (`/r/[id]`), contact/subscribe APIs.
-- **App dashboard UX overhaul** — Ported marketing site UX to app:
-  - StatsBar (pending, approved, avg wait, last approved)
-  - Stack/swipe view with inline approve/deny
-  - Bulk approve for low-risk non-production
-  - Inline approve button on each queue row
-  - Risk + environment badges on every list item
-  - PR titles shown (not generic "Pull Request #N")
-  - Repo filter pills (multi-select)
-  - Status filter pills with counts
-  - Recently Approved collapsible section
-  - List/stack view toggle
-- **App detail page UX overhaul**:
-  - Approval note presets (LGTM, Routine deploy, Reviewed)
-  - Sticky approve/reject bar on mobile (fixed bottom, backdrop-blur)
-  - Timeline promoted to non-collapsible card
-  - Risk score + blast radius side-by-side
-  - Author track record (deploy history, "New author" warning)
-  - Peer reviews from GitHub PR reviews API
-  - Reject reason presets (Not ready, Needs tests, Wrong branch, Needs discussion)
-- **Mobile-responsive dashboard** — 2x2 stats grid, separate mobile card layout, collapsible filters
-- **CI URLs pointed to app** — Status checks and Slack notifications now link to app, not marketing site
+## Active — The Only Things That Matter
+- **Onboarding speed** — GitHub App install → first gated PR in 5 min, no manual config
+- **Receipt Enrichment (M6)** — Snapshot of AI summary + risk signals baked into receipt ✅
+- **Notification flow** — gate fires → Slack/email/CLI ping → approve without a dashboard
+- **AI summary quality** — good enough that human skips the diff
+- **Demo video** — 60 seconds, agent → gate → approve → receipt → merged
+- **1 real external user** — not us, on their repo, running the full loop
 
 ## Architecture State
-- **Marketing site** (permissionprotocol.com): Landing pages, public receipt viewer, redirects to app for everything else
-- **App** (app.permissionprotocol.com): All authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail
-- **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend
+- **Marketing site** (permissionprotocol.com): Landing pages, public receipts, redirects
+- **App** (app.permissionprotocol.com): All auth flows — FROZEN, no more work here
+- **Deploy-gate**: GitHub Action — THIS IS THE PRODUCT, focus here
 
-## Pending
-- **Sarah user requirements** — needs same deep treatment as Marco
-- **Sprint 1 implementation specs** — break Marco M1-M6 into buildable tickets
-- **Factory pipeline improvements**: error-aware retry, auto-archive, merge-order
+## Board State (Ready Queue)
+- Create 60-second demo video/GIF
+- Create design partner quick-start guide
+- Draft and send 5 personalized outreach messages
+
+## Frozen (Backlog)
+- All app UX work (mobile, dashboard, detail page)
+- Marco/Sarah persona specs
+- NIST submissions
+- Mobile-first approval phases 3-4
+- Dead man's switch
 
 ## Blockers
-- None
+- None — just focus

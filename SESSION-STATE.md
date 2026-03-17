@@ -6,4 +6,4 @@
 None.
 
 ## Key Details
-(Archived 2026-03-14: Memory consolidation run complete. GitHub App webhook/callback root cause identified. PR #119 pushed. Xdares mobile age-gate issue identified.)
+(Last archived 2026-03-16)

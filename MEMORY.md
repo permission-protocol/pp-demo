@@ -115,6 +115,25 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 ## Open Threads
 
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
+- [ ] **Sarah user requirements** — needs same deep treatment as Marco
+- [ ] Fix Prisma FK bug (idea-032) — **CRITICAL** (deploy request creation broken)
+- [ ] Create 60-second demo video for deploy-gate
+- [ ] Create design partner quick-start guide
+- [ ] Draft and send 5 personalized outreach messages
+- [ ] Build ship.sh for factory "Done" transitions
+- [ ] Enable mobile QA in factory config (after 5 clean cron runs)
+- [ ] Xdares goal executor budget — needs Rod approval to resume
+- [ ] McKinsey Lilli breach — content opportunity (alert sent 2026-03-15)
+
+*Updated: 2026-03-16*
+col.com): Landing pages, public receipt viewer (`/r/[id]`), redirects to app for all auth flows
+- **App** (app.permissionprotocol.com): ALL authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail, enrichment pipeline
+- **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend
+- Review surface **fully consolidated to app** on 2026-03-16 (6,116 lines removed from site repo, 301 redirects added)
+
+## Open Threads
+
+- [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
 - [ ] **Marco user requirements DONE** — `pp-os/specs/marco-user-requirements.md` (29 reqs, 5 sprints)
 - [ ] **Sarah user requirements** — needs same deep treatment as Marco
 - [ ] **Sprint 1 implementation specs** — break Marco M1-M6 into buildable tickets
