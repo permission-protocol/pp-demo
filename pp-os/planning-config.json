@@ -25,13 +25,28 @@
   "board": {
     "projectNumber": 2,
     "org": "Roca-Ventures",
+    "projectNodeId": "PVT_kwDOD2Ims84BPp27",
+    "statusFieldId": "PVTSSF_lADODLmkHM4BPp27zg-AEuE",
     "statusField": "Status",
     "statuses": {
       "backlog": "Backlog",
       "ready": "Ready",
       "inProgress": "In Progress",
-      "blocked": "Blocked (Human Input Required)",
-      "done": "Done"
+      "blocked": "Blocked (Need Human)",
+      "done": "Done",
+      "qaReview": "QA Review",
+      "verified": "Verified",
+      "archive": "Archive"
+    },
+    "statusOptionIds": {
+      "backlog": "5a9aa500",
+      "blocked": "30175b0d",
+      "ready": "85507c95",
+      "inProgress": "29ed67b0",
+      "done": "bc985766",
+      "qaReview": "4f12efed",
+      "verified": "f4fd478d",
+      "archive": "4ea9293b"
     }
   }
 }
