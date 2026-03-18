@@ -1,29 +1,22 @@
-# HOT SIGNAL: 2026-03-17
+# HOT SIGNAL: 2026-03-18 (01:51 UTC)
 
-## 🚀 Chainguard Actions: Trusted CI/CD for AI Coding Agents
-**Source:** [PRNews / Chainguard](https://www.prnewswire.com/news-releases/introducing-chainguard-actions-trusted-cicd-workflows-for-developers-and-ai-coding-agents-302715401.html)
-**Time:** 12 hours ago
+## 🛡️ CVE-2026-25253: OpenClaw Skill Permission Escalation
+- **Source:** [ClawSecure Scanner](https://github.com/ClawSecure/clawsecure-openclaw-security)
+- **The Signal:** A new CVE has been identified for OpenClaw skill configuration files. Attackers can leverage dangerous permission escalation patterns in AI agent setups.
+- **Why it matters:** This is a direct hit on the "Agent Authority" problem. Organizations using OpenClaw now have a documented vulnerability to solve. Permission Protocol's enforcement layer is the only systematic way to prevent such escalations by requiring out-of-band human approval for the action itself, regardless of the agent's internal configuration.
 
-### What happened
-Chainguard launched "Trusted CI/CD Workflows for Developers and AI Coding Agents".
-Features:
-- **Scan-before-reaching-CI/CD:** Prevents tag hijacking and pull_request_target abuse.
-- **Automated remediation:** Failed reviews are remediated and published in a secure catalog.
-- **Source-built Actions:** Every Action is built from source and continuously scanned.
+## 🔍 ClawSecure: The first OpenClaw-specific Security Scanner
+- **Source:** [github.com/ClawSecure/clawsecure-openclaw-security](https://github.com/ClawSecure/clawsecure-openclaw-security)
+- **The Signal:** 2,890+ agents audited. Implements a 3-Layer Audit Protocol and OWASP ASI 10/10 coverage.
+- **Why it matters:** This validates that the "OpenClaw Security" niche is real and growing. They are building the *scanner* (assessment); we are building the *gate* (enforcement).
 
-### Why this matters for Permission Protocol
-1.  **Validation:** One of the most respected players in container/software supply chain security (Chainguard) is explicitly targeting "AI Coding Agents" as a new security surface. The market we are building (PP) is officially recognized.
-2.  **Positioning Clash:** Chainguard focuses on *assessment* and *remediation* at the infrastructure level (Actions). Permission Protocol (PP) is the *governance/authority* layer (the human gate).
-3.  **The "Stripe" Comparison:** If Chainguard is the "HTTPS" of agent-to-CI/CD, Permission Protocol is the "Stripe/Checkout" for those actions. One is a protocol/standard; the other is the authority and audit layer.
-4.  **Actionable Intelligence:** We should check if PP can integrate with Chainguard scans as a "Trust Signal" in our enrichment process. If a PR is "Chainguard Verified", it's a LOW risk signal for the human reviewer.
+## 📚 SlowMist: OpenClaw Security Practice Guide
+- **Source:** [github.com/slowmist/openclaw-security-practice-guide](https://github.com/slowmist/openclaw-security-practice-guide)
+- **The Signal:** One of the top blockchain security firms (SlowMist) is drafting specialized security guides for OpenClaw agents with root access.
+- **Principles Mentioned:** "Mandatory confirmation for high-risk actions" and "Zero Trust architecture."
+- **Validation:** Our core architectural assumptions (Zero Trust, human-in-the-loop for high-risk actions) are now being codified as industry best practices for agents.
 
-## 🛡️ Vett.sh: AI Agent Skill Supply Chain Attack
-**Source:** [Hacker News / Vett.sh](https://vett.sh/blog/ai-agent-skills-supply-chain-attack)
-
-### What happened
-Research by Vett.sh identified 59 critical risk AI skills (SKILL.md) that were actually base64-obfuscated droppers. One "React Native Best Practices" skill with 5,400+ installs was a delivery vehicle for malicious scripts.
-
-### Why this matters for Permission Protocol
-- This is the **"Why now?"** for the Marshall requirement (Sarah persona).
-- Organizations need to know not just *who* approved a PR, but *what* agent (and what skills) generated it.
-- **Opportunity:** PP can add "Skill Reputation" as a risk signal. If the agent used an unverified or high-risk skill from a public registry, the PR is automatically flagged as HIGH risk.
+## Summary
+The ecosystem is moving from "How do we build agents?" to "How do we stop them from destroying us?"
+The entry of security firms (SlowMist) and dedicated scanners (ClawSecure) is the highest-leverage signal yet.
+Positioning: PP is the infrastructure for the "Mandatory confirmation" layer they are calling for.

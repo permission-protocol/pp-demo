@@ -218,6 +218,16 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
+## Deployment & Cache Troubleshooting
+
+### Render Stale JS Bundles
+Render/Vercel sometimes serve stale JS chunks from build cache, leading to "ReferenceError" or "Not Found" errors even after a fix is pushed.
+- **Symptom:** Code looks correct in `main`, but browser devtools show old file contents or variable names.
+- **Fix:** Trigger a "Manual Deploy" with **Clear Build Cache** enabled in the Render dashboard (or via API).
+- **Verification:** Check the build log to ensure it says "Clearing build cache" at the start.
+
+---
+
 ## Blog Publishing (via Tor)
 
 **Server IP blocked** from blog.xdares.com — use Tor proxy for all WordPress operations.

@@ -1,5 +1,5 @@
 {
-  "date": "2026-03-17",
+  "date": "2026-03-18",
   "trends": {
     "traffic": "insufficient_data",
     "traffic_pct_change": null,
@@ -15,15 +15,15 @@
     "Engagement trend: insufficient_data (n/a combined engaged sessions + avg duration).",
     "Organic trend: insufficient_data (n/a vs baseline).",
     "Search visibility trend: insufficient_data (impressions/clicks/position composite).",
-    "Current run-rate is ~0.0 sessions/month (0.0% of 5000/month target) with 31 day(s) to 2026-04-17."
+    "Current run-rate is ~0.0 sessions/month (0.0% of 291/month target) with 30 day(s) to 2026-04-17."
   ],
   "recommendations": [
     {
       "priority": "high",
-      "action": "task-283 already covers this - prioritize execution over new planning.",
-      "reasoning": "Queue overlap with existing task: Activate short-cycle traffic boosts this week: publish one launch post, run one referral push, and increase social distribution cadence with tracked links.",
-      "metric_trigger": "monthly_run_rate=0.0 vs target=5000",
-      "queue_overlap": true
+      "action": "Activate short-cycle traffic boosts this week (launch post, referral push, and organic social distribution with tracked links).",
+      "reasoning": "Run-rate is below target and still has enough runway for distribution-heavy recovery.",
+      "metric_trigger": "monthly_run_rate=0.0 vs target=291",
+      "queue_overlap": false
     }
   ],
   "goal_adjustments": []

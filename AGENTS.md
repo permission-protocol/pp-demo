@@ -422,7 +422,7 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 
 ## Branch Protection Awareness
 - `strict: true` on branch protection = GitHub updates PR branches when main advances → **HEAD SHA changes**
-- Any commit status set on the original SHA becomes stale. Always fetch the PR's **current** HEAD from GitHub API before setting status.
+- **NEVER cache PR SHAs.** Any commit status or check run ID set on the original SHA becomes stale the moment `main` advances. Always fetch the PR's **current** HEAD from GitHub API before setting status or triggering reruns.
 - "Permission Protocol" is a required status check on permission-protocol/app — merge blocked until PP approval.
 - **The agent should never have admin scope on branch protection.** CI tokens: `contents:write` + `statuses:write` + `pull_requests:write` only. Admin stays with Rod.
 
@@ -447,9 +447,10 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 ### Post-Codex Checklist (before pushing)
 1. **Read the diff** — `git diff main --stat` then skim the actual changes
 2. **Check against each PRD requirement** — every "must have" in the spec should map to a change
-3. **Check for removed elements** — did Codex delete something it shouldn't have?
-4. **Walk the user journey** — mentally step through: user lands → reads → acts → done. Is every step frictionless?
-5. **Flag gaps** — if something's missing, fix it or re-run Codex. Don't push and hope.
+3. **Check for ReferenceErrors** — verify all new variables used in JSX/HTML are defined and imported. Codex often misses definitions.
+4. **Check for removed elements** — did Codex delete something it shouldn't have?
+5. **Walk the user journey** — mentally step through: user lands → reads → acts → done. Is every step frictionless?
+6. **Flag gaps** — if something's missing, fix it or re-run Codex. Don't push and hope.
 
 ### PRD Requirements
 - **Include a "User Journey" section** — step-by-step what the user does, not just what's on screen. "User clicks Approve → modal appears with X, Y, Z → user fills → submits" beats "Approve button at top right."

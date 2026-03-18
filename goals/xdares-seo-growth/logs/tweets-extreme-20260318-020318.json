@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-18T02:03:18.563955",
+  "posted": [
+    {
+      "index": 2,
+      "id": "2034178805410197744",
+      "url": "https://x.com/xdares_/status/2034178805410197744",
+      "text": "Hosting a wild house party? \ud83c\udfe0\n\nMost dare games are..."
+    },
+    {
+      "index": 3,
+      "id": "2034178819461111897",
+      "url": "https://x.com/xdares_/status/2034178819461111897",
+      "text": "From public embarrassment to hilarious physical ch..."
+    }
+  ],
+  "errors": [
+    {
+      "index": 1,
+      "error": "403 Forbidden\nYou are not permitted to perform this action."
+    }
+  ],
+  "total_posted": 2
+}

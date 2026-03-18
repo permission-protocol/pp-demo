@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-18T00:03:45.991843",
+  "posted": [
+    {
+      "index": 2,
+      "id": "2034148721538314449",
+      "url": "https://x.com/xdares_/status/2034148721538314449",
+      "text": "Hosting a watch party? \ud83d\udcfa\n\nBingo is perfect for the..."
+    },
+    {
+      "index": 3,
+      "id": "2034148735576678410",
+      "url": "https://x.com/xdares_/status/2034148735576678410",
+      "text": "Bar Crawl Bingo is the only way to do a pub crawl ..."
+    }
+  ],
+  "errors": [
+    {
+      "index": 1,
+      "error": "403 Forbidden\nYou are not permitted to perform this action."
+    }
+  ],
+  "total_posted": 2
+}
