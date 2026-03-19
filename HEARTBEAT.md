@@ -40,12 +40,6 @@ query {
 - If items in "Ready" status → execute them, move to "In Progress", then "Done"
 - Report what was completed
 
-## Goal Executor Watchdog
-Check `goals/xdares-seo-growth/state.json`:
-- If `tick_log` shows no ticks in last 2 hours → alert Rod
-- If `execution.status` != "running" → report status
-- If queue is empty and no replan happened → trigger `/goal plan`
-
 ## Daily Work Capture (Every 3rd Heartbeat)
 Increment counter in `memory/heartbeat-state.json`. If `dailyCaptureCounter % 3 == 0`, check if significant work happened since last documentation:
 
@@ -169,30 +163,6 @@ Weekly review and curation of accumulated knowledge:
 - Update processes based on learnings
 - Clean up outdated information
 - Update `lastMemoryCuration` in `memory/heartbeat-state.json`
-
-## Xdares Metrics Review (Daily)
-Run the metrics collection pipeline once per day:
-```bash
-bash ~/.openclaw/workspace/scripts/xdares-metrics-collect.sh
-```
-Then read `goals/xdares-seo-growth/metrics/latest.json` and compare against `history.jsonl` for trends.
-
-**Report to Rod if:**
-- Traffic drops >20% week-over-week
-- Organic search sessions spike or crash
-- Engagement metrics shift significantly
-- Any data source fails to collect
-
-Then run the strategy engine and goal auto-updater:
-```bash
-bash ~/.openclaw/workspace/scripts/xdares-strategy-recommend.sh
-bash ~/.openclaw/workspace/scripts/xdares-goal-auto-update.sh
-```
-- Review `metrics/recommendations.json` for signals worth reporting
-- Auto-updater injects new tasks into goal executor queue (idempotent, won't duplicate)
-- All auto-generated tasks tagged with `"source": "metrics-engine"` for tracking
-
-**Report to Rod if:** recommendations contain HIGH priority items or goal_adjustments changed the queue
 
 ## Evolution Backup (Daily)
 - Run `./scripts/backup-evolution.sh` once per day

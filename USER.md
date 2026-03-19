@@ -9,6 +9,7 @@
 ## What He's Building
 
 ### 1. Xdares (xdares.com)
+*Note: Full operational control of Xdares has been delegated to Maria (external instance).*
 18+ dare-based creator economy platform. Not just content — **commitment infrastructure with entertainment on top**.
 - Escrowed incentives, time-boxed commitments
 - Verification & dispute resolution
