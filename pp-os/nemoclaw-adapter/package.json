@@ -1,0 +1,19 @@
+{
+  "name": "nemoclaw-pp-adapter",
+  "version": "1.0.0",
+  "description": "Permission Protocol adapter for NemoClaw/OpenShell sandboxes",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "lint": "node scripts/lint.mjs",
+    "typecheck": "node scripts/typecheck.mjs",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "verify": "npm run lint && npm run typecheck && npm test",
+    "start": "node dist/src/index.js",
+    "dev": "node --experimental-strip-types src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

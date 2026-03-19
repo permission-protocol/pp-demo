@@ -176,3 +176,8 @@
 {"timestamp":"2026-03-19T19:02:33Z","platform":"twitter","action":"follow","target_handle":"qlik","target_followers":64348}
 {"timestamp":"2026-03-19T19:02:33Z","platform":"twitter","action":"follow","target_handle":"caseycallouts","target_followers":51809}
 {"timestamp":"2026-03-19T19:02:33Z","platform":"twitter","action":"follow","target_handle":"MSTCommunity","target_followers":38707}
+{"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/surim0n/status/2034766829915144621","target_followers":3847,"our_tweet":"https://x.com/PermissionPrtcl/status/2034767002146140498","text":"As @AnthropicAI accelerates its 'claws' (OpenCode) shipping, the bottleneck shifts from reasoning to authority. When agents move from sandbox to CLI, we need deterministic gates for those tool calls. 🛡️🦾"}
+{"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/SwanDesk/status/2034766780103594174","target_followers":57856,"our_tweet":"https://x.com/PermissionPrtcl/status/2034767011096797671","text":"As @AnthropicAI discusses DHS security behind closed doors, the conversation is shifting from 'alignment' to 'authority.' How do we deterministicly gate and audit agent actions in critical infrastructure? 🛡️🦾"}
+{"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"surim0n","target_followers":3847}
+{"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"SeniorLazarus","target_followers":37}
+{"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"SwanDesk","target_followers":57856}
