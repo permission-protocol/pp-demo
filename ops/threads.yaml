@@ -3,6 +3,58 @@
 # Git-backed. No database.
 
 threads:
+  - id: "1483129687344680960"
+    title: "1st Competitor"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-17
+    owner: Rod
+    priority: high
+    created: 2026-03-16
+    last_updated: 2026-03-17
+    summary: "Full competitive response to Guard0/g0. Built Three Questions positioning, VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage refreshed with Three Questions hero, blog post published (scanning-isnt-control). Discovery to deployment in one session."
+    open_tasks: []
+    decisions:
+      - "PP positioning: Assessment identifies problems, governance prevents them"
+      - "Three Questions: Who approved it? What stops it? Can you prove it?"
+      - "CLI in new repo (permission-protocol/cli), not monorepo"
+      - "Voice rule: be clear, not clever — codified in VOICE.md + SOUL.md"
+      - "Guard0 = complementary (low overlap), Onyx = real threat (medium-high)"
+      - "One-liner PLG (pp-scan .) is highest-leverage dev tool to build"
+  - id: "1483155946623733853"
+    title: "Marketing Vs App [UNIFY]"
+    archived: 2026-03-16
+    channel: "rc-main"
+    status: ARCHIVED
+    owner: Rod
+    priority: high
+    created: 2026-03-16
+    last_updated: 2026-03-16
+    summary: "Full URL consolidation of Permission Protocol review surfaces. Audited both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to app (dashboard + detail page + mobile), then killed marketing review/auth/API proxy layer (-6,116 lines). All redirects verified live."
+    open_tasks: []
+    decisions:
+      - "All authenticated review/approve workflows consolidated to app.permissionprotocol.com"
+      - "Marketing site = selling only (landing, pricing, docs, blog, public receipts)"
+      - "Receipt page (/r/[id]) stays on marketing site (public, unauthenticated)"
+      - "GitHub CI status check URLs now point to app, not marketing"
+      - "next-auth removed from marketing site"
+      - "5 permanent redirects added (review, review/:id, login, approve/:id, replay/:id)"
+  - id: "1483138256613937213"
+    title: "Obsidian"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-16
+    owner: Rod
+    priority: low
+    created: 2026-03-16
+    last_updated: 2026-03-16
+    summary: "Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull) and Rod's MacBook Air (same setup via Homebrew + gh auth). Both machines auto-sync every 5 minutes."
+    open_tasks: []
+    decisions:
+      - "Workspace backup repo (charles-workspace-backup) used as Obsidian sync source"
+      - "Obsidian Git plugin for auto-pull every 5 min (no push from Rod's machines)"
+      - "Removed files with Windows-incompatible long filenames from repo"
+      - "Rod has a new MacBook Air with Tailscale + Homebrew + gh CLI configured"
   - id: "1483125897161605121"
     title: "OpenClaw Update"
     channel: "rc-main"
@@ -20,6 +72,22 @@ threads:
       - "openclaw doctor --fix added to maintenance toolkit"
       - "Mobile QA pipeline unaffected by update — USB + WebDriver is the right approach"
       - "macOS DMG available on GitHub releases; iOS app in internal preview"
+  - id: "1483844724191264778"
+    title: "bugs (PP merge loop)"
+    channel: "rc-main"
+    status: ARCHIVED
+    archived: 2026-03-18
+    owner: Rod
+    priority: high
+    created: 2026-03-18
+    last_updated: 2026-03-18
+    summary: "Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate PR #23), backend carry-forward fix (app PR #197), and 3 issues tracked on board (#21, #22, #196)."
+    open_tasks: []
+    decisions:
+      - "Authorization checks (PP) should never use strict mode"
+      - "Two-ruleset pattern is recommended setup for all PP users"
+      - "Carry-forward should auto-issue new signed receipts, not reuse old ones"
+      - "Product-level fix: docs must guide users away from strict footgun"
   - id: "1482835612909306130"
     title: "/drploy-date"
     channel: "control-room-2"
@@ -32,566 +100,113 @@ threads:
     summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run bypass, #19 review URL) — both already fixed by v2 rewrite and PR #20. Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license) and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes license)."
     open_tasks: []
     decisions:
-      - "v1 tag on deploy-gate should track HEAD of main (force-update after merges)"
-      - "Both deploy-gate bugs were pre-v2 artifacts — no code changes needed"
-      - "Enable auto-delete of head branches on deploy-gate repo to prevent stale branch accumulation"
-  - id: "1481991166093430931"
-    title: "Fix Issues"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-13
-    last_updated: 2026-03-13
-    summary: "Batch execution of 4 open GitHub issues via parallel Codex agents. #27 OG meta tags, #61 PR Gate rerun fix, #183 superseded+rerun, #184 timeline+stale. All merged and deployed. Retro led to Batch Codex Protocol in AGENTS.md."
-    open_tasks: []
-    decisions:
-      - "Monitor Codex via git status, not process logs (PTY buffering unreliable)"
-      - "Use persistent worktree dirs, never /tmp"
-      - "Always check remote branches before re-launching agents"
-      - "Pre-flight: verify package manager, check existing branches"
-      - "One type-fix commit after Codex is acceptable"
-    memory_candidates: []
-  - id: "1481392726070005770"
-    title: "Ideal Approval Screen"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-11
-    last_updated: 2026-03-13
-    summary: "Designed and implemented mobile-first approval screen + deploy queue for PP marketing site. Two PRDs, 8 GitHub issues, 5 merged PRs. Ported 6 patterns from PP app. Retrospective led to AGENTS.md and pp-os/PROCESS.md updates."
-    open_tasks: []
-    decisions:
-      - "Approval = trust decision, not code review. 5-second mobile-first design."
-      - "Deploy queue = card-based inbox with urgency sort, not table."
-      - "Auto-rerun Deploy Gate after PP approval (hybrid check_run → actions_run)"
-      - "Port patterns systematically from PP app to marketing site (monthly audit)"
-      - "Never use /tmp for agent worktrees — use persistent dirs"
-      - "Sequential agents for shared files, parallel for independent ones"
-      - "Pre-merge gate: build pass, layout.tsx match, pushed, no conflicts"
-    memory_candidates: []
-  - id: "1482059289911885864"
-    title: "Review"
+      - "deploy-gate issues #12 and #19 confirmed fixed by v2 rewrite — closed"
+      - "v1 tag bumped to HEAD of main (includes MIT license)"
+      - "10 stale branches deleted from deploy-gate repo"
+  - id: "1482065875413635122"
+    title: "iPhone Mirroring"
     channel: "rc-main"
     status: ARCHIVED
-    archived: 2026-03-13
+    archived: 2026-03-16
     owner: Rod
     priority: medium
     created: 2026-03-13
-    last_updated: 2026-03-13
-    summary: "Rod reviewed pp-demo deploy request (rate limiting middleware). AI summary flagged valid concerns but irrelevant for demo repo. Rod also reported PR #98 build failure — mockHttp missing .text() method caused 403/404 misclassification. Charles pushed fix, build passed."
+    last_updated: 2026-03-16
+    summary: "Explored iPhone Mirroring for mobile QA — discovered synthetic clicks are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash. Found real bugs on PP and Xdares. Also ran successful e2e deploy-gate demo (PR #18)."
     open_tasks: []
     decisions:
-      - "Test Response mocks must include text() and headers — incomplete mocks cause silent misclassification"
-    memory_candidates: []
-  - id: "1481631886324273152"
-    title: "Exec Summary"
+      - "Safari WebDriver via USB > iPhone Mirroring for automation"
+      - "Research before hack — 15 min rule"
+      - "Gemini Flash for cron QA tasks (~$0.01/run)"
+      - "Physical device checklist: data cable, Trust, Web Inspector, Remote Automation, Guided Access"
+      - "iPhone 14 Pro preferred over SE for testing"
+      - "One-script-per-session for stateful drivers like safaridriver"
+  - id: "1483189017750016082"
+    title: "GarryTan"
     channel: "rc-main"
     status: ARCHIVED
-    archived: 2026-03-13
+    archived: 2026-03-16
     owner: Rod
     priority: medium
-    created: 2026-03-12
-    last_updated: 2026-03-13
-    summary: "Rod requested executive summary of past weeks + current status. Charles compiled full report (Mar 4-12) covering strategic pivot, website launch, SDKs, deploy-gate dogfood, UX sprint, metrics. Delivered as markdown file."
+    created: 2026-03-16
+    last_updated: 2026-03-16
+    summary: "Analyzed Garry Tan's gstack repo (10 Claude Code skills for role-based agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality gates into the factory pipeline: CEO review, engineering review, paranoid code review, ship script. Added QA health scoring (0-100), versioned review checklist, structured QA report template. Full steal plan documented in factory/GSTACK-STEAL-PLAN.md."
     open_tasks: []
     decisions:
-      - "Exec summary format: markdown file with TL;DR, weekly breakdown, current state tables, metrics, architecture diagram"
-    memory_candidates: []
-  - id: "1481686307246702783"
-    title: "rc-sales"
-    channel: "gtm-strategy"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-12
-    last_updated: 2026-03-13
-    summary: "Approval screen overhaul for RC sales prospects (Marco=EM, Sarah=Security). Rod's 4 questions answered. 11 specs written (batch 1: 7, batch 2: 4). PRs #86 and #88 merged. Decision flow layout deployed: 4 zones (Context/Assessment/Action/Evidence), 80% above fold, environment theming, trust signals, decluttered. Before/after screenshots captured."
-    open_tasks: []
-    decisions:
-      - "Approval screen = decision flow, not document (4 zones)"
-      - "80% of approvals happen without scrolling"
-      - "Environment theming: production=amber, staging=blue"
-      - "Deny flow collapsed by default"
-      - "12 non-essential elements removed"
-      - "Trust signals added: GitHub PR review status, actor type, blast radius, post-approval workflow"
-      - "Verification warnings suppressed when caused by missing config"
-    memory_candidates: []
-  - id: "1481344471747657748"
-    title: "QA Sprint"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-11
-    last_updated: 2026-03-13
-    summary: "QA Sprint #2 on PP app. 14 issues shipped across 3 repos in one afternoon. Queue UI redesigned (row polish, click area, PR# alignment). Review page converged from marketing site UX (sticky bar, reason presets, inline merge). Embedded worker mode added. Expired request UX fixed. Process improvements captured in AGENTS.md."
-    open_tasks: []
-    decisions:
-      - "Embedded worker is default; separate worker opt-in (WORKER_MODE=external)"
-      - "Single review surface in app; marketing site redirects"
-      - "Sticky bar > modals for approval flow"
-      - "Always review Codex output against PRD before pushing"
-      - "PRDs must include User Journey + Customer Test gate"
-      - "Two surfaces for same feature = tech debt, merge immediately"
-    memory_candidates: []
-  - id: "1481327876610461786"
-    title: "Analytics"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-11
-    last_updated: 2026-03-13
-    summary: "Full analytics pipeline for permissionprotocol.com. Fixed broken contact form, added UTM tracking, PostHog session recordings, Next.js pageview tracking, CTA data-track. Contact alerts route to 📬 Inbound Leads thread in #rc-main. 6 PRs merged (#162, #164, #167, #168, #170, #177)."
-    open_tasks:
-      - "Issue 5: PostHog funnels + weekly dashboard (deferred, UI config only)"
-    decisions:
-      - "PostHog is the analytics platform (free tier: 1M events/mo, 5K recordings)"
-      - "All events use pp_ prefix"
-      - "UTM stored in sessionStorage (clears on tab close)"
-      - "Contact alerts go to 📬 Inbound Leads thread in #rc-main (thread ID 1481388810989338724)"
-      - "Discord webhook thread_name only works in forum channels — use ?thread_id= for regular channels"
-      - "Vercel env vars: DISCORD_CONTACT_WEBHOOK + DISCORD_CONTACT_THREAD_ID"
-    memory_candidates: []
-  - id: "1481409554939121764"
-    title: "GitHub Marketplace"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: low
-    created: 2026-03-11
-    last_updated: 2026-03-13
-    summary: "Rod asked about publishing deploy-gate Action to GitHub Marketplace. Confirmed it's a good move (discovery, credibility, zero cost, funnel). Added to Rod's todo list — he'll do it when he gets to it."
-    open_tasks: []
-    decisions:
-      - "Publish deploy-gate Action to GitHub Marketplace (Rod's todo, not urgent)"
-    memory_candidates: []
-  - id: "1481733146310607091"
-    title: "Public Receipt"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: high
-    created: 2026-03-12
-    last_updated: 2026-03-13
-    summary: "Receipt page showed false 'ACTION AUTHORIZED' for pending/unverified requests. 6 bugs found and fixed in PR #188 (merged). Status badge, signature, actor, timeline, approved_at fallthrough, raw data leak all corrected."
-    open_tasks: []
-    decisions:
-      - "Receipt page must show honest status — never default to authorized"
-      - "API key actors display as 'CI/CD Pipeline', not raw tenant IDs"
-      - "Verification failures surfaced with human-readable messages"
-      - "Raw API internals stripped from public-facing technical JSON"
-      - "approved_at must not fall through to updatedAt"
-    memory_candidates: []
-  - id: "1482003596919836784"
-    title: "Upgrade MacOs"
+      - "Don't install gstack — steal ideas, build agent-agnostic versions"
+  - id: "1483163293664415994"
+    title: "User Requirements"
     channel: "rc-main"
     status: ARCHIVED
-    archived: 2026-03-13
-    owner: Rod
-    priority: medium
-    created: 2026-03-13
-    last_updated: 2026-03-13
-    summary: "Upgraded macOS Sonoma 14.8.2 → Tahoe 26.3.1. Peekaboo (UI automation) now works — was crashing on Sonoma (built for macOS 15+). Workspace backed up to Roca-Ventures/charles-workspace-backup. Recovery instructions provided. All tools verified post-upgrade."
-    open_tasks: []
-    decisions:
-      - "macOS Tahoe 26.3.1 chosen over Sonoma patch — Peekaboo required macOS 15+"
-      - "Charles = visual/creative workstation (Peekaboo), Maria = headless workhorse"
-      - "Workspace backup repo: Roca-Ventures/charles-workspace-backup (private)"
-      - "M1/8GB is fine for Tahoe — trim background processes if sluggish"
-    memory_candidates: []
-  - id: "1480594719296978974"
-    title: "Deploy Gate Primitive"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
+    archived: 2026-03-17
     owner: Rod
     priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-11
-    summary: "Week 1 deploy-gate setup sprint. Full infra audit (7 gaps), gated permissionprotocol-site (PR #146), converged public action to v1.1.0 (PR #4), E2E smoke test verified, screenshot walkthrough created."
-    open_tasks: []
-    decisions:
-      - "Protected paths on site: deploy/, .github/workflows/, app/api/, middleware.ts"
-      - "Public action converged with internal — v1.1.0 tagged, v1 moved forward"
-      - "Rod's PP API key used for permissionprotocol-site (not Charles's)"
-      - "Request-create token (hex) must match Render's PP_VERIFY_REQUEST_CREATE_TOKEN"
-      - "Branch protection: Permission Protocol required, strict=true, enforce_admins=true"
-    memory_candidates: []
-  - id: "1481341140627361832"
-    title: "Render Deploy Speed II"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: high
-    created: 2026-03-11
-    last_updated: 2026-03-11
-    summary: "Fixed deploy pipeline: removed redundant Prisma calls (PR #59, ~90s savings), discovered PP receipt SHA mismatch blocking all deploys (PR #62), recovered from chicken-and-egg app crash, restored Render dashboard config (gate script + auto-deploy off)."
-    open_tasks: []
-    decisions:
-      - "PP verification removed from pre-deploy script — SHA mismatch between PR head and merge commit"
-      - "production-deploy.yml is the sole PP enforcement point"
-      - "Pre-deploy script now only runs prisma migrate deploy"
-      - "Auto-deploy must stay off"
-      - "Build command must include standalone static asset copy"
-      - "Emergency bypass: change pre-deploy in dashboard when PP app is down"
-    memory_candidates: []
-  - id: "1481035643776663622"
-    title: "Render Deploy Speed"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: medium
-    created: 2026-03-10
-    last_updated: 2026-03-11
-    summary: "Optimized Render deploy pipeline. 4 PRs merged (#31 standalone, #32 force-dynamic+prisma, #45 static assets, #58 sentry removal). Startup 1300ms→496ms. Env vars restored. Start command updated to standalone server."
-    open_tasks: []
-    decisions:
-      - "Render Professional tier doesn't affect build/deploy speed — instance type does"
-      - "output: standalone reduces deploy artifact ~500MB to ~50MB"
-      - "All API routes should be force-dynamic (they all use headers)"
-      - "Prisma setup should run once in postinstall, not 3x during build"
-      - "Standalone mode requires post-build cp of public/ and .next/static/"
-      - "Sentry webpack wrapper removed — runtime SDK still works, build overhead gone"
-  - id: "1480676786659660017"
-    title: "Cleanup API Keys"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-09
-    owner: Rod
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "Consolidated 5 PP API keys + 6 local key files into single deploy-gate key. Set on 4 GitHub repos, 3 Render env vars, local backup. Old keys revoked. Smoke test verified."
-    open_tasks: []
-    decisions:
-      - "One deploy-gate key for everything (receipts.verify + deployRequests.create)"
-      - "Render uses 3 env var names (PP_DEPLOY_API_KEY, PP_VERIFY_API_KEY, PP_VERIFY_REQUEST_CREATE_TOKEN) but all same key"
-      - "Local secrets: only pp-api-key.txt + pp-tenant-id.txt remain"
-      - "PP_REQUEST_CREATE_TOKEN was missing on permission-protocol/app — added during cleanup"
-    memory_candidates: []
-  - id: "1480588149808828639"
-    title: "Deploy Gate E2E — Render + Token Fix"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Charles
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    archived: 2026-03-09
-    summary: "Deploy gate verified E2E on pp-demo. Fixed .result.valid envelope bug. PR #7 merged after human approval."
-    open_tasks: []
-    decisions:
-      - "API response wraps valid inside .result envelope — workflow must use .result.valid // .valid"
-      - "approvalUrl returns dead /pp/c/... path — actual route is /review/{id}"
-      - "Render is API surface, Vercel is site — split confirmed working"
-    memory_candidates:
-      - "PP API verify endpoint wraps result in envelope: { ok, result: { valid, receipt }, requestId, approvalUrl }"
-      - "pp-demo PR workflow must use .result.valid not .valid for jq extraction"
-  - id: "1480585372277674140"
-    title: "PP API Scope Bug"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Charles
-    priority: medium
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "API key creation scope selector was single-select dropdown instead of checkboxes. Fixed with PR #3 on permission-protocol/app."
+    created: 2026-03-16
+    last_updated: 2026-03-17
+    summary: "Deep Marco persona requirements sprint. Wrote 29-requirement spec across 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon: enrichment pipeline (origin context, verification steps, confidence warnings), detail page information hierarchy, receipt enrichment snapshots (M6), merge queue polish with configurable method + auto-merge fix (M7), structured rejection with PR comment (M17), arrival notifications, dashboard improvements, approved-but-unmerged visibility, duplicate deploy request dedup, admin reconcile endpoint, demo UX polish (iframe fallback, numbered verification steps, mobile post-approval bar, overview approve gate, author display). Screenshot audit against Marco requirements — detail page demo-ready."
     open_tasks:
-      - "Merge PR #3 (fix/api-key-scope-checkboxes) on permission-protocol/app"
+      - "Merge PR #178 (demo UX polish) + deploy + run reconcile"
+      - "Record demo video with staged PRs"
+      - "Phase 3-5 Marco requirements (M10-M23)"
+      - "Sarah user requirements spec"
     decisions:
-      - "Scope selector should be checkboxes, not single-select dropdown"
-      - "Active PP app repo is permission-protocol/app, NOT Breakout-Labs"
-      - "receipts.verify is sufficient when X-PP-Request-Create-Token header provides trust for auto-create"
-    memory_candidates:
-      - "PP active app repo: permission-protocol/app (not Breakout-Labs)"
-  - id: "1480596963287236758"
-    title: "Website Messaging"
+      - "Phase 2 complete: happy path first, recovery (undo/revert) later"
+      - "Auto-merge LOW risk deferred — needs more thought"
+      - "Preview iframe: fallback to open-in-new-tab when embed blocked"
+      - "Verification steps: numbered circles, not checkboxes"
+      - "Production requests: Review only on dashboard, no quick-approve"
+      - "GitHub auto-merge won't fire if checks already passed — fall through to direct merge"
+      - "15 PRs in one afternoon, 12→19 Marco requirements covered"
+  - id: "1483556834756530306"
+    title: "Claude Dependency"
     channel: "rc-main"
     status: ARCHIVED
+    archived: 2026-03-17
     owner: Rod
     priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "Hero headline and page flow messaging update for permissionprotocol.com"
+    created: 2026-03-17
+    last_updated: 2026-03-17
+    summary: "Anthropic outage killed all three fallback models (all Anthropic, one auth profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview as cross-provider fallback. Config patched and restarted successfully."
     open_tasks: []
     decisions:
-      - "Question-form headlines > declarative statements (plants the problem, PP is the answer)"
-      - "Hero: 'Who authorized that AI action?' chosen over 'AI agents shouldn't authorize their own actions'"
-      - "CTA: 'See the receipt' > 'Get Started - Free' (curiosity-driven, not work-implied)"
-      - "Social proof badges belong after explanation, not before"
-      - "Keep messaging agent-agnostic even during deploy-gate focus"
-      - "Comparison section: concrete questions > abstract metaphors"
-    memory_candidates:
-      - "PP website messaging: question headlines convert better than declarative statements"
-  - id: "1480609001669525534"
-    title: "Reconcile"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    archived: 2026-03-09
-    summary: "Cross-thread work review, archive UX fix (Discord-archive + lock + ✅ prefix), memory_store integration for cross-thread context, secret hygiene rule."
-    open_tasks: []
-    decisions:
-      - "Discord-archive threads on /archive (archived:true, locked:true, ✅ prefix)"
-      - "/archive stores decisions/facts to memory_store for cross-thread context"
-      - "Bot granted MANAGE_THREADS permission"
-      - "Secret hygiene: save locally first, distribute second"
-    memory_candidates: []
-  - id: "1480641879795040348"
-    title: "pp-demo conflicts"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    archived: 2026-03-09
-    summary: "Cleaned up pp-demo PRs, fixed deploy gate config (missing secrets + wrong API key scope), shipped E2E approval flow, created 4 onboarding friction issues, wrote setup runbook."
-    open_tasks: []
-    decisions:
-      - "PP API keys for CI must have both receipts.verify + deployRequests.create scopes"
-      - "PP_BASE_URL must be app.permissionprotocol.com (not permissionprotocol.com)"
-      - "All issues on permission-protocol/* repos auto-added to PP Product board"
-      - "Deploy gate setup runbook is the standard for new repos"
-    memory_candidates: []
-  - id: "1480252012259053650"
-    title: "Discord Structure"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created: 2026-03-08
-    last_updated: 2026-03-09
-    summary: "Restructuring Discord server — channels, threads, archive system, lifecycle commands"
-    open_tasks:
-      - "Build discord-ops skill (Phase 2)"
-      - "Add thread health to heartbeat (Phase 3)"
-    decisions:
-      - "Channels are streams, threads are topics"
-      - "8 permanent channels + archive category"
-      - "Git-backed YAML state tracking, no database"
-      - "rod-actions and published stay standalone"
-      - "decisions channel replaced by ops/decisions.md"
-      - "Thread auto-archive: 24h"
-      - "/topic defaults to current channel"
-      - "/help shows brief instructions + command list"
-    memory_candidates:
-      - "Discord operating model: channels=streams, threads=topics"
-      - "Thread lifecycle: ACTIVE → WAITING → BLOCKED → READY_TO_ARCHIVE → ARCHIVED"
-  - id: "1480624802531119337"
-    title: "repos"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    archived: 2026-03-09
-    summary: "Full GitHub repo consolidation. PP repos migrated to permission-protocol org, scripts updated, board migrated, security hardened."
-    open_tasks:
-      - "Archive 5 dead Roca-Ventures repos (low priority)"
-      - "Close old Roca-Ventures PP Product board (low priority)"
-    decisions:
-      - "All PP repos in permission-protocol org exclusively"
-      - "Roca-Ventures only holds Xdares + charles"
-      - "docs repo stays public; site + brand-components private"
-      - "New PP Product board at permission-protocol/projects/1"
-      - "Breakout-Labs frozen, no longer used"
-    memory_candidates: []
-  - id: "1480651729489105086"
-    title: "Revoke Key"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-09
-    owner: Rod
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "API key revoke broken — DELETE route checked session.user.companyId (not on JWT). Fixed with cookie + membership lookup. PR #9 merged, deployed."
-    open_tasks: []
-    decisions:
-      - "PP API route auth pattern: use activeCompanyId cookie + CompanyMember lookup, not session.user.companyId (JWT only has id + handle)"
-      - "Active repo is permission-protocol/app — never push to Breakout-Labs"
-    memory_candidates:
-      - "PP API auth pattern: session.user only has id and handle on JWT. Company context comes from activeCompanyId cookie + CompanyMember DB lookup."
-  - id: "1480656149408780360"
-    title: "errors"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-09
-    owner: Rod
-    priority: low
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "Smoke test reporting false failures for auth-protected routes (/review, /review/{id}). Fixed pp-smoke-test.sh to expect 307 for auth-gated routes. All 9 checks passing."
-    open_tasks: []
-    decisions:
-      - "307 (auth redirect) is expected/correct for /review and /review/{id} in smoke tests"
-    memory_candidates: []
-  - id: "1480656677706661890"
-    title: "Page after login"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-09
-    owner: Rod
-    priority: medium
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    summary: "Replaced Company OS onboarding wizard with PP dashboard as post-login default. Deleted 843 lines, updated middleware redirects. PR #12."
-    open_tasks: []
-    decisions:
-      - "Post-login default is /pp (deploy queue dashboard), not /onboarding"
-      - "Company OS onboarding wizard fully removed from codebase"
-      - "/onboarding redirects to /pp/setup for stale links"
-    memory_candidates:
-      - "PP post-login flow: authenticated users land on /pp dashboard, onboarding wizard deleted"
-  - id: "1481022491299283104"
-    title: "side-tasks"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-10
-    owner: Rod
-    priority: medium
-    created: 2026-03-10
-    last_updated: 2026-03-10
-    summary: "Resolved PR #24 merge conflicts (dashboard UX). Built OG preview cards for deploy request links — PRD, Tier 1 meta tags, Tier 2 @vercel/og image generation. PR #30 ready to merge."
-    open_tasks: []
-    decisions:
-      - "OG routes are public (crawlers can't auth) — only expose data already on review pages"
-      - "twitter:card=summary_large_image for max visibility"
-      - "Cache: 60s/300s TTL (status changes)"
-      - "PR #30 supersedes #28 (self-contained both tiers)"
-    memory_candidates: []
-  - id: "1481307979260231874"
-    title: "Merged Out of date"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: medium
-    created: 2026-03-11
-    last_updated: 2026-03-11
-    summary: "PR #47 merged with stale branch due to race condition (update branch + PP merge clicked simultaneously). No branch protection existed on app/main. Fixed by adding branch protection matching site repo."
-    open_tasks: []
-    decisions:
-      - "permission-protocol/app main now has branch protection: Permission Protocol required, strict: true, admin bypass allowed"
-    memory_candidates: []
-  - id: "1480638007261532394"
-    title: "Page to approve and merge"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: high
-    created: 2026-03-09
-    last_updated: 2026-03-11
-    summary: "Massive build sprint: 12+ PRs (~3,500 lines) across app/site/deploy-gate. GitHub App Phase 1 (models, core, app token, setup page). Merge tracking lifecycle. Pre-merge readiness. Dashboard redesign. DB migration hotfix. Render API key revoked after double env wipe."
-    open_tasks:
-      - "PR #56 (GitHub App setup page) — merge when ready"
-      - "DG PR #11 (scannable output) — merge when ready"
-      - "charles-canfuck thread — PR content from double env wipe"
-    decisions:
-      - "Render API key revoked from Charles — env var management dashboard-only"
-      - "Issue #54 created for PP-gated infrastructure operations"
-      - "GitHub App owned by @rodchalski — App ID 3065051"
-      - "Always create Prisma migration files when adding schema fields"
-      - "Approval lives at PR level, not SHA level — carry-forward on branch updates"
-      - "Self-approval is a security flaw — separate create/approve scopes"
-      - "Dashboard is deploy-gate focused — old control plane panels removed"
-      - "Pre-merge readiness checks before showing merge button"
-    memory_candidates: []
-  - id: "1481271842906968247"
-    title: "GH App"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: high
-    created: 2026-03-11
-    last_updated: 2026-03-11
-    summary: "Step-by-step guidance for creating the Permission Protocol GitHub App on GitHub (PRD Step 1). Walkthrough of URLs, permissions, webhook events, secret generation, post-creation checklist."
-    open_tasks: []
-    decisions:
-      - "Administration R&W permission deferred to Phase 2 (not needed for Phase 1)"
-    memory_candidates: []
-  - id: "1480618193339940864"
-    title: "Favicon + Logo + Signin Page"
-    channel: "rc-product"
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created: 2026-03-09
-    last_updated: 2026-03-09
-    archived: 2026-03-09
-    summary: "SVG favicon + bare signin page shipped to permission-protocol/app (app.permissionprotocol.com). PR #5 merged, deployed on Render. Three wrong-repo attempts before landing correctly."
-    open_tasks: []
-    decisions:
-      - "PP brand mark is the gate mark (square + horizontal bar + two vertical stubs), not a shield"
-      - "permission-protocol/app serves app.permissionprotocol.com (Render), permissionprotocol-site serves permissionprotocol.com (Vercel), Breakout-Labs is backend"
-      - "Auth pages render bare via AppShell pathname check on /auth/*"
-      - "SVG favicon first, ICO fallback"
-      - "Render services: pp-web, pp-worker, pp-database (not company-os-*)"
-    memory_candidates: []
-  - id: "1481684164624252938"
-    title: "Logo and Icons"
+      - "Cross-provider fallback required — all-Anthropic fallback chain is fake redundancy"
+      - "Fallback chain: opus-4-6 → opus-4-5 → sonnet-4-6 → gemini-3-flash-preview"
+      - "Keep Opus as primary — outages are rare, quality matters"
+      - "Gemini Flash as emergency fallback is better than a dead agent"
+  - id: "1483547333382897764"
+    title: "Big Daddy"
     channel: "rc-main"
     status: ARCHIVED
-    archived: 2026-03-12
+    archived: 2026-03-18
     owner: Rod
-    priority: medium
-    created: 2026-03-12
-    last_updated: 2026-03-12
-    summary: "Fixed favicon (white-on-black, square gate) and sidebar logo (GateSymbol component) across both app and site. App PR #81, Site PR #185 — both merged and deployed."
+    priority: high
+    created: 2026-03-17
+    last_updated: 2026-03-18
+    summary: "Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug, fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193). Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on force-pushed PRs (PR #195). Added 3 AGENTS.md rules: debugging circuit breaker (5-msg limit), no thinking out loud, git hygiene (no git add -A)."
     open_tasks: []
     decisions:
-      - "GateSymbol component is the canonical brand mark in-app (not text/gradient boxes)"
-      - "Favicon: white gate on void black, square proportions, rounded corners"
-      - "Sidebar logo: 24px GateSymbol in 32px container on #0a0a0a background"
-    memory_candidates: []
-  - id: "1481403378360913930"
-    title: "Secret Leaks"
-    channel: "rc-product"
-    status: ARCHIVED
-    archived: 2026-03-11
-    owner: Rod
-    priority: low
-    created: 2026-03-11
-    last_updated: 2026-03-11
-    summary: "GitHub secret scanning flagged 2 Stripe API keys in permission-protocol/app — all false positives from test fixtures (secret sanitizer tests, sentinel leak tests). Dummy sk_live_ prefixes trigger scanner. Decided not worth fixing."
-    open_tasks: []
-    decisions:
-      - "False positive secret scanning alerts — ignore, not worth a PR"
-    memory_candidates: []
-  - id: "1481659428490182857"
-    title: "Website tweaks"
+      - "Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking out loud)"
+      - "Force-push stale checks: set PP status on old SHA + re-request check suites"
+      - "git add -A banned in shared worktrees — always add specific files"
+      - "git diff --stat before pushing — verify file count matches intent"
+  - id: "1483223048499892425"
+    title: "Push to main"
     channel: "rc-main"
     status: ARCHIVED
-    archived: 2026-03-12
+    archived: 2026-03-17
     owner: Rod
     priority: medium
-    created: 2026-03-12
-    last_updated: 2026-03-12
-    summary: "Full language pass across PP website — shifted all copy from SaaS framing to infrastructure framing. Two PRs: #179 (Private Beta, Request Access, Recommended for Teams) and #182 (Open Source tier, Install Deploy Gate, concrete headline, proof page CTAs)."
+    created: 2026-03-16
+    last_updated: 2026-03-17
+    summary: "Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed with PR #174: detect merge/squash commits, extract PR info, pass to verify action for scope matching. Also discussed video recording options for app testing (⌘+Shift+5 vs DevTools Recorder)."
     open_tasks: []
     decisions:
-      - "PP website language must always reflect authority infrastructure, not startup feature set"
-      - "Infrastructure companies gate access (Private Beta / Request Access), not invite (Coming Soon / Join Waitlist)"
-      - "CTAs should be specific actions (Install Deploy Gate), not vague (Get Started)"
-      - "Proof pages (receipt/replay) are the viral surface — CTA is 'Add to your pipeline', not 'Get Started Free'"
-      - "Free tier renamed Open Source — signals infrastructure, not freemium SaaS"
-    memory_candidates: []
+      - "PR merges reuse existing PR receipt via PR_HEAD scope passthrough"
+      - "Direct pushes to main still create new deploy requests (safety net)"
+      - "verify/action.yml gained pr_number + pr_head_sha inputs for explicit PR scope override"
+      - "Both merge commit and squash merge patterns handled"
+      - "Skip retros, doc-release, Greptile, Conductor, cookie import"
+      - "New pipeline: ideate → organize → CEO review → eng review → spec → build → ship → paranoid review → QA → done"
+      - "~$0.05 added cost per factory item on Gemini Flash is acceptable"
+      - "Rod's process unchanged — new gates run automatically"
+      - "Future work (browser QA, bisectable commits) deferred, documented in GSTACK-STEAL-PLAN.md"

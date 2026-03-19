@@ -136,6 +136,67 @@ PASS=true
 FAILURES=()
 
 # ═══════════════════════════════════════════════════════
+# HEALTH SCORE — numeric quality signal (0-100)
+# ═══════════════════════════════════════════════════════
+# Scoring: start at 100, deduct for issues
+# 95+ = auto-merge candidate | 80-94 = flag for review | <80 = reject
+HEALTH_SCORE=100
+SCORE_NOTES=()
+
+# ═══════════════════════════════════════════════════════
+# PHASE 0: Paranoid Code Review (runs review.sh)
+# ═══════════════════════════════════════════════════════
+
+echo "───── Phase 0: Paranoid Code Review ─────"
+echo "" >> "$QA_REPORT"
+echo "## Code Review (Paranoid)" >> "$QA_REPORT"
+
+REVIEW_SCRIPT="$FACTORY_DIR/scripts/review.sh"
+REVIEW_CRITICAL_FILE="$FACTORY_DIR/reviews/${IDEA_ID}-critical-count.txt"
+REVIEW_INFO_FILE="$FACTORY_DIR/reviews/${IDEA_ID}-info-count.txt"
+REVIEW_FILE="$FACTORY_DIR/reviews/${IDEA_ID}-code-review.md"
+
+if [[ "$AUTO_MODE" == "true" ]] && [[ -x "$REVIEW_SCRIPT" ]]; then
+  echo "🔍 Running paranoid review..."
+  REVIEW_EXIT=0
+  bash "$REVIEW_SCRIPT" "$IDEA_ID" --auto 2>&1 || REVIEW_EXIT=$?
+
+  if [[ $REVIEW_EXIT -ne 0 ]]; then
+    echo "🔴 Paranoid review found CRITICAL issues — QA blocked"
+    echo "   review.sh already re-queued the idea. Exiting QA."
+    echo "CRITICAL findings — QA blocked. See code review." >> "$QA_REPORT"
+    exit 1
+  fi
+
+  # Read review findings for scoring
+  REVIEW_CRITICAL=0
+  REVIEW_INFO=0
+  [[ -f "$REVIEW_CRITICAL_FILE" ]] && REVIEW_CRITICAL=$(cat "$REVIEW_CRITICAL_FILE" | tr -d '[:space:]')
+  [[ -f "$REVIEW_INFO_FILE" ]] && REVIEW_INFO=$(cat "$REVIEW_INFO_FILE" | tr -d '[:space:]')
+
+  # Score: -3 per informational finding (max -15)
+  if [[ "$REVIEW_INFO" -gt 0 ]]; then
+    REVIEW_DEDUCT=$((REVIEW_INFO * 3))
+    [[ $REVIEW_DEDUCT -gt 15 ]] && REVIEW_DEDUCT=15
+    HEALTH_SCORE=$((HEALTH_SCORE - REVIEW_DEDUCT))
+    SCORE_NOTES+=("review:-${REVIEW_DEDUCT} (${REVIEW_INFO} informational)")
+  fi
+
+  echo "✅ Review passed ($REVIEW_INFO informational note(s))"
+  echo "- [x] Code review: passed ($REVIEW_INFO informational)" >> "$QA_REPORT"
+
+  if [[ -f "$REVIEW_FILE" ]]; then
+    echo "" >> "$QA_REPORT"
+    cat "$REVIEW_FILE" >> "$QA_REPORT"
+    echo "" >> "$QA_REPORT"
+  fi
+else
+  echo "⏭️  Review skipped (not in auto mode or script not found)"
+  echo "- [x] Code review: skipped" >> "$QA_REPORT"
+fi
+echo ""
+
+# ═══════════════════════════════════════════════════════
 # PHASE 1: Automated Checks
 # ═══════════════════════════════════════════════════════
 
@@ -179,6 +240,11 @@ if [[ -d "$WORK_DIR" ]]; then
       echo "$TSC_PR_ERRORS" | grep "error TS" | head -10
       PASS=false
       FAILURES+=("typescript:${TSC_ERRORS}_errors")
+      # Score: -30 for any TS errors, -5 per additional error
+      DEDUCT=$((30 + (TSC_ERRORS - 1) * 5))
+      [[ $DEDUCT -gt 60 ]] && DEDUCT=60
+      HEALTH_SCORE=$((HEALTH_SCORE - DEDUCT))
+      SCORE_NOTES+=("tsc:-${DEDUCT} (${TSC_ERRORS} errors)")
       echo "- [ ] TypeScript: FAILED ($TSC_ERRORS errors in PR files)" >> "$QA_REPORT"
       echo '```' >> "$QA_REPORT"
       echo "$TSC_PR_ERRORS" | grep "error TS" | head -20 >> "$QA_REPORT"
@@ -201,6 +267,9 @@ if [[ -d "$WORK_DIR" ]]; then
     else
       echo "⚠️  Lint: issues found"
       FAILURES+=("lint")
+      # Score: -10 for lint issues (warnings, not fatal)
+      HEALTH_SCORE=$((HEALTH_SCORE - 10))
+      SCORE_NOTES+=("lint:-10")
       echo "- [ ] Lint: issues found" >> "$QA_REPORT"
       echo '```' >> "$QA_REPORT"
       echo "$LINT_OUTPUT" | tail -10 >> "$QA_REPORT"
@@ -224,6 +293,9 @@ if [[ -d "$WORK_DIR" ]]; then
       echo "❌ Tests: failed"
       PASS=false
       FAILURES+=("tests")
+      # Score: -25 for test failures
+      HEALTH_SCORE=$((HEALTH_SCORE - 25))
+      SCORE_NOTES+=("tests:-25")
       echo "- [ ] Tests: FAILED" >> "$QA_REPORT"
       echo '```' >> "$QA_REPORT"
       echo "$TEST_OUTPUT" | tail -20 >> "$QA_REPORT"
@@ -288,8 +360,12 @@ if [[ -f "$PRD_PATH" ]] && [[ -d "$WORK_DIR" ]]; then
       echo "- [x] File coverage: all PRD files modified" >> "$QA_REPORT"
     else
       echo "⚠️  $MISSING_COUNT PRD file(s) not modified"
+      # Score: -5 per missing file (soft signal, might be new files)
+      COVERAGE_DEDUCT=$((MISSING_COUNT * 5))
+      [[ $COVERAGE_DEDUCT -gt 15 ]] && COVERAGE_DEDUCT=15
+      HEALTH_SCORE=$((HEALTH_SCORE - COVERAGE_DEDUCT))
+      SCORE_NOTES+=("coverage:-${COVERAGE_DEDUCT} (${MISSING_COUNT} missing)")
       echo "- [ ] File coverage: $MISSING_COUNT PRD files missing from diff" >> "$QA_REPORT"
-      # Warning only — some PRD files might be "new" files that Codex creates elsewhere
     fi
   else
     echo "⏭️  No file paths found in PRD"
@@ -431,9 +507,45 @@ fi
 # VERDICT
 # ═══════════════════════════════════════════════════════
 
+# ── Clamp health score ──
+[[ $HEALTH_SCORE -lt 0 ]] && HEALTH_SCORE=0
+
+# ── Determine grade ──
+if [[ $HEALTH_SCORE -ge 95 ]]; then
+  HEALTH_GRADE="🟢 EXCELLENT"
+  HEALTH_ACTION="auto-merge candidate"
+elif [[ $HEALTH_SCORE -ge 80 ]]; then
+  HEALTH_GRADE="🟡 GOOD"
+  HEALTH_ACTION="flag for review"
+elif [[ $HEALTH_SCORE -ge 60 ]]; then
+  HEALTH_GRADE="🟠 FAIR"
+  HEALTH_ACTION="needs attention"
+else
+  HEALTH_GRADE="🔴 POOR"
+  HEALTH_ACTION="reject — needs rework"
+fi
+
+echo ""
+echo "───── Health Score ─────"
+echo "  Score: $HEALTH_SCORE/100 — $HEALTH_GRADE ($HEALTH_ACTION)"
+if [[ ${#SCORE_NOTES[@]} -gt 0 ]]; then
+  for note in "${SCORE_NOTES[@]}"; do
+    echo "    • $note"
+  done
+fi
+echo ""
+
 echo ""
 echo "═══════════════════════════════════════════════════════"
 echo ""
+echo "## Health Score" >> "$QA_REPORT"
+echo "**Score: $HEALTH_SCORE/100** — $HEALTH_GRADE ($HEALTH_ACTION)" >> "$QA_REPORT"
+if [[ ${#SCORE_NOTES[@]} -gt 0 ]]; then
+  for note in "${SCORE_NOTES[@]}"; do
+    echo "- $note" >> "$QA_REPORT"
+  done
+fi
+echo "" >> "$QA_REPORT"
 echo "## Verdict" >> "$QA_REPORT"
 
 WIP_THREAD=$(get_thread_id "$IDEA_ID" "wip")
@@ -465,7 +577,7 @@ if $PASS; then
   if [[ -n "$WIP_THREAD" ]]; then
     THREAD_NAME=$(wip_thread_name "build-ready" "$IDEA_ID" "$TITLE")
     discord_thread_rename "$WIP_THREAD" "$THREAD_NAME"
-    discord_thread_post "$WIP_THREAD" "✅ **QA Passed** — Ready for review
+    discord_thread_post "$WIP_THREAD" "✅ **QA Passed** — Health Score: **$HEALTH_SCORE/100** $HEALTH_GRADE
 
 📋 **Status:** Ready for Rod
 🔗 **PR:** $PR_URL
@@ -477,7 +589,7 @@ if $PASS; then
 **React ❌ to reject (comment why)**
 **React 🔄 to send back to Codex**"
   fi
-  discord_post "$CH_PIPELINE" "✅ **QA passed** — $IDEA_ID ready for review"
+  discord_post "$CH_PIPELINE" "✅ **QA passed** — $IDEA_ID | Score: $HEALTH_SCORE/100 $HEALTH_GRADE"
 
   # ── In auto mode, mark as qa-passed and archive WIP thread ──
   if [[ "$AUTO_MODE" == "true" ]]; then

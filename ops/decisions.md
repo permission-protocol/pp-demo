@@ -3,6 +3,14 @@
 Extracted from Discord threads by `/extract` and `/close-review` commands.
 Linked to source threads for traceability.
 
+## 2026-03-18 — Big Daddy (rc-main)
+- Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking out loud)
+- Force-push stale checks: set PP status on old SHA + re-request check suites (PR #195)
+- `git add -A` banned in shared worktrees — always add specific files
+- `git diff --stat` before pushing — verify file count matches intent
+- Debugging circuit breaker: 5+ messages on same bug without fix → stop and escalate
+- No "thinking out loud" in chat — do the work silently, post one message with result
+
 ## 2026-03-11 — Render Deploy Speed II (#rc-product › Render Deploy Speed)
 - PP verification removed from Render pre-deploy script — receipts use PR head SHA but Render deploys merge commit SHA (always mismatches)
 - PP enforcement is solely in `production-deploy.yml` GitHub workflow — single gate point
@@ -132,3 +140,48 @@ Linked to source threads for traceability.
 - Pre-flight batch Codex: verify package manager, check existing branches, use persistent dirs
 - Codex auto-creates PRs sometimes — check remote before assuming failure
 - One type-fix commit after Codex is fine — don't re-run whole agent for minor issues
+
+## 2026-03-13 — iPhone Mirroring / Mobile QA Pipeline
+**Thread:** #rc-main › iPhone Mirroring
+
+1. **Safari WebDriver via USB > iPhone Mirroring for automation** — iPhone Mirroring blocks all synthetic input (clicks, drags, swipes) as a security boundary. WebDriver operates at the DOM layer, bypassing the entire display pipeline.
+2. **Research before hack (15-minute rule)** — spent 2+ hours pixel-hacking before discovering WebDriver does it natively in 10 min. Wrong abstraction layer (pixel/screen) vs right one (DOM/WebDriver) = 10x time difference.
+3. **Physical device checklist** — data cable (not charge-only), Trust This Computer, Web Inspector ON, Remote Automation ON, Guided Access ON, Auto-Lock Never.
+4. **iPhone 14 Pro preferred over SE** — 6.1" screen (393×695 viewport, 3x DPR) more representative of real users than SE (375×495, 2x DPR).
+5. **Gemini Flash for cron QA** — daily mobile audit at 9 AM MST costs ~$0.01/run. Same audit on Opus = 100x more.
+6. **One-script-per-session for stateful drivers** — safaridriver dies between separate script invocations. Bundle all WebDriver commands into one continuous script.
+7. **Demo video still needed** — deploy-gate e2e worked (PR #18 → gate blocked → approve → merge) but was never recorded. Separate task.
+
+## 2026-03-16 — URL Consolidation: Marketing Vs App [UNIFY]
+**Thread:** #rc-main › Marketing Vs App [UNIFY]
+
+1. **All authenticated review/approve workflows consolidated to app.permissionprotocol.com** — marketing site no longer has any auth, review pages, or API proxy layer
+2. **Marketing site = selling only** — landing, pricing, docs, blog, public receipts
+3. **Receipt page (/r/[id]) stays on marketing** — public, unauthenticated, already canonical URL
+4. **GitHub CI status check URLs point to app** — no more redirect hop through marketing
+5. **next-auth removed from marketing site** — no auth dependency remaining
+6. **5 permanent redirects** — /review, /review/:id, /login, /approve/:id, /replay/:id → app
+7. **"Two surfaces for one thing = tech debt"** — enforced, 6,116 lines deleted
+
+## 2026-03-17 — Claude Dependency / Cross-Provider Fallback
+**Thread:** #rc-main › Claude Dependency (1483556834756530306)
+- **All-Anthropic fallback is fake redundancy** — one auth profile cooldown cascades to all three models (opus-4-6, opus-4-5, sonnet-4-6)
+- **Added google/gemini-3-flash-preview as 4th fallback** — cross-provider safety net
+- **Keep Opus as primary** — quality justifies it; outages are rare enough
+- **Config change applied via `config.patch`** — no manual file editing needed
+- **LanceDB plugin broken** (`@lancedb/lancedb` not installed) — separate issue, memory_store/recall degraded but not blocking agent replies
+
+## 2026-03-17 — Deploy Request Deduplication
+**Source:** #rc-main › Push to main (1483223048499892425)
+- PR merges reuse existing PR receipt via PR_HEAD scope passthrough (no duplicate deploy request)
+- Direct pushes to main still create new deploy requests (safety net for unreviewed code)
+- `verify/action.yml` gained `pr_number` + `pr_head_sha` inputs for explicit PR scope override
+- Both merge commit and squash merge patterns handled
+- **PR #174** merged 2026-03-16
+
+## 2026-03-18 — PP Merge Loop Fix (bugs thread)
+
+- **Authorization checks should never use strict mode.** PP approval is an authorization gate, not a code quality check — it doesn't go stale when main advances.
+- **Two-ruleset pattern for all PP users.** Ruleset 1: PP status check, strict OFF. Ruleset 2: Build/test checks, strict ON.
+- **Carry-forward must issue new signed receipts.** Old receipts fail signature verification against new scope hashes. The verify endpoint now auto-creates properly-signed receipts when a prior approval exists for the same PR.
+- **This is a product footgun.** Every user who installs deploy-gate with strict ON will hit this. Docs updated to prevent it.

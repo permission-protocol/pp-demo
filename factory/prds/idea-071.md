@@ -73,3 +73,24 @@ Sarah gets deploy requests but has no push notification to alert her. She has to
 - Desktop experience (all PWA additions are progressive)
 - API routes
 - Auth flow
+
+## Code Review Findings (Retry #1)
+**Critical issues that MUST be fixed:**
+
+**CRITICAL** (blocks merge):
+- [app/api/reviews/route.ts:5] New API route without authentication check.
+  Fix: Add `getServerSession` or auth middleware to protect the endpoint.
+- [app/review/ReviewDashboard.tsx:88] `JSON.parse()` on `localStorage` item without try/catch.
+  Fix: Wrap `JSON.parse()` in a try/catch block to handle malformed data.
+- [app/review/ReviewDashboard.tsx:96] Type assertion `as ReviewsResponse` on external API response.
+  Fix: Use a Zod schema or similar runtime validation for the API response.
+- [app/review/ReviewDashboard.tsx:100] Type assertion `as string[]` on `localStorage` item.
+  Fix: Use a Zod schema or similar runtime validation for `localStorage` data.
+- [public/sw.js:95] External notification data (`event.notification.data?.url`) used for navigation without validation.
+  Fix: Validate `targetUrl` to ensure it's a safe, internal path before navigating.
+- [src/components/InstallPrompt.tsx:40] Type assertion `event as BeforeInstallPromptEvent` on external browser event.
+  Fix: Add runtime checks for expected properties of `event` or use a more robust type guard.
+
+**INFORMATIONAL** (non-blocking):
+
+Fix every CRITICAL issue listed above. Run `npx tsc --noEmit` after fixing.

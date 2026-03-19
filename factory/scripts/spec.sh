@@ -274,6 +274,22 @@ if [[ "$AUTO" == true ]]; then
     FOCUS_CONTENT=$(cat "$FOCUS_PATH")
   fi
 
+  # Read engineering review if it exists (from eng-review.sh)
+  ENG_REVIEW_CONTENT=""
+  ENG_REVIEW_PATH="$FACTORY_DIR/reviews/${IDEA_ID}-eng-review.md"
+  if [[ -f "$ENG_REVIEW_PATH" ]]; then
+    ENG_REVIEW_CONTENT=$(cat "$ENG_REVIEW_PATH")
+    echo "📋 Engineering review found — injecting into spec context"
+  fi
+
+  # Read CEO review if it exists (from review-idea.sh)
+  CEO_REVIEW_CONTENT=""
+  CEO_REVIEW_PATH="$FACTORY_DIR/reviews/${IDEA_ID}-ceo-review.md"
+  if [[ -f "$CEO_REVIEW_PATH" ]]; then
+    CEO_REVIEW_CONTENT=$(cat "$CEO_REVIEW_PATH")
+    echo "📋 CEO review found — injecting into spec context"
+  fi
+
   # Read appropriate template based on idea type
   PRD_TEMPLATE=""
   if [[ "$IDEA_TYPE" == "bug" ]] && [[ -f "$TEMPLATES_DIR/bugfix.md" ]]; then
@@ -356,6 +372,12 @@ $FOCUS_CONTENT
 
 ## PRD Template (follow this structure exactly)
 $PRD_TEMPLATE
+
+## Engineering Review (address these concerns in the spec)
+$ENG_REVIEW_CONTENT
+
+## CEO Review (product direction context)
+$CEO_REVIEW_CONTENT
 
 ## Relevant Source Code (from the actual repo)
 $CODE_CONTEXT

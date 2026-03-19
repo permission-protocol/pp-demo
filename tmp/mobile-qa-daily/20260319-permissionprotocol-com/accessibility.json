@@ -1,0 +1,187 @@
+{
+  "smallText": 7,
+  "tapTargetIssues": 43,
+  "missingAlt": 0,
+  "details": [
+    {
+      "size": "20x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "PERMISSION/PROTOCOL"
+    },
+    {
+      "size": "36x36",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "How It Works"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Developers"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Pricing"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Request Access"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Blog"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Get Started"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Log in"
+    },
+    {
+      "size": "393x0",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "size": "345x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "How It Works"
+    },
+    {
+      "size": "345x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Developers"
+    },
+    {
+      "size": "345x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Pricing"
+    },
+    {
+      "size": "345x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Request Access"
+    },
+    {
+      "size": "345x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Blog"
+    },
+    {
+      "size": "74x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "GitHub"
+    },
+    {
+      "size": "75x38",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Log in"
+    },
+    {
+      "size": "76x28",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Python"
+    },
+    {
+      "size": "40x24",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "size": "113x24",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Try the SDK"
+    },
+    {
+      "size": "279x16",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Technical Details"
+    },
+    {
+      "size": "155x24",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "See a live receipt"
+    },
+    {
+      "size": "76x28",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Python"
+    },
+    {
+      "size": "81x28",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Node.js"
+    },
+    {
+      "size": "92x28",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Terminal"
+    },
+    {
+      "size": "40x24",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": ""
+    },
+    {
+      "size": "294x42",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "pip install permission-protocol"
+    },
+    {
+      "size": "176x24",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Read the Quickstart ->"
+    },
+    {
+      "size": "114x24",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Get Started"
+    }
+  ]
+}
