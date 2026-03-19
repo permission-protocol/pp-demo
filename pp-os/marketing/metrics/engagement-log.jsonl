@@ -154,3 +154,16 @@
 {"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"databricks","target_followers":null}
 {"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"CrewAIINC","target_followers":null}
 {"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"openclaw","target_followers":null}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"mention","target_tweet":"https://x.com/yoheinakajima/status/2034330376383140272","target_followers":122602,"our_tweet":"https://x.com/PermissionPrtcl/status/2034647307958829112","text":"@yoheinakajima Dobby having pool/HVAC access is the ultimate authority test. We need a deterministic permission layer. Prompt instructions aren't enough when the agent can literally flood your house."}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"mention","target_tweet":"https://x.com/AnthropicAI/status/2034302168879267871","target_followers":1022832,"our_tweet":"https://x.com/PermissionPrtcl/status/2034647310001439153","text":"@AnthropicAI The 'hopes and fears' divide comes down to authority. People want agents that solve problems, but fear agents acting without consent. An explicit permission layer is how we turn that fear into trust."}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"hn","action":"comment","target_tweet":"https://news.ycombinator.com/item?id=47427017","target_followers":null,"our_tweet":null,"text":"This is the inevitable result of treating the 'sandbox' as the primary defense for agentic workflows. Sandboxes are about isolation, but agents need integration to be useful. The real fix isn't just better isolation; it's a separate, human-in-the-loop authorization protocol that signs off on every privileged action before it hits the OS."}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"yoheinakajima","target_followers":122602}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"AnthropicAI","target_followers":1022832}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"karpathy","target_followers":2000000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"DrJimFan","target_followers":500000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"emollick","target_followers":500000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"fchollet","target_followers":400000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"PromptArmor","target_followers":5000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"ScottShambaugh","target_followers":1000}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"bloggersarvesh","target_followers":43718}
+{"timestamp":"2026-03-19T15:05:31Z","platform":"twitter","action":"follow","target_handle":"Web3Maxx","target_followers":22726}
