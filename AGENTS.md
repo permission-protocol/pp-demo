@@ -391,6 +391,14 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 ### 🏭 Batch Codex Protocol
 **Learned from Fix Issues thread (March 13, 2026). Hard-won lessons.**
 
+#### Parallel Sprint Protocol (New Mar 18)
+**Use when a sprint has 3+ independent features with no file overlap.**
+1. **Partitioning:** Divide the sprint into discrete, self-contained PRDs.
+2. **Worktrees:** Launch each feature in a separate persistent worktree (e.g., `~/Projects/worktrees/pp-{feature}`).
+3. **Coordination:** Use a single "Sprint Manager" session to spawn and monitor all sub-agents.
+4. **Integration:** Merge features sequentially into `main`. Rebase remaining feature branches after each merge to catch conflicts early.
+5. **Validation:** Run a full system build/test after the final merge.
+
 #### Pre-Flight
 1. **Verify package manager** — check `package.json` for `packageManager` field, look for lockfiles. Install `pnpm`/`yarn` if missing BEFORE launching agents.
 2. **Use persistent worktree dirs** — `~/Projects/worktrees/pp-{issue}`, NOT `/tmp/`. Temp dirs get cleaned by the OS and you lose uncommitted work.
@@ -412,6 +420,16 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 - **Stagger launches if repos overlap** — if two agents touch the same repo, launch sequentially or use separate worktrees from the same main SHA.
 - **Create PRs yourself** — don't rely on agents to create PRs. They sometimes do, sometimes don't. Check remote, then create.
 - **Set 15-min timeouts** — Codex rarely needs more than 10 min. If it's still running at 15, check git status to see if it's stuck.
+
+### 🏭 Factory Pipeline Management
+**Rule for items stuck in WIP:**
+1. **Stuck Threshold:** 48 hours in any non-Done state.
+2. **Diagnostic Turn:** If an item exceeds the threshold, the agent must:
+   - Read the PRD/Issue.
+   - Check the last 3 heartbeat/status reports for that item.
+   - Identify the specific blocker (e.g., build failure, missing requirement, model error).
+3. **Escalation:** Present Rod with a choice: (A) A concrete "Unstick Plan" with the next 3 steps, or (B) Kill/Archive the idea.
+4. **Do not ignore "Stuck" counts** — they are signals of architectural debt or process failure.
 
 ## Deployment Rules
 - **Merged ≠ Deployed.** After merging a PR on Vercel-hosted repos, verify the build succeeded before claiming "it's live."

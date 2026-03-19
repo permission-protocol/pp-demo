@@ -143,3 +143,14 @@
 {"timestamp":"2026-03-18T19:00:00Z","platform":"twitter","action":"follow","target_handle":"openclaw","target_followers":464980}
 {"timestamp":"2026-03-18T19:00:00Z","platform":"twitter","action":"follow","target_handle":"nvidia","target_followers":2459814}
 {"timestamp":"2026-03-18T19:00:00Z","platform":"twitter","action":"follow","target_handle":"gslin","target_followers":3780}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"tweet","target_tweet":null,"target_followers":null,"our_tweet":"https://x.com/PermissionPrtcl/status/2034404879830245460","text":"Rogue AI agents taking unauthorized actions (like the recent alert at Meta) aren't just 'bugs'—they are authority gaps. If your agent has tool access but no deterministic permission layer, you've built a proxy for RCE. Actions must be trust-gated, not just prompt-engineered."}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"Jessicalessin","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"Marktechpost","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"RedHat","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"nvidia","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"AnthropicAI","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"Glean","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"PaloAltoNtwks","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"databricks","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"CrewAIINC","target_followers":null}
+{"timestamp":"2026-03-18T23:01:57Z","platform":"twitter","action":"follow","target_handle":"openclaw","target_followers":null}

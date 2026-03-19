@@ -58,6 +58,16 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **The Problem**: Stale build caches on Render can mask real bugs (ReferenceError) when JS chunks are cached across deploys.
 - **Fix**: Force redeploy to clear stale JS bundle cache when unexpected runtime errors occur.
 
+### 2026-03-18 — "Authority > Scanning" Competitive Positioning
+- **The Hot Signal**: Vett.sh "Unsigned Binary" attack and Replit DB deletion incidents identified as perfect "Why Now" marketing signals.
+- **The Pivot**: Positioning Permission Protocol as **Governance/Authority Routing** (enforcement) vs competitors' **Vulnerability Scanning/Assessment**. 
+- **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat.
+
+### 2026-03-18 — "Parallel Codex" Pattern
+- **The Pattern**: Spawning multiple parallel Codex/sub-agent sessions for independent feature development (e.g., DB, Auth, UI in one cycle).
+- **The Result**: Reduced a multi-hour sprint to a single heartbeat cycle.
+- **Lesson**: Don't sequence independent feature work; parallelize across agents to maximize throughput.
+
 ---
 
 ## Systems Built
@@ -86,7 +96,7 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 
 ---
 
-## Architecture: Permission Protocol (as of 2026-03-17)
+## Architecture: Permission Protocol (as of 2026-03-18)
 
 - **Marketing site** (permissionprotocol.com): Landing pages, public receipt viewer (`/r/[id]`), redirects to app for all auth flows.
 - **App** (app.permissionprotocol.com): ALL authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail, enrichment pipeline.
@@ -96,7 +106,8 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 ## Key Milestones
 
 - **2026-03-17:** Xdares officially crossed **100 live blog posts** (101 total). 🚀
-- **2026-03-17:** End-to-end Jake flow (PR → Review → Approve → Rerun → Merge) fully proven and reliable.
+- **2026-03-18:** Reached **105 live blog posts**; positioning finalized for competitive response.
+- **2026-03-18:** Tinder4PRs "Live" sprint finalized (DB, Auth, Discord, Rate Limiting, AI Engine) in parallel.
 
 ## Open Threads
 
@@ -105,5 +116,6 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - [ ] **Demo video for deploy-gate** — ready to record with Reliable Rerun flow.
 - [ ] **Competitive response** — finalize positioning vs Chainguard/Vett.
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
+- [!] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 
-*Updated: 2026-03-17*
+*Updated: 2026-03-18*
