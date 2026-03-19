@@ -1,212 +1,365 @@
-# Discord Thread State Tracker
-# Updated by /topic, /triage, /extract, /close-review, /archive, /reopen
-# Git-backed. No database.
-
 threads:
-  - id: "1483129687344680960"
-    title: "1st Competitor"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-17
-    owner: Rod
-    priority: high
-    created: 2026-03-16
-    last_updated: 2026-03-17
-    summary: "Full competitive response to Guard0/g0. Built Three Questions positioning, VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage refreshed with Three Questions hero, blog post published (scanning-isnt-control). Discovery to deployment in one session."
-    open_tasks: []
-    decisions:
-      - "PP positioning: Assessment identifies problems, governance prevents them"
-      - "Three Questions: Who approved it? What stops it? Can you prove it?"
-      - "CLI in new repo (permission-protocol/cli), not monorepo"
-      - "Voice rule: be clear, not clever — codified in VOICE.md + SOUL.md"
-      - "Guard0 = complementary (low overlap), Onyx = real threat (medium-high)"
-      - "One-liner PLG (pp-scan .) is highest-leverage dev tool to build"
-  - id: "1483155946623733853"
-    title: "Marketing Vs App [UNIFY]"
-    archived: 2026-03-16
-    channel: "rc-main"
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created: 2026-03-16
-    last_updated: 2026-03-16
-    summary: "Full URL consolidation of Permission Protocol review surfaces. Audited both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to app (dashboard + detail page + mobile), then killed marketing review/auth/API proxy layer (-6,116 lines). All redirects verified live."
-    open_tasks: []
-    decisions:
-      - "All authenticated review/approve workflows consolidated to app.permissionprotocol.com"
-      - "Marketing site = selling only (landing, pricing, docs, blog, public receipts)"
-      - "Receipt page (/r/[id]) stays on marketing site (public, unauthenticated)"
-      - "GitHub CI status check URLs now point to app, not marketing"
-      - "next-auth removed from marketing site"
-      - "5 permanent redirects added (review, review/:id, login, approve/:id, replay/:id)"
-  - id: "1483138256613937213"
-    title: "Obsidian"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-16
-    owner: Rod
-    priority: low
-    created: 2026-03-16
-    last_updated: 2026-03-16
-    summary: "Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull) and Rod's MacBook Air (same setup via Homebrew + gh auth). Both machines auto-sync every 5 minutes."
-    open_tasks: []
-    decisions:
-      - "Workspace backup repo (charles-workspace-backup) used as Obsidian sync source"
-      - "Obsidian Git plugin for auto-pull every 5 min (no push from Rod's machines)"
-      - "Removed files with Windows-incompatible long filenames from repo"
-      - "Rod has a new MacBook Air with Tailscale + Homebrew + gh CLI configured"
-  - id: "1483125897161605121"
-    title: "OpenClaw Update"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-16
-    owner: Rod
-    priority: medium
-    created: 2026-03-16
-    last_updated: 2026-03-16
-    summary: "Updated OpenClaw from 2026.3.2 → 2026.3.13. Backed up workspace + config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup. Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver)."
-    open_tasks: []
-    decisions:
-      - "OpenClaw updated to 2026.3.13 from 2026.3.2"
-      - "Config backup at ~/.openclaw/openclaw.json.backup-pre-update-2026-03-16"
-      - "openclaw doctor --fix added to maintenance toolkit"
-      - "Mobile QA pipeline unaffected by update — USB + WebDriver is the right approach"
-      - "macOS DMG available on GitHub releases; iOS app in internal preview"
-  - id: "1483844724191264778"
-    title: "bugs (PP merge loop)"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-18
-    owner: Rod
-    priority: high
-    created: 2026-03-18
-    last_updated: 2026-03-18
-    summary: "Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate PR #23), backend carry-forward fix (app PR #197), and 3 issues tracked on board (#21, #22, #196)."
-    open_tasks: []
-    decisions:
-      - "Authorization checks (PP) should never use strict mode"
-      - "Two-ruleset pattern is recommended setup for all PP users"
-      - "Carry-forward should auto-issue new signed receipts, not reuse old ones"
-      - "Product-level fix: docs must guide users away from strict footgun"
-  - id: "1482835612909306130"
-    title: "/drploy-date"
-    channel: "control-room-2"
-    status: ARCHIVED
-    archived: 2026-03-15
-    owner: Rod
-    priority: medium
-    created: 2026-03-15
-    last_updated: 2026-03-15
-    summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run bypass, #19 review URL) — both already fixed by v2 rewrite and PR #20. Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license) and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes license)."
-    open_tasks: []
-    decisions:
-      - "deploy-gate issues #12 and #19 confirmed fixed by v2 rewrite — closed"
-      - "v1 tag bumped to HEAD of main (includes MIT license)"
-      - "10 stale branches deleted from deploy-gate repo"
-  - id: "1482065875413635122"
-    title: "iPhone Mirroring"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-16
-    owner: Rod
-    priority: medium
-    created: 2026-03-13
-    last_updated: 2026-03-16
-    summary: "Explored iPhone Mirroring for mobile QA — discovered synthetic clicks are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash. Found real bugs on PP and Xdares. Also ran successful e2e deploy-gate demo (PR #18)."
-    open_tasks: []
-    decisions:
-      - "Safari WebDriver via USB > iPhone Mirroring for automation"
-      - "Research before hack — 15 min rule"
-      - "Gemini Flash for cron QA tasks (~$0.01/run)"
-      - "Physical device checklist: data cable, Trust, Web Inspector, Remote Automation, Guided Access"
-      - "iPhone 14 Pro preferred over SE for testing"
-      - "One-script-per-session for stateful drivers like safaridriver"
-  - id: "1483189017750016082"
-    title: "GarryTan"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-16
-    owner: Rod
-    priority: medium
-    created: 2026-03-16
-    last_updated: 2026-03-16
-    summary: "Analyzed Garry Tan's gstack repo (10 Claude Code skills for role-based agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality gates into the factory pipeline: CEO review, engineering review, paranoid code review, ship script. Added QA health scoring (0-100), versioned review checklist, structured QA report template. Full steal plan documented in factory/GSTACK-STEAL-PLAN.md."
-    open_tasks: []
-    decisions:
-      - "Don't install gstack — steal ideas, build agent-agnostic versions"
-  - id: "1483163293664415994"
-    title: "User Requirements"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-17
-    owner: Rod
-    priority: high
-    created: 2026-03-16
-    last_updated: 2026-03-17
-    summary: "Deep Marco persona requirements sprint. Wrote 29-requirement spec across 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon: enrichment pipeline (origin context, verification steps, confidence warnings), detail page information hierarchy, receipt enrichment snapshots (M6), merge queue polish with configurable method + auto-merge fix (M7), structured rejection with PR comment (M17), arrival notifications, dashboard improvements, approved-but-unmerged visibility, duplicate deploy request dedup, admin reconcile endpoint, demo UX polish (iframe fallback, numbered verification steps, mobile post-approval bar, overview approve gate, author display). Screenshot audit against Marco requirements — detail page demo-ready."
-    open_tasks:
-      - "Merge PR #178 (demo UX polish) + deploy + run reconcile"
-      - "Record demo video with staged PRs"
-      - "Phase 3-5 Marco requirements (M10-M23)"
-      - "Sarah user requirements spec"
-    decisions:
-      - "Phase 2 complete: happy path first, recovery (undo/revert) later"
-      - "Auto-merge LOW risk deferred — needs more thought"
-      - "Preview iframe: fallback to open-in-new-tab when embed blocked"
-      - "Verification steps: numbered circles, not checkboxes"
-      - "Production requests: Review only on dashboard, no quick-approve"
-      - "GitHub auto-merge won't fire if checks already passed — fall through to direct merge"
-      - "15 PRs in one afternoon, 12→19 Marco requirements covered"
-  - id: "1483556834756530306"
-    title: "Claude Dependency"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-17
-    owner: Rod
-    priority: high
-    created: 2026-03-17
-    last_updated: 2026-03-17
-    summary: "Anthropic outage killed all three fallback models (all Anthropic, one auth profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview as cross-provider fallback. Config patched and restarted successfully."
-    open_tasks: []
-    decisions:
-      - "Cross-provider fallback required — all-Anthropic fallback chain is fake redundancy"
-      - "Fallback chain: opus-4-6 → opus-4-5 → sonnet-4-6 → gemini-3-flash-preview"
-      - "Keep Opus as primary — outages are rare, quality matters"
-      - "Gemini Flash as emergency fallback is better than a dead agent"
-  - id: "1483547333382897764"
-    title: "Big Daddy"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-18
-    owner: Rod
-    priority: high
-    created: 2026-03-17
-    last_updated: 2026-03-18
-    summary: "Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug, fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193). Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on force-pushed PRs (PR #195). Added 3 AGENTS.md rules: debugging circuit breaker (5-msg limit), no thinking out loud, git hygiene (no git add -A)."
-    open_tasks: []
-    decisions:
-      - "Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking out loud)"
-      - "Force-push stale checks: set PP status on old SHA + re-request check suites"
-      - "git add -A banned in shared worktrees — always add specific files"
-      - "git diff --stat before pushing — verify file count matches intent"
-  - id: "1483223048499892425"
-    title: "Push to main"
-    channel: "rc-main"
-    status: ARCHIVED
-    archived: 2026-03-17
-    owner: Rod
-    priority: medium
-    created: 2026-03-16
-    last_updated: 2026-03-17
-    summary: "Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed with PR #174: detect merge/squash commits, extract PR info, pass to verify action for scope matching. Also discussed video recording options for app testing (⌘+Shift+5 vs DevTools Recorder)."
-    open_tasks: []
-    decisions:
-      - "PR merges reuse existing PR receipt via PR_HEAD scope passthrough"
-      - "Direct pushes to main still create new deploy requests (safety net)"
-      - "verify/action.yml gained pr_number + pr_head_sha inputs for explicit PR scope override"
-      - "Both merge commit and squash merge patterns handled"
-      - "Skip retros, doc-release, Greptile, Conductor, cookie import"
-      - "New pipeline: ideate → organize → CEO review → eng review → spec → build → ship → paranoid review → QA → done"
-      - "~$0.05 added cost per factory item on Gemini Flash is acceptable"
-      - "Rod's process unchanged — new gates run automatically"
-      - "Future work (browser QA, bisectable commits) deferred, documented in GSTACK-STEAL-PLAN.md"
+- id: '1484266387579994314'
+  title: '404'
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created: '2026-03-19'
+  last_updated: '2026-03-19'
+  summary: Fixed unbranded Next.js 404 page by implementing a custom client-side `not-found.tsx`
+    matching the PP design system.
+  open_tasks: []
+  decisions:
+  - '`not-found.tsx` should use client-side navigation (`onClick={() => router.push("/")}`)
+    to avoid type conflicts with PP`s custom `<Button>` component.'
+  archived: '2026-03-19'
+- id: '1483894208656969850'
+  title: Back to PR Button
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created: '2026-03-18'
+  last_updated: '2026-03-19'
+  summary: 'Fixed "Back to PR" button opening in a chromeless popup window instead
+    of a new tab. Diagnosed popup context inheritance (approval page opened from Slack/email)
+    and implemented a programmatic anchor click fix in PR #199.'
+  open_tasks: []
+  decisions:
+  - When an app is opened in a chromeless popup window, target="_blank" links inherit
+    the popup style instead of opening a proper tab.
+  - The escape hatch is to programmatically create a detached <a> element, append
+    it, click it, and remove it.
+  archived: '2026-03-19'
+- id: '1483129687344680960'
+  title: 1st Competitor
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-17
+  owner: Rod
+  priority: high
+  created: 2026-03-16
+  last_updated: 2026-03-17
+  summary: Full competitive response to Guard0/g0. Built Three Questions positioning,
+    VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI
+    scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage
+    refreshed with Three Questions hero, blog post published (scanning-isnt-control).
+    Discovery to deployment in one session.
+  open_tasks: []
+  decisions:
+  - 'PP positioning: Assessment identifies problems, governance prevents them'
+  - 'Three Questions: Who approved it? What stops it? Can you prove it?'
+  - CLI in new repo (permission-protocol/cli), not monorepo
+  - "Voice rule: be clear, not clever \u2014 codified in VOICE.md + SOUL.md"
+  - Guard0 = complementary (low overlap), Onyx = real threat (medium-high)
+  - One-liner PLG (pp-scan .) is highest-leverage dev tool to build
+- id: '1483155946623733853'
+  title: Marketing Vs App [UNIFY]
+  archived: 2026-03-16
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created: 2026-03-16
+  last_updated: 2026-03-16
+  summary: Full URL consolidation of Permission Protocol review surfaces. Audited
+    both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to
+    app (dashboard + detail page + mobile), then killed marketing review/auth/API
+    proxy layer (-6,116 lines). All redirects verified live.
+  open_tasks: []
+  decisions:
+  - All authenticated review/approve workflows consolidated to app.permissionprotocol.com
+  - Marketing site = selling only (landing, pricing, docs, blog, public receipts)
+  - Receipt page (/r/[id]) stays on marketing site (public, unauthenticated)
+  - GitHub CI status check URLs now point to app, not marketing
+  - next-auth removed from marketing site
+  - 5 permanent redirects added (review, review/:id, login, approve/:id, replay/:id)
+- id: '1483138256613937213'
+  title: Obsidian
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-16
+  owner: Rod
+  priority: low
+  created: 2026-03-16
+  last_updated: 2026-03-16
+  summary: Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured
+    .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename
+    issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull)
+    and Rod's MacBook Air (same setup via Homebrew + gh auth). Both machines auto-sync
+    every 5 minutes.
+  open_tasks: []
+  decisions:
+  - Workspace backup repo (charles-workspace-backup) used as Obsidian sync source
+  - Obsidian Git plugin for auto-pull every 5 min (no push from Rod's machines)
+  - Removed files with Windows-incompatible long filenames from repo
+  - Rod has a new MacBook Air with Tailscale + Homebrew + gh CLI configured
+- id: '1483125897161605121'
+  title: OpenClaw Update
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-16
+  owner: Rod
+  priority: medium
+  created: 2026-03-16
+  last_updated: 2026-03-16
+  summary: "Updated OpenClaw from 2026.3.2 \u2014 2026.3.13. Backed up workspace +\
+    \ config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup.\
+    \ Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver)."
+  open_tasks: []
+  decisions:
+  - OpenClaw updated to 2026.3.13 from 2026.3.2
+  - Config backup at ~/.openclaw/openclaw.json.backup-pre-update-2026-03-16
+  - openclaw doctor --fix added to maintenance toolkit
+  - "Mobile QA pipeline unaffected by update \u2014 USB + WebDriver is the right approach"
+  - macOS DMG available on GitHub releases; iOS app in internal preview
+- id: '1483844724191264778'
+  title: bugs (PP merge loop)
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-18
+  owner: Rod
+  priority: high
+  created: 2026-03-18
+  last_updated: 2026-03-18
+  summary: 'Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated
+    approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed
+    with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate
+    PR #23), backend carry-forward fix (app PR #197), and 3 issues tracked on board
+    (#21, #22, #196).'
+  open_tasks: []
+  decisions:
+  - Authorization checks (PP) should never use strict mode
+  - Two-ruleset pattern is recommended setup for all PP users
+  - Carry-forward should auto-issue new signed receipts, not reuse old ones
+  - 'Product-level fix: docs must guide users away from strict footgun'
+- id: '1482835612909306130'
+  title: /drploy-date
+  channel: control-room-2
+  status: ARCHIVED
+  archived: 2026-03-15
+  owner: Rod
+  priority: medium
+  created: 2026-03-15
+  last_updated: 2026-03-15
+  summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run\
+    \ bypass, #19 review URL) \u2014 both already fixed by v2 rewrite and PR #20.\
+    \ Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license)\
+    \ and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes\
+    \ license)."
+  open_tasks: []
+  decisions:
+  - "deploy-gate issues #12 and #19 confirmed fixed by v2 rewrite \u2014 closed"
+  - v1 tag bumped to HEAD of main (includes MIT license)
+  - 10 stale branches deleted from deploy-gate repo
+- id: '1482065875413635122'
+  title: iPhone Mirroring
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-16
+  owner: Rod
+  priority: medium
+  created: 2026-03-13
+  last_updated: 2026-03-16
+  summary: "Explored iPhone Mirroring for mobile QA \u2014 discovered synthetic clicks\
+    \ are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction\
+    \ layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash.\
+    \ Found real bugs on PP and Xdares. Also ran successful e2e deploy-gate demo (PR\
+    \ #18)."
+  open_tasks: []
+  decisions:
+  - Safari WebDriver via USB > iPhone Mirroring for automation
+  - "Research before hack \u2014 15 min rule"
+  - Gemini Flash for cron QA tasks (~$0.01/run)
+  - 'Physical device checklist: data cable, Trust, Web Inspector, Remote Automation,
+    Guided Access'
+  - iPhone 14 Pro preferred over SE for testing
+  - One-script-per-session for stateful drivers like safaridriver
+- id: '1483189017750016082'
+  title: GarryTan
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-16
+  owner: Rod
+  priority: medium
+  created: 2026-03-16
+  last_updated: 2026-03-16
+  summary: 'Analyzed Garry Tan''s gstack repo (10 Claude Code skills for role-based
+    agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality
+    gates into the factory pipeline: CEO review, engineering review, paranoid code
+    review, ship script. Added QA health scoring (0-100), versioned review checklist,
+    structured QA report template. Full steal plan documented in factory/GSTACK-STEAL-PLAN.md.'
+  open_tasks: []
+  decisions:
+  - "Don't install gstack \u2014 steal ideas, build agent-agnostic versions"
+- id: '1483163293664415994'
+  title: User Requirements
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-17
+  owner: Rod
+  priority: high
+  created: 2026-03-16
+  last_updated: 2026-03-17
+  summary: "Deep Marco persona requirements sprint. Wrote 29-requirement spec across\
+    \ 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon:\
+    \ enrichment pipeline (origin context, verification steps, confidence warnings),\
+    \ detail page information hierarchy, receipt enrichment snapshots (M6), merge\
+    \ queue polish with configurable method + auto-merge fix (M7), structured rejection\
+    \ with PR comment (M17), arrival notifications, dashboard improvements, approved-but-unmerged\
+    \ visibility, duplicate deploy request dedup, admin reconcile endpoint, demo UX\
+    \ polish (iframe fallback, numbered verification steps, mobile post-approval bar,\
+    \ overview approve gate, author display). Screenshot audit against Marco requirements\
+    \ \u2014 detail page demo-ready."
+  open_tasks:
+  - 'Merge PR #178 (demo UX polish) + deploy + run reconcile'
+  - Record demo video with staged PRs
+  - Phase 3-5 Marco requirements (M10-M23)
+  - Sarah user requirements spec
+  decisions:
+  - 'Phase 2 complete: happy path first, recovery (undo/revert) later'
+  - "Auto-merge LOW risk deferred \u2014 needs more thought"
+  - 'Preview iframe: fallback to open-in-new-tab when embed blocked'
+  - 'Verification steps: numbered circles, not checkboxes'
+  - 'Production requests: Review only on dashboard, no quick-approve'
+  - "GitHub auto-merge won't fire if checks already passed \u2014 fall through to\
+    \ direct merge"
+  - "15 PRs in one afternoon, 12\u201419 Marco requirements covered"
+- id: '1483556834756530306'
+  title: Claude Dependency
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-17
+  owner: Rod
+  priority: high
+  created: 2026-03-17
+  last_updated: 2026-03-17
+  summary: Anthropic outage killed all three fallback models (all Anthropic, one auth
+    profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview
+    as cross-provider fallback. Config patched and restarted successfully.
+  open_tasks: []
+  decisions:
+  - "Cross-provider fallback required \u2014 all-Anthropic fallback chain is fake\
+    \ redundancy"
+  - "Fallback chain: opus-4-6 \u2014 opus-4-5 \u2014 sonnet-4-6 \u2014 gemini-3-flash-preview"
+  - "Keep Opus as primary \u2014 outages are rare, quality matters"
+  - Gemini Flash as emergency fallback is better than a dead agent
+- id: '1483547333382897764'
+  title: Big Daddy
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-18
+  owner: Rod
+  priority: high
+  created: 2026-03-17
+  last_updated: 2026-03-18
+  summary: 'Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug,
+    fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193).
+    Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on
+    force-pushed PRs (PR #195). Added 3 AGENTS.md rules: debugging circuit breaker
+    (5-msg limit), no thinking out loud, git hygiene (no git add -A).'
+  open_tasks: []
+  decisions:
+  - Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking
+    out loud)
+  - 'Force-push stale checks: set PP status on old SHA + re-request check suites'
+  - "git add -A banned in shared worktrees \u2014 always add specific files"
+  - "git diff --stat before pushing \u2014 verify file count matches intent"
+- id: '1483223048499892425'
+  title: Push to main
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-17
+  owner: Rod
+  priority: medium
+  created: 2026-03-16
+  last_updated: 2026-03-17
+  summary: "Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml\
+    \ (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed\
+    \ with PR #174: detect merge/squash commits, extract PR info, pass to verify action\
+    \ for scope matching. Also discussed video recording options for app testing (\u2318\
+    +Shift+5 vs DevTools Recorder)."
+  open_tasks: []
+  decisions:
+  - PR merges reuse existing PR receipt via PR_HEAD scope passthrough
+  - Direct pushes to main still create new deploy requests (safety net)
+  - verify/action.yml gained pr_number + pr_head_sha inputs for explicit PR scope
+    override
+  - Both merge commit and squash merge patterns handled
+  - Skip retros, doc-release, Greptile, Conductor, cookie import
+  - "New pipeline: ideate \u2014 organize \u2014 CEO review \u2014 eng review \u2014\
+    \ spec \u2014 build \u2014 ship \u2014 paranoid review \u2014 QA \u2014 done"
+  - ~$0.05 added cost per factory item on Gemini Flash is acceptable
+  - "Rod's process unchanged \u2014 new gates run automatically"
+  - Future work (browser QA, bisectable commits) deferred, documented in GSTACK-STEAL-PLAN.md
+- id: '1484231245125648606'
+  title: MARIA
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created: 2026-03-19
+  last_updated: 2026-03-19
+  summary: 'Updated Maria''s OpenClaw container to 2026.3.13-1, fixed missing memory-lancedb
+    plugin via on-demand install. Enabled diffs and acpx plugins for Charles locally.
+    Established boundary: Maria handles headless external operations, Charles handles
+    local browser and auth-gated tasks using 1Password, avoiding the need for Chrome
+    Extension Relay.'
+  open_tasks: []
+  decisions:
+  - Maria stays the headless external operator (Telegram, APIs).
+  - Charles handles local browser, auth-gated dashboards using 1Password. No Chrome
+    Extension Relay needed.
+  - OpenClaw 2026.3.13+ requires explicit plugin installs for memory-lancedb and diffs.
+  archived: '2026-03-19'
+- id: '1484220042735517869'
+  title: Where's Risk
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-19
+  owner: Rod
+  priority: high
+  created: 2026-03-19
+  last_updated: 2026-03-19
+  summary: 'Root-caused the missing risk analysis to an inverted catch block in the
+    webhook route which caused a permanent ''Analyzing...'' placeholder on failure.
+    Fixed the logic flow in PR #202 on permission-protocol/app.'
+  open_tasks: []
+  decisions:
+  - Placeholder comment must be posted immediately before enrichment, then updated
+    with results or explicit failure state.
+- id: '1484219107816509440'
+  title: KOL
+  channel: rc-main
+  status: ARCHIVED
+  archived: 2026-03-19
+  owner: Rod
+  priority: low
+  created: 2026-03-19
+  last_updated: 2026-03-19
+  summary: Confirmed lead routing protocol. Permission Protocol uses Discord webhooks
+    for /contact leads, routing them to the
+  open_tasks: []
+  decisions:
+  - Permission Protocol uses Discord webhooks for /contact leads, routing them to
+    the
+- id: '1483851224431460474'
+  title: JAKE
+  channel: rc-main
+  status: ACTIVE
+  owner: Rod
+  priority: high
+  created: '2026-03-18'
+  last_updated: '2026-03-19'
+  summary: Jake persona PR review surface optimization. Implemented verdict-first
+    comment format (V2), friction gate for block verdicts, and Gemini enrichment fixes
+    for JSON truncation.
+  open_tasks:
+  - Verify deployment of PR
+  - Test new format on Tinder4PRs
+  - Record demo video
+  decisions:
+  - Verdict-first format for solo founder efficiency.
+  - Graduated friction: one-click for safe, checkbox for block.
+  - Bump Gemini tokens to 2048 to handle CoT overhead.

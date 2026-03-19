@@ -185,3 +185,16 @@ Linked to source threads for traceability.
 - **Two-ruleset pattern for all PP users.** Ruleset 1: PP status check, strict OFF. Ruleset 2: Build/test checks, strict ON.
 - **Carry-forward must issue new signed receipts.** Old receipts fail signature verification against new scope hashes. The verify endpoint now auto-creates properly-signed receipts when a prior approval exists for the same PR.
 - **This is a product footgun.** Every user who installs deploy-gate with strict ON will hit this. Docs updated to prevent it.
+
+### 2026-03-19
+- **Agent Roles:** Maria handles headless external operations (Telegram, public APIs). Charles handles local browser operations and auth-gated dashboards via 1Password, avoiding the need for Chrome Extension Relay. (Source: [Thread 1484231245125648606](https://discord.com/channels/1479269120334762008/1484231245125648606))
+- **OpenClaw Plugins:** OpenClaw 2026.3.13+ requires explicit plugin installs for heavy dependencies like `memory-lancedb` and `diffs`.
+
+### 2026-03-19
+- **Where's Risk:** Placeholder comment must be posted immediately before enrichment, then updated with results or explicit failure state. (Source: [Thread 1484220042735517869](https://discord.com/channels/1479269120334762008/1484220042735517869))
+
+## 2026-03-19
+- **Popup window escape hatch:** When an app is opened in a chromeless popup window, `target="_blank"` links inherit the popup style instead of opening a proper tab. The fix is to programmatically create a detached `<a>` element, append it, click it, and remove it. [Source: Back to PR Button](https://discord.com/channels/1479269120334762008/1483894208656969850)
+
+## 2026-03-19 — KOL
+- Permission Protocol uses Discord webhooks for `/contact` leads, routing them to the #inbound-leads thread. KickoffLabs is only used for the Xdares waitlist.
