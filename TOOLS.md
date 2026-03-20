@@ -212,9 +212,16 @@ node pp-os/outreach/scripts/validate-messages.js leads.json
 
 ---
 
-## Why Separate?
+## Sentry / Monitoring
 
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
+**DSN configured on Render** — Token stored at `~/.openclaw/secrets/sentry-auth-token`
+
+**Usage:**
+```bash
+factory/scripts/error-sensor.sh
+```
+- Automatically pulls real-world crashes into the Factory pipeline.
+- Deterministic policy-gate will prioritize these as high-signal work.
 
 ---
 

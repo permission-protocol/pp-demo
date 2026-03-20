@@ -1,13 +1,16 @@
-# Improvements Pending Rod's Approval — March 18, 2026
+# Pending Improvements (Mar 19, 2026)
 
-## 🚨 Blockers
-- **Metric Token Re-auth**: Google Analytics (GA4) and Search Console tokens have expired. 
-  - **Impact**: No metrics collection for Xdares/PP.
-  - **Action Required**: Rod needs to run `python3 scripts/xdares-metrics-auth.py` and follow the OAuth flow.
-- **Model Confirmation Failure**: The system is failing to confirm `google/gemini-3.1-pro-preview` or `opus-4-6`, falling back to `gemini-3-flash-preview`.
-  - **Impact**: Lower reasoning quality for complex tasks.
-  - **Action Required**: Verify model availability/API keys in `openclaw config`.
+## 1. Automated NemoClaw Demo Pipeline
+- **Problem**: Today's demo was recorded manually in tmux. It was successful, but repeating it for different marketing "hooks" is manual.
+- **Proposed Fix**: Create a script `scripts/record-pp-demo.sh` that uses `peekaboo` or `asciinema` to automate the E2E flow (Blocked Action -> Webhook -> Approval -> Success) for consistent marketing collateral.
+- **Category**: new script / new cron
 
-## 📈 Strategic Suggestions
-- **Competitive Response Campaign**: Draft a campaign around "Authority > Scanning" (governance over assessment) as discussed today.
-- **Factory Pipeline Purge**: `idea-019` (Inline diff viewer) has been stuck for 127 hours. Recommend killing or re-scoping if no progress is made by tomorrow.
+## 2. Dynamic Blast Radius Tuning
+- **Problem**: The new `policy-gate.sh` is binary (low vs high). It might be too aggressive, blocking Rod for simple config changes, or too lax on complex UI components.
+- **Proposed Fix**: Implement a scoring system in `policy-gate.sh` based on file depth and "danger keywords" (e.g., `process.env`, `eval`, `auth`).
+- **Category**: process change / script update
+
+## 3. Post-Merge "Health Check" Cron
+- **Problem**: We assume a Vercel deploy is healthy after merge, but we've seen stale chunks.
+- **Proposed Fix**: A cron job that fires 5 minutes after a PR merge to specifically `curl` the affected routes and check for 200 OK + expected content.
+- **Category**: new cron

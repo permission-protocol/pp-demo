@@ -1,20 +1,30 @@
-# PP Status — Last Updated: 2026-03-18
+# PP Status — Last Updated: 2026-03-19
 
-## Active
-- **Tinder4PRs Production Demo**: All parallel features (DB, Auth, Discord, Rate Limit, AI) built; ready for full flow recording.
-- **Demo Video Recording**: Ready to record using PR #6 `feat/hero-refresh` on Tinder4PRs/website.
-- **Singapore Localization**: Localizing and interlinking top-impression pages.
+## Active — MCP Guard (72h Sprint)
+- **v0 spec locked:** `pp-os/mcp-guard/V0-SPEC.md`
+- **Day 1 (Mar 20):** Build config parser, decision engine, MCP middleware hook, receipt emitter. Afternoon: demo repo + 90-sec recording + README.
+- **Day 2 (Mar 21):** Approval hold path, basic receipt viewer.
+- **Day 2-3:** HN post — "We built an MCP guardrail that blocks dangerous agent actions using a simple config file"
+- **Product sentence:** "Permission Protocol decides whether AI actions are allowed to happen."
+- **Wedge:** Enforcement (block/allow/hold), NOT receipts/audit.
 
-## Pending
-- Record demo video (full flow: PR → Review → Approve → Rerun → Merged).
-- Sarah user requirements spec (deep dive).
-- Phase 3-5 Marco requirements (M10-M23).
-- Implement Sprint 1 specs for Marco requirements (M1-M6).
-- Address stuck item `idea-019` (diff viewer) in factory pipeline (127h).
-- Fix metric sync tokens for GA4/PostHog.
+## Active — Governance Framework
+- **Repo live:** https://github.com/permission-protocol/governance-framework
+- **Content ready:** 3 incident analyses (Agents of Chaos, IBM Refund, Kiro) + target communities doc
+- **Stress tested twice**, voice-compliant, referenced, attribution-hedged
+- **Publish cadence:** Stagger blog posts 1/week after MCP Guard ships
 
-## Recent Decisions (Mar 18)
-- **Competitive Positioning**: "Governance/Authority > Assessment/Scanning" based on Vett.sh signal.
-- **Parallel Codex**: Parallelized feature development for Tinder4PRs successfully accelerated sprint.
-- **Debugging Circuit Breaker**: STOP and summarize after 5+ failed messages on the same bug.
-- **Reliable Rerun Flow**: Fetch current HEAD SHA before triggering checks after approval.
+## Parked (resume after MCP Guard sprint)
+- Tinder4PRs demo video recording
+- Singapore localization
+- Sarah user requirements spec
+- Marco requirements (M1-M23)
+- Factory stuck items
+
+## Recent Decisions (Mar 19)
+- **Enforcement > Receipts**: Wedge is blocking actions, not logging them. Receipts are evidence layer.
+- **Moat = execution chokepoint**: Whoever sits in the tool call execution path owns the category.
+- **72h window**: Ship working enforcement before someone else does.
+- **HN framing**: "Blocks dangerous actions" not "audit log standard."
+- **Audience sequence**: Developers → internal adoption → CTO → sell hosted/compliance. Sequential.
+- **Naming**: "Authority receipt" in spec. "AI agent guardrails + audit trail" externally.

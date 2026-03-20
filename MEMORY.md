@@ -96,8 +96,9 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 
 ---
 
-## Architecture: Permission Protocol (as of 2026-03-18)
+## Architecture: Permission Protocol (as of 2026-03-20)
 
+- **App repo**: `permission-protocol/app` — ⚠️ NOT Roca-Ventures/Breakout-Labs (that repo is dead/archived, never clone it)
 - **Marketing site** (permissionprotocol.com): Landing pages, public receipt viewer (`/r/[id]`), redirects to app for all auth flows.
 - **App** (app.permissionprotocol.com): ALL authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail, enrichment pipeline.
 - **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend.
@@ -108,17 +109,35 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **2026-03-17:** Xdares officially crossed **100 live blog posts** (101 total). 🚀
 - **2026-03-18:** Reached **105 live blog posts**; positioning finalized for competitive response.
 - **2026-03-18:** Tinder4PRs "Live" sprint finalized (DB, Auth, Discord, Rate Limiting, AI Engine) in parallel.
+- **2026-03-19:** Xdares officially crossed **110 live blog posts** (110 total). 🚀
+
+### 2026-03-19 — MCP Guard Strategy & Enforcement Wedge
+- **Critical Reframe:** PP's wedge is enforcement (blocking dangerous actions), not receipts/audit. "People buy locks before cameras."
+- **The Moat:** Being the execution chokepoint. Whoever sits in the tool call path owns the category. Schema/dashboards are copyable.
+- **Governance Framework Published:** `permission-protocol/governance-framework` on GitHub. Open spec, 7 references, stress-tested twice.
+- **MCP Guard v0 Spec Locked:** YAML config → block/allow/hold tool calls → emit receipts. Ship in 72h.
+- **Competitive Landscape:** mcp-guardian (eqtylab), mcp-context-forge (IBM), mcp-gateway-registry exist but none do simple enforcement + structured receipts.
+- **External Advisor Input:** Don't lead with abstraction. Ship enforcement. "Blocks dangerous actions" > "audit log standard."
 
 ## Open Threads
 
+- [!] **MCP Guard 72h Sprint (Mar 20-22):** Build and ship enforcement middleware. #1 priority.
 - [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
 - [ ] **Sarah user requirements** — needs same deep treatment as Marco.
 - [ ] **Demo video for deploy-gate** — ready to record with Reliable Rerun flow.
-- [ ] **Competitive response** — finalize positioning vs Chainguard/Vett.
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
 - [!] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
+- [ ] **NemoClaw Recorded Demo**: Recorded for "Trojan Horse" marketing push.
+- [ ] **Factory Pull-Based Sensor Rollout**: Hourly cron for GitHub (`factory/scripts/github-sensor.sh`) and Sentry (`factory/scripts/error-sensor.sh`).
 
-*Updated: 2026-03-18*
+*Updated: 2026-03-19*
+
+### 2026-03-19 — NemoClaw & Factory Architecture (Major Pivot)
+- **Trojan Horse Demo**: NemoClaw demo proved that real-time policy enforcement on blocked outbound requests works. Caught 403, batched, approved, and updated policy on the fly. Key marketing asset.
+- **Factory Architecture Pivot**: Moved from push-based ideation (hallucinating irrelevant features) to pull-based agent market.
+- **Pull-Based Sensors**: Agents now trigger only from real signals (GitHub Issues with `factory` label + Sentry runtime errors).
+- **Deterministic Policy Gate**: Blast radius classification (LOW/MEDIUM/HIGH) based on file paths determines auto-merge vs. human block. "Build deterministic walls, let agents run inside them."
+- **The Lesson**: Do not prompt agents to have "good ideas." Use real user/system signals to pull work into the pipeline and deterministic policies to gate the output.
 
 ### 2026-03-19 — Agent Division of Labor & Plugin Updates
 - **The Lesson:** "Smart division of labor: headless external vs local auth-gated." Maria (on external droplet) handles public routing, APIs, and Telegram. Charles (on local Mac) handles auth-gated dashboards, local browser, and secured local infrastructure via 1Password. Punching holes from external droplets to local Chrome is an unnecessary security risk.

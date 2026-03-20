@@ -431,6 +431,12 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 3. **Escalation:** Present Rod with a choice: (A) A concrete "Unstick Plan" with the next 3 steps, or (B) Kill/Archive the idea.
 4. **Do not ignore "Stuck" counts** — they are signals of architectural debt or process failure.
 
+### 🛡️ NemoClaw Demo & Policy Dogfooding
+**Learned from Mar 19 NemoClaw Demo.**
+- **Batch Approvals**: When a blocked action occurs in a sandboxed PTY, use the dummy webhook flow to batch and approve on the fly.
+- **Dynamic Policy Injection**: updated policies can be pushed to the sandbox without restarting the agent session.
+- **Fail-Fast for Blocked Endpoints**: If an agent hits a 403 on an outbound request, immediately check the `nemoclaw-pp-adapter` for a policy violation before retrying.
+
 ## Deployment Rules
 - **Merged ≠ Deployed.** After merging a PR on Vercel-hosted repos, verify the build succeeded before claiming "it's live."
 - Post-merge checklist: (1) Wait ~2 min, (2) `curl` the production endpoint, (3) Confirm new code is running.
