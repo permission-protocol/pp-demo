@@ -142,3 +142,6 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 ### 2026-03-19 — Agent Division of Labor & Plugin Updates
 - **The Lesson:** "Smart division of labor: headless external vs local auth-gated." Maria (on external droplet) handles public routing, APIs, and Telegram. Charles (on local Mac) handles auth-gated dashboards, local browser, and secured local infrastructure via 1Password. Punching holes from external droplets to local Chrome is an unnecessary security risk.
 - **OpenClaw Plugins:** As of 2026.3.13, heavy plugins like `memory-lancedb` and `diffs` are install-on-demand and require explicit `openclaw plugins install` and `openclaw plugins enable` to avoid `Cannot find module` crashes.
+
+### 2026-03-20 — Archived Company Leak
+- **Lesson**: Soft-deletes (like `archivedAt`) require cascading checks. API keys and GET routes were still honoring archived companies, allowing ghost PR requests. Always include `company: { archivedAt: null }` in auth and visibility queries.
