@@ -21,9 +21,9 @@ client = tweepy.Client(
 
 # Trivia tweets
 tweets = [
-    "Bar trivia is fun, but Bar Trivia DRINKING Games are better 🍻\n\nCheck out our latest guide to the best trivia drinking games for your next pub quiz night.\n\n✓ Pub Quiz Rules\n✓ Movie/Music Rounds\n✓ Speed Rounds\n✓ Team Challenges\n\nFull guide: https://blog.xdares.com/trivia-drinking-games-pub-quiz-2/ #trivia #drinkinggames",
-    "Hosting a quiz night at home? 🏠\n\nDon't just keep score. Add drinking rules to the wrong answers and double down on the fun.\n\nLearn how to turn any trivia night into a drinking game:\n\nhttps://blog.xdares.com/trivia-drinking-games-pub-quiz-2/ #quiznight #partyideas",
-    "From classic pub quizzes to themed trivia nights, we've compiled the best rules for trivia drinking games.\n\nWarning: Your competitive side will come out! 🎯\n\nFull list here:\n\nhttps://blog.xdares.com/trivia-drinking-games-pub-quiz-2/ #triviaquiz #competition"
+    "Bar trivia is fun, but Bar Trivia DRINKING Games are better 🍻\n\nCheck out our latest guide to the best trivia drinking games for your next pub quiz night.\n\n✓ Pub Quiz Rules\n✓ Movie/Music Rounds\n✓ Speed Rounds\n✓ Team Challenges\n\nFull guide: https://blog.xdares.com/trivia-drinking-games-pub-quiz-3/ #trivia #drinkinggames",
+    "Hosting a quiz night at home? 🏠\n\nDon't just keep score. Add drinking rules to the wrong answers and double down on the fun.\n\nLearn how to turn any trivia night into a drinking game:\n\nhttps://blog.xdares.com/trivia-drinking-games-pub-quiz-3/ #quiznight #partyideas",
+    "From classic pub quizzes to themed trivia nights, we've compiled the best rules for trivia drinking games.\n\nWarning: Your competitive side will come out! 🎯\n\nFull list here:\n\nhttps://blog.xdares.com/trivia-drinking-games-pub-quiz-3/ #triviaquiz #competition"
 ]
 
 posted = []
