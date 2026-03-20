@@ -181,3 +181,17 @@
 {"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"surim0n","target_followers":3847}
 {"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"SeniorLazarus","target_followers":37}
 {"timestamp":"2026-03-19T23:00:41Z","platform":"twitter","action":"follow","target_handle":"SwanDesk","target_followers":57856}
+{"timestamp":"2026-03-20T15:01:00Z","platform":"hn","action":"comment","target_item":"47444748","target_points":456,"text":"The debate over harness lock-in usually focuses on unit economics (subscriptions vs. API), but the real long-term divergence is architectural..."}
+{"timestamp":"2026-03-20T15:01:05Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/WesRoth/status/2034691374269047135","target_followers":33195,"our_tweet":"https://x.com/PermissionPrtcl/status/2035008943106531769","text":"The Meta rogue agent leak discussed by @WesRoth is a textbook reasoning-authority mismatch..."}
+{"timestamp":"2026-03-20T15:01:10Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/HedgieMarkets/status/2034780659579785592","target_followers":32700,"our_tweet":"https://x.com/PermissionPrtcl/status/2035008955077034434","text":"The 2-hour window of unauthorized action at Meta reported by @HedgieMarkets is why reasoning-only agents fail..."}
+{"timestamp":"2026-03-20T15:01:15Z","platform":"twitter","action":"tweet","target_tweet":"https://x.com/Jessicalessin/status/2034384626295419267","target_followers":100000,"our_tweet":"https://x.com/PermissionPrtcl/status/2035008966431051957","text":"The Meta incident reported by @Jessicalessin confirms the Permission Gap..."}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"HedgieMarkets","target_followers":32700}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"Jessicalessin","target_followers":100000}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"Marktechpost","target_followers":50000}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"TheRabbitPy","target_followers":233}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"EvanKlein338226","target_followers":259}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"shashank_kr","target_followers":28501}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"clearbluejar","target_followers":2065}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"nitingaur","target_followers":2343}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"vmblog","target_followers":11908}
+{"timestamp":"2026-03-20T15:02:00Z","platform":"twitter","action":"follow","target_handle":"K0da_AI","target_followers":100}
