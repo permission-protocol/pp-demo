@@ -219,6 +219,15 @@
       }
     ],
     "failed": [],
-    "blocked": []
+    "blocked": [
+      {
+        "id": "task-307",
+        "action": "fix",
+        "target": "mobile-age-gate",
+        "priority": "high",
+        "status": "blocked",
+        "reason": "Audited site and found no obvious age-gate mechanism in plugins, templates, snippets, or theme files. Suspect CDN (10Web) or server-side configuration."
+      }
+    ]
   }
 }
