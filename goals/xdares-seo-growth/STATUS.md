@@ -1,11 +1,11 @@
 # Xdares Status — Last Updated: 2026-03-20
 
 ## Active Right Now
-- **March Madness Campaign**: 112 total live blog posts! 🚀
-- **Goal Execution**: 8/10 tasks completed for March 20th.
+- **March Madness Campaign**: 115 total live blog posts! 🚀
+- **Goal Execution**: 6/10 tasks completed for March 21st (UTC).
 
 ## Key Numbers
-- **Blog Posts**: 112 live (Verified 'Trivia Drinking Games' and others today!)
+- **Blog Posts**: 115 live (Latest: '500+ Truth or Dare Questions for Adults')
 - **Monthly Sessions**: ~291 (estimate).
 - **KickoffLabs Leads**: 19,725.
 

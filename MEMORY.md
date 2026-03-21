@@ -68,6 +68,18 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **The Result**: Reduced a multi-hour sprint to a single heartbeat cycle.
 - **Lesson**: Don't sequence independent feature work; parallelize across agents to maximize throughput.
 
+### 2026-03-20 — Free Plan Constraints (GitHub)
+- **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan.
+
+### 2026-03-20 — Multi-Workspace GitHub App Auth
+- **The Problem**: Callback link stateless flow ignored active company, leading to cross-workspace auth conflicts.
+- **The Fix**: Link must read `activeCompanyId` cookie. Allow installation transfer when user owns both workspaces. 
+- **The Lesson**: Always use a stateless callback path that reads active session/context cookies.
+
+### 2026-03-20 — Archived Company Visibility Leak
+- **The Problem**: Soft-deletes (`archivedAt`) require cascading checks. Ghost PRs from archived companies appear if the visibility layer doesn't filter them.
+- **Lesson**: Always include `company: { archivedAt: null }` in auth and visibility queries.
+
 ---
 
 ## Systems Built
@@ -81,6 +93,9 @@ Autonomous product pipeline: ideate → organize → spec → build → qa.
 Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot).
 - **Script:** `scripts/iphone-qa.sh`, daily cron via Gemini Flash.
 
+### MCP Guard (2026-03-20)
+Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls.
+
 ---
 
 ## Preferences & Patterns
@@ -93,6 +108,7 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **Debugging Circuit Breaker**: If 5+ messages pass without a fix, STOP, summarize, and escalate to Rod.
 - **No Thinking Out Loud**: Do the work silently; post only the conclusion/result.
 - **GitHub App Auth**: If repo-level calls fail with 401/403 while using a JWT, you likely need an Installation Token.
+- **Sequential Merge Pattern**: When merging multiple PRs, merge one → rebase others → repeat. Avoid conflict cascades.
 
 ---
 
@@ -109,7 +125,8 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **2026-03-17:** Xdares officially crossed **100 live blog posts** (101 total). 🚀
 - **2026-03-18:** Reached **105 live blog posts**; positioning finalized for competitive response.
 - **2026-03-18:** Tinder4PRs "Live" sprint finalized (DB, Auth, Discord, Rate Limiting, AI Engine) in parallel.
-- **2026-03-19:** Xdares officially crossed **110 live blog posts** (110 total). 🚀
+- **2026-03-20:** PullMatch.com launched. 10/10 marketing items implemented. GitHub OAuth live. Rebrand complete. 🚀
+- **2026-03-20:** MCP Guard v0.1 shipped. Stdio enforcement proxy live.
 
 ### 2026-03-19 — MCP Guard Strategy & Enforcement Wedge
 - **Critical Reframe:** PP's wedge is enforcement (blocking dangerous actions), not receipts/audit. "People buy locks before cameras."
@@ -130,7 +147,7 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - [ ] **NemoClaw Recorded Demo**: Recorded for "Trojan Horse" marketing push.
 - [ ] **Factory Pull-Based Sensor Rollout**: Hourly cron for GitHub (`factory/scripts/github-sensor.sh`) and Sentry (`factory/scripts/error-sensor.sh`).
 
-*Updated: 2026-03-19*
+*Updated: 2026-03-20*
 
 ### 2026-03-19 — NemoClaw & Factory Architecture (Major Pivot)
 - **Trojan Horse Demo**: NemoClaw demo proved that real-time policy enforcement on blocked outbound requests works. Caught 403, batched, approved, and updated policy on the fly. Key marketing asset.

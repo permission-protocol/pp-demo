@@ -235,6 +235,19 @@ Render/Vercel sometimes serve stale JS chunks from build cache, leading to "Refe
 
 ---
 
+## PullMatch Workspace
+
+**Standalone Repo:** `pullmatch/app` (private)
+**Vercel Project:** `pullmatch`
+**Neon Database:** `pullmatch-db`
+
+**Architecture:**
+- Decoupled from Permission Protocol (standalone branding).
+- Uses the same core Auth primitives as PP.
+- Workspace directory: `~/pullmatch` (symlinked or separate).
+
+---
+
 ## Blog Publishing (via Tor)
 
 **Server IP blocked** from blog.xdares.com — use Tor proxy for all WordPress operations.

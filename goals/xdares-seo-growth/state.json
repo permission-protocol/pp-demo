@@ -2,8 +2,8 @@
   "version": 2,
   "goal": {
     "id": "xdares-seo-growth",
-    "description": "Grow blog.xdares.com organic traffic. 112 blog posts live. 297 tasks completed. Resuming with pending queue tasks.",
-    "context": "112 blog posts live on blog.xdares.com. 297 total tasks completed. Budgeting 10 tasks/day. Published 'The Ultimate Trivia Drinking Games & Pub Quiz Ideas' (task-312).",
+    "description": "Grow blog.xdares.com organic traffic. 117 blog posts live. 311 tasks completed.",
+    "context": "117 blog posts live on blog.xdares.com. 311 total tasks completed. Budgeting 10 tasks/day. Published '100+ Dirty Dares for Couples' (task-323).",
     "success_metric": {
       "current": "~100 visitors/month",
       "target": "291 sessions/month",
@@ -33,15 +33,45 @@
   "execution": {
     "status": "running",
     "daily_tasks_completed": 10,
-    "total_tasks_completed": 301,
-    "tasks_since_replan": 47,
-    "tasks_since_metric_update": 190,
-    "last_run_at": "2026-03-20T22:15:00Z",
-    "last_run_date": "2026-03-20",
+    "total_tasks_completed": 311,
+    "tasks_since_replan": 57,
+    "tasks_since_metric_update": 200,
+    "last_run_at": "2026-03-21T10:01:00Z",
+    "last_run_date": "2026-03-21",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
+      {
+        "timestamp": "2026-03-21T10:01:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 4:01 AM Denver. Checked status; daily budget of 10 tasks for March 21st (UTC) is already reached (10/10 completed). Last tasks were task-323 and task-324. 117 posts live. Site verified accessible."
+      },
+      {
+        "timestamp": "2026-03-21T08:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 2:11 AM Denver. Published '100+ Dirty Dares for Couples' (task-323) via Tor; verified live at /dirty-dares-for-couples/. Posted 3 promo tweets (task-324). Daily budget reached (10/10)."
+      },
+      {
+        "timestamp": "2026-03-21T06:01:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 12:01 AM Denver. Published 'Never Have I Ever Questions That Will Shock Your Friends' (task-321) via Tor; verified live at /never-have-i-ever-questions/. Posted 4 promo tweets (task-322). 116 posts live."
+      },
+      {
+        "timestamp": "2026-03-21T04:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 10:11 PM Denver. Published '500+ Truth or Dare Questions for Adults' (task-319) via Tor; verified live at /truth-or-dare-questions-for-adults/. Posted 4 promo tweets (task-320). 115 posts live."
+      },
+      {
+        "timestamp": "2026-03-21T02:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 8:11 PM Denver. Published '200+ Would You Rather Questions for Couples' (task-301) via Tor; verified live at /would-you-rather-questions-for-couples/. Posted 3 promo tweets (task-302). 114 posts live."
+      },
+      {
+        "timestamp": "2026-03-21T00:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 6:11 PM Denver. Budget reset for March 21st (UTC rollover). Published 'Truth or Dare Drinking Game: 150+ Epic Questions & Dares for Parties [2026]' (task-317) via Tor; verified live at /truth-or-dare-drinking-game/. Posted 2 promo tweets (task-318). 113 posts live."
+      },
       {
         "timestamp": "2026-03-20T22:15:00Z",
         "tasks_completed": 2,
@@ -78,6 +108,86 @@
     "queue": [],
     "on_hold": [],
     "completed": [
+      {
+        "id": "task-323",
+        "action": "publish",
+        "target": "dirty-dares-for-couples",
+        "status": "completed",
+        "completed_at": "2026-03-21T08:11:00Z",
+        "result": "https://blog.xdares.com/dirty-dares-for-couples/"
+      },
+      {
+        "id": "task-324",
+        "action": "social",
+        "target": "dirty-dares-promo",
+        "status": "completed",
+        "completed_at": "2026-03-21T08:11:00Z",
+        "result": "Posted 3 promo tweets"
+      },
+      {
+        "id": "task-321",
+        "action": "publish",
+        "target": "never-have-i-ever-questions",
+        "status": "completed",
+        "completed_at": "2026-03-21T06:01:00Z",
+        "result": "https://blog.xdares.com/never-have-i-ever-questions/"
+      },
+      {
+        "id": "task-322",
+        "action": "social",
+        "target": "nhie-promo",
+        "status": "completed",
+        "completed_at": "2026-03-21T06:01:00Z",
+        "result": "Posted 4 promo tweets"
+      },
+      {
+        "id": "task-319",
+        "action": "publish",
+        "target": "truth-or-dare-questions-for-adults",
+        "status": "completed",
+        "completed_at": "2026-03-21T04:11:00Z",
+        "result": "https://blog.xdares.com/truth-or-dare-questions-for-adults/"
+      },
+      {
+        "id": "task-320",
+        "action": "social",
+        "target": "truth-or-dare-500-promo",
+        "status": "completed",
+        "completed_at": "2026-03-21T04:11:00Z",
+        "result": "Posted 4 promo tweets"
+      },
+      {
+        "id": "task-301",
+        "action": "publish",
+        "target": "would-you-rather-questions-for-couples",
+        "status": "completed",
+        "completed_at": "2026-03-21T02:11:00Z",
+        "result": "https://blog.xdares.com/would-you-rather-questions-for-couples/"
+      },
+      {
+        "id": "task-302",
+        "action": "social",
+        "target": "would-you-rather-promo",
+        "status": "completed",
+        "completed_at": "2026-03-21T02:11:00Z",
+        "result": "Posted 3 promo tweets"
+      },
+      {
+        "id": "task-317",
+        "action": "publish",
+        "target": "truth-or-dare-drinking-game",
+        "status": "completed",
+        "completed_at": "2026-03-21T00:11:00Z",
+        "result": "https://blog.xdares.com/truth-or-dare-drinking-game/"
+      },
+      {
+        "id": "task-318",
+        "action": "social",
+        "target": "truth-or-dare-drinking-game-promo",
+        "status": "completed",
+        "completed_at": "2026-03-21T00:11:00Z",
+        "result": "Posted 2 promo tweets"
+      },
       {
         "id": "task-315",
         "action": "publish",
@@ -181,54 +291,6 @@
         "status": "completed",
         "completed_at": "2026-03-19T10:17:00Z",
         "result": "Posted 4 tweets"
-      },
-      {
-        "id": "task-301",
-        "action": "publish",
-        "target": "would-you-rather-questions-for-couples",
-        "status": "completed",
-        "completed_at": "2026-03-19T10:15:00Z",
-        "result": "https://blog.xdares.com/would-you-rather-questions-for-couples-2/"
-      },
-      {
-        "id": "task-302",
-        "action": "social",
-        "target": "would-you-rather-promo",
-        "status": "completed",
-        "completed_at": "2026-03-19T10:15:00Z",
-        "result": "Posted 5 tweets"
-      },
-      {
-        "id": "task-299",
-        "action": "publish",
-        "target": "date-night-games",
-        "status": "completed",
-        "completed_at": "2026-03-19T08:15:00Z",
-        "result": "https://blog.xdares.com/date-night-games-3/"
-      },
-      {
-        "id": "task-300",
-        "action": "social",
-        "target": "date-night-promo",
-        "status": "completed",
-        "completed_at": "2026-03-19T08:15:00Z",
-        "result": "Posted 3 tweets"
-      },
-      {
-        "id": "task-297",
-        "action": "publish",
-        "target": "adult-party-games",
-        "status": "completed",
-        "completed_at": "2026-03-19T08:04:30Z",
-        "result": "https://blog.xdares.com/adult-party-games/"
-      },
-      {
-        "id": "task-298",
-        "action": "social",
-        "target": "adult-party-games-promo",
-        "status": "completed",
-        "completed_at": "2026-03-19T08:04:30Z",
-        "result": "Posted 3 tweets"
       },
       {
         "id": "task-1",

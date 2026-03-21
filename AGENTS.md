@@ -465,6 +465,7 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 
 ### Git Hygiene (HARD RULES)
 - **NEVER `git add -A` or `git add .` in a shared worktree.** Always `git add <specific files>`.
+- **Run `scripts/git-hygiene-check.sh` before every commit.** It catches common junk files and potential secrets.
 - **Run `git status` before creating a branch.** If untracked junk exists, clean it or `.gitignore` it first.
 - **Review `git diff --stat` before pushing.** If the file count doesn't match your changes, something's wrong.
 
@@ -475,6 +476,7 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 4. **Check for removed elements** — did Codex delete something it shouldn't have?
 5. **Walk the user journey** — mentally step through: user lands → reads → acts → done. Is every step frictionless?
 6. **Flag gaps** — if something's missing, fix it or re-run Codex. Don't push and hope.
+7. **GitHub Plan Awareness** — Does the feature depend on GitHub Pro/Enterprise features (rulesets, required checks)? If yes, add a fallback/skip for Free plan users. Test with a Free plan repository if possible.
 
 ### PRD Requirements
 - **Include a "User Journey" section** — step-by-step what the user does, not just what's on screen. "User clicks Approve → modal appears with X, Y, Z → user fills → submits" beats "Approve button at top right."
