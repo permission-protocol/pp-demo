@@ -4,8 +4,8 @@ description: >
   Manage Discord thread lifecycles with structured commands. Use when a message
   starts with /cheatsheet, /topic, /triage, /extract, /close-review, /archive,
   /promote, or /reopen. Implements a topic lifecycle system where channels are
-  streams and threads are finite work items with states (ACTIVE, WAITING, BLOCKED,
-  READY_TO_ARCHIVE, ARCHIVED). Tracks state in ops/threads.yaml, decisions in
+  streams and threads are finite work items with states (ACTIVE, BLOCKED, PARKED,
+  EXPIRED, ARCHIVED). Tracks state in ops/threads.yaml, decisions in
   ops/decisions.md.
 ---
 
@@ -151,7 +151,7 @@ Reason: <why>
 Suggested: <what to do next>
 ```
 
-Update thread status to `READY_TO_ARCHIVE` if gate passes.
+Update thread status to `PARKED` if gate passes and the thread is waiting for final archive.
 
 ### /archive
 
@@ -183,8 +183,9 @@ Memory updated: <Yes/No>
 ```
 
 7. **Store key decisions and facts to long-term memory** using `memory_store`. For each significant decision or fact from the thread, call `memory_store` with category `decision` or `fact`. This ensures all future sessions — including other threads — have instant access to archived context without needing to read files.
-8. Update `ops/threads.yaml` → status `ARCHIVED`
-8. **Discord-archive the thread** — rename with `✅ ` prefix, set `archived: true` and `locked: true` via Discord API. This removes it from the sidebar. Use direct API call:
+8. Post the resolution artifact to the thread.
+9. Update `ops/threads.yaml` → status `ARCHIVED`
+10. **Discord-archive the thread** — set `archived: true` and `locked: true` via Discord API. This removes it from the sidebar. Use direct API call:
    ```
    curl -X PATCH "https://discord.com/api/v10/channels/<thread_id>" \
      -H "Authorization: Bot $DISCORD_TOKEN" \
@@ -224,9 +225,9 @@ Previous archive: <date>
 | Status | Meaning |
 |---|---|
 | `ACTIVE` | Work is happening |
-| `WAITING` | Blocked on external input |
 | `BLOCKED` | Cannot proceed — needs decision or dependency |
-| `READY_TO_ARCHIVE` | Close-review passed, awaiting confirmation |
+| `PARKED` | Intentionally paused without active execution |
+| `EXPIRED` | Timed out and needs explicit re-triage |
 | `ARCHIVED` | Reconciled, extracted, closed |
 
 ## Automation Notes

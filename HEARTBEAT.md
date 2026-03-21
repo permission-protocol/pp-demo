@@ -1,10 +1,5 @@
 # HEARTBEAT.md
 
-## ⚠️ PENDING HOT SIGNAL — Check pp-os/marketing/HOT-SIGNAL.md
-Marketing signal scan found a hot signal (Clinejection secondary wave). Read `pp-os/marketing/HOT-SIGNAL.md` and alert Rod. Clear file after action.
-
----
-
 ## Step 0: Deterministic Health Check (ALWAYS RUN FIRST)
 ```bash
 bash ~/.openclaw/workspace/scripts/heartbeat-check.sh
@@ -73,7 +68,7 @@ cat ~/.openclaw/workspace/ops/threads.yaml
 ```
 
 **Check for:**
-1. **Idle threads:** Any thread with `status: ACTIVE` and `last_updated` >72h ago → post nudge in-thread:
+1. **Idle threads:** Any thread with `status: ACTIVE` and `updated_at` >72h ago → post nudge in-thread:
    ```
    💤 This thread has been quiet for <N> days.
    Current state: <summary>
@@ -85,7 +80,7 @@ cat ~/.openclaw/workspace/ops/threads.yaml
 2. **Thread health digest:** If any threads need attention (idle, blocked, or ready to archive), post to `#daily-log` (1479273618876792893):
    ```
    🧵 Thread Health — <date>
-   Active: <N> | Waiting: <N> | Blocked: <N>
+   Active: <N> | Parked: <N> | Blocked: <N>
    Idle >72h: <N> ⚠️
    Ready to archive: <N>
 
@@ -94,7 +89,7 @@ cat ~/.openclaw/workspace/ops/threads.yaml
    ```
    Only post if there's something worth reporting. Silent otherwise.
 
-3. **Status drift:** If a thread's Discord activity contradicts its YAML status (e.g., marked WAITING but has new messages), update the YAML status.
+3. **Status drift:** If a thread's Discord activity contradicts its YAML status (e.g., marked PARKED or BLOCKED but has new messages), update the YAML status.
 
 ## Factory Pipeline Health
 

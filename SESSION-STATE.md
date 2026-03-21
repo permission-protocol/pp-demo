@@ -1,9 +1,2 @@
-# SESSION-STATE.md — Active Working Memory
-
-*Current task context. Overwrite freely. Archive to daily notes when done.*
-
-## Current Task
-None.
-
-## Key Details
-(Last archived 2026-03-20)
+Task: refactor/orchestration-state-machine
+Requirements: create scripts/crons with 4 bash wrappers; enforce new threads schema; add merge->archive flow; commit/push/PR.

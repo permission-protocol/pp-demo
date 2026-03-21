@@ -1,46 +1,16 @@
 {
-  "version": 1,
-  "updated": "2026-03-06",
-  "status": "phase_0_testing",
-  "notes": "Initial playbook v1. All variants equally weighted until we have data.",
+  "version": 2,
+  "updated": "2026-03-21",
+  "status": "v2_design_partner_wedge",
+  "notes": "Pivoted from selling infrastructure to recruiting enterprise Design Partners / CAB members via ego and expert critique.",
 
   "angles": {
-    "A1_incident_response": {
+    "A1_design_partner_critique": {
       "id": "A1",
-      "label": "incident_response",
-      "description": "Reference a specific incident they experienced or that's relevant to their space",
-      "hypothesis": "People pay attention when you reference their pain, not your product",
-      "weight": 0.25,
-      "sends": 0,
-      "replies": 0,
-      "status": "active"
-    },
-    "A2_deploy_safety": {
-      "id": "A2",
-      "label": "deploy_safety",
-      "description": "Their AI agents ship actions without approval — that's a ticking timebomb",
-      "hypothesis": "Fear of what could go wrong resonates with technical leaders",
-      "weight": 0.25,
-      "sends": 0,
-      "replies": 0,
-      "status": "active"
-    },
-    "A3_accountability_gap": {
-      "id": "A3",
-      "label": "accountability_gap",
-      "description": "When your agent breaks something, who's accountable? You need receipts.",
-      "hypothesis": "Accountability framing resonates with CTOs and founders facing enterprise buyers",
-      "weight": 0.25,
-      "sends": 0,
-      "replies": 0,
-      "status": "active"
-    },
-    "A4_their_own_words": {
-      "id": "A4",
-      "label": "their_own_words",
-      "description": "Quote their own writing/statements back to them — they already believe what we're selling",
-      "hypothesis": "Highest conversion when the target already articulated the problem themselves",
-      "weight": 0.25,
+      "label": "design_partner_critique",
+      "description": "Ask enterprise engineering/security leaders to poke holes in our MCP Guard / Receipt architecture.",
+      "hypothesis": "Leaders ignore pitches but love giving expert opinions and tearing down new architecture.",
+      "weight": 1.0,
       "sends": 0,
       "replies": 0,
       "status": "active"
@@ -48,32 +18,11 @@
   },
 
   "openers": {
-    "O1_pain_point": {
+    "O1_nist_framework": {
       "id": "O1",
-      "label": "pain_point",
-      "description": "Lead with their specific problem or incident",
-      "weight": 0.25,
-      "status": "active"
-    },
-    "O2_social_proof": {
-      "id": "O2",
-      "label": "social_proof",
-      "description": "Reference NIST submission, industry credibility, or shared connections",
-      "weight": 0.25,
-      "status": "active"
-    },
-    "O3_curiosity": {
-      "id": "O3",
-      "label": "curiosity",
-      "description": "Ask a question about how they handle a specific problem",
-      "weight": 0.25,
-      "status": "active"
-    },
-    "O4_peer": {
-      "id": "O4",
-      "label": "peer",
-      "description": "Founder-to-founder, working on the same class of problem",
-      "weight": 0.25,
+      "label": "nist_framework",
+      "description": "Lead with the NIST submission credibility and ask for a critique.",
+      "weight": 1.0,
       "status": "active"
     }
   },
@@ -81,19 +30,18 @@
   "rules": {
     "connection_note_max_chars": 300,
     "message_max_chars": 500,
-    "tone": "peer_founder — conversational, specific, zero corporate speak",
+    "tone": "architect_to_peer — technical, humble, seeking harsh feedback, zero corporate speak",
     "never": [
-      "Don't mention 'Permission Protocol' in connection note",
-      "Don't use words: 'excited', 'passionate', 'leverage', 'synergy'",
-      "Don't pitch in the connection note — just earn the accept",
-      "Don't send walls of text — under 500 chars per message",
-      "Don't be generic — every message must reference something specific to them"
+      "Don't pitch the product.",
+      "Don't ask to 'explore synergies' or 'jump on a quick call'.",
+      "Don't send links in the connection note.",
+      "Don't use salesy language like 'we help companies like yours'."
     ],
     "always": [
-      "Lead with THEIR problem, not our solution",
-      "Reference a specific signal, article, incident, or quote",
-      "End messages with a question (keeps conversation going)",
-      "Make it easy to say yes — 'quick call' not 'strategic partnership discussion'"
+      "Lead with credibility (NIST submission, MCP Guard open-source).",
+      "Ask them to tell us why our approach WON'T work in their enterprise environment.",
+      "Offer the 60s NemoClaw demo video as a low-friction visual.",
+      "Give them a completely pressure-free out in the follow-up."
     ]
   }
 }

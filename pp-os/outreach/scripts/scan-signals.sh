@@ -22,7 +22,7 @@ mkdir -p "$SIGNALS_DIR" "$LEADS_DIR"
 # Search HN for relevant stories from last 24h
 echo "📡 Scanning Hacker News..."
 
-HN_KEYWORDS=("AI agent" "autonomous agent" "AI deploy" "AI incident" "AI governance" "AI safety" "agent framework" "agent security" "sandbox escape" "prompt injection" "supply chain attack AI" "AI authorization" "agentic" "coding agent")
+HN_KEYWORDS=("MCP" "Model Context Protocol" "CISO" "agent security" "AI enterprise deployment" "AI incident" "prompt injection" "rogue agent" "LLM guardrails bypass" "AI agent security" "AI risk" "VP Engineering")
 
 HN_RESULTS=""
 for keyword in "${HN_KEYWORDS[@]}"; do
@@ -140,8 +140,8 @@ for line in hn_raw.strip().split('\n'):
         
         # Keyword relevance boost
         title_lower = item.get('title', '').lower()
-        high_relevance = ['agent security', 'ai governance', 'sandbox escape', 'prompt injection', 'ai authorization', 'ai incident']
-        med_relevance = ['autonomous agent', 'ai deploy', 'agentic', 'coding agent', 'agent framework']
+        high_relevance = ['mcp', 'model context protocol', 'agent security', 'rogue agent', 'llm guardrails', 'prompt injection', 'ai enterprise deployment', 'ciso']
+        med_relevance = ['ai authorization', 'agent framework', 'ai risk', 'ai deployment', 'ai incident']
         
         if any(k in title_lower for k in high_relevance):
             score += 3
@@ -224,4 +224,6 @@ echo "$TOP_FOR_DISCORD"
 if [ "$DRY_RUN" != "--dry-run" ]; then
   echo ""
   echo "📤 Would post to #scout-alerts (use cron to enable)"
+fi
+"📤 Would post to #scout-alerts (use cron to enable)"
 fi
