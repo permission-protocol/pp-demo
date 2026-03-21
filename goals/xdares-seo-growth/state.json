@@ -36,12 +36,17 @@
     "total_tasks_completed": 311,
     "tasks_since_replan": 57,
     "tasks_since_metric_update": 200,
-    "last_run_at": "2026-03-21T18:11:00Z",
+    "last_run_at": "2026-03-21T20:01:00Z",
     "last_run_date": "2026-03-21",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
+      {
+        "timestamp": "2026-03-21T20:01:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 2:01 PM Denver. Verified site is live and latest posts (Spin the Bottle, Dirty Dare Ideas, Best Truth Questions) are accessible. Daily budget for March 21st UTC (10/10) remains exhausted. Identified 4 live posts requiring promotion; added to queue for next budget cycle. Next reset in ~4 hours (00:00 UTC)."
+      },
       {
         "timestamp": "2026-03-21T18:11:00Z",
         "tasks_completed": 0,
@@ -130,7 +135,36 @@
     ]
   },
   "tasks": {
-    "queue": [],
+    "queue": [
+      {
+        "id": "task-325",
+        "action": "social",
+        "target": "spin-the-bottle-promo",
+        "priority": "medium",
+        "status": "pending"
+      },
+      {
+        "id": "task-326",
+        "action": "social",
+        "target": "dirty-dare-ideas-promo",
+        "priority": "medium",
+        "status": "pending"
+      },
+      {
+        "id": "task-327",
+        "action": "social",
+        "target": "best-truth-questions-promo",
+        "priority": "medium",
+        "status": "pending"
+      },
+      {
+        "id": "task-328",
+        "action": "social",
+        "target": "truth-or-dare-over-text-promo",
+        "priority": "medium",
+        "status": "pending"
+      }
+    ],
     "on_hold": [],
     "completed": [
       {
