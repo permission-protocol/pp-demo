@@ -92,6 +92,11 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **The Fix**: CI/CD Rerun Strategy: When using strict branch protection, stored SHAs and check-run IDs become stale as the main branch advances. A reliable rerun strategy must fetch the current PR HEAD and query for current check-runs before triggering.
 - **Lesson**: Ensure heartbeat scripts handle detached HEAD or missing upstreams gracefully, or alert when the workspace is in an "unstable" git state for automation.
 
+### 2026-03-22 — Heartbeat Maintenance & Weekly Curation
+- **Weekly Curation:** Reviewed past week's daily notes, extracted 6 strategic insights, and archived 861 transcripts.
+- **Maintenance:** Health check is healthy (watch: opus-4-6). Transcripts archived and evolution backup pushed.
+- **Demo Recording:** Successfully recorded and sent the first NemoClaw demo GIF (blocked egress scenario) to Rod in Discord.
+
 ---
 
 ## Systems Built
@@ -147,6 +152,7 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **2026-03-20:** MCP Guard v0.1 shipped. Stdio enforcement proxy live.
 - **2026-03-21:** PullMatch mobile optimization and live risk summary launched. 🚀
 - **2026-03-22:** Weekly memory curation and transcript archive completed.
+- **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
 
 ### 2026-03-19 — MCP Guard Strategy & Enforcement Wedge
 - **Critical Reframe:** PP's wedge is enforcement (blocking dangerous actions), not receipts/audit. "People buy locks before cameras."
