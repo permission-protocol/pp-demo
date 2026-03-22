@@ -160,6 +160,7 @@ Before reporting "done" or "fixed":
 - Verify by observing behavior (logs, screenshots, curl), not just reading config.
 - If you changed how something works, test that the NEW behavior actually fires.
 - **Visual QA Protocol**: Always run `scripts/pre-merge-review.sh` for UI changes before merging. Screenshot-first, merge-second.
+- **Screenshot Rule**: To avoid race conditions or stale tabs, always use `browser navigate` followed by `browser snapshot` with a specific `targetId`. If elements are missing (Framer Motion), inject CSS: `* { opacity: 1 !important; transition: none !important; animation: none !important; }`.
 - **Embedded vs Infrastructure**: Prefer embedded solutions (in-process workers, sqlite) for "single service" deployments unless scale mandates external dependencies.
 - **Bulk Merge Protocol**: When merging 3+ PRs to one repo, merge sequentially and rebase remaining branches after each merge to avoid conflict cascades.
 - **Error-Aware Retry**: Always include specific error logs (e.g. `tsc` output) when prompting an agent to fix a failure. Never retry "blind."
