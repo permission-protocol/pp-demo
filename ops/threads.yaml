@@ -5,23 +5,32 @@ threads:
   status: ARCHIVED
   owner: Rod
   priority: low
-  created: '2026-03-19'
-  last_updated: '2026-03-19'
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Fixed unbranded Next.js 404 page by implementing a custom client-side `not-found.tsx`
     matching the PP design system.
   open_tasks: []
   decisions:
   - '`not-found.tsx` should use client-side navigation (`onClick={() => router.push("/")}`)
     to avoid type conflicts with PP`s custom `<Button>` component.'
-  archived: '2026-03-19'
 - id: '1483894208656969850'
   title: Back to PR Button
   channel: rc-main
   status: ARCHIVED
   owner: Rod
   priority: low
-  created: '2026-03-18'
-  last_updated: '2026-03-19'
+  created_at: '2026-03-18'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Fixed "Back to PR" button opening in a chromeless popup window instead
     of a new tab. Diagnosed popup context inheritance (approval page opened from Slack/email)
     and implemented a programmatic anchor click fix in PR #199.'
@@ -31,16 +40,19 @@ threads:
     the popup style instead of opening a proper tab.
   - The escape hatch is to programmatically create a detached <a> element, append
     it, click it, and remove it.
-  archived: '2026-03-19'
 - id: '1483129687344680960'
   title: 1st Competitor
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-17
   owner: Rod
   priority: high
-  created: 2026-03-16
-  last_updated: 2026-03-17
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Full competitive response to Guard0/g0. Built Three Questions positioning,
     VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI
     scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage
@@ -56,13 +68,17 @@ threads:
   - One-liner PLG (pp-scan .) is highest-leverage dev tool to build
 - id: '1483155946623733853'
   title: Marketing Vs App [UNIFY]
-  archived: 2026-03-16
   channel: rc-main
   status: ARCHIVED
   owner: Rod
   priority: high
-  created: 2026-03-16
-  last_updated: 2026-03-16
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Full URL consolidation of Permission Protocol review surfaces. Audited
     both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to
     app (dashboard + detail page + mobile), then killed marketing review/auth/API
@@ -79,11 +95,15 @@ threads:
   title: Obsidian
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-16
   owner: Rod
   priority: low
-  created: 2026-03-16
-  last_updated: 2026-03-16
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured
     .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename
     issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull)
@@ -99,11 +119,15 @@ threads:
   title: OpenClaw Update
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-16
   owner: Rod
   priority: medium
-  created: 2026-03-16
-  last_updated: 2026-03-16
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: "Updated OpenClaw from 2026.3.2 \u2014 2026.3.13. Backed up workspace +\
     \ config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup.\
     \ Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver)."
@@ -118,11 +142,15 @@ threads:
   title: bugs (PP merge loop)
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-18
   owner: Rod
   priority: high
-  created: 2026-03-18
-  last_updated: 2026-03-18
+  created_at: '2026-03-18'
+  updated_at: '2026-03-18'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated
     approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed
     with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate
@@ -138,11 +166,15 @@ threads:
   title: /drploy-date
   channel: control-room-2
   status: ARCHIVED
-  archived: 2026-03-15
   owner: Rod
   priority: medium
-  created: 2026-03-15
-  last_updated: 2026-03-15
+  created_at: '2026-03-15'
+  updated_at: '2026-03-15'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run\
     \ bypass, #19 review URL) \u2014 both already fixed by v2 rewrite and PR #20.\
     \ Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license)\
@@ -157,11 +189,15 @@ threads:
   title: iPhone Mirroring
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-16
   owner: Rod
   priority: medium
-  created: 2026-03-13
-  last_updated: 2026-03-16
+  created_at: '2026-03-13'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: "Explored iPhone Mirroring for mobile QA \u2014 discovered synthetic clicks\
     \ are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction\
     \ layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash.\
@@ -180,11 +216,15 @@ threads:
   title: GarryTan
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-16
   owner: Rod
   priority: medium
-  created: 2026-03-16
-  last_updated: 2026-03-16
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Analyzed Garry Tan''s gstack repo (10 Claude Code skills for role-based
     agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality
     gates into the factory pipeline: CEO review, engineering review, paranoid code
@@ -197,11 +237,15 @@ threads:
   title: User Requirements
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-17
   owner: Rod
   priority: high
-  created: 2026-03-16
-  last_updated: 2026-03-17
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: "Deep Marco persona requirements sprint. Wrote 29-requirement spec across\
     \ 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon:\
     \ enrichment pipeline (origin context, verification steps, confidence warnings),\
@@ -230,11 +274,15 @@ threads:
   title: Claude Dependency
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-17
   owner: Rod
   priority: high
-  created: 2026-03-17
-  last_updated: 2026-03-17
+  created_at: '2026-03-17'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Anthropic outage killed all three fallback models (all Anthropic, one auth
     profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview
     as cross-provider fallback. Config patched and restarted successfully.
@@ -249,11 +297,15 @@ threads:
   title: Big Daddy
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-18
   owner: Rod
   priority: high
-  created: 2026-03-17
-  last_updated: 2026-03-18
+  created_at: '2026-03-17'
+  updated_at: '2026-03-18'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug,
     fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193).
     Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on
@@ -270,11 +322,15 @@ threads:
   title: Push to main
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-17
   owner: Rod
   priority: medium
-  created: 2026-03-16
-  last_updated: 2026-03-17
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: "Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml\
     \ (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed\
     \ with PR #174: detect merge/squash commits, extract PR info, pass to verify action\
@@ -299,8 +355,13 @@ threads:
   status: ARCHIVED
   owner: Rod
   priority: medium
-  created: 2026-03-19
-  last_updated: 2026-03-19
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Updated Maria''s OpenClaw container to 2026.3.13-1, fixed missing memory-lancedb
     plugin via on-demand install. Enabled diffs and acpx plugins for Charles locally.
     Established boundary: Maria handles headless external operations, Charles handles
@@ -312,16 +373,19 @@ threads:
   - Charles handles local browser, auth-gated dashboards using 1Password. No Chrome
     Extension Relay needed.
   - OpenClaw 2026.3.13+ requires explicit plugin installs for memory-lancedb and diffs.
-  archived: '2026-03-19'
 - id: '1484220042735517869'
   title: Where's Risk
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-19
   owner: Rod
   priority: high
-  created: 2026-03-19
-  last_updated: 2026-03-19
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: 'Root-caused the missing risk analysis to an inverted catch block in the
     webhook route which caused a permanent ''Analyzing...'' placeholder on failure.
     Fixed the logic flow in PR #202 on permission-protocol/app.'
@@ -333,11 +397,15 @@ threads:
   title: KOL
   channel: rc-main
   status: ARCHIVED
-  archived: 2026-03-19
   owner: Rod
   priority: low
-  created: 2026-03-19
-  last_updated: 2026-03-19
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   summary: Confirmed lead routing protocol. Permission Protocol uses Discord webhooks
     for /contact leads, routing them to the
   open_tasks: []
@@ -350,8 +418,13 @@ threads:
   status: ACTIVE
   owner: Rod
   priority: high
-  created: '2026-03-18'
-  last_updated: '2026-03-19'
+  created_at: '2026-03-18'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Verify deployment of PR
+  resolution_artifact: null
   summary: Jake persona PR review surface optimization. Implemented verdict-first
     comment format (V2), friction gate for block verdicts, and Gemini enrichment fixes
     for JSON truncation.
@@ -361,5 +434,234 @@ threads:
   - Record demo video
   decisions:
   - Verdict-first format for solo founder efficiency.
-  - Graduated friction: one-click for safe, checkbox for block.
+  - 'Graduated friction: one-click for safe, checkbox for block.'
   - Bump Gemini tokens to 2048 to handle CoT overhead.
+- id: '1484260983416291428'
+  title: Orgs
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Overhauled the onboarding flow for Permission Protocol. Identified a critical
+    vulnerability where Access Denied errors exposed archived company IDs, and fixed
+    a GitHub App stateless installation race condition. Ripped out 7,000+ lines of
+    dead legacy settings/setup code and replaced the empty dashboard with a linear
+    Progressive Onboarding Wizard (Connect GitHub -> Generate Key -> Open PR).
+  open_tasks: []
+  decisions:
+  - Empty state must be a strict progressive state machine, not passive docs.
+  - The legacy autonomous OS settings/setup pages are permanently deleted to avoid
+    user confusion.
+  - Stateless GitHub App installation callbacks require a forced 3-second auto-poll
+    delay to handle GitHub's internal API propagation.
+- id: '1484429153552830626'
+  title: Opus - onboarding error
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: 'Fixed 8 bugs in deploy-gate onboarding wizard across 6 PRs (#220, #221,
+    #224, #225, #230, #232). Root causes: missing GitHub API permissions, free-plan
+    limitations blocking rulesets+branch protection, stale API keys from deleted companies,
+    wrong callback redirect, dead-end Access Denied page, and status persistence on
+    refresh.'
+  open_tasks: []
+  decisions:
+  - "Free-plan private repos cannot enforce required checks \u2014 gate runs but can't\
+    \ block merges"
+  - Company archive must cascade-clean API keys and GitHub App installations
+  - ensureSecret must verify key ownership not just existence
+  - Repos endpoint must not overwrite DB status when GitHub API returns 403
+  - permission-protocol/app is the canonical repo (never use Roca-Ventures/Breakout-Labs)
+- id: '1484436184393322506'
+  title: Opus - org 3
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: 'Multi-company data isolation bug: deploy queue showed wrong company data
+    after switching. Root-caused to cookie race condition (Set-Cookie not applied
+    before window.location.reload). Fixed with client-side cookie set (PR #223), navigate
+    to /c on switch (PR #226), and archived company handling (PR #231). Also re-triggered
+    PullMatch deploy requests after repo rebrand from Tinder4PRs.'
+  open_tasks: []
+  decisions:
+  - Company switch must set cookie client-side before navigation (belt-and-suspenders
+    with server Set-Cookie)
+  - Switch navigates to /c root, not reload current URL (avoids cross-company resource
+    access)
+  - Deploy requests from archived companies show "Archived Company" state, not "Switch
+    to"
+  - "Detail page isolation check works correctly \u2014 leak was read-only at list\
+    \ level only"
+  - "Render deploy status \"success\" on GitHub doesn't guarantee actual rebuild \u2014\
+    \ verify via CSS/JS hash"
+- id: '1484330892015960286'
+  title: PP Msg Broken
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Root-caused and fixed a critical bug in the AI enrichment pipeline where
+    Gemini's `<think>` tags (chain-of-thought) were breaking JSON extraction. Implemented
+    a pre-extraction regex to strip tags and bumped `maxOutputTokens` to 8192 to prevent
+    payload truncation (PR 213).
+  open_tasks: []
+  decisions:
+  - Gemini chain-of-thought (`<think>` blocks) breaks naive JSON parsing (`indexOf('{')`);
+    explicitly strip tags before parsing.
+  - Increase Gemini `maxOutputTokens` to 8192 to prevent payload + reasoning truncation.
+- id: '1484577755994525896'
+  title: MCP Guard
+  channel: rc-main
+  status: ACTIVE
+  owner: Rod
+  priority: high
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Receipt viewer integration on app.permissionprotocol.com
+  resolution_artifact: null
+  summary: Built and shipped MCP Guard v0 and v0.1. A stdio proxy for MCP that enforces
+    YAML policies (allow/block/hold) and emits audit receipts. Includes a real-time
+    approval web UI and before/after demo assets.
+  open_tasks:
+  - Receipt viewer integration on app.permissionprotocol.com
+  - Verify end-to-end with real MCP client
+  - Finalize HN submission timing
+  decisions:
+  - PP wedge is enforcement (locks) > audit (cameras).
+  - Proxy mode is correct architecture for universal compatibility.
+  - Decision engine must be future-safe by accepting toolArgs now.
+  - Before/after contrast in demo GIFs is the conversion driver.
+- id: '1483323537057120370'
+  title: Tinder for PR
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-18'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Built demo PRs for Permission Protocol, fixed a UI bug where archived companies
+    leaked access, switched default model to Gemini 3.1 Pro Preview, rebranded the
+    'Tinder for PR' project to 'PullMatch' across the codebase, and generated a new
+    logo.
+  open_tasks: []
+  decisions:
+  - Rebranded 'Tinder for PR' to 'PullMatch' and tinderforpr.com to pullmatch.com.
+  - Set default primary model to google/gemini-3.1-pro-preview.
+  - API key validation and deploy request GET route now explicitly filter out archived
+    companies.
+- id: '1484644007521812662'
+  title: PullMatch
+  channel: pullmatch
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Gathered all historical context for PullMatch (formerly Tinder for PRs)
+    and created a dedicated workspace folder with CONTEXT.md and STATUS.md.
+  open_tasks: []
+  decisions:
+  - Transitioning PullMatch from a Permission Protocol demo environment to a standalone
+    product.
+- id: '1484406326183596124'
+  title: Opus GH PR Page
+  channel: opus-gh-pr-page
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Fixed duplicate PR comments (webhook vs action race condition) and stuck
+    "Analyzing..." placeholder (missing error handler). Reduced Gemini maxOutputTokens
+    to sensible sizes (1024/512) and fixed Next.js query parameter redirect loop.
+  open_tasks: []
+  decisions:
+  - GitHub App webhook handler must own PR comments if active; GitHub Action post-comment
+    must be disabled (false) to prevent race conditions and duplicate comments.
+  - useSearchParams() does not react to native window.history.replaceState(). Must
+    use router.replace() to clear query parameters and correctly update React state.
+  - Gemini maxOutputTokens should be sized appropriately to the expected JSON payload
+    (e.g., 1024 or 512) rather than maxed out (8192), to avoid wasting token buffers
+    and latency.
+- id: '1484339439819034865'
+  title: Orgs 2
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: 'Fixed multi-workspace GitHub App installation flow. Root-caused stateless
+    callback ignoring activeCompanyId cookie (linking to wrong workspace) and throwing
+    409 when installation already belonged to another workspace the user owns. Fixed
+    GitHub App Setup URL pointing to deleted /c/setup page. Built one-click auto-setup
+    for Step 3 (workflow + secret + ruleset via existing setup-repo endpoint). Deployed
+    PRs #216 and #217.
+
+    '
+  open_tasks: []
+  decisions:
+  - Stateless GitHub App link route must read activeCompanyId cookie to target the
+    correct workspace.
+  - Allow installation transfer when user is a member of both old and new workspace
+    (not a hard 409).
+  - GitHub App Setup URL must point to /api/github-app/callback, not /c/setup (deleted
+    page).
+  - console.error in callback state-parse should be console.warn to avoid Next.js
+    dev error overlay.
+  - Step 3 should offer one-click auto-setup via setup-repo API, with manual fallback.
+  - PP deploy gate correctly flagged dirty PR
+  - Always use git add <specific files>, never git add . in shared worktrees.
