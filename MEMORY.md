@@ -61,7 +61,7 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 ### 2026-03-18 — "Authority > Scanning" Competitive Positioning
 - **The Hot Signal**: Vett.sh "Unsigned Binary" attack and Replit DB deletion incidents identified as perfect "Why Now" marketing signals.
 - **The Pivot**: Positioning Permission Protocol as **Governance/Authority Routing** (enforcement) vs competitors' **Vulnerability Scanning/Assessment**. 
-- **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat.
+- **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat. (The moat is being the execution chokepoint (the "lock") rather than just a scanning tool (the "camera").)
 
 ### 2026-03-18 — "Parallel Codex" Pattern
 - **The Pattern**: Spawning multiple parallel Codex/sub-agent sessions for independent feature development (e.g., DB, Auth, UI in one cycle).
@@ -69,20 +69,26 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Lesson**: Don't sequence independent feature work; parallelize across agents to maximize throughput.
 
 ### 2026-03-20 — Free Plan Constraints (GitHub)
-- **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan.
+- **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan. Systems must be designed to gracefully skip or adapt when these features are unavailable.
 
 ### 2026-03-20 — Multi-Workspace GitHub App Auth
 - **The Problem**: Callback link stateless flow ignored active company, leading to cross-workspace auth conflicts.
 - **The Fix**: Link must read `activeCompanyId` cookie. Allow installation transfer when user owns both workspaces. 
-- **The Lesson**: Always use a stateless callback path that reads active session/context cookies.
+- **The Lesson**: Always use a stateless callback path that reads active session/context cookies to ensure installations link to the correct active workspace.
 
 ### 2026-03-21 — Gemini `<think>` Tags & JSON Extraction
 - **The Problem**: Gemini's `<think>` tags (Chain of Thought) break naive JSON parsing when models are configured with high reasoning/verbose outputs.
 - **The Fix**: Strip `<think>` tags via regex before extracting JSON. Increase `maxOutputTokens` to 8192 to handle the reasoning overhead.
 - **Lesson**: Always sanitize model output for meta-tags before structured parsing.
 
+### 2026-03-21 — Headless Browser Screenshot Racing
+- **The Problem:** `browser action: screenshot` with a URL can race navigation or capture stale active tabs. Framer-motion / Intersection Observer animations (like fade-ins) are often invisible in `fullPage` screenshots.
+- **The Fix:** Manual `navigate` + specific `targetId` for reliable capture. Use a CSS override (`opacity: 1 !important`) to force-show animated elements during capture.
+- **Lesson:** Screenshotting modern web apps requires forcing final state via CSS/JS and explicit target identification.
+
 ### 2026-03-22 — Heartbeat & Branch Hygiene
 - **The Problem**: Automated maintenance scripts (archive, backup) failed to push because the workspace was on a feature branch without a remote upstream.
+- **The Fix**: CI/CD Rerun Strategy: When using strict branch protection, stored SHAs and check-run IDs become stale as the main branch advances. A reliable rerun strategy must fetch the current PR HEAD and query for current check-runs before triggering.
 - **Lesson**: Ensure heartbeat scripts handle detached HEAD or missing upstreams gracefully, or alert when the workspace is in an "unstable" git state for automation.
 
 ---
@@ -99,7 +105,13 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **Script:** `scripts/iphone-qa.sh`, daily cron via Gemini Flash.
 
 ### MCP Guard (2026-03-20)
-Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls.
+Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls. Shipped versions v0 and v0.1 with enforcement-first focus.
+
+### PullMatch Workspace (2026-03-20)
+Formally decoupled PullMatch from Permission Protocol into a standalone `pullmatch/` workspace with dedicated branding, Neon Postgres database, and Vercel infrastructure.
+
+### Governance Framework (2026-03-19)
+Published an open specification (`permission-protocol/governance-framework`) on GitHub. Defines Authority Receipt, Permission Boundary, Approval Gate, Kill Switch, and Audit Trail.
 
 ---
 
