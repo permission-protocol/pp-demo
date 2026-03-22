@@ -62,6 +62,7 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **The Hot Signal**: Vett.sh "Unsigned Binary" attack and Replit DB deletion incidents identified as perfect "Why Now" marketing signals.
 - **The Pivot**: Positioning Permission Protocol as **Governance/Authority Routing** (enforcement) vs competitors' **Vulnerability Scanning/Assessment**. 
 - **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat. (The moat is being the execution chokepoint (the "lock") rather than just a scanning tool (the "camera").)
+- **The Wedge**: "People buy locks before cameras." Enforcement (blocking dangerous actions) is the high-intent wedge that leads to the audit trail (the camera), not the other way around.
 
 ### 2026-03-18 — "Parallel Codex" Pattern
 - **The Pattern**: Spawning multiple parallel Codex/sub-agent sessions for independent feature development (e.g., DB, Auth, UI in one cycle).
