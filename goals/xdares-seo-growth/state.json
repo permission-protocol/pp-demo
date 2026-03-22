@@ -32,16 +32,26 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 4,
-    "total_tasks_completed": 325,
-    "tasks_since_replan": 71,
-    "tasks_since_metric_update": 214,
-    "last_run_at": "2026-03-22T10:01:00Z",
+    "daily_tasks_completed": 6,
+    "total_tasks_completed": 327,
+    "tasks_since_replan": 73,
+    "tasks_since_metric_update": 216,
+    "last_run_at": "2026-03-22T13:11:00Z",
     "last_run_date": "2026-03-22",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
+      {
+        "timestamp": "2026-03-22T13:11:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 7:11 AM Denver. Drafted '50+ Truth or Dare Questions for Hybrid Work & Remote Team Building' (task-340). Content saved to content/hybrid-work-game-night.html. Daily progress: 6/10."
+      },
+      {
+        "timestamp": "2026-03-22T12:01:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 6:01 AM Denver. Researched 2026 trends for workplace and remote game nights. Identified 'Hybrid Work Game Night Truth or Dare' as next topic. Daily progress: 5/10."
+      },
       {
         "timestamp": "2026-03-22T10:01:00Z",
         "tasks_completed": 1,
@@ -56,23 +66,46 @@
         "timestamp": "2026-03-22T06:01:00Z",
         "tasks_completed": 0,
         "notes": "Tick executed at 12:01 AM Denver (UTC March 22nd). Reset daily_tasks_completed to 0 for the new calendar day. Queue is currently empty; awaiting next replan or manual task addition."
-      },
-      {
-        "timestamp": "2026-03-22T04:12:00Z",
-        "tasks_completed": 3,
-        "notes": "Tick executed at 10:12 PM Denver (UTC March 22nd). Daily progress: 10/10. Drafted '50+ Virtual Reality & AR Dare Ideas' (task-332), published via Tor (task-333), and promoted with 4 tweets via X API (task-334). Daily budget reached."
-      },
-      {
-        "timestamp": "2026-03-22T04:01:00Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 10:01 PM Denver (UTC March 22nd). Daily progress: 7/10. Researching 2026 party game trends (AR-dares, dare chains). Prepared '50+ Virtual Reality & AR Dare Ideas' (task-331). Queue is empty."
       }
     ]
   },
   "tasks": {
-    "queue": [],
+    "queue": [
+      {
+        "id": "task-341",
+        "action": "publish",
+        "target": "hybrid-work-game-night",
+        "priority": "medium",
+        "status": "queued",
+        "description": "Publish the hybrid work post via Tor script."
+      },
+      {
+        "id": "task-342",
+        "action": "social",
+        "target": "hybrid-work-game-night-promo",
+        "priority": "low",
+        "status": "queued",
+        "description": "Promote hybrid work post with 4 tweets targeting HR/team-leads."
+      }
+    ],
     "on_hold": [],
     "completed": [
+      {
+        "id": "task-340",
+        "action": "draft",
+        "target": "hybrid-work-game-night",
+        "status": "completed",
+        "completed_at": "2026-03-22T13:11:00Z",
+        "result": "content/hybrid-work-game-night.html"
+      },
+      {
+        "id": "task-339",
+        "action": "research",
+        "target": "remote-work-trends-2026",
+        "status": "completed",
+        "completed_at": "2026-03-22T12:01:00Z",
+        "result": "Identified 'hybrid game night' and 'remote team building' as high-growth 2026 keywords for B2B/B2C overlap."
+      },
       {
         "id": "task-338",
         "action": "social",
@@ -104,54 +137,6 @@
         "status": "completed",
         "completed_at": "2026-03-22T08:11:00Z",
         "result": "https://blog.xdares.com/truth-or-dare-questions-for-couples/"
-      },
-      {
-        "id": "task-332",
-        "action": "draft",
-        "target": "vr-ar-dare-ideas",
-        "status": "completed",
-        "completed_at": "2026-03-22T04:12:00Z",
-        "result": "content/vr-ar-dare-ideas.html"
-      },
-      {
-        "id": "task-333",
-        "action": "publish",
-        "target": "vr-ar-dare-ideas",
-        "status": "completed",
-        "completed_at": "2026-03-22T04:12:00Z",
-        "result": "https://blog.xdares.com/vr-ar-dare-ideas/"
-      },
-      {
-        "id": "task-334",
-        "action": "social",
-        "target": "vr-ar-dare-ideas-promo",
-        "status": "completed",
-        "completed_at": "2026-03-22T04:12:00Z",
-        "result": "Posted 4 promo tweets via X API"
-      },
-      {
-        "id": "task-331",
-        "action": "research",
-        "target": "2026-party-trends",
-        "status": "completed",
-        "completed_at": "2026-03-22T04:01:00Z",
-        "result": "Identified AR-dares and 'dare chains' as emerging 2026 trends. Prepared next post topic: VR/AR Dare Ideas."
-      },
-      {
-        "id": "task-329",
-        "action": "publish",
-        "target": "drinking-truth-or-dare",
-        "status": "completed",
-        "completed_at": "2026-03-22T02:11:00Z",
-        "result": "https://blog.xdares.com/drinking-truth-or-dare-questions/"
-      },
-      {
-        "id": "task-330",
-        "action": "social",
-        "target": "drinking-truth-or-dare-promo",
-        "status": "completed",
-        "completed_at": "2026-03-22T02:11:00Z",
-        "result": "Posted 4 promo tweets via X API"
       }
     ],
     "failed": [],
