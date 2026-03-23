@@ -1,24 +1,23 @@
 # PP Status — Last Updated: 2026-03-23
 
-## Active — MCP Guard (Sprint Post-Launch)
-- **v0.1 Shipped:** Stdio proxy for MCP policy enforcement live.
-- **Mar 22:** HN post — "We built an MCP guardrail that blocks dangerous agent actions using a simple config file"
-- **Product sentence:** "Permission Protocol decides whether AI actions are allowed to happen."
-- **Next:** Receipt viewer integration and post-HN feedback loop.
+## Active — HN Launch (Tuesday Morning)
+- **Status:** Action plan consolidated. All technical blockers merged and deployed.
+- **Goal:** "Show HN: We built a system where AI agents can't deploy without a human signer."
+- **Next:** Rod recording final demo GIF today. Launch Tuesday 8:30 AM MST.
+
+## Active — MCP Guard (Enforcement Plane)
+- **v0.1 Extraction:** Ed25519 verification and policy logic extracted into standalone `permission-protocol/mcp-guard` repo to physicalize the "Signer vs Enforcer" split.
+- **Next:** Wire `mcp-guard` proxy to use new enforcement primitives.
 
 ## Active — PullMatch (Product Demo)
-- **Launched:** PullMatch.com is live. Rebrand from "Tinder for PR" complete.
-- **Mar 21 Update:** Optimized mobile landing page (SwipeDemo above fold). Wired live `/api/summarize` for real GitHub diff risk analysis.
-- **Next:** Real PR card feed + real diff summarization.
+- **Launched:** PullMatch.com is live.
+- **Recent:** Mobile landing optimized. Live diff summarization active.
 
-## Active — Governance Framework
-- **Repo live:** https://github.com/permission-protocol/governance-framework
-- **Publish cadence:** Stagger blog posts 1/week.
+## Technical Fixes (Launch Polish)
+- **GitHub Comments:** Fixed emoji encoding bug that broke update-in-place logic (PR #244).
+- **Anonymous Demo:** Added login-free `/demo/` approval flow for frictionless HN trial (PR #243).
+- **Site Scrolling:** Removed hero chevron and disabled smooth-scroll to fix double-scroll bug (PR #230).
 
-## Parked
-- Singapore localization, Sarah/Marco requirements, Factory triage.
-
-## Recent Decisions (Mar 22)
-- **Demo Scenario:** Created `deploy-multisig` scenario for `record-demo.sh` using `gh workflow run` to highlight 2-of-2 signature requirements and authoritative receipts.
-- **Governance Narrative:** Adopting "Governance over Self-Policing" (Claude Code incident) as the core marketing wedge.
-- **Weekly Hygiene:** Completed Sunday maintenance (archived 861 transcripts, backed up evolution).
+## Recent Decisions (Mar 23)
+- **Architecture over Code:** Moving enforcement logic to a separate repo (`mcp-guard`) is critical for the "mathematically defensible" marketing claim.
+- **Conversion Wedge:** Reducing the "Aha!" moment from a 5-minute install to a 30-second anonymous demo PR is the priority for the launch funnel.
