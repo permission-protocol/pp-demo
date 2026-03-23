@@ -248,3 +248,13 @@ Linked to source threads for traceability.
 - **Replay protection implemented via atomic Redis set with auto-TTL matching token expiry.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
 - **Policy layer enforces required signers, roles, multi-sig, conditions, and max TTL.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
 - **First real-world execution integration is GitHub Workflow dispatch (deploy_code).** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
+
+## 2026-03-23 — JAKE (rc-main)
+- Verdict-first PR comment format: answer "safe to merge?" before explaining what changed
+- Three-tier graduated friction: zero friction for safe, yellow "Review & Authorize" for review, red "View Full Report" + checkbox for block
+- "Approve Anyway" (amber button) instead of "Approve" (green) when overriding AI block verdict
+- Receipt audit trail records conscious overrides: "Approved despite AI block verdict"
+- No governance language on the review surface — "Signer of Record" moved to receipt page only
+- Gemini Chain-of-Thought tokens count against maxOutputTokens — always set high (8192+)
+- `<think>` tags must be stripped from Gemini responses before JSON extraction
+- Prompt stress testing (5 runs × 7 scenarios minimum) before shipping AI-generated UI content
