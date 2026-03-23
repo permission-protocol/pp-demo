@@ -538,7 +538,7 @@ threads:
 - id: '1484577755994525896'
   title: MCP Guard
   channel: rc-main
-  status: PARKED
+  status: ARCHIVED
   owner: Rod
   priority: high
   created_at: '2026-03-20'
@@ -715,7 +715,7 @@ threads:
 - id: '1485631505345548318'
   title: 'Polish Items'
   channel: rc-main
-  status: PARKED
+  status: ARCHIVED
   owner: Rod
   priority: medium
   created_at: '2026-03-23'
