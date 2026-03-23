@@ -712,3 +712,16 @@ threads:
   - "Launch scheduled for Tuesday 7:30\u20139:00 AM PST."
   - "Dogfooded the launch PR #239 through the deploy gate successfully."
   - "Verify() now re-canonicalizes fields to detect post-signing tampering."
+- id: '1485631505345548318'
+  title: 'Polish Items'
+  channel: rc-main
+  status: PARKED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-23'
+  updated_at: '2026-03-23'
+  summary: Full UX/UI polish sweep on the marketing site. Fixed "Developers" dropdown hover continuity, increased mobile menu breakpoint to 1024px to stop nav clipping, replaced dead href="#" links across the site, swapped mailto: form for a CTA, and added legal links to footer. All pushed in PR #228.
+  open_tasks: []
+  decisions:
+  - "Hover menus need continuous pointer zones (padding vs margin) to stay open during mouse travel."
+  - "No mailto: links for support; route all through /contact for PostHog tracking and Discord alerting."

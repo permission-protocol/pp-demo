@@ -258,3 +258,7 @@ Linked to source threads for traceability.
 - Gemini Chain-of-Thought tokens count against maxOutputTokens — always set high (8192+)
 - `<think>` tags must be stripped from Gemini responses before JSON extraction
 - Prompt stress testing (5 runs × 7 scenarios minimum) before shipping AI-generated UI content
+
+## 2026-03-23
+- **Hover Menus:** Hover menus need continuous pointer zones (padding vs margin) to stay open during mouse travel. ([Polish Items](https://discord.com/channels/1479269120334762008/1485631505345548318))
+- **Support Routing:** No mailto: links for support; route all through /contact for PostHog tracking and Discord alerting. ([Polish Items](https://discord.com/channels/1479269120334762008/1485631505345548318))
