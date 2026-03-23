@@ -1,5 +1,5 @@
 {
-  "gemini_model": "gemini-2.5-flash",
+  "gemini_model": "gemini-3.1-pro-preview",
   "gemini_key_path": "~/.openclaw/secrets/gemini-api.json",
   "codex_timeout_seconds": 1800,
   "qa_check_timeout_seconds": 300,

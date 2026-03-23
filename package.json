@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "discord.js": "^14.25.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3"
   }
 }

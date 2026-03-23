@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-19T13:00:06Z",
+  "generated_at": "2026-03-22T13:00:07Z",
   "host": "moltbot-macbook-pro",
   "stats": {
     "total": 17,
@@ -34,7 +34,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -57,7 +57,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -80,7 +80,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -103,7 +103,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -126,7 +126,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -149,7 +149,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -172,7 +172,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -195,7 +195,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -218,7 +218,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -241,7 +241,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -264,7 +264,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -287,7 +287,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -310,7 +310,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -333,7 +333,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 13,
+      "sla_days_left": 10,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -477,8 +477,8 @@
         "label": "ai.openclaw.node"
       },
       {
-        "pid": "40712",
-        "exit_code": "-15",
+        "pid": "69371",
+        "exit_code": "-6",
         "label": "ai.openclaw.gateway"
       },
       {

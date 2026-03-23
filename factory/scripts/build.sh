@@ -62,9 +62,12 @@ else
       discord_post "$CH_PIPELINE" "⚠️ **Stale build-wip:** $STALE_ID has been in build-wip for >2 hours. May be stuck. Skipping to prd-ready queue."
     fi
     
-    # Then: pick highest-priority prd-ready
-    IDEA=$( (grep '"status":"prd-ready"\|"status": "prd-ready"' "$IDEAS_FILE" || true) | \
-      jq -s 'sort_by(.priority // 999) | .[0]' 2>/dev/null)
+    # Then: pick highest-priority prd-ready OR ready (sensor-sourced bugs skip PRD)
+    IDEA=$( (grep '"status":"prd-ready"\|"status": "prd-ready"\|"status":"ready"\|"status": "ready"' "$IDEAS_FILE" || true) | \
+      jq -s 'sort_by(
+        (if .priority == "p0" then 0 elif .priority == "p1" then 1 elif .priority == "p2" then 2 else 3 end),
+        (if .source == "error-sensor" or .source == "github-sensor" then 0 else 1 end)
+      ) | .[0]' 2>/dev/null)
     [[ "$IDEA" == "null" ]] && IDEA=""
   fi
 fi
