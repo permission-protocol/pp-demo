@@ -134,18 +134,12 @@ cron_invoke_agent() {
   local title="$1"
   local instructions="$2"
   local enable_search="${3:-0}"
-  local -a cmd
 
   cron_write_prompt "$title" "$instructions"
-  cron_log "invoke" "Launching codex"
+  cron_log "invoke" "Launching OpenClaw ACP session"
 
-  cmd=(codex)
-  if [[ "$enable_search" == "1" ]]; then
-    cmd+=(--search)
-  fi
-  cmd+=(exec --full-auto)
-
-  "${cmd[@]}" "$(<"$CRON_PROMPT_FILE")" | tee "$CRON_OUTPUT_FILE"
+  # The codex tool expects the skip flag after 'exec'
+  codex exec --skip-git-repo-check --full-auto "$(<"$CRON_PROMPT_FILE")" | tee "$CRON_OUTPUT_FILE"
 }
 
 cron_write_report() {
