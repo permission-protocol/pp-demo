@@ -238,3 +238,13 @@ Linked to source threads for traceability.
 - Replaced the 4 abstract pitch angles with a single `design_partner_critique` angle to qualify the market through ego + expertise.
 - Updated `scan-signals.sh` to search for "MCP", "CISO", "agent security", prioritizing enterprise liability and security breaches over generic "AI agent" news.
 - Target personas shifted to CISOs, VP Engineering, CTOs, and Head of AI Security at mid-market/enterprise SaaS companies.
+## 2026-03-22 — Demo Videos
+- Shift demo narrative to "deploy authority" to highlight value over scanning.
+- Use Option A for HN Title: "Show HN: AI agents can’t deploy to production without a human signer"
+- Delay HN launch to Tuesday 7:30–9:00am PST for optimal visibility.
+### 2026-03-22
+- **Enforcement is the wedge, not just audit/receipts.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
+- **Execution must depend only on a cryptographically verified token, never DB approval state.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
+- **Replay protection implemented via atomic Redis set with auto-TTL matching token expiry.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
+- **Policy layer enforces required signers, roles, multi-sig, conditions, and max TTL.** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))
+- **First real-world execution integration is GitHub Workflow dispatch (deploy_code).** (from thread [Atomic Loop](discord://-/channels/1479269120334762008/1485322840319197369))

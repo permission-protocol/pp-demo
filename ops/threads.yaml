@@ -415,7 +415,7 @@ threads:
 - id: '1483851224431460474'
   title: JAKE
   channel: rc-main
-  status: ACTIVE
+  status: PARKED
   owner: Rod
   priority: high
   created_at: '2026-03-18'
@@ -542,7 +542,7 @@ threads:
 - id: '1484577755994525896'
   title: MCP Guard
   channel: rc-main
-  status: ACTIVE
+  status: PARKED
   owner: Rod
   priority: high
   created_at: '2026-03-20'
@@ -665,3 +665,36 @@ threads:
   - Step 3 should offer one-click auto-setup via setup-repo API, with manual fallback.
   - PP deploy gate correctly flagged dirty PR
   - Always use git add <specific files>, never git add . in shared worktrees.
+- id: '1485343398255792198'
+  title: Demo Videos
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-22'
+  updated_at: '2026-03-23'
+  summary: Created and refined a 60-second GIF demo of NemoClaw gating a GitHub Actions
+    deployment via multi-sig. Pivoted narrative to deploy authority. Prepared HN launch
+    drafts and updated README. Held launch for Tuesday morning PST.
+  open_tasks: []
+  decisions:
+  - Shift demo narrative to "deploy authority" to highlight value over scanning.
+  - "Use Option A for HN Title: \"Show HN: AI agents can\u2019t deploy to production\
+    \ without a human signer\""
+  - "Delay HN launch to Tuesday 7:30\u20139:00am PST for optimal visibility."
+- id: '1485322840319197369'
+  title: 'Atomic Loop'
+  channel: rc-main
+  status: PARKED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-22'
+  updated_at: '2026-03-23'
+  summary: Built the full v1 Atomic Loop enforcement primitive for Permission Protocol. Includes MCP Guard verifier, backend signer, UI wire-up, durable Redis replay cache, audit receipts, YAML policy layer (multi-sig, roles, conditions), and GitHub Actions dispatch executor.
+  open_tasks: []
+  decisions:
+  - 'Enforcement is the wedge, not just audit/receipts.'
+  - 'Execution must depend only on a cryptographically verified token, never DB approval state.'
+  - 'Replay protection implemented via atomic Redis set with auto-TTL matching token expiry.'
+  - 'Policy layer enforces required signers, roles, multi-sig, conditions, and max TTL.'
+  - 'First real-world execution integration is GitHub Workflow dispatch (deploy_code).'
