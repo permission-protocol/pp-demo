@@ -1,0 +1,33 @@
+--- PP BACKEND SIGNER (Keymaker) ---
+Issuing token for deploy_code...
+
+✅ ISSUED AUTHORIZATION BLOCK:
+{
+  "payload": {
+    "request_id": "req_789",
+    "action": "deploy_code",
+    "args": {
+      "env": "prod",
+      "commit": "def456"
+    },
+    "issued_at": 1774200528,
+    "expires_at": 1774204128,
+    "nonce": "bcf76541beb04c1e"
+  },
+  "token": {
+    "request_id": "req_789",
+    "decision": "approved",
+    "payload_hash": "sha256:a5888f48cc7cecdb8db7911514657fca14f327e4ed0a70edcbec0bcf25c82cb8",
+    "signed_by": "rod",
+    "signed_at": 1774200528,
+    "expires_at": 1774204128,
+    "key_id": "pp-prod-1",
+    "signature": "0aaca9c4b9dd21ff27e083be65ece0a65965b28af7a466244d5641c2e0b7f059ef9b3641eaa601fc016dc54cbc9c388f0fb2ec49858ce28ce3891ea74c0b7806"
+  }
+}
+
+--- VERIFIER CHECK (Copy public key for MCP Guard) ---
+-----BEGIN PUBLIC KEY-----
+MCowBQYDK2VwAyEAlpESnVEax4DNqi1NKl5AlTLZClVD1UO2byc4ceqBedI=
+-----END PUBLIC KEY-----
+

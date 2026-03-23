@@ -59,3 +59,14 @@ After Phase 3 adds PWA + push notifications, the mobile experience needs final p
 - API routes
 - Desktop layout
 - Push notification logic (Phase 3)
+
+## Code Review Findings (Retry #1)
+**Critical issues that MUST be fixed:**
+
+**CRITICAL** (blocks merge):
+- [app/review/ReviewDashboard.tsx:255] `JSON.parse()` on `localStorage` input without try/catch can crash the app if data is corrupted.
+  Fix: Wrap `JSON.parse` in a try/catch block and fallback to an empty array on error.
+
+**INFORMATIONAL** (non-blocking):
+
+Fix every CRITICAL issue listed above. Run `npx tsc --noEmit` after fixing.

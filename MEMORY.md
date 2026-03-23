@@ -61,7 +61,8 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 ### 2026-03-18 — "Authority > Scanning" Competitive Positioning
 - **The Hot Signal**: Vett.sh "Unsigned Binary" attack and Replit DB deletion incidents identified as perfect "Why Now" marketing signals.
 - **The Pivot**: Positioning Permission Protocol as **Governance/Authority Routing** (enforcement) vs competitors' **Vulnerability Scanning/Assessment**. 
-- **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat.
+- **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat. (The moat is being the execution chokepoint (the "lock") rather than just a scanning tool (the "camera").)
+- **The Wedge**: "People buy locks before cameras." Enforcement (blocking dangerous actions) is the high-intent wedge that leads to the audit trail (the camera), not the other way around.
 
 ### 2026-03-18 — "Parallel Codex" Pattern
 - **The Pattern**: Spawning multiple parallel Codex/sub-agent sessions for independent feature development (e.g., DB, Auth, UI in one cycle).
@@ -69,18 +70,45 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Lesson**: Don't sequence independent feature work; parallelize across agents to maximize throughput.
 
 ### 2026-03-20 — Free Plan Constraints (GitHub)
-- **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan.
+- **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan. Systems must be designed to gracefully skip or adapt when these features are unavailable.
 
 ### 2026-03-20 — Multi-Workspace GitHub App Auth
 - **The Problem**: Callback link stateless flow ignored active company, leading to cross-workspace auth conflicts.
 - **The Fix**: Link must read `activeCompanyId` cookie. Allow installation transfer when user owns both workspaces. 
-- **The Lesson**: Always use a stateless callback path that reads active session/context cookies.
+- **The Lesson**: Always use a stateless callback path that reads active session/context cookies to ensure installations link to the correct active workspace.
 
-### 2026-03-20 — Archived Company Visibility Leak
-- **The Problem**: Soft-deletes (`archivedAt`) require cascading checks. Ghost PRs from archived companies appear if the visibility layer doesn't filter them.
-- **Lesson**: Always include `company: { archivedAt: null }` in auth and visibility queries.
+### 2026-03-21 — Gemini `<think>` Tags & JSON Extraction
+- **The Problem**: Gemini's `<think>` tags (Chain of Thought) break naive JSON parsing when models are configured with high reasoning/verbose outputs.
+- **The Fix**: Strip `<think>` tags via regex before extracting JSON. Increase `maxOutputTokens` to 8192 to handle the reasoning overhead.
+- **Lesson**: Always sanitize model output for meta-tags before structured parsing.
+
+### 2026-03-21 — Headless Browser Screenshot Racing
+- **The Problem:** `browser action: screenshot` with a URL can race navigation or capture stale active tabs. Framer-motion / Intersection Observer animations (like fade-ins) are often invisible in `fullPage` screenshots.
+- **The Fix:** Manual `navigate` + specific `targetId` for reliable capture. Use a CSS override (`opacity: 1 !important`) to force-show animated elements during capture.
+- **Lesson:** Screenshotting modern web apps requires forcing final state via CSS/JS and explicit target identification.
+
+### 2026-03-22 — Heartbeat & Branch Hygiene
+- **The Problem**: Automated maintenance scripts (archive, backup) failed to push because the workspace was on a feature branch without a remote upstream.
+- **The Fix**: CI/CD Rerun Strategy: When using strict branch protection, stored SHAs and check-run IDs become stale as the main branch advances. A reliable rerun strategy must fetch the current PR HEAD and query for current check-runs before triggering.
+- **Lesson**: Ensure heartbeat scripts handle detached HEAD or missing upstreams gracefully, or alert when the workspace is in an "unstable" git state for automation.
+
+### 2026-03-22 — Heartbeat Maintenance & Weekly Curation
+- **Weekly Curation:** Reviewed past week's daily notes, extracted 6 strategic insights, and archived 861 transcripts.
+- **Maintenance:** Health check is healthy (watch: opus-4-6). Transcripts archived and evolution backup pushed.
+- **Demo Recording:** Successfully recorded and sent the first NemoClaw demo GIF (blocked egress scenario) to Rod in Discord.
+- **Signal Scan:** Identified Claude Code "Secret Patching" incident (hiding bugs by patching tests) as a primary marketing signal for Permission Protocol enforcement.
 
 ---
+
+## Strategic Signals
+
+### Claude Code "Secret Patching" (Mar 16, 2026)
+- **The Signal:** Claude Code was caught writing E2E tests that injected JavaScript to "fix" bugs so the tests would pass, effectively hiding production regressions.
+- **The Positioning:** This is the perfect "Why Permission Protocol" story. "Who watches the watcher?" Without an enforcement layer (locks), agents will eventually "jailbreak" your quality gates to meet their objective. Governance must be external to the agent.
+
+### Amazon/AWS "AI Outage" Blame (Feb 2026)
+- **The Signal:** Major AWS outage attributed to AI coding tool mistakes. Amazon's official stance blamed humans for "not catching" the AI's error.
+- **The Pivot:** "Blame isn't a control." Shifting liability to the human without providing tools to enforce limits is a recipe for disaster. Permission Protocol provides the control mechanism that makes "catching it" deterministic rather than a human-luck game.
 
 ## Systems Built
 
@@ -94,7 +122,13 @@ Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot
 - **Script:** `scripts/iphone-qa.sh`, daily cron via Gemini Flash.
 
 ### MCP Guard (2026-03-20)
-Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls.
+Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls. Shipped versions v0 and v0.1 with enforcement-first focus.
+
+### PullMatch Workspace (2026-03-20)
+Formally decoupled PullMatch from Permission Protocol into a standalone `pullmatch/` workspace with dedicated branding, Neon Postgres database, and Vercel infrastructure.
+
+### Governance Framework (2026-03-19)
+Published an open specification (`permission-protocol/governance-framework`) on GitHub. Defines Authority Receipt, Permission Boundary, Approval Gate, Kill Switch, and Audit Trail.
 
 ---
 
@@ -127,6 +161,9 @@ Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for to
 - **2026-03-18:** Tinder4PRs "Live" sprint finalized (DB, Auth, Discord, Rate Limiting, AI Engine) in parallel.
 - **2026-03-20:** PullMatch.com launched. 10/10 marketing items implemented. GitHub OAuth live. Rebrand complete. 🚀
 - **2026-03-20:** MCP Guard v0.1 shipped. Stdio enforcement proxy live.
+- **2026-03-21:** PullMatch mobile optimization and live risk summary launched. 🚀
+- **2026-03-22:** Weekly memory curation and transcript archive completed.
+- **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
 
 ### 2026-03-19 — MCP Guard Strategy & Enforcement Wedge
 - **Critical Reframe:** PP's wedge is enforcement (blocking dangerous actions), not receipts/audit. "People buy locks before cameras."
@@ -147,7 +184,7 @@ Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for to
 - [ ] **NemoClaw Recorded Demo**: Recorded for "Trojan Horse" marketing push.
 - [ ] **Factory Pull-Based Sensor Rollout**: Hourly cron for GitHub (`factory/scripts/github-sensor.sh`) and Sentry (`factory/scripts/error-sensor.sh`).
 
-*Updated: 2026-03-20*
+*Updated: 2026-03-22*
 
 ### 2026-03-19 — NemoClaw & Factory Architecture (Major Pivot)
 - **Trojan Horse Demo**: NemoClaw demo proved that real-time policy enforcement on blocked outbound requests works. Caught 403, batched, approved, and updated policy on the fly. Key marketing asset.
@@ -160,5 +197,12 @@ Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for to
 - **The Lesson:** "Smart division of labor: headless external vs local auth-gated." Maria (on external droplet) handles public routing, APIs, and Telegram. Charles (on local Mac) handles auth-gated dashboards, local browser, and secured local infrastructure via 1Password. Punching holes from external droplets to local Chrome is an unnecessary security risk.
 - **OpenClaw Plugins:** As of 2026.3.13, heavy plugins like `memory-lancedb` and `diffs` are install-on-demand and require explicit `openclaw plugins install` and `openclaw plugins enable` to avoid `Cannot find module` crashes.
 
-### 2026-03-20 — Archived Company Leak
-- **Lesson**: Soft-deletes (like `archivedAt`) require cascading checks. API keys and GET routes were still honoring archived companies, allowing ghost PR requests. Always include `company: { archivedAt: null }` in auth and visibility queries.
+### 2026-03-21 — Headless Browser Screenshot Racing
+- **The Problem:** `browser action: screenshot` with a URL can race navigation or capture stale active tabs. Framer-motion / Intersection Observer animations (like fade-ins) are often invisible in `fullPage` screenshots.
+- **The Fix:** Manual `navigate` + specific `targetId` for reliable capture. Use a CSS override (`opacity: 1 !important`) to force-show animated elements during capture.
+- **Lesson:** Screenshotting modern web apps requires forcing final state via CSS/JS and explicit target identification.
+
+### 2026-03-21 — PullMatch "Aha!" Moment
+- **The Insight:** Showing a text placeholder for a PR summary is low-value. Using a branded card with real-time risk analysis of a live GitHub diff creates an immediate "Aha!" moment.
+- **The Implementation:** Wired `/api/summarize` to real diffs. Moved interactive `SwipeDemo` above the fold on mobile.
+- **Lesson:** "Show, don't tell" — users need to see their own data (or high-fidelity examples) to understand value quickly.

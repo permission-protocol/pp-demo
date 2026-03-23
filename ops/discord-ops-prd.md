@@ -75,11 +75,9 @@ Delete or rename:
 Every thread is a work item with a state:
 
 ```
-ACTIVE → WAITING → BLOCKED
-   ↓         ↓        ↓
-   └─────────┴────────┘
-              ↓
-       READY_TO_ARCHIVE
+ACTIVE → BLOCKED → EXPIRED
+   ↓         ↓
+   └──────→ PARKED
               ↓
           ARCHIVED
 ```
@@ -89,9 +87,9 @@ ACTIVE → WAITING → BLOCKED
 | State | Meaning |
 |---|---|
 | `ACTIVE` | Work is happening |
-| `WAITING` | Blocked on external input (person, system, time) |
 | `BLOCKED` | Cannot proceed — needs a decision or dependency |
-| `READY_TO_ARCHIVE` | Close-review passed, waiting for Rod's confirmation |
+| `PARKED` | Intentionally paused without active execution |
+| `EXPIRED` | Timed out and needs explicit re-triage |
 | `ARCHIVED` | Reconciled, extracted, closed |
 
 ---
@@ -237,8 +235,9 @@ Execute final archive. Only after Rod confirms.
 4. Update today's daily note with summary
 5. Update relevant `STATUS.md` files
 6. Post archive receipt to `#archive-log`
-7. Lock thread
-8. Update `ops/threads.yaml` → status `ARCHIVED`
+7. Post the resolution artifact to the thread
+8. Discord-archive the thread (`archived: true`, `locked: true`)
+9. Update `ops/threads.yaml` → status `ARCHIVED`
 
 **Archive receipt format (posted to #archive-log):**
 ```
@@ -294,8 +293,13 @@ threads:
     status: ACTIVE
     owner: Rod
     priority: high
-    created: 2026-03-08
-    last_updated: 2026-03-08
+    created_at: 2026-03-08
+    updated_at: 2026-03-08
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: "Build discord-ops skill"
+    resolution_artifact: null
     summary: "Restructuring Discord server — channels, threads, archive system"
     open_tasks:
       - "Build discord-ops skill"
@@ -304,8 +308,6 @@ threads:
       - "Threads > channels for topics"
       - "6 permanent channels + archive category"
       - "Git-backed state tracking, no database"
-    memory_candidates:
-      - "Discord operating model: channels=streams, threads=topics"
 ```
 
 Git-backed. Updated by commands. No external database needed for two people.
@@ -336,7 +338,7 @@ Once per day, scan `ops/threads.yaml` and post to `#daily-log` if anything needs
 🧵 Thread Health — Mar 9
 
 Active: 4
-Waiting: 1
+Parked: 1
 Blocked: 0
 Idle >72h: 2 ⚠️
 

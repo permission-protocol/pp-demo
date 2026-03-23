@@ -137,6 +137,14 @@ When integrating physical devices (phones, hardware, IoT):
 - **Vision on cron → always cheap model.** Screenshots are huge token-wise. One 3x DPR screenshot on Opus costs more than an entire Flash audit.
 - **Structured data is free.** Collect metrics via JS/bash (zero tokens), analyze with LLM only when needed.
 
+### 🌐 Infrastructure Debugging Protocol (CDN/Hosting)
+**Use when a feature is "BLOCKED" by hosting/CDN issues (10Web, Render, Vercel, Cloudflare).**
+1. **Bypass the Cache:** Use `curl -H "Cache-Control: no-cache"` or append a random query param (`?v=123`) to see if the issue is stale content.
+2. **Check the Headers:** Use `curl -I` and look for `x-cache`, `cf-cache-status`, or `x-vercel-cache`. If it's a "HIT", you're looking at old data.
+3. **Trace the Redirect:** Use `curl -L` to follow redirects. If you hit a loop, look for `Set-Cookie` headers or state mismatches.
+4. **Environment Check:** Verify the `APP_ENV` vs the actual URL. Are you debugging staging on the production URL?
+5. **Log Scraper:** Don't guess. Use `gh workflow view` or provider-specific CLI/API to pull the last 100 lines of runtime logs.
+
 ### 🛑 Debugging Circuit Breaker
 
 **If you've sent 5+ messages on the same bug without a concrete fix (code change, PR, or verified root cause with commit-level evidence), STOP.**
@@ -160,6 +168,7 @@ Before reporting "done" or "fixed":
 - Verify by observing behavior (logs, screenshots, curl), not just reading config.
 - If you changed how something works, test that the NEW behavior actually fires.
 - **Visual QA Protocol**: Always run `scripts/pre-merge-review.sh` for UI changes before merging. Screenshot-first, merge-second.
+- **Screenshot Rule**: To avoid race conditions or stale tabs, always use `browser navigate` followed by `browser snapshot` with a specific `targetId`. If elements are missing (Framer Motion), inject CSS: `* { opacity: 1 !important; transition: none !important; animation: none !important; }`.
 - **Embedded vs Infrastructure**: Prefer embedded solutions (in-process workers, sqlite) for "single service" deployments unless scale mandates external dependencies.
 - **Bulk Merge Protocol**: When merging 3+ PRs to one repo, merge sequentially and rebase remaining branches after each merge to avoid conflict cascades.
 - **Error-Aware Retry**: Always include specific error logs (e.g. `tsc` output) when prompting an agent to fix a failure. Never retry "blind."

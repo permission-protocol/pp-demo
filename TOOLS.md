@@ -225,6 +225,23 @@ factory/scripts/error-sensor.sh
 
 ---
 
+## Visual QA & Screenshots
+
+When performing visual reviews on modern frontends (Framer Motion, animations):
+1. **Navigate manually** with the `browser` tool (don't trust default tab state).
+2. **Inject CSS** to force element visibility for scroll-triggered components:
+```javascript
+// Example via browser act:evaluate
+Array.from(document.querySelectorAll("*")).forEach(el => {
+  el.style.opacity = "1";
+  el.style.transition = "none";
+  el.style.animation = "none";
+});
+```
+3. **Capture** with `fullPage: true` but be aware of viewport height constraints.
+
+---
+
 ## Deployment & Cache Troubleshooting
 
 ### Render Stale JS Bundles

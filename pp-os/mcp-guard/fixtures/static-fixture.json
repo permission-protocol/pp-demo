@@ -1,0 +1,29 @@
+✅ Generated Static Fixtures:
+{
+  "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIJgOPCFAiQuIlA2HjiF/xqekirIC7n/CwxgnZ7YnQztV\n-----END PRIVATE KEY-----\n",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAp2ZN7b/mYuM7C2+0iKlNICTVaFolkrVw8KyvtroeyeU=\n-----END PUBLIC KEY-----\n",
+  "payload": {
+    "request_id": "req_123",
+    "action": "deploy_code",
+    "args": {
+      "env": "prod",
+      "commit": "abc123"
+    },
+    "issued_at": 1774199788,
+    "expires_at": 1774203388,
+    "nonce": "f816b315dfa7f24d"
+  },
+  "token": {
+    "request_id": "req_123",
+    "decision": "approved",
+    "payload_hash": "sha256:5d40d0c22c1c01c22540034c500119964401bd1391243250d4261e1cd09ac0a3",
+    "signed_by": "rod",
+    "signed_at": 1774199798,
+    "expires_at": 1774203388,
+    "key_id": "pp-prod-1",
+    "signature": "fb9f20fb44e8a7cda8896146bafa5217aa2c895006e72576591469bb6d5c819debe4c9b897e3581810ea42fa61c41cf04c1360daa7ce5f86762fde3ff4286301"
+  }
+}
+
+🔍 Running Verifier...
+✅ Verification PASSED - Token and Payload bound correctly!

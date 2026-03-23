@@ -48,7 +48,7 @@ Linked to source threads for traceability.
 - **Thread auto-archive: 24h** — Discord shows active threads in sidebar regardless
 - **`/topic` defaults to current channel** — no friction
 - **Git-backed YAML state tracking** (ops/threads.yaml), no database
-- **Thread lifecycle:** ACTIVE → WAITING → BLOCKED → READY_TO_ARCHIVE → ARCHIVED
+- **Thread lifecycle:** ACTIVE → BLOCKED → PARKED/EXPIRED → ARCHIVED
 - **Archive gate:** question resolved + decisions captured + tasks extracted + memory saved + no orphaned work
 - **Commands:** /help, /topic, /triage, /extract, /close-review, /archive, /promote, /reopen
 
@@ -198,3 +198,43 @@ Linked to source threads for traceability.
 
 ## 2026-03-19 — KOL
 - Permission Protocol uses Discord webhooks for `/contact` leads, routing them to the #inbound-leads thread. KickoffLabs is only used for the Xdares waitlist.
+
+### 2026-03-19
+- **PP Msg Broken:** Gemini 3 Flash chain-of-thought (`<think>` blocks) breaks naive JSON parsing (`indexOf('{')`); explicitly strip tags before parsing. ([Thread](https://discord.com/channels/1479269120334762008/1484330892015960286))
+- **PP Msg Broken:** Increase Gemini `maxOutputTokens` to 8192 to prevent payload + reasoning truncation. ([Thread](https://discord.com/channels/1479269120334762008/1484330892015960286))
+
+### 2026-03-20 — [Tinder for PR (1483323537057120370)]
+- Rebranded "Tinder for PRs" to **PullMatch** (pullmatch.com) across the codebase and GitHub org.
+- Set default primary model for Charles to `google/gemini-3.1-pro-preview` at Rod's request (overriding SAFETY.md).
+- Security Fix: API key validation and deploy request GET route now explicitly filter out archived companies to prevent ghost deploy requests from deleted companies.
+
+## 2026-03-20 — Multi-Company Cookie Race (#opus-org-3)
+- Company switch must set `activeCompanyId` cookie client-side via `document.cookie` before navigation, not rely solely on server `Set-Cookie` header
+- `switchCompany()` navigates to `/c` instead of `window.location.reload()` to avoid cross-company resource access on detail pages
+- Deploy requests from archived companies show "Archived Company" state — never offer "Switch to" for archived companies
+- Detail page per-request isolation check is the safety net — list-level leak was read-only only
+- Render deployment "success" status on GitHub doesn't guarantee an actual rebuild — always verify via CSS/JS bundle hash changes
+
+### 2026-03-20 — [PullMatch (1484644007521812662)]
+- Transitioning PullMatch from a Permission Protocol demo environment to a standalone product. Created dedicated workspace folder for it.
+
+### 2026-03-20 — Opus GH PR Page (1484406326183596124)
+- **Duplicate PR comments:** GitHub App webhook handler must own PR comments if active; GitHub Action `post-comment` must be disabled (`false`) to prevent race conditions and duplicate comments.
+- **Next.js query params:** `useSearchParams()` does not react to native `window.history.replaceState()`. Must use `router.replace()` to clear query parameters and correctly update React state.
+- **Token sizing:** Gemini `maxOutputTokens` should be sized appropriately to the expected JSON payload (e.g., 1024 or 512) rather than maxed out (8192), to avoid wasting token buffers and latency, even when using reasoning models.
+
+## 2026-03-20 — Orgs 2 (Multi-Workspace GitHub App)
+- **Source:** Discord thread #rc-main › Orgs 2
+- Stateless GitHub App link route must read `activeCompanyId` cookie to target the correct workspace
+- Allow installation transfer across workspaces when the user is a member of both (not a hard 409)
+- GitHub App Setup URL must point to `/api/github-app/callback`, not deleted `/c/setup`
+- `console.error` in callback state-parse → `console.warn` to avoid Next.js dev error overlay
+- Step 3: one-click auto-setup (workflow + secret + ruleset) as primary path; manual instructions as fallback
+- PP deploy gate correctly flagged dirty PR #215 — validates the product enforcement loop
+- `git add .` in shared worktrees remains permanently banned (use `git add <specific files>`)
+
+## 2026-03-21 — LinkedIn Outreach V2 Pivot (#rc-linkedin-automation)
+- LinkedIn automation pivot: From selling infrastructure ("authorization receipts") to recruiting enterprise Design Partners / CAB members ("Tear our architecture apart").
+- Replaced the 4 abstract pitch angles with a single `design_partner_critique` angle to qualify the market through ego + expertise.
+- Updated `scan-signals.sh` to search for "MCP", "CISO", "agent security", prioritizing enterprise liability and security breaches over generic "AI agent" news.
+- Target personas shifted to CISOs, VP Engineering, CTOs, and Head of AI Security at mid-market/enterprise SaaS companies.
