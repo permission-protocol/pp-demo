@@ -1,10 +1,10 @@
 {
   "last_research_run": "2026-03-08T02:00:00Z",
-  "last_hotline_run": "2026-03-07T03:00:00Z",
+  "last_hotline_run": "2026-03-23T15:04:31Z",
   "last_outreach_run": "2026-03-07T15:00:00Z",
   "last_response_check": "2026-03-07T23:00:00Z",
-  "last_signal_count": 4,
-  "fast_tracked_this_run": 2,
+  "last_signal_count": 0,
+  "fast_tracked_this_run": 0,
   "pending_approvals": [
     "lio-ai-email",
     "email-lio-vlad-keil"
@@ -46,5 +46,5 @@
     "grantex",
     "agentseal"
   ],
-  "notes": "8PM hotline: Two new actions drafted \u2014 (1) @Absolcasso reply on response-layer poisoning (their 3rd engagement with PermissionPrtcl \u2014 high-value voice), (2) HN comment on IETF RFC draft-klrc-aiagent-auth-00 (data protection gap exactly PP's angle). Both queued, blocked on X API fix and HN login respectively. Alibaba story spreading but no new action needed. IETF RFC is a score-4 regulatory signal \u2014 standards are being written and PP's receipt model is directly complementary to Transaction Tokens. X API fix and HN account setup are the two operational blockers this run."
+  "notes": "2026-03-23 hotline: no new score-5 incidents, funding rounds, or Permission Protocol mentions found across current web/news scan. Watch-only signal: Axios reported enterprises racing to deploy AI agents while security remains unsettled. Outbound remains operationally blocked on X API write access and HN login for previously queued public responses."
 }

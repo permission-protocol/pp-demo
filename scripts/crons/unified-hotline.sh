@@ -12,7 +12,7 @@ cron_load_file "PP Status" "$WORKSPACE/pp-os/STATUS.md"
 cron_load_file "Recent Memory" "$WORKSPACE/memory/2026-03-21.md"
 
 cron_fetch_cmd "Scout State" "sed -n '1,220p' \"$WORKSPACE/pp-os/scout/state.json\""
-cron_fetch_cmd "Recent Hotline Signals" "python3 - <<'PY'\nfrom datetime import date\nfrom pathlib import Path\npath = Path('$WORKSPACE/pp-os/scout/signals') / f'{date.today().isoformat()}.jsonl'\nprint(path.read_text() if path.exists() else '[]')\nPY"
+cron_fetch_cmd "Recent Hotline Signals" "python3 -c \"from datetime import date; from pathlib import Path; p = Path('$WORKSPACE/pp-os/scout/signals') / f'{date.today().isoformat()}.jsonl'; print(p.read_text() if p.exists() else '[]')\""
 
 cron_require_command codex
 cron_require_file "$WORKSPACE/pp-os/scout/scripts/hotline-scan-prompt.md"

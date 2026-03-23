@@ -139,10 +139,11 @@ cron_invoke_agent() {
   cron_write_prompt "$title" "$instructions"
   cron_log "invoke" "Launching codex"
 
-  cmd=(codex exec --full-auto)
+  cmd=(codex)
   if [[ "$enable_search" == "1" ]]; then
     cmd+=(--search)
   fi
+  cmd+=(exec --full-auto)
 
   "${cmd[@]}" "$(<"$CRON_PROMPT_FILE")" | tee "$CRON_OUTPUT_FILE"
 }
