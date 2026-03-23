@@ -1,23 +1,23 @@
 {
-  "week": "2026-03-09 to 2026-03-15",
-  "generated": "2026-03-16T08:15:00-07:00",
+  "week": "2026-03-16 to 2026-03-22",
+  "generated": "2026-03-23T08:15:00-07:00",
   "metrics": {
-    "followers_x": 17,
-    "blog_views_7d": null,
+    "followers_x": 36,
+    "blog_views_7d": 171,
     "subscribers_new": 0,
-    "x_impressions": 443,
+    "x_impressions": null,
     "content": {
-      "tweets": 20,
-      "blog_posts": 0,
-      "linkedin_posts": 0,
-      "hn_comments": 0
+      "tweets": 21,
+      "blog_posts": 1,
+      "linkedin_posts": 2,
+      "hn_comments": 2
     },
     "leads": {
       "watching": 15,
       "contacted": 0,
       "outreach_drafted": 7,
       "outreach_sent_week": 0,
-      "responses_received": 0
+      "responses_received": 3
     }
   }
 }
