@@ -1,0 +1,18 @@
+{
+  "slug": "interloom",
+  "name": "Interloom",
+  "description": "AI agent platform focused on 'tacit knowledge'—enabling agents to access and use unstructured enterprise context.",
+  "founded_on": "2026-03-23 (funding date)",
+  "round": "$16.5M Series A",
+  "investors": [
+    "DN Capital",
+    "Bek Ventures",
+    "Air Street Capital"
+  ],
+  "contact": {
+    "person": "Founder",
+    "info": "TBD via LinkedIn/Twitter research"
+  },
+  "pp_relevance": "Interloom's agents are designed to pull from sensitive, unstructured enterprise data. PP's 'Enforcement Plane' provides the necessary guardrails to ensure these knowledge-heavy agents only execute actions that match specific, human-signed authority receipts.",
+  "hotline_source": "https://fortune.com/2026/03/23/interloom-ai-agents-raises-16-million-venture-funding/"
+}

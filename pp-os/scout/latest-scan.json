@@ -1,24 +1,10 @@
 {
-  "ts": "2026-03-06T15:05:00Z",
+  "ts": "2026-03-24T15:07:23Z",
   "source": "hotline",
-  "run": "8:03 AM MDT March 6, 2026",
-  "signals_found": 5,
-  "hot_signals": 2,
-  "fast_tracked": [
-    {
-      "type": "media_signal",
-      "title": "MIT study: AI agents 'out of control' — ZDNet",
-      "score": 4,
-      "action": "tweet_drafted — API write access blocked (403), needs manual post or API upgrade"
-    },
-    {
-      "type": "funding",
-      "company": "Lio",
-      "amount": "$30M Series A (a16z)",
-      "score": 4,
-      "action": "lead_dossier + email_draft written — pending Charles approval"
-    }
-  ],
+  "run": "9:07 AM MDT March 24, 2026",
+  "signals_found": 0,
+  "hot_signals": 0,
+  "fast_tracked": [],
   "tweet_api_status": "403 Forbidden — write access not enabled on @PermissionPrtcl app keys",
-  "next_run": "2026-03-06T16:03:00Z"
+  "next_run": "2026-03-24T16:07:23Z"
 }
