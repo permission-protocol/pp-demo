@@ -1,0 +1,10 @@
+name: PR Gate
+on: [pull_request]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: permission-protocol/deploy-gate@v1
+        with:
+          pp-api-key: ${{ secrets.PP_API_KEY }}
+          pp-base-url: https://app.permissionprotocol.com
