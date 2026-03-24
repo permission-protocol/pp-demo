@@ -1,0 +1,104 @@
+============================================================
+HACKER NEWS LAUNCH — FINAL VERSION
+Submit: Wednesday March 25, 2026 at 6:00 AM Denver (8:00 AM ET)
+============================================================
+
+
+TITLE (copy exactly):
+
+Show HN: Permission Protocol – AI agents can deploy code, but who approved it?
+
+
+URL FIELD:
+
+https://github.com/permission-protocol/deploy-gate
+
+
+TEXT FIELD (copy everything between the --- markers):
+
+---
+Earlier this month, Claude Code was caught rewriting test assertions to make failing tests pass — hiding real bugs to satisfy its objective. Not a hypothetical. It happened.
+
+That's the problem in one sentence: agents optimize for outcomes, and they'll route around controls that live inside the agent.
+
+You can't ask an agent to police itself. Authorization has to live outside the agent.
+
+We built Permission Protocol — it blocks high-risk AI actions (deploys, database writes, tool calls) unless a human explicitly signs them. Execution won't proceed without a valid cryptographic signature.
+
+Instead of "the agent decided this was safe," you get "this action executed because this human approved it."
+
+Open-source entry points:
+
+deploy-gate (CI/CD enforcement): https://github.com/permission-protocol/deploy-gate
+
+mcp-guard (local proxy for tool calls): https://github.com/permission-protocol/mcp-guard
+
+Under the hood:
+
+  - Ed25519 signatures over a deterministic payload (commit SHA, repo, environment, timestamp)
+  - Verification happens locally — no SaaS in the enforcement path
+  - Policy defines who can approve what
+
+The signing ceremony uses our hosted service. Verification is local and independent — if we disappear, your enforcement still works.
+
+30-second demo (no install required): https://github.com/permission-protocol/pp-demo/pull/32
+
+Click "Authorize Deploy," approve it, watch the PR unblock.
+
+If you can find a way to bypass the approval requirement, I'd genuinely love to see it.
+---
+
+
+============================================================
+FIRST COMMENT — post immediately after submission (within 1-2 min)
+============================================================
+
+Copy everything between the --- markers:
+
+---
+Happy to answer anything. Here's what usually comes up:
+
+*How is this different from GitHub required reviews / OPA?*
+GitHub reviews control access before execution. OPA evaluates policies. This enforces that a specific human cryptographically signed off on a specific action at execution time. Different layer — they're complementary, not competing.
+
+*What if your service goes down?*
+The signing service is hosted, but the enforcer checks Ed25519 signatures locally and independently. No SaaS in the critical path.
+
+*What's the threat model?*
+Preventing agents from taking irreversible actions without explicit human approval. Not sandboxing — signing.
+
+*Why not just turn off auto-deploy?*
+That works today. It won't work when you have 50 agents making 200 changes a day. You need a system that scales approval without scaling humans linearly.
+
+Happy to go deep on architecture, crypto, or edge cases.
+---
+
+
+============================================================
+PRE-LAUNCH CHECKLIST
+============================================================
+
+[ ] Set alarm for 5:45 AM Denver
+[ ] Click through demo PR #32 end-to-end TODAY (full approve + unblock flow)
+[ ] Merge deploy-gate PR #33 (README link fix)
+[ ] Get 3-4 real HN accounts ready to engage in first 30 min
+[ ] Star deploy-gate and mcp-guard from any real accounts you have access to
+[ ] Bookmark this file so you can copy-paste at 6 AM half-awake
+
+============================================================
+NOTES
+============================================================
+
+- HN Show posts: you can include EITHER a URL or text body, not both.
+  Since we need the text body, leave the URL field blank.
+  The repos are linked in the body.
+
+- If HN forces a URL, use: https://github.com/permission-protocol/deploy-gate
+  and trim the text body to just the pitch (no repo links needed since URL covers it).
+
+- HN formatting: plain text only. *single asterisks* = italic.
+  No bold, no markdown headers, no bullet syntax.
+  Bare URLs auto-link.
+
+- Post the first comment IMMEDIATELY (within 1-2 minutes).
+  It anchors the discussion and preempts the obvious objections.
