@@ -546,7 +546,7 @@ threads:
   expires_at: null
   blocked_reason: null
   blocked_until: null
-  next_action: Receipt viewer integration on app.permissionprotocol.com
+  next_action: null
   resolution_artifact: null
   summary: Built and shipped MCP Guard v0 and v0.1. A stdio proxy for MCP that enforces
     YAML policies (allow/block/hold) and emits audit receipts. Includes a real-time
@@ -672,6 +672,11 @@ threads:
   summary: Created and refined a 60-second GIF demo of NemoClaw gating a GitHub Actions
     deployment via multi-sig. Pivoted narrative to deploy authority. Prepared HN launch
     drafts and updated README. Held launch for Tuesday morning PST.
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   open_tasks: []
   decisions:
   - Shift demo narrative to "deploy authority" to highlight value over scanning.
@@ -687,6 +692,11 @@ threads:
   created_at: '2026-03-22'
   updated_at: '2026-03-23'
   summary: Built the full v1 Atomic Loop enforcement primitive for Permission Protocol. Includes MCP Guard verifier, backend signer, UI wire-up, durable Redis replay cache, audit receipts, YAML policy layer (multi-sig, roles, conditions), and GitHub Actions dispatch executor. Logic extracted to mcp-guard and launch execution moved to Opus - Launch thread.
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   open_tasks: []
   decisions:
   - 'Enforcement is the wedge, not just audit/receipts.'
@@ -694,6 +704,28 @@ threads:
   - 'Replay protection implemented via atomic Redis set with auto-TTL matching token expiry.'
   - 'Policy layer enforces required signers, roles, multi-sig, conditions, and max TTL.'
   - 'First real-world execution integration is GitHub Workflow dispatch (deploy_code).'
+- id: '1485726442888233136'
+  title: 'GIF VIDEO - OPUS'
+  channel: heartbeat
+  status: ACTIVE
+  owner: Rod
+  priority: high
+  created_at: '2026-03-23'
+  updated_at: '2026-03-23'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  summary: Recording and editing the final Permission Protocol demo video. Narrative
+    shifted to enforcement/authority. Pacing edits implemented (setup sped up, approval
+    slowed down). Branded end card created at /demo-endcard on marketing site.
+  open_tasks:
+  - Finalize video with Rod's iPhone screenshot of end card
+  - Ship to HN/Twitter
+  decisions:
+  - 'Video pacing: speed up setup, slow down sign/payoff.'
+  - 'End card: dedicated full-screen page at /demo-endcard for high-res mobile capture.'
 - id: '1485630165047316521'
   title: 'Opus - Launch'
   channel: rc-main
@@ -703,6 +735,11 @@ threads:
   created_at: '2026-03-23'
   updated_at: '2026-03-23'
   summary: Final pre-launch preparations for Permission Protocol. Narrative alignment, broken link fixes, tamper detection, and production proof.
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   open_tasks:
   - Draft HN first comment preempting trust objections
   - Pre-seed GitHub stars from contacts
@@ -720,7 +757,12 @@ threads:
   priority: medium
   created_at: '2026-03-23'
   updated_at: '2026-03-23'
-  summary: Full UX/UI polish sweep on the marketing site. Fixed "Developers" dropdown hover continuity, increased mobile menu breakpoint to 1024px to stop nav clipping, replaced dead href="#" links across the site, swapped mailto: form for a CTA, and added legal links to footer. All pushed in PR #228.
+  summary: Full UX/UI polish sweep on the marketing site. Fixed "Developers" dropdown hover continuity, increased mobile menu breakpoint to 1024px to stop nav clipping, replaced dead href="#" links across the site, swapped mailto form for a CTA, and added legal links to footer. All pushed in PR #228.
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
   open_tasks: []
   decisions:
   - "Hover menus need continuous pointer zones (padding vs margin) to stay open during mouse travel."
