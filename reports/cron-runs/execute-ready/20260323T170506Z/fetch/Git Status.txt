@@ -1,0 +1,16 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine [ahead 12]
+ m Xdares
+ M company-os/governance/approval-log.jsonl
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M mcp-guard
+ M memory/heartbeat-state.json
+ M ops/threads.yaml
+ M patch2.js
+ M patch_api.js
+ M permission-protocol-repo
+?? demo-blocked-pr.png
+?? logs/crons/
+?? reports/cron-runs/
+?? tmp/mobile-qa-daily/20260323-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260323-xdares-com/

@@ -1,0 +1,145 @@
+[2026-03-23T15:09:55Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T150955Z
+[2026-03-23T15:09:55Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T15:09:55Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T15:09:55Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T15:09:55Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T15:09:55Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T15:09:55Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T15:09:56Z] [fetch] Ready Board Items
+[2026-03-23T15:09:58Z] [fetch] Git Status
+[2026-03-23T15:09:58Z] [validate] Command: codex
+[2026-03-23T15:09:58Z] [validate] Command: gh
+[2026-03-23T15:09:58Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T15:09:58Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T15:09:58Z] [validate] JSON payload: ready-board-items
+[2026-03-23T15:09:58Z] [invoke] Launching codex
+[2026-03-23T17:05:02Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T170502Z
+[2026-03-23T17:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T17:05:02Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T17:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T17:05:02Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T17:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T17:05:02Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T17:05:02Z] [fetch] Ready Board Items
+[2026-03-23T17:05:04Z] [fetch] Git Status
+[2026-03-23T17:05:04Z] [validate] Command: codex
+[2026-03-23T17:05:04Z] [validate] Command: gh
+[2026-03-23T17:05:04Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T17:05:04Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T17:05:04Z] [validate] JSON payload: ready-board-items
+[2026-03-23T17:05:04Z] [invoke] Launching codex
+[2026-03-23T17:05:06Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T170506Z
+[2026-03-23T17:05:06Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T17:05:06Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T17:05:06Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T17:05:06Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T17:05:06Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T17:05:06Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T17:05:06Z] [fetch] Ready Board Items
+[2026-03-23T17:05:08Z] [fetch] Git Status
+[2026-03-23T17:05:08Z] [validate] Command: codex
+[2026-03-23T17:05:08Z] [validate] Command: gh
+[2026-03-23T17:05:08Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T17:05:08Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T17:05:08Z] [validate] JSON payload: ready-board-items
+[2026-03-23T17:05:08Z] [invoke] Launching codex
+[2026-03-23T17:05:16Z] [write] Saved report
+[2026-03-23T17:05:16Z] [done] Completed execute-ready
+[2026-03-23T19:05:01Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T190501Z
+[2026-03-23T19:05:01Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:01Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:01Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:01Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:01Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:01Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:01Z] [fetch] Ready Board Items
+[2026-03-23T19:05:03Z] [fetch] Git Status
+[2026-03-23T19:05:04Z] [validate] Command: codex
+[2026-03-23T19:05:04Z] [validate] Command: gh
+[2026-03-23T19:05:04Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T19:05:04Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T19:05:04Z] [validate] JSON payload: ready-board-items
+[2026-03-23T19:05:04Z] [invoke] Launching codex
+[2026-03-23T19:05:12Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T190512Z
+[2026-03-23T19:05:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:12Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:12Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:12Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:12Z] [fetch] Ready Board Items
+[2026-03-23T19:05:14Z] [fetch] Git Status
+[2026-03-23T19:05:14Z] [validate] Command: codex
+[2026-03-23T19:05:14Z] [validate] Command: gh
+[2026-03-23T19:05:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T19:05:14Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T19:05:14Z] [validate] JSON payload: ready-board-items
+[2026-03-23T19:05:14Z] [invoke] Launching OpenClaw ACP session
+[2026-03-23T19:05:18Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T190518Z
+[2026-03-23T19:05:18Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:18Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T19:05:18Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:18Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T19:05:18Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:18Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T19:05:18Z] [fetch] Ready Board Items
+[2026-03-23T19:05:20Z] [fetch] Git Status
+[2026-03-23T19:05:21Z] [validate] Command: codex
+[2026-03-23T19:05:21Z] [validate] Command: gh
+[2026-03-23T19:05:21Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T19:05:21Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T19:05:21Z] [validate] JSON payload: ready-board-items
+[2026-03-23T19:05:21Z] [invoke] Launching OpenClaw ACP session
+[2026-03-23T19:05:25Z] [write] Saved report
+[2026-03-23T19:05:25Z] [done] Completed execute-ready
+[2026-03-23T21:05:03Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T210503Z
+[2026-03-23T21:05:03Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T21:05:03Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T21:05:03Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T21:05:03Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T21:05:03Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T21:05:03Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T21:05:03Z] [fetch] Ready Board Items
+[2026-03-23T21:05:05Z] [fetch] Git Status
+[2026-03-23T21:05:06Z] [validate] Command: codex
+[2026-03-23T21:05:06Z] [validate] Command: gh
+[2026-03-23T21:05:06Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T21:05:06Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T21:05:06Z] [validate] JSON payload: ready-board-items
+[2026-03-23T21:05:06Z] [invoke] Launching OpenClaw ACP session
+[2026-03-23T21:05:13Z] [write] Saved report
+[2026-03-23T21:05:13Z] [done] Completed execute-ready
+[2026-03-23T23:05:01Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260323T230501Z
+[2026-03-23T23:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T23:05:02Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-23T23:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T23:05:02Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-23T23:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T23:05:02Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-23T23:05:02Z] [fetch] Ready Board Items
+[2026-03-23T23:05:04Z] [fetch] Git Status
+[2026-03-23T23:05:04Z] [validate] Command: codex
+[2026-03-23T23:05:04Z] [validate] Command: gh
+[2026-03-23T23:05:04Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-23T23:05:04Z] [validate] Non-empty payload: ready-board-items
+[2026-03-23T23:05:04Z] [validate] JSON payload: ready-board-items
+[2026-03-23T23:05:04Z] [invoke] Launching OpenClaw ACP session
+[2026-03-23T23:05:08Z] [write] Saved report
+[2026-03-23T23:05:08Z] [done] Completed execute-ready
+[2026-03-24T15:05:02Z] [load] Initialized execute-ready at /Users/moltbot/.openclaw/workspace/reports/cron-runs/execute-ready/20260324T150502Z
+[2026-03-24T15:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-24T15:05:02Z] [load] /Users/moltbot/.openclaw/workspace/FOCUS.md
+[2026-03-24T15:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-24T15:05:02Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-03-24T15:05:02Z] [validate] File: /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-24T15:05:02Z] [load] /Users/moltbot/.openclaw/workspace/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+[2026-03-24T15:05:02Z] [fetch] Ready Board Items
+[2026-03-24T15:05:05Z] [fetch] Git Status
+[2026-03-24T15:05:05Z] [validate] Command: codex
+[2026-03-24T15:05:05Z] [validate] Command: gh
+[2026-03-24T15:05:05Z] [validate] File: /Users/moltbot/.openclaw/workspace/scripts/board-ready-items.sh
+[2026-03-24T15:05:05Z] [validate] Non-empty payload: ready-board-items
+[2026-03-24T15:05:05Z] [validate] JSON payload: ready-board-items
+[2026-03-24T15:05:05Z] [invoke] Launching OpenClaw ACP session
+[2026-03-24T15:05:10Z] [write] Saved report
+[2026-03-24T15:05:10Z] [done] Completed execute-ready

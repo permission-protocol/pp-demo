@@ -1,0 +1,2 @@
+{"ts":"2026-03-23T15:04:31Z","source":"hotline","score":1,"type":"clear","platform":"web","signal":"No new immediate-action hotline triggers found. Current scan did not surface a fresh named AI agent breach within 6 hours, a >$10M agent-company funding round within 24 hours, or any new Permission Protocol mention. Watch-only: Axios reported an enterprise AI agent deployment race with unresolved security concerns.","action":"none"}
+

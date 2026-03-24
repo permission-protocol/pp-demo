@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-23T13:00:04Z",
+  "generated_at": "2026-03-24T13:00:08Z",
   "host": "moltbot-macbook-pro",
   "stats": {
     "total": 17,
@@ -34,7 +34,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -57,7 +57,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -80,7 +80,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -103,7 +103,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -126,7 +126,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -149,7 +149,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -172,7 +172,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -195,7 +195,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -218,7 +218,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -241,7 +241,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -264,7 +264,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -287,7 +287,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -310,7 +310,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -333,7 +333,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": 9,
+      "sla_days_left": 8,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -412,7 +412,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "goal-xdares-seo-daily",
-      "detail": "goal-xdares-seo-daily: Authority B review due in 9 days"
+      "detail": "goal-xdares-seo-daily: Authority B review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -436,7 +436,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "memory-curation-r1",
-      "detail": "memory-curation-r1: Authority B review due in 9 days"
+      "detail": "memory-curation-r1: Authority B review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -448,7 +448,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "pp-linkedin-weekly",
-      "detail": "pp-linkedin-weekly: Authority C review due in 9 days"
+      "detail": "pp-linkedin-weekly: Authority C review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -460,7 +460,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "pp-os-daily-log-and-plan",
-      "detail": "pp-os-daily-log-and-plan: Authority B review due in 9 days"
+      "detail": "pp-os-daily-log-and-plan: Authority B review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -472,7 +472,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "pp-os-execute-ready",
-      "detail": "pp-os-execute-ready: Authority C review due in 9 days"
+      "detail": "pp-os-execute-ready: Authority C review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -484,7 +484,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "pp-os-qa-review",
-      "detail": "pp-os-qa-review: Authority B review due in 9 days"
+      "detail": "pp-os-qa-review: Authority B review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -502,7 +502,7 @@
       "severity": "WARN",
       "type": "sla_warning",
       "process": "pr-prescreen-auto",
-      "detail": "pr-prescreen-auto: Authority B review due in 9 days"
+      "detail": "pr-prescreen-auto: Authority B review due in 8 days"
     },
     {
       "severity": "WARN",
@@ -519,7 +519,7 @@
         "label": "ai.openclaw.node"
       },
       {
-        "pid": "79626",
+        "pid": "71897",
         "exit_code": "-6",
         "label": "ai.openclaw.gateway"
       },

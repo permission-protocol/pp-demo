@@ -1,0 +1,9 @@
+{
+  "status": "clear",
+  "alerts": [],
+  "warnings": [],
+  "cron_errors": 0,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

@@ -1,0 +1,18 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine [ahead 4]
+ m Xdares
+ M company-os/governance/approval-log.jsonl
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ m mcp-guard
+ M memory/2026-03-23.md
+ M ops/threads.yaml
+ m permission-protocol-repo
+ M pp-os/scout/signals/latest-scan.json
+ M pp-os/scout/state.json
+ M scripts/crons/common.sh
+ M scripts/crons/unified-hotline.sh
+?? logs/crons/
+?? pp-os/scout/signals/2026-03-23.jsonl
+?? reports/cron-runs/
+?? tmp/mobile-qa-daily/20260323-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260323-xdares-com/

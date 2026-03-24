@@ -1,0 +1,187 @@
+{
+  "smallText": 7,
+  "tapTargetIssues": 45,
+  "missingAlt": 0,
+  "details": [
+    {
+      "size": "1x1",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Skip to content"
+    },
+    {
+      "size": "1x1",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Skip to main content"
+    },
+    {
+      "size": "1x1",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Skip to navigation"
+    },
+    {
+      "size": "128x40",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": ""
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "How It Works"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Creators"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Blog"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "About Us"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Safety Measures"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "FAQ"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Log In"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Log In"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Sign Up\u2728"
+    },
+    {
+      "size": "0x0",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Sign Up\u2728"
+    },
+    {
+      "size": "279x40",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "Reserve Your Link"
+    },
+    {
+      "size": "195x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Get Early Access"
+    },
+    {
+      "size": "264x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Already have an invite code? Sign up \u2192"
+    },
+    {
+      "size": "217x38",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "See assumptions & methodology \u2193"
+    },
+    {
+      "size": "32x32",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "\u2212"
+    },
+    {
+      "size": "32x32",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "+"
+    },
+    {
+      "size": "32x32",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "\u2212"
+    },
+    {
+      "size": "32x32",
+      "type": "small-tap-target",
+      "tag": "BUTTON",
+      "text": "+"
+    },
+    {
+      "size": "163x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Join the Waitlist"
+    },
+    {
+      "size": "220x24",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Read the full safety rules"
+    },
+    {
+      "size": "361x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Get Early Access"
+    },
+    {
+      "size": "234x20",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "\ud83c\udfacBecome a Creator"
+    },
+    {
+      "size": "287x22",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Already have an invite code? Sign up\u2192"
+    },
+    {
+      "size": "61x18",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "About Us"
+    },
+    {
+      "size": "30x18",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Blog"
+    },
+    {
+      "size": "58x18",
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Press Kit"
+    }
+  ]
+}

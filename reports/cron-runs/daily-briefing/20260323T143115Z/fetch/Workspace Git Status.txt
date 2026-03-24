@@ -1,0 +1,11 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine
+ m Xdares
+ M company-os/governance/approval-log.jsonl
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ ? mcp-guard
+ M memory/2026-03-23.md
+ M ops/threads.yaml
+ ? permission-protocol-repo
+?? logs/crons/
+?? reports/cron-runs/

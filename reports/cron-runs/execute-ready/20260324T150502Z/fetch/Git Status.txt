@@ -1,0 +1,40 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine [ahead 8]
+ m Xdares
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M goals/xdares-seo-growth/content/adult-party-games.html
+ M goals/xdares-seo-growth/content/truth-or-dare-drinking-game.html
+ M goals/xdares-seo-growth/state.json
+ m mcp-guard
+ M memory/2026-03-24.md
+ M memory/heartbeat-state.json
+ ? permission-protocol-repo
+ M pp-os/marketing/HOT-SIGNAL.md
+ M pp-os/scout/state.json
+?? company-os/governance/snapshots/gov_scan_20260324_1300.json
+?? demo-blocked-pr.png
+?? demo_final_logo.gif
+?? demo_final_logo.mp4
+?? demo_with_endcard.gif
+?? demo_with_endcard.mp4
+?? deploy-gate-og.png
+?? edited_demo.gif
+?? edited_demo.mp4
+?? goals/xdares-seo-growth/logs/nhie-tweets-20260324-081145.json
+?? logs/crons/
+?? mcp-guard-og.png
+?? pp-os/marketing/signals/2026-03-24.jsonl
+?? pp-os/outreach/signals/2026-03-24.json
+?? pp-os/scout/leads/interloom.json
+?? pp-os/scout/signals/2026-03-24.jsonl
+?? reports/cron-runs/
+?? tmp-gif-edit2/
+?? tmp-gif-edit3/
+?? tmp-gif-edit4/
+?? tmp-gif-edit5/
+?? tmp/demo-edit/
+?? tmp/mobile-qa-daily/20260323-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260323-xdares-com/
+?? tmp/mobile-qa-daily/20260324-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260324-xdares-com/
