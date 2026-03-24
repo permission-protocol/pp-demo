@@ -98,6 +98,16 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Demo Recording:** Successfully recorded and sent the first NemoClaw demo GIF (blocked egress scenario) to Rod in Discord.
 - **Signal Scan:** Identified Claude Code "Secret Patching" incident (hiding bugs by patching tests) as a primary marketing signal for Permission Protocol enforcement.
 
+### 2026-03-23 — HN Launch Readiness & "Show HN" Polish
+- **The Pivot:** Refined the narrative for the Tuesday HN launch from "AI monitoring" to **"Infrastructure-level Authority Enforcement."**
+- **The Wedge:** Reduced the "Aha!" moment from a 5-minute install to a 30-second anonymous demo PR (`permission-protocol/pp-demo#32`).
+- **Status Logic:** Transitioned gated PR statuses from `failure` (red) to `pending` (yellow) to correctly communicate intentional governance ("human signature required").
+- **Evidentiary UX:** Updated the review dashboard to show all security signals (Risk, Verification, Context) by default. "Transparency builds trust."
+- **The Authority Receipt:** The product is the cryptographically-signed authority receipt. Renamed CTA to **"Approve & Sign"** to reflect this.
+- **Architectural Proof:** Moving Ed25519 verification out of the SaaS (Signer) and into the standalone `mcp-guard` (Enforcer) is our primary defense against "single point of failure" objections.
+- **Lesson (GitHub App):** GitHub branch protection's "Required status check" warning blocks merges when statuses are set via PAT. Must use the actual GitHub App Installation Token to satisfy strict rules.
+- **Lesson (Encoding):** Emoji encoding (`🔒`) in GitHub comments can break string-matching logic for updates. Use stable text markers for bot comment replacement.
+
 ---
 
 ## Strategic Signals
@@ -164,45 +174,15 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **2026-03-21:** PullMatch mobile optimization and live risk summary launched. 🚀
 - **2026-03-22:** Weekly memory curation and transcript archive completed.
 - **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
+- **2026-03-23:** HN Launch Readiness sprint complete. Demo PR #32 live. 🚀
 
-### 2026-03-19 — MCP Guard Strategy & Enforcement Wedge
-- **Critical Reframe:** PP's wedge is enforcement (blocking dangerous actions), not receipts/audit. "People buy locks before cameras."
-- **The Moat:** Being the execution chokepoint. Whoever sits in the tool call path owns the category. Schema/dashboards are copyable.
-- **Governance Framework Published:** `permission-protocol/governance-framework` on GitHub. Open spec, 7 references, stress-tested twice.
-- **MCP Guard v0 Spec Locked:** YAML config → block/allow/hold tool calls → emit receipts. Ship in 72h.
-- **Competitive Landscape:** mcp-guardian (eqtylab), mcp-context-forge (IBM), mcp-gateway-registry exist but none do simple enforcement + structured receipts.
-- **External Advisor Input:** Don't lead with abstraction. Ship enforcement. "Blocks dangerous actions" > "audit log standard."
+---
 
 ## Open Threads
 
-- [!] **MCP Guard 72h Sprint (Mar 20-22):** Build and ship enforcement middleware. #1 priority.
-- [ ] **FOCUS (28 days, Mar 8–Apr 4):** AI agent deploy-gate focus.
-- [ ] **Sarah user requirements** — needs same deep treatment as Marco.
-- [ ] **Demo video for deploy-gate** — ready to record with Reliable Rerun flow.
+- [!] **Post-HN Launch (Mar 24-26):** Analyze feedback, fix high-friction bugs, and handle "Show HN" influx.
+- [ ] **MCP Guard v0.2:** Dynamic policy updates based on signed receipts.
+- [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
-- [!] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
-- [ ] **NemoClaw Recorded Demo**: Recorded for "Trojan Horse" marketing push.
-- [ ] **Factory Pull-Based Sensor Rollout**: Hourly cron for GitHub (`factory/scripts/github-sensor.sh`) and Sentry (`factory/scripts/error-sensor.sh`).
 
-*Updated: 2026-03-22*
-
-### 2026-03-19 — NemoClaw & Factory Architecture (Major Pivot)
-- **Trojan Horse Demo**: NemoClaw demo proved that real-time policy enforcement on blocked outbound requests works. Caught 403, batched, approved, and updated policy on the fly. Key marketing asset.
-- **Factory Architecture Pivot**: Moved from push-based ideation (hallucinating irrelevant features) to pull-based agent market.
-- **Pull-Based Sensors**: Agents now trigger only from real signals (GitHub Issues with `factory` label + Sentry runtime errors).
-- **Deterministic Policy Gate**: Blast radius classification (LOW/MEDIUM/HIGH) based on file paths determines auto-merge vs. human block. "Build deterministic walls, let agents run inside them."
-- **The Lesson**: Do not prompt agents to have "good ideas." Use real user/system signals to pull work into the pipeline and deterministic policies to gate the output.
-
-### 2026-03-19 — Agent Division of Labor & Plugin Updates
-- **The Lesson:** "Smart division of labor: headless external vs local auth-gated." Maria (on external droplet) handles public routing, APIs, and Telegram. Charles (on local Mac) handles auth-gated dashboards, local browser, and secured local infrastructure via 1Password. Punching holes from external droplets to local Chrome is an unnecessary security risk.
-- **OpenClaw Plugins:** As of 2026.3.13, heavy plugins like `memory-lancedb` and `diffs` are install-on-demand and require explicit `openclaw plugins install` and `openclaw plugins enable` to avoid `Cannot find module` crashes.
-
-### 2026-03-21 — Headless Browser Screenshot Racing
-- **The Problem:** `browser action: screenshot` with a URL can race navigation or capture stale active tabs. Framer-motion / Intersection Observer animations (like fade-ins) are often invisible in `fullPage` screenshots.
-- **The Fix:** Manual `navigate` + specific `targetId` for reliable capture. Use a CSS override (`opacity: 1 !important`) to force-show animated elements during capture.
-- **Lesson:** Screenshotting modern web apps requires forcing final state via CSS/JS and explicit target identification.
-
-### 2026-03-21 — PullMatch "Aha!" Moment
-- **The Insight:** Showing a text placeholder for a PR summary is low-value. Using a branded card with real-time risk analysis of a live GitHub diff creates an immediate "Aha!" moment.
-- **The Implementation:** Wired `/api/summarize` to real diffs. Moved interactive `SwipeDemo` above the fold on mobile.
-- **Lesson:** "Show, don't tell" — users need to see their own data (or high-fidelity examples) to understand value quickly.
+*Updated: 2026-03-23*
