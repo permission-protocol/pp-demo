@@ -459,6 +459,12 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 - "Permission Protocol" is a required status check on permission-protocol/app — merge blocked until PP approval.
 - **The agent should never have admin scope on branch protection.** CI tokens: `contents:write` + `statuses:write` + `pull_requests:write` only. Admin stays with Rod.
 
+## Demo Recording Protocol (Mar 24)
+- **Status is Intentional**: Use `pending` (yellow) for gated PRs, not `failure` (red). This communicates "governance in progress" rather than "something broke."
+- **GitHub App Status Integrity**: Branch protection's "Required status check was not set by the expected GitHub app" warning blocks merges when statuses are set via PAT. **MUST** use the actual GitHub App installation token (JWT -> installation token -> POST /statuses) for all status updates in repos where the App is active.
+- **Skip Enrichment**: If a bot comment has been manually edited for a demo, adding a `<!-- skip-enrich -->` hidden comment will prevent the webhook from overwriting it on the next commit.
+- **Single Source of Authority**: On demo repos where the GitHub App is installed, remove redundant `pp-gate.yml` or `deploy-gate.yml` Actions. Rely solely on the App's webhook for deploy requests and status checks to ensure a single, clean "Permission Protocol" signal.
+
 ## GitHub Actions Patterns
 - **`if:` conditions skip after failed steps by default.** If a step depends on a previous step's *outputs* (not its *success*), add `always()` to the condition: `if: always() && steps.foo.outputs.bar != ''`
 - Without `always()`, GitHub skips the step even if the outputs were set before the failure.
@@ -486,6 +492,7 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 5. **Walk the user journey** — mentally step through: user lands → reads → acts → done. Is every step frictionless?
 6. **Flag gaps** — if something's missing, fix it or re-run Codex. Don't push and hope.
 7. **GitHub Plan Awareness** — Does the feature depend on GitHub Pro/Enterprise features (rulesets, required checks)? If yes, add a fallback/skip for Free plan users. Test with a Free plan repository if possible.
+8. **Visual QA (UI only)** — Use `scripts/pre-merge-review.sh` to get preview URLs. Screenshot desktop and mobile viewports. If using Framer Motion or scroll animations, inject CSS via `browser act:evaluate` to force visibility: `Array.from(document.querySelectorAll("*")).forEach(el => { el.style.opacity = "1"; el.style.transition = "none"; el.style.animation = "none"; });`.
 
 ### PRD Requirements
 - **Include a "User Journey" section** — step-by-step what the user does, not just what's on screen. "User clicks Approve → modal appears with X, Y, Z → user fills → submits" beats "Approve button at top right."

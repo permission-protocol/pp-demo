@@ -15,7 +15,7 @@
 - **Proposed Fix**: A cron job that fires 5 minutes after a PR merge to specifically `curl` the affected routes and check for 200 OK + expected content.
 - **Category**: new cron
 
-## 4. Mobile Age-Gate Debugging (Deep Dive)
-- **Problem**: The Xdares age-gate blocking behavior is still "BLOCKED" and "investigating 10Web/CDN".
-- **Proposed Fix**: Schedule a deep-dive session to follow the new "Infrastructure Debugging Protocol" specifically for this issue.
-- **Category**: process change
+## 5. Bot Comment "Locking" Feature (Webhook Code Change)
+- **Problem**: In high-stakes demo recordings or PRs, manual edits are clobbered by re-enrichment when a new commit is pushed.
+- **Proposed Fix**: Add logic to the webhook to respect a `<!-- skip-enrich -->` hidden comment and skip re-enrichment.
+- **Category**: code change (webhook)
