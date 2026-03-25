@@ -72,12 +72,19 @@ fi
 DISK_USAGE=$(df -h / | tail -1 | awk '{print $5}' | tr -d '%')
 
 # ─── Build alerts/warnings ───
+export CRON_ERRORS
 python3 << PYEOF
 import json
+import os
 
 alerts = []
 warnings = []
-cron_errors = json.loads('''$CRON_ERRORS''')
+cron_errors_raw = os.environ.get('CRON_ERRORS', '[]')
+try:
+    cron_errors = json.loads(cron_errors_raw)
+except Exception as e:
+    cron_errors = []
+    alerts.append(f"heartbeat_script_error: failed to parse cron errors JSON: {e}")
 
 # Cron errors
 if len(cron_errors) > 0:

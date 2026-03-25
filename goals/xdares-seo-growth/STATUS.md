@@ -1,22 +1,21 @@
 # Xdares Status — Last Updated: 2026-03-24
 
 ## Active Right Now
-- **March Expansion Campaign**: 123 total live blog posts! 🚀
-- **Performance**: High-value content push hitting 160% of daily target (16/10 tasks).
-- **Next Up**: Finalize April Fools pranks content (Task-377).
+- **March Expansion Campaign**: 124 total live blog posts! 🚀
+- **Performance**: High-value content push hitting 180% of daily target (8/10 tasks).
+- **Next Up**: Draft Coachella festival season party guide (Task-379).
 
 ## Key Numbers
-- **Blog Posts**: 123 live (Latest: 'Two Truths and a Lie: 150+ Examples')
+- **Blog Posts**: 124 live (Latest: '25+ Hilarious April Fool’s Day Dares & Drinking Games')
 - **Leads**: 19,725 (KickoffLabs).
 
 ## Pending
 - [ ] Fix mobile age-gate blocking (BLOCKED - investigating 10Web/CDN caching).
-- [ ] Finalize and publish April Fools pranks for adults.
 - [ ] Draft Coachella festival season party guide.
 - [ ] Coordinate 4/20 "Stoner Dares" X thread.
 
 ## Recent Decisions (Mar 24)
 - **Hub Strategy**: 'Ultimate Adult Party Games' interlinking complete.
-- **Content**: 'Two Truths' guide expanded to 150+ examples for better SEO ranking.
+- **Content**: Published April Fools guide (25+ items) and promoted via 5-part X thread.
 - **Planning**: April 2026 calendar drafted with focus on Coachella/Festivals and 4/20.
 

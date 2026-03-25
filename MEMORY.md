@@ -186,3 +186,6 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
 
 *Updated: 2026-03-23*
+### 2026-03-24 — Scrolling Smoothness
+- Smooth scrolling (`scroll-behavior: smooth`) combined with anchor links can intercept the first wheel event and cause a "double scroll" lag; avoid them on full-height hero sections.
+- Margin-based viewport detection (`margin: "100px"`) is more reliable than percentage (`amount: 0.05`) for Framer Motion entrance animations.

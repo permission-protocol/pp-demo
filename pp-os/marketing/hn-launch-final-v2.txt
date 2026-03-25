@@ -1,0 +1,189 @@
+============================================================
+HACKER NEWS LAUNCH — FINAL VERSION (v2)
+Submit: Wednesday March 25, 2026 at 6:00 AM Denver (8:00 AM ET)
+============================================================
+
+
+TITLE (copy exactly):
+
+Show HN: Permission Protocol – AI agents can deploy code, but who approved it?
+
+
+URL FIELD (leave blank — we need the text body):
+
+[leave empty]
+
+
+TEXT FIELD (copy everything between the --- markers):
+
+---
+Earlier this month, Claude Code was caught rewriting test assertions to make failing tests pass — hiding real bugs to satisfy its objective. Not a hypothetical. It happened.
+
+That's the problem in one sentence: agents optimize for outcomes, and they'll route around controls that live inside the agent.
+
+You can't ask an agent to police itself. Authorization has to live outside the agent.
+
+We built Permission Protocol — it blocks high-risk AI actions (deploys, database writes, tool calls) unless a human explicitly signs them. Execution won't proceed without a valid cryptographic signature.
+
+Instead of "the agent decided this was safe," you get "this action executed because this human approved it."
+
+Open-source entry points:
+
+deploy-gate (CI/CD enforcement): https://github.com/permission-protocol/deploy-gate
+
+mcp-guard (local proxy for tool calls): https://github.com/permission-protocol/mcp-guard
+
+Under the hood:
+
+  - Ed25519 signatures over a deterministic payload (commit SHA, repo, environment, timestamp)
+  - Verification happens locally — no SaaS in the enforcement path
+  - Policy defines who can approve what
+
+The signing ceremony uses our hosted service. Verification is local and independent — if we disappear, your enforcement still works.
+
+30-second demo (no install required): https://github.com/permission-protocol/pp-demo/pull/32
+
+Click "Authorize Deploy," approve it, and see the signed authority receipt with your name on it.
+
+If you can find a way to bypass the approval requirement, I'd genuinely love to see it.
+---
+
+
+============================================================
+FIRST COMMENT — post within 1-2 min of submission
+============================================================
+
+---
+Happy to answer anything. Here's what usually comes up:
+
+*How is this different from GitHub required reviews / OPA?*
+GitHub reviews control access before execution. OPA evaluates policies. This enforces that a specific human cryptographically signed off on a specific action at execution time. Different layer — they're complementary, not competing.
+
+*What if your service goes down?*
+The signing service is hosted, but the enforcer checks Ed25519 signatures locally and independently. No SaaS in the critical path.
+
+*What's the threat model?*
+Preventing agents from taking irreversible actions without explicit human approval. Not sandboxing — signing.
+
+*Why not just turn off auto-deploy?*
+That works today. It won't work when you have 50 agents making 200 changes a day. You need a system that scales approval without scaling humans linearly.
+
+Happy to go deep on architecture, crypto, or edge cases.
+---
+
+
+============================================================
+BOUNTY COMMENT — post 15-20 min after submission
+(Reply to an organic comment about security, or post standalone)
+============================================================
+
+---
+Since a few people are looking at the architecture — we're putting $200 on it.
+
+The challenge: produce a valid Authority Receipt that passes our verify endpoint, without using the approval UI. Forge it, replay it, find a hole in the Ed25519 signing flow — whatever works.
+
+The target PR: https://github.com/permission-protocol/pp-demo/pull/32
+
+The source code (everything you need is here):
+- Enforcer: https://github.com/permission-protocol/deploy-gate
+- Local proxy: https://github.com/permission-protocol/mcp-guard
+
+Rules:
+- No repo write access (spoofing a GitHub commit status doesn't count — anyone with push access can do that)
+- The target is the cryptographic enforcement, not the GitHub API
+- Open an issue with the exploit or DM me
+
+Formal bounty: https://github.com/permission-protocol/deploy-gate/issues/36
+
+If the crypto holds, a star on the repos would be appreciated.
+---
+
+Bounty issue is live: deploy-gate#36
+
+
+============================================================
+TWITTER/X POST — after HN has traction (8-10 AM Denver)
+============================================================
+
+---
+We just launched Permission Protocol on Hacker News — enforcement primitives for AI agent actions.
+
+AI agents can deploy code. But who approved it?
+
+We built the missing layer: cryptographic approval gates. No valid signature = no execution.
+
+HN discussion: [paste HN link]
+
+$200 bounty if you can bypass the Ed25519 signature requirement. Source is open.
+---
+
+
+============================================================
+PRE-LAUNCH CHECKLIST (tonight + 5:55 AM)
+============================================================
+
+TONIGHT:
+[ ] Create bounty issue on deploy-gate:
+    Title: "Challenge: Bypass the Ed25519 signature verification ($200 bounty)"
+    Body: Rules + target PR + what counts as a valid bypass
+[ ] Fund via Algora (or state payment method in the issue)
+[ ] Merge deploy-gate PR #35 (step 3 copy fix)
+[ ] Upload PP org logo to GitHub (if not done)
+
+5:55 AM TOMORROW:
+[ ] Push empty commit to PR #32:
+    cd pp-demo
+    git checkout <pr-branch>
+    git commit --allow-empty -m "chore: launch day reset"
+    git push
+[ ] Verify the deploy-gate check shows as "pending" on PR #32
+[ ] Open hn-launch-final-v2.txt on your phone/laptop
+
+6:00 AM:
+[ ] Submit HN post (copy title + text from above)
+[ ] Post first comment immediately (within 1-2 min)
+[ ] Post bounty comment at ~6:15-6:20 AM (or reply to a security-related comment)
+
+8:00-10:00 AM:
+[ ] Tweet from @xdares_ linking the HN discussion
+[ ] Monitor HN comments and respond (be helpful, not defensive)
+
+LATER THIS WEEK:
+[ ] Reddit r/netsec or r/machinelearning (discussion post, not link drop)
+[ ] Dev.to / Hashnode technical writeup
+[ ] Product Hunt (separate launch day)
+
+
+============================================================
+OBJECTION HANDLERS (for HN comments)
+============================================================
+
+"This is just a webhook / GitHub Action"
+→ The Action is the delivery mechanism. The product is the signed
+  receipt. Webhooks don't produce tamper-evident, cryptographically
+  verifiable proof of who authorized what.
+
+"Why would I use this instead of just requiring PR reviews?"
+→ PR reviews are mutable and don't prove intent at execution time.
+  This produces an immutable receipt bound to a specific commit,
+  environment, and timestamp. Different layer.
+
+"What if someone compromises your signing key?"
+→ Keys are rotatable and scoped per-company. But more importantly,
+  the enforcer (deploy-gate/mcp-guard) verifies signatures locally.
+  You can run your own signing infrastructure if you don't trust ours.
+  The protocol is open.
+
+"This only works for CI/CD, not real agent actions"
+→ mcp-guard handles arbitrary MCP tool calls. deploy-gate is the
+  CI/CD entry point. Same receipt primitive, different enforcement
+  surfaces.
+
+"$200 bounty is tiny"
+→ "It's symbolic. If the crypto is broken, we have bigger problems
+  than $200. But I'm confident enough to put money on it."
+
+"Anyone can approve the demo — that's not secure"
+→ "The demo lets you experience the approval flow. In production,
+  policy controls who can approve — only team members with the
+  right role. The receipt is the same either way."

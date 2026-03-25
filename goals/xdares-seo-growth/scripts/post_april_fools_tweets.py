@@ -21,11 +21,11 @@ client = tweepy.Client(
 
 # 5 engaging tweets for April Fool's
 tweets = [
-    "April Fool's Day is coming up! 🤡 Tired of basic pranks? Turn your April 1st into a legendary party with these 15+ hilarious drinking games: Salt or Sugar Shot Roulette, Reverse Beer Pong, and more! 🍻\n\nFull guide: https://blog.xdares.com/15-hilarious-april-fools-day-drinking-games-for-adults-2026-edition/",
-    "Ever tried Reverse Beer Pong? 🍺 On April Fool's Day, everything is backwards! Make the shot, and YOU drink. Miss, and everyone else drinks! 🎯\n\nFull rules and 14 other prank-filled games here: https://blog.xdares.com/15-hilarious-april-fools-day-drinking-games-for-adults-2026-edition/",
-    "The 'Salt or Sugar' Shot Roulette: The ultimate high-stakes April Fool's game. 5 shots of water, 1 shot of salt water. Who's getting the prank? 😂\n\nDiscover more crazy ideas for your next party: https://blog.xdares.com/15-hilarious-april-fools-day-drinking-games-for-adults-2026-edition/",
-    "Test your friends' ability to spot a lie with the 'Fake Fact' Pub Quiz! 🧐 Obscure real facts vs. convincing prank ones. Guess wrong and you drink double! 🍹\n\nPerfect for a chaotic April Fool's night: https://blog.xdares.com/15-hilarious-april-fools-day-drinking-games-for-adults-2026-edition/",
-    "Stop doing boring pranks. Start playing April Fool's drinking games! 🎭 From the Mirror Challenge to Embarrassing 'Who Am I?', we've got your April 1st covered. 🥂\n\nFull list: https://blog.xdares.com/15-hilarious-april-fools-day-drinking-games-for-adults-2026-edition/"
+    "April Fool's Day is coming up! 🤡 Tired of basic pranks? Turn your April 1st into a legendary party with these 25+ hilarious drinking games and dares! 🍻\n\nFull guide: https://blog.xdares.com/april-fools-drinking-games-2026/",
+    "Ever tried Reverse Beer Pong? 🍺 On April Fool's Day, everything is backwards! Make the shot, and YOU drink. Miss, and everyone else drinks! 🎯\n\nFull rules and 24 other prank-filled games & dares: https://blog.xdares.com/april-fools-drinking-games-2026/",
+    "The 'Salt or Sugar' Shot Roulette: The ultimate high-stakes April Fool's game. 5 shots of water, 1 shot of salt water. Who's getting the prank? 😂\n\nDiscover more crazy ideas for your next party: https://blog.xdares.com/april-fools-drinking-games-2026/",
+    "Test your friends' ability to spot a lie with the 'Fake Fact' Pub Quiz! 🧐 Obscure real facts vs. convincing prank ones. Guess wrong and you drink double! 🍹\n\nPerfect for a chaotic April Fool's night: https://blog.xdares.com/april-fools-drinking-games-2026/",
+    "Stop doing boring pranks. Start playing April Fool's drinking games and doing hilarious dares! 🎭 From the Mirror Challenge to the 'Invisible Friend' dare, we've got your April 1st covered. 🥂\n\nFull list: https://blog.xdares.com/april-fools-drinking-games-2026/"
 ]
 
 posted = []
