@@ -1,0 +1,29 @@
+CLAUDE DISCORD — #built-with-claude
+============================================================
+
+mcp-guard — YAML-based enforcement proxy for MCP tool calls
+
+Built an MCP stdio proxy that enforces block/allow/hold rules on tool calls before they reach the server. Define policies in YAML, and any tool call that matches a "hold" rule requires explicit human approval before it proceeds.
+
+Under the hood it uses Ed25519 signatures — each approval produces a verifiable authority receipt tied to the specific tool call, parameters, and timestamp.
+
+Use case: you're running an agent with access to filesystem, database, or deployment tools via MCP. You want the agent to read freely but require a human sign-off before any write or delete.
+
+```yaml
+rules:
+  - tool: "filesystem_write"
+    action: hold
+  - tool: "db_query"
+    pattern: "DELETE|DROP|TRUNCATE"
+    action: block
+  - tool: "*_read"
+    action: allow
+```
+
+Repo: https://github.com/permission-protocol/mcp-guard
+
+Part of Permission Protocol — an open-source enforcement layer for AI agent actions. We're launching on HN tomorrow morning.
+
+30-second demo (no install): https://github.com/permission-protocol/pp-demo/pull/32
+
+Would love feedback from anyone running MCP in production.
