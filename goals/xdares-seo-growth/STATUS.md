@@ -11,8 +11,8 @@
 
 ## Pending
 - [ ] Fix mobile age-gate blocking (BLOCKED - investigating 10Web/CDN caching).
-- [ ] Draft 4/20 content (COMPLETED - task-392).
-- [ ] Publish 4/20 content (QUEUED - task-393).
+- [ ] Draft 4/20 content (RE-DRAFTING REQUIRED - task-392 marked completed but files missing).
+- [ ] Publish 4/20 content (QUEUED - waiting for draft and budget reset).
 
 ## Recent Decisions (Mar 25)
 - **Content**: Drafted 'The Ultimate 4/20 Guide: High-Stakes Dares & Games' (task-392).
