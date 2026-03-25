@@ -1,7 +1,7 @@
 # PP Status — Last Updated: 2026-03-24
 
 ## Active — Post-Launch (Wednesday Morning)
-- **Status:** Tuesday HN launch complete. Recording/Demo sprint archived. Transitioning from "Launch Mode" to "Conversion/Retention Mode."
+- **Status:** Tuesday HN launch complete. Transitioning to "Conversion & Retention" phase.
 - **Goal:** Drive 100+ "Demo PR" approvals this week. Convert 5 early adopters to "Team" plan.
 - **Next:** Analyze HN feedback, fix high-friction install bugs, and draft "Week 1" changelog.
 
@@ -17,7 +17,8 @@
 - **Analytics:** Fix PostHog event naming in `pp-app` (currently generic "button_click").
 - **Auth:** Investigate intermittent session logout on mobile Safari (likely SameSite cookie issue).
 
-## Decisions (Mar 23)
-- **Narrative:** "The Signer is the Product." Renamed CTA to "Approve & Sign."
-- **Architecture:** Physical separation of Signer (SaaS) and Enforcer (Binary/MCP) is our primary architectural moat for technical trust.
-- **UX:** "Evidentiary UX" — all security signals (Risk, Verification, Context) are now visible by default on the review dashboard to build immediate trust.
+## Decisions (Mar 24)
+- **Strategy:** "Zero-Setup Demo" — Shipped Anonymous Demo Mode (PR #243) as the primary conversion wedge.
+- **Narrative:** "The Signer is the Product." CTA: "Approve & Sign."
+- **Architecture:** Physical separation of Signer (SaaS) and Enforcer (Binary/MCP) is our primary architectural moat.
+- **UX:** "Evidentiary UX" — show security signals (Risk, Verification, Context) by default to build trust.

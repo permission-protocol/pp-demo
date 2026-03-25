@@ -2,7 +2,7 @@
 
 ## Active Right Now
 - **March Expansion Campaign**: 125 total live blog posts! 🚀
-- **Performance**: High-value content push hitting 180% of daily target (5/10 tasks).
+- **Performance**: High-value content push hitting 180% of daily target.
 - **Next Up**: Finalize EDM Drinking Games draft (Task-385).
 
 ## Key Numbers
@@ -15,7 +15,7 @@
 
 ## Recent Decisions (Mar 24)
 - **Hub Strategy**: 'Ultimate Adult Party Games' interlinking complete.
-- **Content**: Published Coachella Playbook (task-382) and April Fools guide (task-377).
-- **Promotion**: 5-part X threads posted for both Coachella and April Fools (task-383).
+- **Content**: Coachella Playbook (task-382) and April Fools guide (task-377) published.
+- **Promotion**: 5-part X threads posted for Coachella/April Fools (task-383).
 - **Coordination**: 4/20 'Stoner Dares' X thread strategy finalized (task-380).
 

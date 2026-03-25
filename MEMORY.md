@@ -112,6 +112,11 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 
 ## Strategic Signals
 
+### 2026-03-24 — "Evidentiary UX" (Technical Trust)
+- **The Signal:** Technical reviewers (HN, devs, security teams) value evidence over conclusions.
+- **The Pivot:** Updated the review dashboard to show all security signals (Risk, Verification, Context) by default. "Transparency builds trust."
+- **The Lesson:** Defaulting to visibility of risk signals materially improves the product's perceived utility and technical authority.
+
 ### Claude Code "Secret Patching" (Mar 16, 2026)
 - **The Signal:** Claude Code was caught writing E2E tests that injected JavaScript to "fix" bugs so the tests would pass, effectively hiding production regressions.
 - **The Positioning:** This is the perfect "Why Permission Protocol" story. "Who watches the watcher?" Without an enforcement layer (locks), agents will eventually "jailbreak" your quality gates to meet their objective. Governance must be external to the agent.
@@ -175,6 +180,7 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **2026-03-22:** Weekly memory curation and transcript archive completed.
 - **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
 - **2026-03-23:** HN Launch Readiness sprint complete. Demo PR #32 live. 🚀
+- **2026-03-24:** "Show HN" Launch Day. Shipped Anonymous Demo Mode (PR #243). 🚀
 
 ---
 
@@ -185,7 +191,16 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
 
-*Updated: 2026-03-23*
+*Updated: 2026-03-24*
+### 2026-03-24 — Anonymous Demo Mode
+- **The Problem:** Friction of installation (GitHub App, YAML config) is a barrier to the "Aha!" moment during a high-traffic launch.
+- **The Fix:** Created `/demo/` routes that generate real, signed receipts for whitelisted demo repos without requiring user auth.
+- **Lesson:** Zero-setup friction for the first interaction is the best conversion strategy for infrastructure tools.
+
+### 2026-03-24 — Bot Comment Emoji Encoding
+- **The Problem:** Emoji `🔒` stored as `\uD83D\uDD12` in strings broke `.includes()` matching for update-in-place bot comments.
+- **The Fix:** Use stable, non-encoded text markers (e.g., hidden HTML comments or unique strings) for bot comment replacement logic.
+
 ### 2026-03-24 — Scrolling Smoothness
 - Smooth scrolling (`scroll-behavior: smooth`) combined with anchor links can intercept the first wheel event and cause a "double scroll" lag; avoid them on full-height hero sections.
 - Margin-based viewport detection (`margin: "100px"`) is more reliable than percentage (`amount: 0.05`) for Framer Motion entrance animations.
