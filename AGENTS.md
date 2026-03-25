@@ -509,4 +509,5 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 - If stuck on wrong model, diagnose with `openclaw status` → Sessions table
 - Recovery: `kill <gateway-pid>` + `openclaw gateway start` (not just `openclaw gateway stop`)
 - Model health check runs every heartbeat — catches silent fallbacks automatically
+- **Launch Window Priority (Mar 24)**: During defined high-stakes launch windows (e.g., Show HN), prioritize resolving `watch` states on primary models (Opus/Sonnet) immediately. If a model flaps for >10 mins, proactively restart the gateway or fallback to a secondary model to ensure system readiness before the window opens.
 

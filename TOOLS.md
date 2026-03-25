@@ -229,7 +229,7 @@ factory/scripts/error-sensor.sh
 
 When performing visual reviews on modern frontends (Framer Motion, animations):
 1. **Navigate manually** with the `browser` tool (don't trust default tab state).
-2. **Inject CSS** to force element visibility for scroll-triggered components:
+2. **Inject CSS** to force element visibility for scroll-triggered components (Evidentiary UX):
 ```javascript
 // Example via browser act:evaluate
 Array.from(document.querySelectorAll("*")).forEach(el => {
@@ -239,6 +239,7 @@ Array.from(document.querySelectorAll("*")).forEach(el => {
 });
 ```
 3. **Capture** with `fullPage: true` but be aware of viewport height constraints.
+4. **Evidentiary Verification**: Ensure all risk signals (Signer identity, Verification status, Policy Context) are visible in the screenshot. If missing, it's a regression in "Evidentiary UX."
 
 ---
 

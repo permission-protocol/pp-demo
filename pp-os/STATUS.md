@@ -4,6 +4,7 @@
 - **Status:** Tuesday HN launch complete. Transitioning to "Conversion & Retention" phase.
 - **Goal:** Drive 100+ "Demo PR" approvals this week. Convert 5 early adopters to "Team" plan.
 - **Next:** Analyze HN feedback, fix high-friction install bugs, and draft "Week 1" changelog.
+- **Self-Improvement**: Resolve "Evidentiary UX" verification regressions via `scripts/qa-evidentiary-ux.js`.
 
 ## Active — MCP Guard (Enforcement Plane)
 - **v0.1 Extraction:** Ed25519 verification and policy logic extracted into standalone `permission-protocol/mcp-guard` repo.

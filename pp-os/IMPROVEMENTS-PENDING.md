@@ -1,21 +1,21 @@
-# Pending Improvements (Mar 23, 2026)
+# IMPROVEMENTS-PENDING.md — Mar 24, 2026
 
-## 1. Daily Signal Digest (New Cron)
-- **Problem**: Signal scanning finds "HOT signals" (marketing hooks), but they are currently buried in `pp-os/marketing/HOT-SIGNAL.md`.
-- **Proposed Fix**: Create a daily cron job that summarizes the day's signals and posts them to #daily-log or #marketing.
-- **Category**: new cron / process change
+The following improvements require your approval or additional access.
 
-## 2. Dynamic Blast Radius Tuning
-- **Problem**: The current `policy-gate.sh` is binary (low vs high). It might be too aggressive, blocking Rod for simple config changes, or too lax on complex UI components.
-- **Proposed Fix**: Implement a scoring system in `policy-gate.sh` based on file depth and "danger keywords" (e.g., `process.env`, `eval`, `auth`).
-- **Category**: process change / script update
+## [PP/Xdares] Automated CDN/Cache Purge Tooling
+- **Problem**: The Xdares mobile age-gate has been blocked for days by 10Web/CDN caching. I have no direct tool to "bust" this cache programmatically when a fix is deployed.
+- **Proposed Fix**: Create a dedicated `infra` skill or `scripts/purge-cache.sh` that uses 10Web and Cloudflare APIs to clear specific URL paths (e.g., `/`) after a deployment or environment change.
+- **Status**: Pending Rod to provide API tokens for 10Web and Cloudflare.
+- **Risk**: Low. Safe write operation.
 
-## 3. Post-Merge "Health Check" Cron
-- **Problem**: We assume a Vercel deploy is healthy after merge, but we've seen stale chunks.
-- **Proposed Fix**: A cron job that fires 5 minutes after a PR merge to specifically `curl` the affected routes and check for 200 OK + expected content.
-- **Category**: new cron
+## [PP] Browser Session Persistence (Login Automation)
+- **Problem**: Launch day engagement (HN/X) was limited because I didn't have a logged-in session. Manual browser interaction is slow.
+- **Proposed Fix**: Use Playwright's persistent context or `browser` tool profiles to store and reuse authenticated sessions for key launch-day domains (Hacker News, X, GitHub).
+- **Status**: Pending Rod to log in once manually via the browser tool and confirm persistent profile storage.
+- **Risk**: Moderate. Involves credentials and persistent sessions.
 
-## 5. Bot Comment "Locking" Feature (Webhook Code Change)
-- **Problem**: In high-stakes demo recordings or PRs, manual edits are clobbered by re-enrichment when a new commit is pushed.
-- **Proposed Fix**: Add logic to the webhook to respect a `<!-- skip-enrich -->` hidden comment and skip re-enrichment.
-- **Category**: code change (webhook)
+## [PP] Hot-fix Circuit Breaker
+- **Problem**: Multiple attempts to fix the "checkbox bug" (synthetic click handling) in test tooling.
+- **Proposed Fix**: Implement a `Circuit Breaker` protocol for test automation: if 3+ attempts to "fix" a UI element via synthetic clicks fail, the system should automatically fallback to `eval` (manually setting state) or request a developer review of the DOM implementation.
+- **Status**: Ready to draft as a PR for `pp-os/testing`.
+- **Risk**: Low.
