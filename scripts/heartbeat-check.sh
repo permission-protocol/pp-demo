@@ -35,9 +35,9 @@ MODEL_STATUS=$(openclaw status 2>/dev/null | python3 -c "
 import sys
 lines = sys.stdin.read()
 # Look for default model in Sessions line
-if 'claude-opus-4-6' in lines and 'default claude-opus-4-6' in lines:
+if 'gemini-3.1-pro-preview' in lines and 'default gemini-3.1-pro-preview' in lines:
     print('ok')
-elif 'claude-opus-4-6' in lines:
+elif 'gemini-3.1-pro-preview' in lines:
     print('ok')
 else:
     print('unknown')
