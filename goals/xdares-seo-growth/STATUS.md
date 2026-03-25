@@ -14,6 +14,9 @@
 - [ ] Plan 4/20 content sprint.
 
 ## Recent Decisions (Mar 25)
+- **Content**: Published 'April Fools Dares & Drinking Games' (task-389) via Tor.
+- **Promotion**: 5-part April Fools X thread posted (task-390).
+- **Hub Strategy**: Linked April Fools content from 'Ultimate Adult Party Games' and '15 Best Drinking Games' (task-391).
 - **Content**: Published 'EDM Drinking Games' (task-386) via Tor.
 - **Promotion**: 5-part EDM X thread posted (task-387).
 - **Hub Strategy**: Linked EDM content from 'Ultimate Adult Party Games' (task-388).
