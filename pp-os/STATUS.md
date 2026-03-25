@@ -1,25 +1,36 @@
-# PP Status — Last Updated: 2026-03-24
+# PP Status — Last Updated: 2026-03-25 8:20 AM MDT
 
-## Active — Post-Launch (Wednesday Morning)
-- **Status:** Tuesday HN launch complete. Transitioning to "Conversion & Retention" phase.
-- **Goal:** Drive 100+ "Demo PR" approvals this week. Convert 5 early adopters to "Team" plan.
-- **Next:** Analyze HN feedback, fix high-friction install bugs, and draft "Week 1" changelog.
-- **Self-Improvement**: Resolve "Evidentiary UX" verification regressions via `scripts/qa-evidentiary-ux.js`.
+## Active Right Now
+- **Mode:** Post-Launch Day 2 — Conversion & Retention phase
+- **HN thread:** Live and being monitored (idea-078 ACTIVE)
+- **Goal this week:** 100+ Demo PR approvals, 5 Team plan conversions
+- **X API:** BLOCKED — write permissions failing, social amplification down (idea-082)
 
 ## Active — MCP Guard (Enforcement Plane)
-- **v0.1 Extraction:** Ed25519 verification and policy logic extracted into standalone `permission-protocol/mcp-guard` repo.
-- **Next:** Draft v0.2 spec adding "Dynamic Policy Updates" based on signed receipts.
+- **v0.1:** Shipped — Ed25519 verification + policy logic extracted into `permission-protocol/mcp-guard`
+- **v0.2 spec:** Backlog-ready (idea-084) — Dynamic Policy Updates via signed receipts
 
 ## Active — PullMatch (Growth)
-- **Status:** PullMatch.com live. Live diff summarization active.
-- **Next:** Launch "Share your risk profile" feature to drive viral loops from individual PRs.
+- **Status:** PullMatch.com live. Diff summarization active.
+- **Next:** "Share your risk profile" viral loop (idea-081, backlog-ready)
 
-## Technical Debt / Polish
-- **Analytics:** Fix PostHog event naming in `pp-app` (currently generic "button_click").
-- **Auth:** Investigate intermittent session logout on mobile Safari (likely SameSite cookie issue).
+## Pending (Ready to Assign)
+- idea-079: Week 1 changelog — catalog HN feedback, ship top 3 friction fixes
+- idea-082: Fix X API write permissions (priority 1 — blocking amplification)
+- idea-080: PostHog event names — can't measure conversion funnel without it
+- idea-042: Actionable error UX (M) — every error gets a fix path
+- idea-002: Blast radius indicator (M)
+- idea-030: AI-generated code summary (M)
+- idea-083: Mobile Safari SameSite cookie logout (S)
+- idea-084: MCP Guard v0.2 spec (M)
+- idea-081: PullMatch risk profile viral loop (M)
 
-## Decisions (Mar 24)
-- **Strategy:** "Zero-Setup Demo" — Shipped Anonymous Demo Mode (PR #243) as the primary conversion wedge.
-- **Narrative:** "The Signer is the Product." CTA: "Approve & Sign."
-- **Architecture:** Physical separation of Signer (SaaS) and Enforcer (Binary/MCP) is our primary architectural moat.
-- **UX:** "Evidentiary UX" — show security signals (Risk, Verification, Context) by default to build trust.
+## Technical Debt
+- **Analytics:** PostHog generic "button_click" events — blind to conversion funnel (idea-080)
+- **Auth:** Mobile Safari intermittent session logout — SameSite cookie issue (idea-083)
+- **Social:** X API write permissions broken — blocking outbound (idea-082)
+
+## Decisions (Mar 25)
+- **Architecture:** "Zero-Setup Demo" (PR #243) is live — primary conversion wedge
+- **Narrative:** "The Signer is the Product." / "Locks over Cameras."
+- **Analytics priority escalated:** Can't optimize conversion without PostHog event data
