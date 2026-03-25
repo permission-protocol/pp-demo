@@ -1,0 +1,11 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine [ahead 10]
+ m Xdares
+ M factory/.last_sentry_scan
+ M logs/crons/execute-ready.log
+ m mcp-guard
+ M memory/heartbeat-state.json
+ ? permission-protocol-repo
+?? gov-framework-og.png
+?? pp-demo-og.png
+?? pp-os/marketing/hn-launch-final.txt
+?? reports/cron-runs/execute-ready/20260324T170501Z/

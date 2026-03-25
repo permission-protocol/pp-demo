@@ -1,5 +1,5 @@
-No Ready items found on the PP board, so no execution should happen now.
+No Ready items were fetched from the PP board, so nothing should be executed now.
 
-Items to execute now: none.
-Approvals gating execution: none, because the Ready queue is empty.
-Next action: wait for Rod to move approved work into `Ready`, then re-run this job.
+Approvals gating execution: none currently actionable, because the Ready queue is empty. PR approval tokens remain required for any item that later reaches execution and attempts PR creation.
+
+Next action: wait for Rod to move eligible deploy-gate work into `Ready`, then re-run this wrapper and execute up to three items from that queue.

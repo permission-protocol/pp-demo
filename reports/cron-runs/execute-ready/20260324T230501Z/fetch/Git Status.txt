@@ -1,0 +1,35 @@
+## main...origin/main
+ M .openclaw/workspace-state.json
+ M MEMORY.md
+ m Xdares
+ M factory/.last_sentry_scan
+ M goals/xdares-seo-growth/STATUS.md
+ M goals/xdares-seo-growth/content/april-fools-drinking-games-2026.html
+ M goals/xdares-seo-growth/drafts/april-fools-drinking-games-2026.md
+ M goals/xdares-seo-growth/scripts/post_april_fools_tweets.py
+ M goals/xdares-seo-growth/state.json
+ M logs/crons/execute-ready.log
+ M logs/crons/unified-hotline.log
+ m mcp-guard
+ M memory/2026-03-24.md
+ M ops/decisions.md
+ M ops/threads.yaml
+ ? permission-protocol-repo
+ M pp-os/marketing/HOT-SIGNAL.md
+ M pp-os/marketing/signals/2026-03-24.jsonl
+ M pp-os/scout/signals/2026-03-24.jsonl
+ M pp-os/scout/state.json
+ M reports/cron-runs/unified-hotline/latest.json
+ M reports/cron-runs/unified-hotline/latest.md
+ M scripts/heartbeat-check.sh
+?? goals/xdares-seo-growth/drafts/coachella-festival-party-guide-2026.md
+?? goals/xdares-seo-growth/logs/tweets-april-fools-20260324-160320.json
+?? goals/xdares-seo-growth/scripts/publish_april_fools.py
+?? gov-framework-og.png
+?? pp-os/marketing/hn-launch-final-v2.txt
+?? reports/cron-runs/execute-ready/20260324T170501Z/
+?? reports/cron-runs/execute-ready/20260324T190502Z/
+?? reports/cron-runs/execute-ready/20260324T210501Z/
+?? reports/cron-runs/execute-ready/20260324T230501Z/
+?? reports/cron-runs/unified-hotline/20260324T190007Z/
+?? reports/cron-runs/unified-hotline/20260324T230005Z/

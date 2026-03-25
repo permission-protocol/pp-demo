@@ -1,17 +1,16 @@
-**Hotline Report — 2026-03-24 15:07 UTC**
+Hotline scan result: no new actionable signals.
 
-No new actionable signals surfaced in this follow-up scan. No fresh named AI-agent breach inside the hotline window, no new `>$10M` agent-company funding round, no regulatory action, and no new Permission Protocol mention were found.
-
-Active hot signals still in play from the earlier 2026-03-24 run:
-- `Meta` Sev 1 AI-agent data exposure caused by confused-deputy behavior. This is still the strongest validation signal for PP’s enforcement-plane thesis.
-- `Interloom` `~$16.5M` Series A for AI-agent knowledge infrastructure. This remains a valid fast-track growth target.
+Active hot signals remain the two already-open score-5 items from March 24, 2026:
+- Meta incident: internal AI agent “confused deputy” data exposure. Fast-track remains public-response strategy first, then founder/security follow-up once outbound is unblocked.
+- Interloom funding: $16.5M Series A. Fast-track remains founder outreach on PP as the authority layer for knowledge agents.
 
 Recommended fast-track actions:
-- Keep the `Meta` incident as a public positioning opportunity: draft or queue a tight response on output-level enforcement vs auth-only controls.
-- Keep `Interloom` in founder-outreach priority: knowledge agents still need an authority layer, so the fit is clean.
+- Keep `meta-sev1-reachout-strategy` and `interloom-founder-outreach` at the top of the queue.
+- As soon as X write access is restored, send the highest-priority queued public replies first, especially `tweet-reply-2030013150754373637` and `tweet-reply-al-grigor-db-wipe-2029889772181934425`.
+- Once HN login is available, post the queued IETF agent-auth comment.
 
 Blockers that should halt outbound action:
-- `X API write` is still blocked by missing app write permissions. This should halt any tweet/reply sending.
-- `HN login` is still required for the queued HN comment, so that path is also blocked until authenticated.
+- X outbound remains blocked by `403 Forbidden` because the app still lacks Read+Write permissions.
+- HN engagement remains blocked because the queued response requires an authenticated HN session.
 
-State, scan artifacts, and today’s log were updated to reflect this no-new-signal pass.
+No fresh Permission Protocol mention, no new named AI-agent breach inside the hotline window, no new >$10M agent-company funding round, and no HN security/authorization story crossed the 50-point threshold in this pass.

@@ -1,0 +1,19 @@
+## feature/orchestration-state-machine...origin/feature/orchestration-state-machine
+ M .openclaw/workspace-state.json
+ m Xdares
+ M factory/.last_sentry_scan
+ M logs/crons/execute-ready.log
+ M logs/crons/unified-hotline.log
+ m mcp-guard
+ M memory/2026-03-24.md
+ M ops/threads.yaml
+ ? permission-protocol-repo
+ M reports/cron-runs/execute-ready/latest.json
+ M reports/cron-runs/execute-ready/latest.md
+ M reports/cron-runs/unified-hotline/latest.json
+ M reports/cron-runs/unified-hotline/latest.md
+?? gov-framework-og.png
+?? reports/cron-runs/execute-ready/20260324T170501Z/
+?? reports/cron-runs/execute-ready/20260324T190502Z/
+?? reports/cron-runs/execute-ready/20260324T210501Z/
+?? reports/cron-runs/unified-hotline/20260324T190007Z/

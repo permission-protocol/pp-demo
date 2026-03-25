@@ -262,3 +262,39 @@ Linked to source threads for traceability.
 ## 2026-03-23
 - **Hover Menus:** Hover menus need continuous pointer zones (padding vs margin) to stay open during mouse travel. ([Polish Items](https://discord.com/channels/1479269120334762008/1485631505345548318))
 - **Support Routing:** No mailto: links for support; route all through /contact for PostHog tracking and Discord alerting. ([Polish Items](https://discord.com/channels/1479269120334762008/1485631505345548318))
+- 2026-03-24 (Open issues): Cleared 8 stale UI/UX issues from Feb/early March to clear the queue for the MCP Guard sprint.
+- 2026-03-24 (Open issues): Clarified architectural sequencing: Enforcement (verifier/lock) is the prerequisite; workflow wrapper (app#233) follows.
+
+## 2026-03-24 — Scrolling (#scrolling)
+- Smooth scrolling (`scroll-behavior: smooth`) combined with anchor links can intercept the first wheel event and cause a "double scroll" lag; avoid them on full-height hero sections.
+- Margin-based viewport detection (`margin: "100px"`) is more reliable than percentage (`amount: 0.05`) for Framer Motion entrance animations.
+
+## 2026-03-24 — Demo Gif (thread: #rc-main › Demo Gif)
+- **pp-demo is the canonical demo repo** — no duplicate demo repos
+- **reset-demo.sh** produces a clean, single-PR recording state with one failing check
+- **Bot comment search** uses `'Permission Protocol'` (no emoji prefix) for encoding resilience
+- **Two browser profiles** recommended for recording (GitHub viewer + PP Dashboard signer)
+- **Emoji encoding bug** — `\uD83D\uDD12` stored as raw text broke `.includes('🔒')` matching; fixed in app PR #244
+
+## 2026-03-23 — Full Flow 2 - Opus (#full-flow-2-opus)
+- Time-to-first-approval is the core conversion metric, not install count.
+- Demo PR should always stay open as a live playground (pp-demo#23).
+- Animations must enhance, not gate visibility (`initial opacity: 0` → `0.85`).
+- `?action=approve` should auto-open the confirmation modal to reduce friction.
+- Post-approval screen must show the cryptographic receipt — that's the moat.
+
+## 2026-03-24 — Opus - Launch (Archived)
+- **Launch URL:** `github.com/permission-protocol/deploy-gate` (public repo, not private app repo)
+- **HN title:** "Show HN: We built a system where AI agents can't deploy without a human signer"
+- **One secret setup:** `PP_API_KEY` only — `PP_BASE_URL` defaults in the action
+- **Tamper detection:** `verify()` re-canonicalizes receipt fields and compares against stored signed bytes. Any post-signing field mutation fails verification.
+- **Dogfooding:** All launch PRs (#239, #240, #241) merged through PP's own deploy gate
+- **README structure for HN:** Hook first ("AI tried to deploy. It got blocked."), install second, docs last. Risk framing > feature list.
+
+## 2026-03-24 — Quick bugs (hn-launch)
+- Auto-select company via CustomEvent dispatch pattern when landing on a review page with mismatched active company
+- PWA install (manifest.json + InstallPrompt) belongs on app.permissionprotocol.com only, not the marketing site
+- Hero headline uses explicit `<br />` for the Three Questions format to prevent mid-question wraps
+- Fake metrics (12,400+ receipts, 99.97% SLA) replaced with provable facts (Ed25519, MIT license)
+- "Request Access" renamed to "Contact" across nav, footer, and pricing — product is live
+- Vercel requires Git author to have project access, not just team membership
