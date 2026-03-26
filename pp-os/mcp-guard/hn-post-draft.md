@@ -18,6 +18,11 @@ We've been building with MCP-based agents and realized there's no built-in way t
 
 So we built a small proxy that sits between the MCP client and server and decides whether tool calls are allowed.
 
+You can try it in 60 seconds (no setup required):
+```
+npx @permission-protocol/mcp-guard demo
+```
+
 You write rules like:
 
 ```
