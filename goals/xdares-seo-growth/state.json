@@ -32,16 +32,21 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 8,
-    "total_tasks_completed": 417,
-    "tasks_since_replan": 165,
-    "tasks_since_metric_update": 308,
-    "last_run_at": "2026-03-26T18:13:00Z",
+    "daily_tasks_completed": 10,
+    "total_tasks_completed": 419,
+    "tasks_since_replan": 167,
+    "tasks_since_metric_update": 310,
+    "last_run_at": "2026-03-26T20:11:00Z",
     "last_run_date": "2026-03-26",
-    "consecutive_failures": 1,
-    "last_failure_reason": "Task-419 (hub-update-edm-coachella) failed: Tor connectivity to blog.xdares.com timed out, though Tor is active and site is up via direct connection.",
+    "consecutive_failures": 0,
+    "last_failure_reason": null,
     "cron_job_id": "25d04706-34a4-406b-893e-a8a9bce182f6",
     "tick_log": [
+      {
+        "timestamp": "2026-03-26T20:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 2:11 PM Denver. Successfully published 'EDM Drinking Games' (task-417 retry) and updated hubs (task-419) via Tor. Tor connectivity verified as 200 OK before execution. Daily budget reached (10/10)."
+      },
       {
         "timestamp": "2026-03-26T18:13:00Z",
         "tasks_completed": 0,
@@ -67,13 +72,6 @@
   "tasks": {
     "queue": [
       {
-        "id": "task-419",
-        "action": "fix",
-        "target": "hub-update-edm-coachella",
-        "priority": "medium",
-        "status": "queued"
-      },
-      {
         "id": "task-420",
         "action": "fix",
         "target": "tod-500-404",
@@ -83,6 +81,22 @@
     ],
     "on_hold": [],
     "completed": [
+      {
+        "id": "task-419",
+        "action": "fix",
+        "target": "hub-update-edm-coachella",
+        "status": "completed",
+        "completed_at": "2026-03-26T20:11:00Z",
+        "result": "Updated 'Ultimate Adult Party Games' and 'Drinking Games' hubs with EDM/Coachella links via Tor."
+      },
+      {
+        "id": "task-417",
+        "action": "publish",
+        "target": "edm-drinking-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-26T20:11:00Z",
+        "result": "Published 'EDM Drinking Games: Beats, Drops & Neon Dares (2026 Guide)' via Tor retry."
+      },
       {
         "id": "task-418",
         "action": "promo",
@@ -148,16 +162,7 @@
         "result": "Audited site-wide interlinking for SG traffic and fixed gaps in primary guides."
       }
     ],
-    "failed": [
-      {
-        "id": "task-417",
-        "action": "publish",
-        "target": "edm-drinking-games-2026",
-        "status": "failed",
-        "completed_at": "2026-03-26T14:03:00Z",
-        "result": "Failed: ConnectionTimeoutError via Tor proxy (socks5h://127.0.0.1:9050)."
-      }
-    ],
+    "failed": [],
     "blocked": [
       {
         "id": "task-307",
