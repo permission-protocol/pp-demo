@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/permission-protocol/pp-demo/pull/1">
+  <a href="https://github.com/permission-protocol/pp-demo/pull/35">
     <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-PR_%231_Blocked-critical?style=flat-square" alt="Live Demo">
   </a>
   <img src="https://img.shields.io/badge/🛡️_Deploy_Gate-Enabled-success?style=flat-square" alt="Deploy Gate Enabled">
@@ -81,7 +81,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**[→ View the actual blocked PR](https://github.com/permission-protocol/pp-demo/pull/1)**
+**[→ View the actual blocked PR](https://github.com/permission-protocol/pp-demo/pull/35)**
 
 ---
 
