@@ -191,7 +191,20 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 - [ ] **Singapore Localization** — next phase of interlinking/optimization.
 
-*Updated: 2026-03-24*
+*Updated: 2026-03-25*
+
+### 2026-03-25 — Post-Launch Day 2: Zero-Setup Demo & Conversion Focus
+- **Conversion Strategy:** "Zero-Setup Demo" (PR #243) is the primary acquisition wedge. Top-of-funnel engagement spiked once users could see signed receipts without installation.
+- **Evidentiary UX:** Showing risk signals (Signer, Verification, Context) by default builds immediate technical trust. "Technical reviewers value evidence over conclusions."
+- **Positioning:** "Locks over Cameras" — Positioning as infrastructure-level enforcement is a significantly stronger differentiator than "AI monitoring."
+
+### 2026-03-25 — Analytics & Social Blockers
+- **Analytics Integrity:** Without specific PostHog event names (beyond generic "button_click"), the conversion funnel is blind. Escalated to Priority 1.
+- **Social Amplification:** X API write permissions failure is a critical blocker for outbound growth and automated response.
+
+### 2026-03-25 — Paperclip & Port 3100 Moat
+- **Lesson:** Tailscale connectivity (ping) does not guarantee service availability. Port 3100 timeouts indicate firewall or port-binding issues on the remote node that require host-level intervention.
+
 ### 2026-03-24 — Anonymous Demo Mode
 - **The Problem:** Friction of installation (GitHub App, YAML config) is a barrier to the "Aha!" moment during a high-traffic launch.
 - **The Fix:** Created `/demo/` routes that generate real, signed receipts for whitelisted demo repos without requiring user auth.
@@ -204,3 +217,9 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 ### 2026-03-24 — Scrolling Smoothness
 - Smooth scrolling (`scroll-behavior: smooth`) combined with anchor links can intercept the first wheel event and cause a "double scroll" lag; avoid them on full-height hero sections.
 - Margin-based viewport detection (`margin: "100px"`) is more reliable than percentage (`amount: 0.05`) for Framer Motion entrance animations.
+
+### 2026-03-26 — Post-Launch Day 3: Conversion Metrics & Week 4 Decision
+- **Metrics Gap:** Identifying that conversion funnel visibility is limited by generic PostHog events. Audit of "Demo PR approvals" (idea-085) is critical for the Mar 29 "double down or pivot" decision.
+- **The Decision Deadline:** Week 4 strategy (Mar 29) hinges on conversion numbers from the first 5 days post-launch. 
+- **Changelog Strategy:** Initiating "Week 1 Changelog" (idea-079) as the primary retention move—closing loops on feedback received during the first 72 hours.
+- **Xdares Success:** Reached 129 live posts; localization (Singapore) and cornerstone content (500+ ToD questions) are driving growth.

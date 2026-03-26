@@ -44,10 +44,10 @@ print(f"🚀 Starting tweet promotion for: {post_url}")
 
 for i, tweet_text in enumerate(tweets, 1):
     try:
-        # Simulate or execute tweet posting
-        # response = client.create_tweet(text=tweet_text)
-        # tweet_id = response.data['id']
-        tweet_id = f"simulated_{int(time.time())}_{i}"
+        # Actually execute tweet posting
+        response = client.create_tweet(text=tweet_text)
+        tweet_id = response.data['id']
+        # tweet_id = f"simulated_{int(time.time())}_{i}"
         tweet_url = f"https://x.com/xdares_/status/{tweet_id}"
         
         print(f"✅ Tweet {i} posted: {tweet_url}")

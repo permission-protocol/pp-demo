@@ -625,6 +625,30 @@ We promised 500+, so here are extras:
 
 ---
 
+## Bonus: Singapore Edition (Lion City Specials) {#singapore-edition}
+
+Since a huge part of our community is from the Lion City, we’ve added some specific dares and truths for your next night out in Singapore. Whether you’re at Clarke Quay, a rooftop in Marina Bay, or a local hawker centre, these will hit home.
+
+**Singapore Truths:**
+1. What’s the most you’ve ever paid for a single cocktail at a rooftop bar?
+2. Have you ever "choped" a table with a tissue pack and then forgotten where it was?
+3. Which is better: Gong Cha, LiHO, or KOI? (Choose wisely, it reveals your soul).
+4. Have you ever complained about the heat to a complete stranger just to start a conversation?
+5. What’s the most embarrassing thing you’ve done while trying to impress someone at Marina Bay Sands?
+6. Have you ever tried to use a "Lah" in a professional email by accident?
+7. What’s your honest opinion on the current COE prices? (Careful, this might start a fight).
+
+**Singapore Dares:**
+1. Use "Lah," "Lor," or "Leh" at the end of every sentence for the next 3 rounds.
+2. Order your next drink or food item in your best Singlish accent.
+3. Attempt to do a "Lion Dance" move across the room for 30 seconds.
+4. Call a friend and tell them you’ve finally decided to move to Johor Bahru.
+5. Take a "thirst trap" photo with the closest thing you have to a Merlion (a glass of water counts).
+6. Recite the "Stand Up for Singapore" chorus with full patriotic energy.
+7. Ask a stranger (or the host) for a "discount" on your next dare in the most auntie/uncle voice possible.
+
+---
+
 ## Frequently Asked Questions {#faq}
 
 ### What are 10 good truth or dare questions?

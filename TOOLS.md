@@ -189,6 +189,15 @@ curl https://hooks.permissionprotocol.com/health
 
 ---
 
+## Diagnostic Monitoring
+
+**Script:** `scripts/connectivity-check.sh`
+**Purpose:** Use when persistent blockers (like Paperclip timeout or X API errors) are reported in STATUS.md.
+- **Run after every heartbeat** (or via cron) to get real-world error logs instead of just "BLOCKED."
+- Log output: `/Users/moltbot/.openclaw/workspace/memory/connectivity-diagnostics.log`
+
+---
+
 ## Expandi Outreach Rules
 
 **Placeholder limit: 300 chars. Expandi silently drops anything longer (no error thrown).**

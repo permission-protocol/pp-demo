@@ -34,6 +34,12 @@ Whether you're heading to Indio or hosting a stream-along party from your couch,
 9.  **The "Shout Out":** Shout the name of an artist who *isn't* performing and see if anyone agrees with you.
 10. **The "Glow Up":** Apply more glitter to your face every 20 minutes until the headliner starts.
 
+11. **The "Secret Set" Guess:** Everyone puts a dollar in a jar (or a virtual bet) and guesses who the unannounced "secret guest" will be. Closest guess (even if nobody is right, whoever was most plausible) takes the pot or gets a free drink.
+12. **The "Desert Heat" Hydration Challenge:** Festival safety is no joke. For every 30 minutes of dancing, the group must collectively take a 2-minute "hydration break" with water. Anyone who skips it is "disqualified" from the next fun round.
+13. **The "Influencer Pose" Charades:** One person mimes a classic "Influencer in the Wild" pose (the "over-the-shoulder look," the "fake laugh," the "hair flip," or the "looking at the ground for no reason"). First person to guess the pose gets to "upgrade" their drink.
+14. **The "Headliner" Trivia:** While waiting for the main act to take the stage, the host (or designated expert) asks 3 trivia questions about the headliner's career. Whoever gets the most right chooses the next round's drinking rules.
+15. **The "Couchchella" Crowd Surf:** At home only! One person gets "crowd surfed" (lifted by the group or just celebrated on the couch) while their favorite anthem plays. If they touch the ground, they have to finish their drink.
+
 ---
 **Keywords:** Coachella party games, festival drinking games, music festival dares, Coachella 2026 party ideas.
 **Internal Links:** [Adult Party Games](https://blog.xdares.com/adult-party-games/), [EDM Drinking Games](https://blog.xdares.com/edm-drinking-games/)

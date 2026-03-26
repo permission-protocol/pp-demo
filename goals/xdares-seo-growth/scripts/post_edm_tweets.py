@@ -37,21 +37,20 @@ errors = []
 
 for i, tweet_text in enumerate(tweets, 1):
     try:
-        # Simulate posting (for this executor environment, as it's a dry run context)
-        # In a real run, this would be: response = client.create_tweet(text=tweet_text)
-        # For simulation, we'll assume success.
-        tweet_id = f"1234567890_{i}"
+        # Post to X
+        response = client.create_tweet(text=tweet_text)
+        tweet_id = response.data['id']
         tweet_url = f"https://x.com/xdares_/status/{tweet_id}"
-        print(f"✅ [SIMULATED] Tweet {i} posted: {tweet_url}")
+        print(f"✅ Tweet {i} posted: {tweet_url}")
         posted.append({
             'index': i,
-            'id': tweet_id,
+            'id': str(tweet_id),
             'url': tweet_url,
             'text': tweet_text[:50] + '...'
         })
         # Wait between tweets
         if i < len(tweets):
-            time.sleep(1)
+            time.sleep(10)
     except Exception as e:
         print(f"❌ Tweet {i} failed: {e}")
         errors.append({'index': i, 'error': str(e)})

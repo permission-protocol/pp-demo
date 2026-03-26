@@ -95,6 +95,7 @@ When context gets long, compaction can erase recent exchanges. This catches them
 1. Create/clear `memory/working-buffer.md`
 2. After EVERY message past 60%: append a 1-2 sentence summary of the exchange
 3. After compaction: read the buffer FIRST, extract what matters to SESSION-STATE.md
+4. **ID Preservation**: In the working-buffer, explicitly list any new session-specific IDs, invite tokens, or temporary credentials that might be lost in chat history compaction.
 
 **After compaction recovery, never ask "what were we doing?"** — read the buffer.
 
@@ -163,6 +164,7 @@ When integrating physical devices (phones, hardware, IoT):
 ### ✅ Verify Implementation, Not Intent
 
 Before reporting "done" or "fixed":
+- **Artifact Verification**: For any task producing files (code, content, reports), verify the files exist in the target directory and have non-zero size. Never mark "done" based on intent.
 - **Text changes ≠ behavior changes.** Changing a prompt doesn't change architecture.
 - Identify the actual mechanism (config values, cron type, code path), not just the description.
 - Verify by observing behavior (logs, screenshots, curl), not just reading config.
