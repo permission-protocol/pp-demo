@@ -14,9 +14,10 @@ Go to this pull request — it was opened by an AI agent and is **blocked by Per
 → **https://github.com/permission-protocol/pp-demo/pull/32**
 
 Notice:
-- The bot comment with the AI review summary
+- The 🟡 "Review before merging" bot comment — this is the AI flagging risk
 - The "Authorize Deploy" and "Reject" links
-- The pending status check blocking merge
+- The pending status check **blocking merge** — can't merge without a human signer
+- The production database migration that triggered the HIGH RISK flag
 
 ### Step 2: Review the Deploy Request (5 min)
 Click **"Authorize Deploy"** in the bot comment. This takes you to the review dashboard.

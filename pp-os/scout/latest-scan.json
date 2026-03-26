@@ -1,10 +1,10 @@
 {
-  "ts": "2026-03-24T15:07:23Z",
+  "ts": "2026-03-26T19:01:24Z",
   "source": "hotline",
-  "run": "9:07 AM MDT March 24, 2026",
+  "run": "1:01 PM MDT March 26, 2026",
   "signals_found": 0,
   "hot_signals": 0,
   "fast_tracked": [],
   "tweet_api_status": "403 Forbidden — write access not enabled on @PermissionPrtcl app keys",
-  "next_run": "2026-03-24T16:07:23Z"
+  "next_run": "2026-03-26T20:01:24Z"
 }

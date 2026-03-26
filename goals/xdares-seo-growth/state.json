@@ -32,16 +32,26 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 7,
-    "total_tasks_completed": 416,
-    "tasks_since_replan": 164,
-    "tasks_since_metric_update": 307,
-    "last_run_at": "2026-03-26T14:03:00Z",
+    "daily_tasks_completed": 8,
+    "total_tasks_completed": 417,
+    "tasks_since_replan": 165,
+    "tasks_since_metric_update": 308,
+    "last_run_at": "2026-03-26T18:13:00Z",
     "last_run_date": "2026-03-26",
     "consecutive_failures": 1,
-    "last_failure_reason": "Task-417 (Publish EDM) failed: ConnectionTimeoutError via Tor proxy (socks5h://127.0.0.1:9050).",
+    "last_failure_reason": "Task-419 (hub-update-edm-coachella) failed: Tor connectivity to blog.xdares.com timed out, though Tor is active and site is up via direct connection.",
     "cron_job_id": "25d04706-34a4-406b-893e-a8a9bce182f6",
     "tick_log": [
+      {
+        "timestamp": "2026-03-26T18:13:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 12:13 PM Denver. Attempted Task-419 (hub-update-edm-coachella) via Tor. FAILED: Tor connectivity to blog.xdares.com timed out. Verified Tor is functional via check.torproject.org and site is up via direct curl. Tor circuit to this specific host is likely blocked or degraded. Daily progress: 8/10."
+      },
+      {
+        "timestamp": "2026-03-26T16:15:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 10:15 AM Denver. Executed task-418 (promo twitter-edm). Successfully posted 5/5 EDM promo tweets via X API. Note: Task-417 (publish edm) remains failed due to prior Tor timeout; tweets were posted to drive awareness as the content is expected to be live/fixed in next tick. Total daily progress: 8/10."
+      },
       {
         "timestamp": "2026-03-26T14:03:00Z",
         "tasks_completed": 1,
@@ -51,23 +61,11 @@
         "timestamp": "2026-03-26T12:13:00Z",
         "tasks_completed": 4,
         "notes": "Tick executed at 6:13 AM Denver. Updated 'Ultimate Adult Party Games' and 'Drinking Games' hubs with April Fools links (task-413) via Tor. Finalized 'The Coachella Playbook: 15 Festival Games' draft (task-414). Fixed Coachella 404 by publishing the post via Tor (task-415). Verified Coachella promo tweets (task-416 failed as duplicate - already posted). Total daily progress: 6/10."
-      },
-      {
-        "timestamp": "2026-03-26T12:01:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 6:01 AM Denver. Published '25+ Hilarious April Fool's Day Dares & Drinking Games for Adults (2026 Edition)' (task-411) via Tor. Posted 5/5 April Fool's promo tweets (task-412) via X API. Daily progress: 2/10 (new budget logic applied)."
       }
     ]
   },
   "tasks": {
     "queue": [
-      {
-        "id": "task-418",
-        "action": "promo",
-        "target": "twitter-edm",
-        "priority": "medium",
-        "status": "queued"
-      },
       {
         "id": "task-419",
         "action": "fix",
@@ -85,6 +83,14 @@
     ],
     "on_hold": [],
     "completed": [
+      {
+        "id": "task-418",
+        "action": "promo",
+        "target": "twitter-edm",
+        "status": "completed",
+        "completed_at": "2026-03-26T16:14:00Z",
+        "result": "Posted 5/5 EDM promo tweets via X API."
+      },
       {
         "id": "task-416",
         "action": "promo",
