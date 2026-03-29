@@ -2,8 +2,8 @@
   "version": 2,
   "goal": {
     "id": "xdares-seo-growth",
-    "description": "Grow blog.xdares.com organic traffic. 130 blog posts live. 412 tasks completed.",
-    "context": "130 blog posts live on blog.xdares.com. 412 total tasks completed. Budgeting 10 tasks/day. Published April Fool's content and promo tweets.",
+    "description": "Grow blog.xdares.com organic traffic. 136 blog posts live. 446 tasks completed.",
+    "context": "136 blog posts live on blog.xdares.com. 446 total tasks completed. Budgeting 10 tasks/day. May content (Cinco de Mayo, Mother's Day) now live and promoted. Memorial Day content published and promoted; Graduation content draft ready.",
     "success_metric": {
       "current": "~120 visitors/month",
       "target": "291 sessions/month",
@@ -32,134 +32,265 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 10,
-    "total_tasks_completed": 419,
-    "tasks_since_replan": 167,
-    "tasks_since_metric_update": 310,
-    "last_run_at": "2026-03-26T22:11:00Z",
-    "last_run_date": "2026-03-26",
+    "daily_tasks_completed": 7,
+    "total_tasks_completed": 446,
+    "tasks_since_replan": 194,
+    "tasks_since_metric_update": 337,
+    "last_run_at": "2026-03-29T14:01:00Z",
+    "last_run_date": "2026-03-29",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "25d04706-34a4-406b-893e-a8a9bce182f6",
     "tick_log": [
       {
-        "timestamp": "2026-03-26T20:11:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 2:11 PM Denver. Successfully published 'EDM Drinking Games' (task-417 retry) and updated hubs (task-419) via Tor. Tor connectivity verified as 200 OK before execution. Daily budget reached (10/10)."
+        "timestamp": "2026-03-29T14:01:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 8:01 AM Denver. Posted 5/5 Memorial Day promo tweets via X API (task-446). Total daily progress: 7/10."
       },
       {
-        "timestamp": "2026-03-26T18:13:00Z",
+        "timestamp": "2026-03-29T12:11:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 6:11 AM Denver. Published 'Memorial Day BBQ Party Games 2026' via Tor (task-445). Content live at: https://blog.xdares.com/memorial-day-bbq-party-games-2026/. Total daily progress: 6/10."
+      },
+      {
+        "timestamp": "2026-03-29T10:11:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 4:11 AM Denver. Drafted 'Graduation Party Games 2026' (task-444) with 35+ games for high school and college grads. Total daily progress: 5/10."
+      },
+      {
+        "timestamp": "2026-03-29T08:11:00Z",
+        "tasks_completed": 1,
+        "notes": "Tick executed at 2:11 AM Denver. Queue was empty—added Memorial Day and Graduation content tasks. Drafted 'Memorial Day BBQ Party Games 2026' (task-443). Total daily progress: 4/10."
+      },
+      {
+        "timestamp": "2026-03-29T06:11:00Z",
+        "tasks_completed": 3,
+        "notes": "Tick executed at 12:11 AM Denver (New Day). Budget reset. Published 'Mother's Day Party Games 2026' via Tor (task-440), posted 5/5 promo tweets via X API (task-441), and updated both hubs with Cinco de Mayo + Mother's Day links (task-442). Content live at: https://blog.xdares.com/mothers-day-party-games-2026/. Total daily progress: 3/10."
+      },
+      {
+        "timestamp": "2026-03-29T04:11:00Z",
         "tasks_completed": 0,
-        "notes": "Tick executed at 12:13 PM Denver. Attempted Task-419 (hub-update-edm-coachella) via Tor. FAILED: Tor connectivity to blog.xdares.com timed out. Verified Tor is functional via check.torproject.org and site is up via direct curl. Tor circuit to this specific host is likely blocked or degraded. Daily progress: 8/10."
+        "notes": "Tick executed at 10:11 PM Denver. Queue empty, daily budget (10/10) reached for 2026-03-28. Mother's Day draft ready for publish when budget resets (~2 hours at midnight). Standing by."
       },
       {
-        "timestamp": "2026-03-26T16:15:00Z",
+        "timestamp": "2026-03-29T02:11:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 8:11 PM Denver. Queue empty, daily budget (10/10) reached for 2026-03-28. Mother's Day draft ready for publish when budget resets (~4 hours). Standing by."
+      },
+      {
+        "timestamp": "2026-03-29T02:01:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 8:01 PM Denver. Queue empty, daily budget (10/10) reached for 2026-03-28. Mother's Day draft ready for publish when budget resets. Standing by."
+      },
+      {
+        "timestamp": "2026-03-29T00:11:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 6:11 PM Denver. Queue empty, daily budget (10/10) reached for 2026-03-28. Mother's Day draft ready for publish. Standing by for budget reset."
+      },
+      {
+        "timestamp": "2026-03-28T22:11:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 4:11 PM Denver. Queue is empty and daily budget (10/10) for 2026-03-28 is already reached. Mother's Day draft ready for next cycle. Standing by for budget reset."
+      },
+      {
+        "timestamp": "2026-03-28T20:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 2:11 PM Denver. Published 'Cinco de Mayo Drinking Games 2026' (task-438) via Tor and posted 5/5 promo tweets via X API (task-439). Content live at: https://blog.xdares.com/cinco-de-mayo-drinking-games-2026/. Total daily progress: 10/10 (Budget Reached)."
+      },
+      {
+        "timestamp": "2026-03-28T20:01:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 2:01 PM Denver. Queue was empty. Verified all April content (April Fools, Coachella, 4/20, EDM, Beer Olympics, Backyard Games, Outdoor Adventure) is published and hubs updated. Drafted Cinco de Mayo content (task-436) and Mother's Day content (task-437) for May 2026. Total daily progress: 8/10."
+      },
+      {
+        "timestamp": "2026-03-28T18:11:00Z",
+        "tasks_completed": 3,
+        "notes": "Tick executed at 12:11 PM Denver. Queue was empty, so completed and published the pending 'Backyard Party Games 2026' draft (task-433), posted 5/5 promo tweets via X API (task-434), and updated both hub pages via Tor (task-435). Content live at: https://blog.xdares.com/best-backyard-party-games-adults-2026/. Total daily progress: 6/10."
+      },
+      {
+        "timestamp": "2026-03-28T02:11:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 8:11 PM Denver. Successfully executed task-431 (posted 5/5 Beer Olympics promo tweets via X API) and task-432 (published 'Outdoor Adventure Games' guide via Tor). Verified and moved task-430 (already drafted in prior tick) to completed list. Queue is now empty. Total daily progress: 3/10."
+      },
+      {
+        "timestamp": "2026-03-28T00:11:00Z",
         "tasks_completed": 1,
-        "notes": "Tick executed at 10:15 AM Denver. Executed task-418 (promo twitter-edm). Successfully posted 5/5 EDM promo tweets via X API. Note: Task-417 (publish edm) remains failed due to prior Tor timeout; tweets were posted to drive awareness as the content is expected to be live/fixed in next tick. Total daily progress: 8/10."
-      },
-      {
-        "timestamp": "2026-03-26T14:03:00Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 8:03 AM Denver. Converted EDM Drinking Games draft to HTML and attempted publishing (task-417) via Tor. Task FAILED due to Connection Timeout (Tor exit node or server lag). Postponed promo tweets and hub updates. Site-wide Tor flakiness detected during Coachella verification. Total daily progress: 7/10 (1 failure)."
-      },
-      {
-        "timestamp": "2026-03-26T12:13:00Z",
-        "tasks_completed": 4,
-        "notes": "Tick executed at 6:13 AM Denver. Updated 'Ultimate Adult Party Games' and 'Drinking Games' hubs with April Fools links (task-413) via Tor. Finalized 'The Coachella Playbook: 15 Festival Games' draft (task-414). Fixed Coachella 404 by publishing the post via Tor (task-415). Verified Coachella promo tweets (task-416 failed as duplicate - already posted). Total daily progress: 6/10."
+        "notes": "Tick executed at 6:11 PM Denver (New Day). Refilled queue with tasks 430-432 based on Spring 2026 backyard trends. Successfully drafted '25+ Best Backyard Party Games for Adults: 2026 Outdoor Edition' (task-430) to 'drafts/backyard-party-games-2026.md'. Total daily progress: 1/10."
       }
     ]
   },
   "tasks": {
     "queue": [
       {
-        "id": "task-420",
-        "action": "fix",
-        "target": "tod-500-404",
+        "id": "task-447",
+        "action": "publish",
+        "target": "graduation-party-games-2026",
         "priority": "high",
-        "status": "queued"
+        "status": "green",
+        "notes": "Publish Graduation Party Games via Tor."
+      },
+      {
+        "id": "task-448",
+        "action": "promo",
+        "target": "twitter-graduation",
+        "priority": "medium",
+        "status": "green",
+        "notes": "Post 5 promo tweets for Graduation content via X API."
+      },
+      {
+        "id": "task-449",
+        "action": "fix",
+        "target": "hub-update-memorial-graduation",
+        "priority": "medium",
+        "status": "green",
+        "notes": "Update Adult Party Games and Drinking Games hubs with Memorial Day and Graduation links."
       }
     ],
     "on_hold": [],
     "completed": [
       {
-        "id": "task-419",
-        "action": "fix",
-        "target": "hub-update-edm-coachella",
-        "status": "completed",
-        "completed_at": "2026-03-26T20:11:00Z",
-        "result": "Updated 'Ultimate Adult Party Games' and 'Drinking Games' hubs with EDM/Coachella links via Tor."
-      },
-      {
-        "id": "task-417",
-        "action": "publish",
-        "target": "edm-drinking-games-2026",
-        "status": "completed",
-        "completed_at": "2026-03-26T20:11:00Z",
-        "result": "Published 'EDM Drinking Games: Beats, Drops & Neon Dares (2026 Guide)' via Tor retry."
-      },
-      {
-        "id": "task-418",
+        "id": "task-446",
         "action": "promo",
-        "target": "twitter-edm",
+        "target": "twitter-memorial-day",
         "status": "completed",
-        "completed_at": "2026-03-26T16:14:00Z",
-        "result": "Posted 5/5 EDM promo tweets via X API."
+        "completed_at": "2026-03-29T14:01:00Z",
+        "result": "Posted 5/5 Memorial Day promo tweets via X API."
       },
       {
-        "id": "task-416",
-        "action": "promo",
-        "target": "twitter-coachella",
-        "status": "failed",
-        "completed_at": "2026-03-26T12:13:40Z",
-        "result": "Failed: Duplicate content (already posted by prior tick)."
-      },
-      {
-        "id": "task-415",
+        "id": "task-445",
         "action": "publish",
-        "target": "coachella-festival-2026",
+        "target": "memorial-day-bbq-party-games-2026",
         "status": "completed",
-        "completed_at": "2026-03-26T12:13:30Z",
-        "result": "Successfully published via Tor to: https://blog.xdares.com/coachella-festival-party-guide-2026/"
+        "completed_at": "2026-03-29T12:11:00Z",
+        "result": "https://blog.xdares.com/memorial-day-bbq-party-games-2026/"
       },
       {
-        "id": "task-414",
+        "id": "task-444",
         "action": "draft",
-        "target": "coachella-festival-2026",
+        "target": "graduation-party-games-2026",
         "status": "completed",
-        "completed_at": "2026-03-26T12:13:10Z",
-        "result": "Completed 15-item festival game draft."
+        "completed_at": "2026-03-29T10:11:00Z",
+        "result": "Drafted Graduation Party Games 2026 to drafts/graduation-party-games-2026.md with 35+ games for high school and college grads."
       },
       {
-        "id": "task-413",
+        "id": "task-443",
+        "action": "draft",
+        "target": "memorial-day-bbq-party-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-29T08:11:00Z",
+        "result": "Drafted Memorial Day BBQ Party Games 2026 to drafts/memorial-day-bbq-party-games-2026.md."
+      },
+      {
+        "id": "task-442",
         "action": "fix",
-        "target": "hub-update-april-fools",
+        "target": "hub-update-may-content",
         "status": "completed",
-        "completed_at": "2026-03-26T12:13:00Z",
-        "result": "Updated 'Ultimate Adult Party Games' and 'Drinking Games' hubs via Tor."
+        "completed_at": "2026-03-29T06:11:00Z",
+        "result": "Updated 'Adult Party Games' and 'Drinking Games for Parties' hubs with links to Cinco de Mayo and Mother's Day guides via Tor."
       },
       {
-        "id": "task-412",
+        "id": "task-441",
         "action": "promo",
-        "target": "twitter-april-fools",
+        "target": "twitter-mothers-day",
         "status": "completed",
-        "completed_at": "2026-03-26T12:01:00Z",
-        "result": "Posted 5/5 April Fool's promo tweets via X API."
+        "completed_at": "2026-03-29T06:11:00Z",
+        "result": "Posted 5/5 Mother's Day promo tweets via X API."
       },
       {
-        "id": "task-411",
+        "id": "task-440",
         "action": "publish",
-        "target": "april-fools-content",
+        "target": "mothers-day-party-games-2026",
         "status": "completed",
-        "completed_at": "2026-03-26T12:01:00Z",
-        "result": "Published '25+ Hilarious April Fool's Day Dares & Drinking Games for Adults (2026 Edition)' to WordPress via Tor."
+        "completed_at": "2026-03-29T06:11:00Z",
+        "result": "https://blog.xdares.com/mothers-day-party-games-2026/"
       },
       {
-        "id": "task-410",
-        "action": "fix",
-        "target": "singapore-audit",
+        "id": "task-439",
+        "action": "promo",
+        "target": "twitter-cinco-de-mayo",
         "status": "completed",
-        "completed_at": "2026-03-26T08:12:00Z",
-        "result": "Audited site-wide interlinking for SG traffic and fixed gaps in primary guides."
+        "completed_at": "2026-03-28T20:11:00Z",
+        "result": "Posted 5/5 Cinco de Mayo promo tweets via X API."
+      },
+      {
+        "id": "task-438",
+        "action": "publish",
+        "target": "cinco-de-mayo-drinking-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-28T20:11:00Z",
+        "result": "https://blog.xdares.com/cinco-de-mayo-drinking-games-2026/"
+      },
+      {
+        "id": "task-437",
+        "action": "draft",
+        "target": "mothers-day-party-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-28T20:01:00Z",
+        "result": "Drafted Mother's Day Party Games 2026 to drafts/mothers-day-party-games-2026.md (for May 10)."
+      },
+      {
+        "id": "task-436",
+        "action": "draft",
+        "target": "cinco-de-mayo-drinking-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-28T20:01:00Z",
+        "result": "Drafted Cinco de Mayo Drinking Games 2026 to drafts/cinco-de-mayo-drinking-games-2026.md (for May 5)."
+      },
+      {
+        "id": "task-435",
+        "action": "fix",
+        "target": "hub-update-backyard-games",
+        "status": "completed",
+        "completed_at": "2026-03-28T18:15:00Z",
+        "result": "Updated 'Adult Party Games' and 'Drinking Games for Parties' hubs with links to the new 'Backyard Party Games 2026' guide via Tor."
+      },
+      {
+        "id": "task-434",
+        "action": "promo",
+        "target": "twitter-backyard-games",
+        "status": "completed",
+        "completed_at": "2026-03-28T18:15:00Z",
+        "result": "Posted 5/5 Backyard Party Games promo tweets via X API."
+      },
+      {
+        "id": "task-433",
+        "action": "publish",
+        "target": "backyard-party-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-28T18:14:00Z",
+        "result": "https://blog.xdares.com/best-backyard-party-games-adults-2026/"
+      },
+      {
+        "id": "task-432",
+        "action": "publish",
+        "target": "outdoor-adventure-games",
+        "status": "completed",
+        "completed_at": "2026-03-28T02:11:00Z",
+        "result": "https://blog.xdares.com/outdoor-adventure-games/"
+      },
+      {
+        "id": "task-431",
+        "action": "promo",
+        "target": "twitter-beer-olympics",
+        "status": "completed",
+        "completed_at": "2026-03-28T02:11:00Z",
+        "result": "Posted 5/5 Beer Olympics promo tweets via X API."
+      },
+      {
+        "id": "task-430",
+        "action": "draft",
+        "target": "backyard-party-games-2026",
+        "status": "completed",
+        "completed_at": "2026-03-28T00:11:00Z",
+        "result": "Drafted 25+ backyard games to drafts/backyard-party-games-2026.md."
+      },
+      {
+        "id": "task-429",
+        "action": "fix",
+        "target": "hub-update-beer-olympics",
+        "status": "completed",
+        "completed_at": "2026-03-27T14:01:00Z",
+        "result": "Updated 'Adult Party Games' and 'Drinking Games for Parties' hubs with links to the new 'Backyard Beer Olympics' guide via Tor."
       }
     ],
     "failed": [],
