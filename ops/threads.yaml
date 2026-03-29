@@ -2,24 +2,27 @@ threads:
 - id: '1487549275658518769'
   title: See Try Pay
   channel: rc-main
-  status: ACTIVE
+  status: ARCHIVED
   owner: Charles
   priority: critical
   created_at: '2026-03-29'
   updated_at: '2026-03-29'
+  archived_at: '2026-03-29'
   expires_at: null
   blocked_reason: null
   blocked_until: null
-  next_action: Merge PR#270 → test full loop end-to-end
-  resolution_artifact: null
+  next_action: null
+  resolution_artifact: 'PRs #270-277 (app), #239 (site)'
   summary: >
-    Activation framework for Permission Protocol. The bottleneck is activation, not monetization.
-    SEE (force first blocked action <2min post-install) → TRY (one-button Quick Start wizard) →
-    PAY (paywall only after loop is proven). Metrics: install→first_approval, approvals_per_org.
-    Stop: pricing page, Stripe, invoice flows.
-  open_tasks:
-  - 'MERGE: PR#271 (waiting on Build and test check)'
-  - 'VERIFY: Mobile responsiveness for HN traffic'
+    Built complete See-Try-Pay activation framework. Auto-create test PR, approval UX with signer identity,
+    post-approval conversion block, personal ownership copy, $300/mo pricing. Key insight: copy + urgency > features.
+    KPI: approval → second repo installed.
+  open_tasks: []
+  decisions:
+  - 'Pricing is positioning, not conversion — approval page is the conversion surface'
+  - 'KPI: approval → second repo installed (1st = curiosity, 2nd = belief)'
+  - 'Copy + urgency > features'
+  - 'The bar: It would be irresponsible NOT to install this'
   - 'DEMO: Keep pp-demo PR live and scary'
   decisions:
   - Activation before monetization
@@ -1061,3 +1064,20 @@ threads:
   - Lean into Liability Shift for high-net-worth tax vertical.
   - browser tool blocks file:// protocol; use local HTTP server for PDF generation.
   - Extract logo from SVG brand guidelines by cropping viewBox and removing background rect.
+- id: '1487838731741433966'
+  title: PR Conflics
+  channel: rc-main
+  status: ARCHIVED
+  owner: Charles
+  priority: medium
+  created_at: '2026-03-29'
+  updated_at: '2026-03-29'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  summary: Fixed merge conflicts in pp-demo repo. PR #32 (webhook validation) had README.md conflict markers resolved. PRs #32 and #34 merged. PR #35 left open as canonical demo blocked PR.
+  open_tasks: []
+  decisions:
+  - PR #35 stays open as the canonical "blocked demo" target in pp-demo

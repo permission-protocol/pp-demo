@@ -298,3 +298,21 @@ Linked to source threads for traceability.
 - Fake metrics (12,400+ receipts, 99.97% SLA) replaced with provable facts (Ed25519, MIT license)
 - "Request Access" renamed to "Contact" across nav, footer, and pricing — product is live
 - Vercel requires Git author to have project access, not just team membership
+
+## 2026-03-29 — See-Try-Pay Framework (Thread: #rc-main › See Try Pay)
+
+### Strategic Decisions
+1. **Activation over monetization** — The bottleneck is getting users to experience the "blocked deploy" moment, not collecting payment.
+2. **Pricing is positioning, not conversion** — The approval page is the conversion surface. Pricing page upgrades perception from "tool" to "authority layer."
+3. **KPI: `approval → second repo installed`** — 1st install = curiosity, 2nd install = belief. Conversations can lie; installs don't.
+
+### Copy Principles
+4. **Copy + urgency > features** — The difference between "this is cool" and "we need this this week" is copy, not more features.
+5. **Consequence over abstraction** — "would have gone to production" beats "would have been blocked."
+6. **Personal ownership pressure** — "this happens" → "this will happen to YOU" ("The only question is whether it happens on your system").
+7. **The bar** — "It would be irresponsible NOT to install this."
+
+### Pricing Structure
+8. **$300/mo per organization** — Anchors seriousness, leaves room to expand to $1k-5k.
+9. **"Request Access" forces conversation** — Quality > volume at this stage.
+10. **No usage-based pricing** — You pay for control, not API calls.
