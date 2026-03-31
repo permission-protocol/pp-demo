@@ -36,12 +36,17 @@
     "total_tasks_completed": 480,
     "tasks_since_replan": 228,
     "tasks_since_metric_update": 371,
-    "last_run_at": "2026-03-31T08:11:00Z",
+    "last_run_at": "2026-03-31T15:27:00Z",
     "last_run_date": "2026-03-31",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "25d04706-34a4-406b-893e-a8a9bce182f6",
     "tick_log": [
+      {
+        "timestamp": "2026-03-31T15:27:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 3:27 PM Denver. Daily budget (10/10) reached for 2026-03-31. Detected that April Coachella (task-481) and EDM (task-483) content were drafted but not queued. Added 10 tasks to the queue: Coachella (publish/promo), EDM (publish/promo), 4/20 (draft), Hub update, and Christmas/NYE prep. Ready for midnight budget reset."
+      },
       {
         "timestamp": "2026-03-31T08:11:00Z",
         "tasks_completed": 0,
@@ -115,7 +120,98 @@
     ]
   },
   "tasks": {
-    "queue": [],
+    "queue": [
+      {
+        "id": "task-481",
+        "action": "publish",
+        "target": "coachella-playbook-2026",
+        "priority": "high",
+        "impact": "high",
+        "status": "ready",
+        "notes": "Publish Coachella Playbook 2026 (drafts/coachella-festival-party-guide-2026.md) to WordPress via Tor."
+      },
+      {
+        "id": "task-482",
+        "action": "promo",
+        "target": "twitter-coachella",
+        "priority": "high",
+        "impact": "high",
+        "status": "ready",
+        "notes": "Post 5 promo tweets for Coachella Playbook content via X API."
+      },
+      {
+        "id": "task-483",
+        "action": "publish",
+        "target": "edm-drinking-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Publish EDM Drinking Games 2026 (drafts/edm-drinking-games-2026.md) to WordPress via Tor."
+      },
+      {
+        "id": "task-484",
+        "action": "promo",
+        "target": "twitter-edm",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Post 5 promo tweets for EDM Drinking Games content via X API."
+      },
+      {
+        "id": "task-485",
+        "action": "draft",
+        "target": "420-party-guide-2026",
+        "priority": "high",
+        "impact": "high",
+        "status": "ready",
+        "notes": "Draft the Ultimate 4/20 Party Guide 2026. High-energy games, stoner dares, 18+ content."
+      },
+      {
+        "id": "task-486",
+        "action": "fix",
+        "target": "hub-update-april-content",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Update Hub pages with Coachella and EDM content links via Tor."
+      },
+      {
+        "id": "task-487",
+        "action": "draft",
+        "target": "christmas-party-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Draft Christmas Party Games 2026. Holiday drinking games, Santa dares, Naughty/Nice list themes."
+      },
+      {
+        "id": "task-488",
+        "action": "publish",
+        "target": "christmas-party-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Publish Christmas Party Games 2026 via Tor."
+      },
+      {
+        "id": "task-489",
+        "action": "promo",
+        "target": "twitter-christmas",
+        "priority": "low",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Post 5 promo tweets for Christmas Party Games content via X API."
+      },
+      {
+        "id": "task-490",
+        "action": "draft",
+        "target": "nye-party-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Draft NYE Party Games 2026. Countdown games, resolutions, drinking games for midnight."
+      }
+    ],
     "on_hold": [],
     "completed": [
       {
