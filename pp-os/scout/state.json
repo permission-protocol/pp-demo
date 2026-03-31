@@ -1,6 +1,6 @@
 {
   "last_research_run": "2026-03-08T02:00:00Z",
-  "last_hotline_run": "2026-03-26T19:01:24Z",
+  "last_hotline_run": "2026-03-30T19:01:57Z",
   "last_outreach_run": "2026-03-07T15:00:00Z",
   "last_response_check": "2026-03-07T23:00:00Z",
   "last_signal_count": 0,
@@ -48,5 +48,5 @@
     "grantex",
     "agentseal"
   ],
-  "notes": "2026-03-26 19:01Z hotline scan: no new immediate-action triggers surfaced. Current X/web/HN checks did not show a fresh Permission Protocol mention, a named AI-agent breach inside the 6-hour hotline window, a >$10M agent-company funding round inside the 24-hour window, or an HN agent-security story above the 50-point threshold. No fast-track actions were opened this run. Existing outbound blockers remain: X API write access and HN login."
+  "notes": "2026-03-30 19:01Z hotline scan: no new immediate-action triggers surfaced. Live web/news/HN checks did not show a fresh Permission Protocol mention, a named AI-agent breach inside the 6-hour hotline window, a >$10M agent-company funding round inside the 24-hour window, a regulatory action on AI agents, or an HN agent-security story above the 50-point threshold. The only notable security item found was the Meta rogue-agent incident, but it was published last week and is outside the hotline window. No fast-track actions were opened this run. Existing outbound blockers remain: X API write access and HN login. Direct X/HN API fetches were unavailable in this environment, so validation relied on reachable web/news/HN search plus existing scout state."
 }

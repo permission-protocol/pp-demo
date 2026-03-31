@@ -181,17 +181,22 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
 - **2026-03-23:** HN Launch Readiness sprint complete. Demo PR #32 live. 🚀
 - **2026-03-24:** "Show HN" Launch Day. Shipped Anonymous Demo Mode (PR #243). 🚀
+- **2026-03-28:** MCP Guard Sprint Complete — 8 days from zero to npm-published `@permission-protocol/mcp-guard`. Core enforcement primitive shipped.
+- **2026-03-29:** See-Try-Pay Activation Loop shipped. Auto-test PR, approval UX, pricing infrastructure, PostHog funnel complete. 🚀
 
 ---
 
 ## Open Threads
 
-- [!] **Post-HN Launch (Mar 24-26):** Analyze feedback, fix high-friction bugs, and handle "Show HN" influx.
+- [x] **Post-HN Launch (Mar 24-29):** Thread closed. Engagement normalized.
+- [!] **Week 4 Sprint (Apr 4):** 5 external users with deploy-gate installed. 4 days remaining.
+- [!] **Week 4 Decision (OVERDUE):** Pending conversion data audit (idea-085 → idea-087).
 - [ ] **MCP Guard v0.2:** Dynamic policy updates based on signed receipts.
 - [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
-- [ ] **Singapore Localization** — next phase of interlinking/optimization.
+- [ ] **X API Blocked**: Both PP and Xdares need Rod to upgrade X Dev account tier.
+- [ ] **Paperclip Port 3100**: Needs Rod SSH to check firewall/bind on pp-scout-sfo2.
 
-*Updated: 2026-03-25*
+*Updated: 2026-03-30 11:00 PM*
 
 ### 2026-03-25 — Post-Launch Day 2: Zero-Setup Demo & Conversion Focus
 - **Conversion Strategy:** "Zero-Setup Demo" (PR #243) is the primary acquisition wedge. Top-of-funnel engagement spiked once users could see signed receipts without installation.
@@ -223,3 +228,18 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **The Decision Deadline:** Week 4 strategy (Mar 29) hinges on conversion numbers from the first 5 days post-launch. 
 - **Changelog Strategy:** Initiating "Week 1 Changelog" (idea-079) as the primary retention move—closing loops on feedback received during the first 72 hours.
 - **Xdares Success:** Reached 129 live posts; localization (Singapore) and cornerstone content (500+ ToD questions) are driving growth.
+
+### 2026-03-26 — "Break It" Wedge & Private Beta Pivot
+- **The Pattern:** Pivoted from cold HN launch to targeted private beta with BlackLocus alumni.
+- **The Insight:** Engineers respond much better to a challenge ("can you break this?") than a pitch ("check out my product"). Removes social friction and replaces it with a technical game.
+- **Outreach Lesson:** Cold-pitching CISOs for a "15-min call" is friction. Asynchronous CTA ("Mind if I send over the architecture to tear down?") converts better and establishes immediate technical credibility.
+
+### 2026-03-29 — See-Try-Pay Framework
+- **The Sprint:** Built full activation loop: Install → Auto-create blocked test PR → One-click approval with "signing" feel → Pricing infrastructure positioning.
+- **The Bar:** From "This is valuable" to **"It would be irresponsible NOT to install this."**
+- **Copy > Features:** The difference between "this is cool" and "we need this this week" is urgency + inevitability, not more features. I was building features when I should have been sharpening copy.
+- **The Real KPI:** `approval → pipeline installed` — conversations lie, installs don't. Track this, not vanity metrics.
+
+### 2026-03-29 — Link Fatigue Pattern
+- **The Problem:** One link per outreach reply gets clicked; three get bookmarked and forgotten.
+- **The Fix:** Lead with the actionable thing (GitHub Action), not the spec.

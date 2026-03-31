@@ -501,6 +501,13 @@ If two features touch the same files (e.g., `ReviewPageClient.tsx`):
 - **Include a "Customer Test" gate** — "Would a new customer understand this without help? If they'd get stuck, redesign."
 - **Compare existing before redesigning** — grep the codebase for prior art. The answer may already exist in another page/repo.
 
+### 📝 Messaging-First Sprint Check (Mar 29)
+Before building features, ask: **"Is the gap that users can't DO something, or that they don't FEEL urgency to do it?"**
+- If users CAN do the thing but aren't → the gap is **copy/messaging**, not features
+- Ship urgency copy before building more functionality
+- The bar: "It would be irresponsible NOT to do this" — not "This is valuable"
+- **KPI Ladder**: Always know the progression. Product KPI → Business KPI → Real KPI. The real KPI is usually one step beyond what you're measuring.
+
 ### Architecture Rules
 - **Two surfaces for one thing = tech debt.** If you build the same feature twice (e.g., review page on marketing site AND app), schedule the merge immediately.
 - **Embedded > external for default path.** Don't make customers deploy extra services for the product to function. External infra is opt-in for scale.

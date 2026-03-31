@@ -12,7 +12,7 @@ cron_load_file "Long-Term Memory" "$WORKSPACE/MEMORY.md"
 cron_load_file "Xdares Status" "$WORKSPACE/goals/xdares-seo-growth/STATUS.md"
 
 cron_fetch_cmd "Previous Weekly Scorecard" "sed -n '1,220p' \"$WORKSPACE/pp-os/marketing/metrics/weekly-scorecard-prev.json\""
-cron_fetch_cmd "Recent Daily Notes" "for f in \"$WORKSPACE\"/memory/2026-03-20.md \"$WORKSPACE\"/memory/2026-03-21.md; do [ -f \"$f\" ] && { echo \"--- $(basename \"$f\") ---\"; sed -n '1,220p' \"$f\"; }; done"
+cron_fetch_cmd "Recent Daily Notes" 'for f in "'"$WORKSPACE"'"/memory/2026-03-2*.md; do [ -f "$f" ] && { echo "--- $(basename "$f") ---"; sed -n '\''1,220p'\'' "$f"; }; done'
 
 cron_require_command codex
 cron_require_file "$WORKSPACE/pp-os/marketing/metrics/weekly-scorecard-prev.json"
