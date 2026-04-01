@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Permission Protocol | Infrastructure-Grade Security</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#bbcac6",
+                        "primary-fixed": "#6ffbbe",
+                        "on-secondary": "#003730",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-container": "#2f3c3a",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-fixed-dim": "#75d8c5",
+                        "on-background": "#e5e2e1",
+                        "inverse-primary": "#006c49",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "background": "#0A0A0A",
+                        "on-secondary-fixed-variant": "#005046",
+                        "outline": "#86948a",
+                        "secondary-container": "#008171",
+                        "outline-variant": "#3c4a42",
+                        "surface-bright": "#3a3939",
+                        "secondary-fixed": "#91f4e1",
+                        "on-tertiary-fixed-variant": "#3c4947",
+                        "primary-container": "#10b981",
+                        "tertiary": "#bbcac6",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#005236",
+                        "error": "#ffb4ab",
+                        "on-primary": "#003824",
+                        "on-primary-fixed": "#002113",
+                        "on-primary-container": "#00422b",
+                        "on-tertiary-fixed": "#111e1c",
+                        "tertiary-fixed": "#d7e6e2",
+                        "surface": "#131313",
+                        "surface-variant": "#353534",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-secondary-fixed": "#00201b",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#e0fff7",
+                        "on-surface-variant": "#bbcabf",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-container": "#97a6a3",
+                        "surface-tint": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "primary": "#4edea3",
+                        "on-tertiary": "#263331",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#75d8c5",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { display: none; }
+        .glass-card {
+            background: rgba(30, 43, 41, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0A0A0A] border-b border-[#1E2B29] flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#10B981]" data-icon="security">security</span>
+<span class="font-headline font-bold text-xl tracking-tighter text-[#10B981]">Permission Protocol</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#10B981] cursor-pointer" data-icon="terminal">terminal</span>
+</div>
+</header>
+<main class="pt-24 pb-48">
+<!-- HERO -->
+<section class="px-6 mb-16">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 text-primary mb-6 border border-primary-container/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-label uppercase tracking-widest">Active Enforcement</span>
+</div>
+<h1 class="font-headline font-bold text-4xl leading-tight mb-6 tracking-tight">
+                A bot-authored deploy is about to delete <span class="text-primary underline decoration-primary/30">12,847 user records.</span>
+</h1>
+<p class="text-on-surface-variant text-lg mb-10 leading-relaxed max-w-md">
+                Permission Protocol blocks deploys, data access, and critical tool calls until the right human approves.
+            </p>
+<div class="flex flex-col gap-4">
+<button class="w-full h-[56px] bg-primary text-on-primary font-headline font-bold rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                    Protect Your First Repo
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- PROOF BAR -->
+<section class="mb-16">
+<div class="flex overflow-x-auto gap-3 px-6 no-scrollbar pb-4">
+<div class="flex-none h-10 px-4 bg-surface-container border border-outline-variant rounded-full text-xs font-label whitespace-nowrap text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="play_circle">play_circle</span>
+                    15-second demo
+                </div>
+<div class="flex-none h-10 px-4 bg-surface-container border border-outline-variant rounded-full text-xs font-label whitespace-nowrap text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="bolt">bolt</span>
+                    5-minute quickstart
+                </div>
+<div class="flex-none h-10 px-4 bg-surface-container border border-outline-variant rounded-full text-xs font-label whitespace-nowrap text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="savings">savings</span>
+                    Free developer plan
+                </div>
+<div class="flex-none h-10 px-4 bg-surface-container border border-outline-variant rounded-full text-xs font-label whitespace-nowrap text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="hub">hub</span>
+                    GitHub integration
+                </div>
+</div>
+</section>
+<!-- FLOW SECTION -->
+<section class="px-6 mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8">See the approval flow in 15 seconds.</h2>
+<div class="space-y-4">
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-primary">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" data-icon="block">block</span>
+</div>
+<h3 class="font-headline font-bold text-lg mb-2">Blocked before execution</h3>
+<p class="text-on-surface-variant text-sm">AI requests a deploy to a gated repo. The pipeline blocks until a human signs off.</p>
+</div>
+<div class="glass-card p-6 rounded-xl">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" data-icon="touch_app">touch_app</span>
+</div>
+<h3 class="font-headline font-bold text-lg mb-2">Human approves the exact request</h3>
+<p class="text-on-surface-variant text-sm">An approver reviews and signs with an Ed25519 key.</p>
+</div>
+<div class="glass-card p-6 rounded-xl">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<h3 class="font-headline font-bold text-lg mb-2">Receipt verified by the pipeline</h3>
+<p class="text-on-surface-variant text-sm">The signed receipt is verified locally. Only then does execution proceed.</p>
+</div>
+</div>
+</section>
+<!-- VERIFICATION CALLOUT -->
+<section class="bg-primary py-16 px-6 mb-20 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+<p class="font-headline text-2xl font-bold text-on-primary relative z-10 leading-tight">
+                Execution does not proceed because a database says "approved." <span class="bg-on-primary text-primary px-1">It proceeds only when the signed receipt verifies locally.</span>
+</p>
+</section>
+<!-- SIGNED PROOF -->
+<section class="px-6 mb-20">
+<div class="mb-8">
+<h2 class="font-headline text-2xl font-bold mb-2">Signed proof, not logs.</h2>
+<p class="text-on-surface-variant">Logs record what happened. Receipts permit what happens.</p>
+</div>
+<div class="bg-surface-container-high rounded-xl overflow-hidden border border-outline-variant">
+<div class="flex border-b border-outline-variant bg-surface-container">
+<div class="flex-1 px-4 py-3 text-xs font-label border-r border-outline-variant text-on-surface-variant">Traditional</div>
+<div class="flex-1 px-4 py-3 text-xs font-label text-primary">Protocol</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Slack/PR approvals</span>
+<span class="material-symbols-outlined text-error" data-icon="cancel">cancel</span>
+</div>
+<div class="flex justify-between items-center text-sm font-bold text-primary">
+<span>Immutable Receipts</span>
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<div class="p-4 bg-[#050505] border-t border-outline-variant">
+<div class="font-mono text-[10px] text-primary/60 leading-relaxed overflow-hidden h-24">
+                        {<br/>
+                          "id": "tx_88294_af",<br/>
+                          "action": "db.drop_records",<br/>
+                          "payload_hash": "e3b0c44298fc1...",<br/>
+                          "signer": "human_alice_99",<br/>
+                          "signature": "8a2f9b1c7d6e5a4b..."<br/>
+                        }
+                    </div>
+</div>
+</div>
+</section>
+<!-- USE CASES -->
+<section class="px-6 mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8">Built for high-impact actions.</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-5 rounded-lg border border-outline-variant flex flex-col items-start">
+<span class="material-symbols-outlined text-primary mb-3 text-3xl" data-icon="deployed_code">deployed_code</span>
+<h4 class="font-headline font-bold text-sm">Production deploys</h4>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg border border-outline-variant flex flex-col items-start">
+<span class="material-symbols-outlined text-primary mb-3 text-3xl" data-icon="database">database</span>
+<h4 class="font-headline font-bold text-sm">Sensitive data access</h4>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg border border-outline-variant flex flex-col items-start">
+<span class="material-symbols-outlined text-primary mb-3 text-3xl" data-icon="payments">payments</span>
+<h4 class="font-headline font-bold text-sm">Money movement</h4>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg border border-outline-variant flex flex-col items-start">
+<span class="material-symbols-outlined text-primary mb-3 text-3xl" data-icon="bolt">bolt</span>
+<h4 class="font-headline font-bold text-sm">High-risk tool calls</h4>
+</div>
+</div>
+</section>
+<!-- PRICING -->
+<section class="px-6 mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8 text-center">Start free. Enforce when ready.</h2>
+<!-- Pricing Toggle -->
+<div class="flex items-center justify-center gap-4 mb-10">
+<span class="text-sm font-label text-on-surface">Monthly</span>
+<button class="relative w-12 h-6 rounded-full bg-surface-container-high border border-outline-variant">
+<span class="absolute left-1 top-1 w-4 h-4 bg-primary rounded-full"></span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-sm font-label text-on-surface-variant">Annual</span>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold">SAVE 25%</span>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Dev Tier -->
+<div class="border border-outline-variant p-6 rounded-xl">
+<h3 class="font-headline font-bold text-lg mb-1">Developer</h3>
+<p class="text-on-surface-variant text-sm mb-4">For individual developers</p>
+<div class="text-3xl font-bold mb-6 font-headline">$0 <span class="text-sm font-normal text-on-surface-variant">/ month</span></div>
+<ul class="space-y-3 mb-6 text-sm">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="check">check</span> Unlimited public repos</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="check">check</span> Community support</li>
+</ul>
+<button class="w-full py-2 border border-primary text-primary rounded font-label text-sm">Get Started</button>
+</div>
+<!-- Team Tier -->
+<div class="border-2 border-primary p-6 rounded-xl bg-primary/5">
+<h3 class="font-headline font-bold text-lg mb-1">Team</h3>
+<p class="text-on-surface-variant text-sm mb-4">Infrastructure protection for teams.</p>
+<div class="mb-6">
+<div class="text-3xl font-bold font-headline">$79 <span class="text-sm font-normal text-on-surface-variant">/ mo</span></div>
+<div class="text-xs text-primary/60 font-label">$59 billed annually</div>
+</div>
+<ul class="space-y-3 mb-6 text-sm">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="check">check</span> Private repos</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="check">check</span> 5 team members included</li>
+</ul>
+<button class="w-full py-2 bg-primary text-on-primary rounded font-label text-sm">Select Plan</button>
+</div>
+</div>
+<!-- Enterprise Section -->
+<div class="mt-16 py-12 px-8 bg-surface-container rounded-xl border border-dashed border-outline-variant text-center">
+<h4 class="font-headline font-bold text-xl mb-2">Enterprise</h4>
+<p class="text-sm text-on-surface-variant mb-6">Just need custom install options and an SLA? Let's talk.</p>
+<a class="text-primary font-bold text-sm inline-flex items-center gap-1" href="#">Contact Sales <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span></a>
+</div>
+</section>
+<!-- FAQ -->
+<section class="px-6 mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8">Common questions</h2>
+<div class="divide-y divide-outline-variant">
+<div class="py-4">
+<div class="flex justify-between items-center mb-2">
+<span class="font-headline font-bold">What happens if our proxy goes down?</span>
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+</div>
+<div class="py-4 border-b border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="font-headline font-bold">Does this work with manual human agents?</span>
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+</div>
+</div>
+</section>
+<!-- FINAL CTA -->
+<section class="px-6 mb-12">
+<div class="bg-surface-container-high p-8 rounded-2xl border border-primary/20 text-center">
+<h2 class="font-headline text-2xl font-bold mb-6 leading-tight">Try the approval flow now. Then protect a real repo. Scale to every agent.</h2>
+<button class="w-full h-[56px] bg-primary text-on-primary font-headline font-bold rounded-lg flex items-center justify-center gap-2 mb-4">
+                    Get Started Free
+                </button>
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest">No credit card required</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar & Sticky CTA -->
+<div class="fixed bottom-0 left-0 w-full z-50">
+<!-- Sticky CTA Button above Nav -->
+<div class="px-4 pb-4">
+<button class="w-full h-[56px] bg-primary text-on-primary font-headline font-bold rounded-lg shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform border border-primary/20">
+                Protect Your First Repo
+                <span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</button>
+</div>
+<!-- Navigation Shell -->
+<nav class="bg-[#0A0A0A]/90 backdrop-blur-md border-t border-[#1E2B29] flex justify-around items-center px-4 pb-8 pt-2 w-full">
+<div class="flex flex-col items-center justify-center bg-[#1E2B29] text-[#10B981] rounded-lg px-4 py-2 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-headline text-[10px] uppercase tracking-widest mt-1">Network</span>
+</div>
+<div class="flex flex-col items-center justify-center text-gray-500 px-4 py-2 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-headline text-[10px] uppercase tracking-widest mt-1">Logs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-gray-500 px-4 py-2 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-headline text-[10px] uppercase tracking-widest mt-1">Demo</span>
+</div>
+</nav>
+</div>
+</body></html>

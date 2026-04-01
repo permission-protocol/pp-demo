@@ -1,0 +1,109 @@
+PRICING SECTION REDESIGN — Instructions for Dark Theme Version
+===============================================================
+
+Reference: Current layout has 2 cards (Developer $0 + Production $300), dark bg, green accents.
+Target: 3 cards + 1 enterprise callout row. Keep existing dark theme and green accent system.
+
+---
+
+TOP SECTION (keep as-is)
+- "Built for high-impact actions." heading
+- 4 use-case cards (Production deploys / Sensitive data / Money movement / High-risk tool calls)
+- No changes needed here
+
+---
+
+HEADLINE
+- Keep: "Start free. Enforce when ready."
+- Add subhead below: "Signed authority receipts for every irreversible AI action."
+- Add Monthly/Annual toggle between subhead and cards
+
+---
+
+LAYOUT CHANGE
+- Current: 2 cards side by side
+- New: 3 cards in a row + 1 full-width enterprise callout underneath
+- Center card (Team) should be slightly elevated or have a brighter border to show it's featured
+
+---
+
+CARD 1 — Developer (left)
+- Remove "RECOMMENDED" badge
+- Price: $0/month
+- CTA (outline green button): "Install Deploy Gate"
+- Features:
+  ✓ Up to 3 protected repos
+  ✓ Deploy gates (GitHub Action)
+  ✓ Ed25519-signed receipts
+  ✓ AI risk scoring on every PR
+  ✓ Unlimited signers
+  ✓ 7-day audit log
+  ✓ Community support
+
+---
+
+CARD 2 — Team (center, NEW — this is the main addition)
+- Badge: "MOST POPULAR" (green, same style as current RECOMMENDED badge)
+- Price: $79/org/month — small text below: "$59/mo billed annually"
+- CTA (filled green button): "Start Free Trial"
+- Features:
+  ✓ Up to 15 protected repos
+  ✓ Everything in Developer, plus:
+  ✓ Branch & environment approval rules
+  ✓ N-of-M approver workflows
+  ✓ Shared team dashboard
+  ✓ Slack, Discord & email notifications
+  ✓ 90-day audit log + CSV export
+  ✓ Email support (48h)
+
+---
+
+CARD 3 — Production (right)
+- Remove "ENTERPRISE" badge
+- Price: $299/org/month — small text below: "$239/mo billed annually"
+- CTA (outline green button): "Start Trial"
+- Features:
+  ✓ Unlimited repos
+  ✓ Everything in Team, plus:
+  ✓ Custom YAML policies
+  ✓ Multi-step approval chains
+  ✓ SSO (Google, GitHub, Okta)
+  ✓ Org-wide analytics
+  ✓ Audit API + 1-year retention
+  ✓ Priority support (24h)
+
+---
+
+ENTERPRISE CALLOUT — New full-width row below the 3 cards
+- Horizontal dark card with subtle green border
+- Left side: "Enterprise" title + "For regulated teams needing deployment control and compliance evidence."
+- Right side, 2-column bullet list:
+    Col 1: Self-hosted/VPC/air-gap | SAML & SCIM | Unlimited retention
+    Col 2: Compliance exports (SOC2, ISO) | Multi-org federation | Dedicated support + SLA
+- CTA (outline button, right-aligned): "Talk to Sales"
+
+---
+
+ADD BELOW ENTERPRISE
+
+Trust row (centered, small muted text, matches dark theme):
+Ed25519-signed · Fail-closed enforcement · <200ms latency · MIT licensed core
+
+Closing line (centered, subtle):
+"Every plan starts with the same primitive. Paid plans add workflow, governance, and deployment control."
+
+---
+
+REMOVE
+✗ "1,000 receipts/month" from Developer card (no receipt quotas shown)
+✗ "Slack/Email integration" from Developer card (moves to Team)
+✗ "RECOMMENDED" badge from Developer
+✗ "ENTERPRISE" badge from Production
+✗ "Try the 15-second demo" CTA (replace with "Start Trial")
+✗ "SOC2 compliance reports" from Production card (moves to Enterprise callout)
+
+---
+
+COMMON QUESTIONS (keep section, add 2 FAQs)
++ "What counts as a protected repo?" → Any repo where you install the Deploy Gate. Unprotected repos are unlimited on all plans.
++ "What if I hit my repo limit?" → You'll be prompted to upgrade. Existing protections stay active — we never silently disable enforcement.

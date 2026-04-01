@@ -1,0 +1,89 @@
+PRICING SECTION REDESIGN — Designer Instructions
+==================================================
+
+HEADER
+- Headline: "Start free. Enforce when ready."
+- Subhead: "Signed authority receipts for every irreversible AI action."
+- Add Monthly/Annual toggle between subhead and cards
+
+LAYOUT: 3 cards + 1 full-width callout below
+
+---
+
+CARD 1 — Developer (left)
+Price: $0 — "Free forever"
+No badge
+CTA (outline): "Install Deploy Gate"
+
+Features:
+✓ Up to 3 protected repos
+✓ Deploy gates (GitHub Action)
+✓ Ed25519-signed authority receipts
+✓ AI risk scoring on every PR
+✓ Receipt proof pages
+✓ Unlimited signers
+✓ 7-day audit log
+✓ Community support
+
+---
+
+CARD 2 — Team (center, elevated/featured)
+Price: $79/org/month ($59/mo annual)
+Badge: "Most Popular" (green)
+CTA (filled green): "Start Free Trial"
+
+Features:
+✓ Up to 15 protected repos
+✓ Everything in Developer, plus:
+✓ Branch & environment approval rules
+✓ N-of-M approver workflows
+✓ Shared team dashboard
+✓ Slack, Discord & email notifications
+✓ 90-day audit log + CSV export
+✓ Email support (48h)
+
+---
+
+CARD 3 — Production (right)
+Price: $299/org/month ($239/mo annual)
+No badge
+CTA (outline): "Start Trial"
+
+Features:
+✓ Unlimited protected repos
+✓ Everything in Team, plus:
+✓ Custom YAML policies
+✓ Multi-step approval chains
+✓ SSO (Google, GitHub, Okta)
+✓ Org-wide analytics dashboard
+✓ Audit API + 1-year retention
+✓ Webhook & PagerDuty integrations
+✓ Priority support (24h) + Slack channel
+
+---
+
+ENTERPRISE — Full-width callout below cards (horizontal, not a column)
+Left: Title "Enterprise" + subtitle "For regulated teams that need deployment control and compliance evidence."
+Right: 2-column bullets:
+  Col 1: Self-hosted/VPC/air-gap | SAML & SCIM | Unlimited audit retention
+  Col 2: Compliance exports (SOC2, ISO) | Multi-org federation | Dedicated support + SLA
+CTA (outline, right-aligned): "Talk to Sales"
+
+---
+
+BELOW ENTERPRISE
+
+Trust row (centered, small/muted, 4 items):
+Ed25519-signed · Fail-closed enforcement · <200ms latency · MIT licensed core
+
+Closing line (centered body text):
+"Every plan starts with the same primitive. Paid plans add workflow, governance, and deployment control."
+
+---
+
+REMOVE from current design:
+✗ "Mobile Signer App" bullet
+✗ "Self-hosted receipt engine" bullet
+✗ "Hosted Policy Engine" bullet
+✗ Enterprise as equal-width 3rd card (now separate callout)
+✗ "RECOMMENDED" badge on free tier
