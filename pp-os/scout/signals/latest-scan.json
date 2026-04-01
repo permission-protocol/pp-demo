@@ -1,9 +1,7 @@
 {
-  "last_scan": "2026-03-31T23:02:34Z",
+  "last_scan": "2026-04-01T19:06:23Z",
   "scan_type": "unified-hotline-scan",
-  "signals_found": 1,
-  "new_hot": [
-    "sycamore"
-  ],
-  "total_signals_today": 1
+  "signals_found": 0,
+  "new_hot": [],
+  "total_signals_today": 0
 }
