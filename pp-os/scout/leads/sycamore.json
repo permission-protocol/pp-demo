@@ -1,0 +1,28 @@
+{
+  "slug": "sycamore",
+  "company": "Sycamore Labs, Inc.",
+  "website": "https://sycamore.so/",
+  "one_liner": "Trusted agent operating system for the enterprise that helps companies build, deploy, and orchestrate autonomous AI agents with security, human oversight, and operational control.",
+  "stage": "Seed ($65M announced March 30, 2026)",
+  "hq": "Palo Alto, California",
+  "key_person": {
+    "name": "Sri Viswanath",
+    "title": "Founder and CEO",
+    "contact_channels": [
+      "LinkedIn: https://www.linkedin.com/in/sriviswanath",
+      "Website: https://sycamore.so/"
+    ]
+  },
+  "why_pp": "Sycamore is explicitly selling trusted deployment and control for autonomous enterprise agents. That makes action-level authorization the next obvious gap: enterprises will want cryptographically signed approval receipts, explicit kill switches, and immutable proof of who allowed which agent action before these systems touch production workflows.",
+  "best_channel": "LinkedIn first, then website contact or warm investor intro",
+  "best_approach": "Lead with complement, not competition: Sycamore owns the agent operating layer; Permission Protocol can be the enforcement and receipt layer for irreversible actions.",
+  "urgency": "high - fresh $65M seed means active category formation, hiring, and enterprise design-partner motion right now",
+  "found_at": "2026-03-31T23:02:34Z",
+  "source": "hotline",
+  "source_urls": [
+    "https://techcrunch.com/2026/03/30/former-coatue-partner-raises-huge-65m-seed-for-enterprise-ai-agent-startup/",
+    "https://www.businesswire.com/news/home/20260330376116/en/"
+  ],
+  "status": "fast-tracked",
+  "notes": "Trigger reason: >$10M funding round for an agent company inside the 24-hour hotline window. Public positioning overlaps on trust, control, and secure enterprise deployment."
+}

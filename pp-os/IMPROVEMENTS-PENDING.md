@@ -1,35 +1,20 @@
-# IMPROVEMENTS-PENDING.md — Mar 29, 2026
+# IMPROVEMENTS PENDING — Rod's Review — 2026-03-31
 
-The following improvements require your approval or additional access.
+## URGENT BLOCKERS (Week 4 Final Sprint)
+1. **X API Upgrade:** Outreach is currently 100% blocked on Permission Protocol side. Need X Developer account upgrade (Basic/Pro) to allow write access.
+2. **Paperclip Port 3100:** SSH into `pp-scout-sfo2` needed to fix port 3100 timeout for telemetry monitoring.
+3. **HN Login:** Need Rod to verify login for automated HN comment work on `idea-079`.
 
-## [Critical] Fix Failing Cron Jobs — Channel Plugin Configuration
-- **Problem**: 6 cron jobs are persistently failing (100+ errors total) because `telegram`/`discord` channels aren't configured in gateway config. Jobs: xdares-seo-goal-executor, factory-error-sensor, goal-xdares-seo-main, unified-signal-scan, pp-os-execute-ready, unified-hotline.
-- **Proposed Fix**: Either (A) configure channel plugins in gateway config, or (B) update crons to not require messaging channels.
-- **Status**: Pending Rod to decide on channel config.
-- **Risk**: Low (config change), but HIGH accumulated error noise.
+## SUGGESTED AUDITS
+- **Cron Failures:** 16 cron jobs are persistently failing due to "Unsupported channel" or Gemini rate limits. Requesting a 15-minute sync to either:
+  - (a) Fix the channel plugin config (discord/telegram)
+  - (b) Disable/prune low-value crons that are just wasting context/rate limits.
 
-## [Blocked] X API Write Permissions
-- **Problem**: X API write access is blocked. Prevents automated posting to @xdares_ and any PP/engagement content.
-- **Proposed Fix**: Upgrade X Developer account to Pro/Elevated access tier.
-- **Status**: Pending Rod action.
-- **Risk**: None (account setting).
+## COST SAVINGS REPORT
+- **Prompt Prefix Cache Fix:** Successfully identified and patched the `userTime` cache-busting bug.
+- **Projected Savings:** Based on March spend ($5,300 total, ~$2.6k wasted on cache misses), this fix should reduce monthly burn by ~40-50% for high-volume Anthropic runs.
+- **Telemetry:** Implemented `scripts/prefix-telemetry.sh` to proactively monitor prefix stability going forward.
 
-## [Blocked] Paperclip Port 3100
-- **Problem**: Paperclip webhook server on pp-scout-sfo2 not responding on port 3100.
-- **Proposed Fix**: SSH into pp-scout-sfo2 and check ufw + Fastify bind configuration.
-- **Status**: Pending Rod SSH access.
-- **Risk**: Low (diagnostics only).
-
----
-
-## Previously Filed (Mar 24)
-
-### [PP/Xdares] Automated CDN/Cache Purge Tooling
-- **Problem**: The Xdares mobile age-gate has been blocked for days by 10Web/CDN caching.
-- **Proposed Fix**: Create a dedicated `infra` skill or `scripts/purge-cache.sh` with 10Web/Cloudflare API tokens.
-- **Status**: Pending Rod to provide API tokens.
-
-### [PP] Browser Session Persistence (Login Automation)
-- **Problem**: Launch day engagement limited by lack of logged-in sessions.
-- **Proposed Fix**: Use Playwright persistent profiles for HN/X/GitHub sessions.
-- **Status**: Pending Rod to confirm persistent profile approach.
+## PROCESS UPDATES
+- Added **Prompt Cache Stability Protocol** to `AGENTS.md` to prevent future regressions.
+- Added **Middleware Path Normalization** rule to `AGENTS.md` (fixes `/demo` vs `/demo/` mismatch).

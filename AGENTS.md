@@ -101,7 +101,7 @@ When context gets long, compaction can erase recent exchanges. This catches them
 
 ### 🔌 External Integration Checklist (Webhooks/Callbacks)
 When adding new webhooks (GitHub, Stripe, Resend, etc.) or OAuth callbacks:
-- [ ] **Middleware**: Add the endpoint to `middleware.ts` (e.g., `PUBLIC_PATHS`) so it's not blocked by 401.
+- [ ] **Middleware**: Add the endpoint to `middleware.ts` (e.g., `PUBLIC_PATHS`). Ensure **path normalization**: add both `/path` and `/path/` to avoid 401 on trailing slash mismatches.
 - [ ] **CSRF/Auth**: Ensure the endpoint uses appropriate verification (HMAC, signature headers) instead of standard session auth.
 - [ ] **Token Types**: Verify if you need a Bearer, JWT, or Installation-specific token.
 - [ ] **Reachability**: Test the endpoint from outside the environment (or check provider logs) immediately.
@@ -137,6 +137,13 @@ When integrating physical devices (phones, hardware, IoT):
 - **Complex reasoning → Opus** (only when quality demands it)
 - **Vision on cron → always cheap model.** Screenshots are huge token-wise. One 3x DPR screenshot on Opus costs more than an entire Flash audit.
 - **Structured data is free.** Collect metrics via JS/bash (zero tokens), analyze with LLM only when needed.
+
+### 🛡️ Prompt Cache Stability Protocol
+**Crucial for Anthropic/Claude (30k+ token system prompts).**
+- **Identify the Cache Boundary:** Only static, long-lived instructions (`AGENTS.md`, `TOOLS.md`, `SOUL.md`) should be in the prompt prefix.
+- **NEVER inject dynamic data** (timestamps, session IDs, one-off context) above the prefix boundary.
+- **Verify Prefix Hash:** Before starting a high-volume task (batch generation, large refactors), run `scripts/prefix-telemetry.sh`.
+- **Alert on Change:** If the prefix hash has changed since the last known stable state, document WHY in the session log. Unintentional changes can waste thousands of dollars.
 
 ### 🌐 Infrastructure Debugging Protocol (CDN/Hosting)
 **Use when a feature is "BLOCKED" by hosting/CDN issues (10Web, Render, Vercel, Cloudflare).**

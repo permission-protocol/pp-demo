@@ -25,6 +25,22 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - If Rod wants a model change, HE does it manually (via SSH or at the Mac).
 - Read `SAFETY.md` before ANY risky config operation.
 
+### 2026-03-31 — Prefix Instability & Prompt Caching (The $2,600 Bug)
+- **The Problem:** 62% of Anthropic spend was wasted on `input_cache_write` due to an unstable prompt prefix.
+- **Root Cause:** A dynamically generated current timestamp (`userTime`) was being injected into the system prompt *above* the cache breakpoint, causing every message to re-cache 60k+ tokens.
+- **The Fix:** Surgically patched the prompt assembly logic to freeze the timestamp for cache stability.
+- **Lesson:** High cache write/read ratios (2:1 or worse) are a red flag for dynamic data injection above the cache boundary. Prompt caching becomes a liability if the prefix isn't bit-identical.
+
+### 2026-03-31 — Zero-Friction Demo (V2 Redesign)
+- **The Strategy:** Reduced the "Aha!" moment to a 15-second, standalone static experience (no DB/setup) at `/demo`.
+- **The Execution:** Used Codex with a specific emerald terminal design system. 5-screen flow emphasizing the "Authority Receipt."
+- **Lesson:** Technical conversion is about evidence, not just flow. The "Authority Ledger" with dynamic timestamps and signed receipts is the core value-add.
+
+### 2026-03-31 — API Burn Audit
+- **Findings:** Total March spend ~$5,300. Gemini ($1,003) vs. Anthropic ($4,300).
+- **The Waste:** ~50% of Anthropic spend was avoidable cache-misses.
+- **Lesson:** Monthly audits of `usage` logs are mandatory for autonomous systems to prevent silent cost explosions.
+
 ### 2026-03-09 — Render Env Var Wipe (Critical Error)
 - **Lesson:** ALWAYS back up existing state before any write to external services. Use GET before PUT. Read API docs.
 
@@ -183,6 +199,8 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - **2026-03-24:** "Show HN" Launch Day. Shipped Anonymous Demo Mode (PR #243). 🚀
 - **2026-03-28:** MCP Guard Sprint Complete — 8 days from zero to npm-published `@permission-protocol/mcp-guard`. Core enforcement primitive shipped.
 - **2026-03-29:** See-Try-Pay Activation Loop shipped. Auto-test PR, approval UX, pricing infrastructure, PostHog funnel complete. 🚀
+- **2026-03-31:** Zero-Friction Demo V2 launched. 5-screen "terminal emerald" flow + Authority Ledger. 🚀
+- **2026-03-31:** Fixed $2,600/mo prompt caching bug in OpenClaw prefix assembly. 🚀
 
 ---
 
@@ -196,7 +214,12 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 - [ ] **X API Blocked**: Both PP and Xdares need Rod to upgrade X Dev account tier.
 - [ ] **Paperclip Port 3100**: Needs Rod SSH to check firewall/bind on pp-scout-sfo2.
 
-*Updated: 2026-03-30 11:00 PM*
+*Updated: 2026-03-31 11:00 PM*
+
+### 2026-03-31 — Zero-Friction Demo V2 & Prefix Stability
+- **Demo UX:** Transitioned `/demo` to a fully static, high-performance experience with an "Authority Ledger." This eliminates DB latency and onboarding friction for initial technical evaluators.
+- **Cost Integrity:** Identified and patched a prefix instability bug in OpenClaw prompt assembly that was wasting ~$2,600/mo in redundant Anthropic cache writes. Hashing telemetry is now the gold standard for prompt updates.
+- **Signal Intelligence:** Sycamore's $65M seed for an "AI Agent OS" is the primary competitive signal for late March. Outreach focus shifted to "Authority over Orchestration."
 
 ### 2026-03-25 — Post-Launch Day 2: Zero-Setup Demo & Conversion Focus
 - **Conversion Strategy:** "Zero-Setup Demo" (PR #243) is the primary acquisition wedge. Top-of-funnel engagement spiked once users could see signed receipts without installation.
