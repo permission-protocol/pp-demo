@@ -1,0 +1,720 @@
+<html class="dark" lang="en"><head></head><body class="font-body selection:bg-primary-container selection:text-on-primary-container">```html
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Permission Protocol | Zero-Trust Approval Gates</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-fixed": "#00201b",
+            "surface-container-low": "#1c1b1b",
+            "tertiary": "#bbcac6",
+            "surface-dim": "#131313",
+            "on-tertiary-fixed": "#111e1c",
+            "on-secondary-fixed-variant": "#005046",
+            "on-primary": "#003824",
+            "surface-variant": "#353534",
+            "primary-container": "#10b981",
+            "on-tertiary": "#263331",
+            "on-error-container": "#ffdad6",
+            "on-error": "#690005",
+            "outline-variant": "#3c4a42",
+            "inverse-primary": "#006c49",
+            "inverse-surface": "#e5e2e1",
+            "surface-tint": "#4edea3",
+            "on-tertiary-fixed-variant": "#3c4947",
+            "on-secondary-container": "#e0fff7",
+            "surface-container-lowest": "#0e0e0e",
+            "primary-fixed": "#6ffbbe",
+            "on-secondary": "#003730",
+            "tertiary-container": "#97a6a3",
+            "secondary-fixed": "#91f4e1",
+            "surface": "#131313",
+            "error-container": "#93000a",
+            "primary": "#4edea3",
+            "on-primary-container": "#00422b",
+            "secondary-fixed-dim": "#75d8c5",
+            "background": "#131313",
+            "outline": "#86948a",
+            "on-primary-fixed-variant": "#005236",
+            "on-tertiary-container": "#2f3c3a",
+            "on-surface": "#e5e2e1",
+            "error": "#ffb4ab",
+            "on-primary-fixed": "#002113",
+            "on-background": "#e5e2e1",
+            "surface-container-highest": "#353534",
+            "tertiary-fixed": "#d7e6e2",
+            "primary-fixed-dim": "#4edea3",
+            "surface-container": "#201f1f",
+            "inverse-on-surface": "#313030",
+            "secondary-container": "#008171",
+            "tertiary-fixed-dim": "#bbcac6",
+            "surface-container-high": "#2a2a2a",
+            "secondary": "#75d8c5",
+            "on-surface-variant": "#bbcabf",
+            "surface-bright": "#3a3939"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.1); }
+    body { background-color: #0A0A0A; color: #e5e2e1; }
+    .step-arrow::after { content: "arrow_downward"; font-family: 'Material Symbols Outlined'; display: block; text-align: center; color: rgba(16, 185, 129, 0.3); font-size: 24px; margin: 8px 0; }
+    @media (min-width: 768px) { .step-arrow::after { content: "arrow_forward"; margin: 0 16px; } }
+  </style>
+<!-- TopNavBar Implementation -->
+<nav class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-md border-b border-emerald-900/30 shadow-2xl shadow-emerald-900/10">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="flex items-center">
+<span class="text-xl font-bold text-emerald-500 font-headline tracking-tight">Permission Protocol</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-neutral-400 hover:text-emerald-300 transition-colors font-headline tracking-tight" href="#">How it works</a>
+<a class="text-neutral-400 hover:text-emerald-300 transition-colors font-headline tracking-tight" href="#">Quickstart</a>
+<a class="text-neutral-400 hover:text-emerald-300 transition-colors font-headline tracking-tight" href="#">Pricing</a>
+<a class="text-neutral-400 hover:text-emerald-300 transition-colors font-headline tracking-tight flex items-center gap-1" href="#">
+          GitHub
+          <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'opsz' 16;">open_in_new</span>
+</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-on-primary-container px-5 py-2 font-headline font-bold hover:bg-primary transition-all active:scale-95 duration-150 rounded-md">
+          Try the 15-second demo
+        </button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-sm font-label uppercase tracking-widest">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+          No receipt, no execution.
+        </div>
+<h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-on-background">
+          A bot-authored deploy is about to <span class="text-primary">delete 12,847</span> user records.
+</h1>
+<p class="text-on-surface-variant text-xl leading-relaxed max-w-xl">Permission Protocol blocks deploys, data access, and critical tool calls until the right human approves.</p>
+<div class="flex flex-wrap gap-4 pt-2 items-center">
+<button class="px-8 py-4 bg-primary text-on-primary font-bold font-headline rounded-lg hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-primary/20 flex items-center gap-2">
+<span class="material-symbols-outlined">terminal</span>
+          Protect Your First Repo
+        </button>
+<button class="px-8 py-4 border border-outline-variant text-on-surface font-bold font-headline rounded-lg hover:bg-surface-container transition-all">Try the 15-second demo</button>
+</div>
+<div class="pt-4">
+<button class="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-primary font-bold font-headline flex items-center gap-2 hover:bg-emerald-500/20 rounded-lg transition-all">
+          Read the 5-minute quickstart 
+          <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="pt-4">
+<div class="flex flex-wrap gap-3">
+<span class="px-3 py-1.5 bg-surface-container-high border border-outline-variant text-[11px] font-label text-on-surface-variant flex items-center gap-2 rounded">
+<span class="material-symbols-outlined text-[14px]">timer</span> 15-second demo
+            </span>
+<span class="px-3 py-1.5 bg-surface-container-high border border-outline-variant text-[11px] font-label text-on-surface-variant flex items-center gap-2 rounded">
+<span class="material-symbols-outlined text-[14px]">rocket_launch</span> 5-minute quickstart
+            </span>
+<span class="px-3 py-1.5 bg-surface-container-high border border-outline-variant text-[11px] font-label text-on-surface-variant flex items-center gap-2 rounded">
+<span class="material-symbols-outlined text-[14px]">free_cancellation</span> Free developer plan
+            </span>
+<span class="px-3 py-1.5 bg-surface-container-high border border-outline-variant text-[11px] font-label text-on-surface-variant flex items-center gap-2 rounded">
+<span class="material-symbols-outlined text-[14px]">verified_user</span> Signed receipts
+            </span>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="glass-card p-6 rounded-xl flex flex-col gap-8 shadow-2xl shadow-primary/5 border-emerald-500/20 relative overflow-hidden">
+<!-- Visual Indicators of State Transition -->
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4 opacity-20 pointer-events-none">
+<div class="h-24 w-[2px] bg-gradient-to-b from-error via-primary to-secondary"></div>
+</div>
+<!-- State 1: BLOCKED -->
+<div class="space-y-2 opacity-60">
+<div class="flex justify-between items-center text-error text-[10px] font-label uppercase tracking-widest border-b border-error/20 pb-2">
+<span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-error"></span> 01. BLOCKED</span>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-variant p-3 bg-surface-container-lowest rounded border border-error/10">
+<span class="text-error/70">POST</span> /v1/deployment<br/>
+<span class="text-neutral-500">payload: { "env": "prod", ... }</span>
+</div>
+</div>
+<!-- State 2: APPROVED -->
+<div class="relative z-10 scale-105 shadow-2xl">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-1 h-12 bg-primary rounded-full"></div>
+<div class="bg-primary/10 p-5 border border-primary rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<span class="text-primary text-[10px] font-label uppercase tracking-widest flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> 02. APPROVED
+    </span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">fingerprint</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Sign Production Deploy?</p>
+<p class="text-[10px] text-on-surface-variant font-mono">alice@corp.com</p>
+</div>
+<button class="ml-auto bg-primary text-on-primary text-xs px-4 py-2 font-bold rounded shadow-lg shadow-primary/20">APPROVE</button>
+</div>
+</div>
+</div>
+<!-- State 3: VERIFIED RECEIPT -->
+<div class="space-y-3 bg-emerald-500/20 p-4 rounded-lg border-2 border-primary shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined font-bold text-[24px]">verified</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">03. VERIFIED RECEIPT</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-[9px] font-mono text-primary/80">sig_8f2s...</span>
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-primary/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+</div>
+<p class="text-[9px] text-primary/70 font-mono text-center uppercase tracking-tighter">Execution environment unlocked</p>
+</div>
+</div>
+<div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-primary/10 blur-[120px] rounded-full"></div>
+</div>
+</section>
+<!-- Technical Trust Strip -->
+<div class="max-w-7xl mx-auto px-8 mt-12">
+<div class="flex flex-wrap justify-center gap-8 md:gap-16 py-4 border-y border-outline-variant/10">
+<div class="flex items-center gap-2 text-[11px] font-label text-on-surface-variant/80 uppercase tracking-widest">
+<span class="material-symbols-outlined text-[16px] text-primary">verified_user</span> Ed25519 signed receipts
+</div>
+<div class="flex items-center gap-2 text-[11px] font-label text-on-surface-variant/80 uppercase tracking-widest">
+<span class="material-symbols-outlined text-[16px] text-primary">bolt</span> &lt;200ms median latency
+</div>
+<div class="flex items-center gap-2 text-[11px] font-label text-on-surface-variant/80 uppercase tracking-widest">
+<span class="material-symbols-outlined text-[16px] text-primary">code</span> MIT-licensed enforcement layer
+</div>
+</div>
+</div>
+<!-- Trust Proof / Partners -->
+<section class="mt-16 py-12 border-y border-outline-variant/20 bg-surface-container-lowest/50">
+<div class="max-w-7xl mx-auto px-8">
+<p class="text-center text-[12px] font-label font-bold uppercase tracking-[0.2em] text-emerald-500 mb-10">Fits into the tools you already use.</p>
+<div class="flex flex-wrap justify-center gap-10 md:gap-20 opacity-30 grayscale items-center">
+<div class="flex items-center gap-2 font-headline font-bold text-2xl text-on-surface"><span class="material-symbols-outlined">terminal</span> GitHub</div>
+<div class="flex items-center gap-2 font-headline font-bold text-2xl text-on-surface"><span class="material-symbols-outlined">notifications_active</span> PagerDuty</div>
+<div class="flex items-center gap-2 font-headline font-bold text-2xl text-on-surface"><span class="material-symbols-outlined">forum</span> Slack</div>
+<div class="flex items-center gap-2 font-headline font-bold text-2xl text-on-surface"><span class="material-symbols-outlined">cloud</span> AWS</div>
+<div class="flex items-center gap-2 font-headline font-bold text-2xl text-on-surface"><span class="material-symbols-outlined">dns</span> Terraform</div>
+</div>
+</div>
+</section>
+<!-- Approval Flow -->
+<section class="py-24 max-w-7xl mx-auto px-8">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-headline text-4xl font-bold">See the approval flow in 15 seconds.</h2>
+<p class="text-on-surface-variant text-xl">Execution stays closed until the request is approved and the signed receipt is verified.</p>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+<div class="glass-card p-8 rounded-xl border-l-4 border-l-error flex-1 w-full">
+<div class="text-4xl font-bold text-error/20 mb-4 font-headline">01</div>
+<span class="material-symbols-outlined text-error text-4xl mb-4">cancel_schedule_send</span>
+<h3 class="text-xl font-bold mb-3 font-headline">Blocked</h3>
+<p class="text-on-surface-variant leading-relaxed text-[15px]">AI agents cannot invoke high-risk functions. Requests are trapped at the enforcement layer.</p>
+</div>
+<div class="step-arrow shrink-0 hidden md:block"></div>
+<div class="glass-card p-8 rounded-xl border-l-4 border-l-primary flex-1 w-full">
+<div class="text-4xl font-bold text-primary/20 mb-4 font-headline">02</div>
+<span class="material-symbols-outlined text-primary text-4xl mb-4">touch_app</span>
+<h3 class="text-xl font-bold mb-3 font-headline">Approved</h3>
+<p class="text-on-surface-variant leading-relaxed text-[15px]">Signers review precise data: JSON payload, intent, and impact before signing the cryptographic grant.</p>
+</div>
+<div class="step-arrow shrink-0 hidden md:block"></div>
+<div class="glass-card p-8 rounded-xl border-l-4 border-l-secondary flex-1 w-full">
+<div class="text-4xl font-bold text-secondary/20 mb-4 font-headline">03</div>
+<span class="material-symbols-outlined text-secondary text-4xl mb-4">verified</span>
+<h3 class="text-xl font-bold mb-3 font-headline">Verified</h3>
+<p class="text-on-surface-variant leading-relaxed text-[15px]">The system only opens the gate if the signed receipt matches the public key of an authorized signer.</p>
+</div>
+</div>
+<div class="text-center">
+<button class="text-primary font-bold font-headline flex items-center gap-2 mx-auto hover:underline text-lg decoration-2 underline-offset-8">
+          Verify a live receipt <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+</section>
+<!-- Signed Proof Section -->
+<section class="py-24 bg-surface-container-low border-y border-outline-variant/20 overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-12">
+<div class="space-y-4">
+<h2 class="font-headline text-4xl font-bold">Signed proof, not logs.</h2>
+<p class="text-on-surface-variant text-xl">Logs tell you what happened. Signed receipts prove who authorized the exact action, when, and under which policy.</p>
+</div>
+<div class="space-y-6">
+<div class="flex items-start gap-4 p-4 rounded-lg bg-surface-container-highest border border-outline-variant/30">
+<div class="p-2 bg-secondary/10 rounded-lg"><span class="material-symbols-outlined text-secondary">forum</span></div>
+<div>
+<h4 class="font-bold mb-1">Slack/PR approval</h4>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">Ephemeral and easily bypassed. No technical enforcement connection.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-surface-container-highest border border-outline-variant/30">
+<div class="p-2 bg-error/10 rounded-lg"><span class="material-symbols-outlined text-error">history</span></div>
+<div>
+<h4 class="font-bold mb-1">Audit logs</h4>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">Post-hoc notification. The damage is already done when you read them.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-primary/10 border border-primary/30">
+<div class="p-2 bg-primary/20 rounded-lg"><span class="material-symbols-outlined text-primary">policy</span></div>
+<div>
+<h4 class="font-bold mb-1 text-primary">Permission Protocol receipt</h4>
+<p class="text-[15px] text-on-surface leading-relaxed">Cryptographic proof required before execution. Zero-trust enforcement.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group">
+<div class="bg-[#0D0D0D] p-8 rounded-2xl border border-primary/30 shadow-2xl">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined font-bold">shield</span>
+</div>
+<div>
+<p class="text-xs font-label text-on-surface-variant uppercase tracking-tighter">Receipt-ID</p>
+<p class="text-sm font-mono text-primary">rcpt_792x_kf93</p>
+</div>
+</div>
+<div class="px-3 py-1 bg-primary/10 rounded-full text-xs text-primary font-bold border border-primary/20 uppercase">
+                Verified
+              </div>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant/20">
+<p class="text-[10px] font-label text-on-surface-variant uppercase">Signer</p>
+<p class="text-xs font-mono">alice@corp.com</p>
+</div>
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant/20">
+<p class="text-[10px] font-label text-on-surface-variant uppercase">Policy</p>
+<p class="text-xs font-mono">Production-Writ-v2</p>
+</div>
+</div>
+<div class="p-4 bg-surface-container-lowest border border-outline-variant/10 rounded-lg">
+<p class="text-[10px] font-label text-on-surface-variant uppercase mb-2">Resource Digest</p>
+<p class="text-xs font-mono break-all text-on-surface/80 leading-relaxed">sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</p>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 text-center">
+<button class="text-sm font-bold text-primary hover:underline">View live receipt</button>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-8 -right-8 w-48 h-48 bg-primary/20 blur-[80px] -z-10 group-hover:scale-150 transition-transform"></div>
+</div>
+</div>
+</section>
+<!-- High Contrast Text Block Section -->
+<section class="py-32 bg-neutral-950 border-y border-emerald-900/30">
+<div class="max-w-7xl mx-auto px-8">
+<div class="max-w-5xl">
+<h2 class="font-headline text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-on-surface">
+        Execution <span class="text-primary">does not proceed</span> because a database says "approved." It proceeds only when the <span class="text-primary italic">signed receipt</span> verifies locally.
+      </h2>
+<div class="mt-8 h-1 w-24 bg-primary rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Implementation -->
+<section class="py-24 max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-12">
+<div class="space-y-4">
+<h2 class="font-headline text-4xl font-bold">Add approval gates in 5 minutes.</h2>
+<p class="text-on-surface-variant text-xl">Identify the action. Route for approval. Verify the signed receipt.</p>
+</div>
+<div class="space-y-8">
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-primary rounded-full border-4 border-background"></div>
+<h4 class="font-bold text-lg mb-2">1. Define the action</h4>
+<p class="text-on-surface-variant text-[15px]">Identify critical code paths that require human oversight using our SDK.</p>
+</div>
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-primary/50 rounded-full border-4 border-background"></div>
+<h4 class="font-bold text-lg mb-2">2. Route for approval</h4>
+<p class="text-on-surface-variant text-[15px]">Requests are automatically pushed to Slack, PagerDuty, or our mobile dashboard.</p>
+</div>
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-primary/20 rounded-full border-4 border-background"></div>
+<h4 class="font-bold text-lg mb-2">3. Enforce the result</h4>
+<p class="text-on-surface-variant text-[15px]">Your system receives the signed receipt and validates the signature locally.</p>
+</div>
+</div>
+</div>
+<div class="bg-[#0f0f0f] rounded-xl p-6 border border-emerald-500/20 shadow-2xl font-mono text-sm leading-relaxed overflow-hidden group">
+<div class="flex items-center gap-2 mb-6">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/40"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-500/40"></div>
+<div class="w-3 h-3 rounded-full bg-primary/40"></div>
+</div>
+<div class="ml-4 text-[10px] text-neutral-500 font-label uppercase tracking-widest">SDK_IMPLEMENTATION.PY</div>
+</div>
+<div class="space-y-1">
+<div><span class="text-emerald-500">from</span> permission_protocol <span class="text-emerald-500">import</span> Gate</div>
+<div class="text-neutral-600"># 1. Initialize the gate</div>
+<div>gate = Gate(api_key=<span class="text-primary-container">"pp_live_..."</span>)</div>
+<br/>
+<div class="text-neutral-600"># 2. Wrap high-impact action</div>
+<div><span class="text-emerald-500">with</span> gate.enforce(<span class="text-primary-container">"production_deploy"</span>, payload=env_data):</div>
+<div class="pl-4 text-neutral-400">deploy_to_prod(env_data)</div>
+<br/>
+<div class="text-neutral-600"># 3. Protocol handles blocking/approval</div>
+<div class="text-neutral-600"># and verifies signed receipt before entry</div>
+</div>
+<div class="mt-8 pt-6 border-t border-emerald-900/20 flex justify-between items-center">
+<span class="text-[10px] text-neutral-500 uppercase tracking-widest">Local verification: Enabled</span>
+<span class="text-emerald-500 text-[10px] flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> ED25519</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial Section -->
+<section class="py-24 max-w-4xl mx-auto px-8 text-center">
+<div class="relative">
+<span class="material-symbols-outlined text-primary/20 text-7xl absolute -top-8 -left-8 -z-10">format_quote</span>
+<p class="text-2xl md:text-3xl font-medium leading-relaxed mb-6 italic text-on-surface">"We had an agent attempt a production-secret deletion by mistake. Permission Protocol forced a human sign-off before anything executed."</p>
+<div class="space-y-1">
+<h5 class="font-bold text-lg font-headline">Rod Carvalho</h5>
+<p class="text-on-surface-variant text-sm uppercase tracking-widest font-label">Founder, Permission Protocol</p>
+<p class="text-neutral-500 text-xs mt-4">Used to guard real high-risk agent actions in our own workflows.</p>
+</div>
+</div>
+</section>
+<!-- Use Cases -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-8">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-headline text-4xl font-bold">Built for high-impact actions.</h2>
+<p class="text-on-surface-variant text-xl">One primitive. Multiple policies.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass-card p-6 rounded-xl hover:border-primary/50 transition-colors">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+</div>
+<h4 class="text-lg font-bold mb-3 font-headline">Production deploys</h4>
+<p class="text-[14px] text-on-surface-variant leading-relaxed">Require senior dev approval for any PR targeting production environments.</p>
+</div>
+<div class="glass-card p-6 rounded-xl hover:border-primary/50 transition-colors">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">database</span>
+</div>
+<h4 class="text-lg font-bold mb-3 font-headline">Sensitive data access</h4>
+<p class="text-[14px] text-on-surface-variant leading-relaxed">Protect PII/PHI. Only decrypt sensitive buckets after a verified reason and approval.</p>
+</div>
+<div class="glass-card p-6 rounded-xl hover:border-primary/50 transition-colors">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">paid</span>
+</div>
+<h4 class="text-lg font-bold mb-3 font-headline">Money movement</h4>
+<p class="text-[14px] text-on-surface-variant leading-relaxed">Set hard limits on agent spending. Any transaction over $X requires a signed receipt.</p>
+</div>
+<div class="glass-card p-6 rounded-xl hover:border-primary/50 transition-colors">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">warning</span>
+</div>
+<h4 class="text-lg font-bold mb-3 font-headline">High-risk tool calls</h4>
+<p class="text-[14px] text-on-surface-variant leading-relaxed">Block agents from deleting tables, modifying DNS, or altering security groups.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-24 max-w-7xl mx-auto px-8" id="pricing">
+<div class="text-center mb-10 space-y-4">
+<h2 class="font-headline text-4xl md:text-5xl font-bold">Start free. Enforce when ready.</h2>
+<p class="text-on-surface-variant text-xl">Signed authority receipts for every irreversible AI action.</p>
+</div>
+<!-- Pricing Toggle -->
+<div class="flex justify-center items-center gap-4 mb-16">
+<span class="text-sm font-label text-on-surface-variant">Monthly</span>
+<button class="w-12 h-6 bg-surface-container-high rounded-full p-1 relative flex items-center transition-colors">
+<div class="w-4 h-4 bg-primary rounded-full shadow-sm translate-x-6"></div>
+</button>
+<span class="text-sm font-label text-primary font-bold">Annual</span>
+<span class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-tight">Save 25%</span>
+</div>
+<!-- Pricing Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-12">
+<!-- Card 1: Developer -->
+<div class="glass-card p-8 rounded-2xl border-outline-variant/30 flex flex-col hover:border-primary/20 transition-colors">
+<div class="mb-8">
+<h3 class="text-xl font-bold font-headline mb-4">Developer</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-on-surface">$0</span>
+<span class="text-on-surface-variant text-sm">/month</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Up to 3 protected repos</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Deploy gates (GitHub Action)</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Ed25519-signed receipts</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>AI risk scoring on every PR</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Unlimited signers</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>7-day audit log</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Community support</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Receipt proof pages</span>
+</li></ul>
+<button class="w-full py-3.5 border border-primary text-primary font-bold font-headline rounded-lg hover:bg-primary/5 transition-all text-sm uppercase tracking-wide">Install on GitHub</button>
+</div>
+<!-- Card 2: Team (Featured) -->
+<div class="glass-card p-8 rounded-2xl border-2 border-primary bg-primary/5 flex flex-col scale-105 shadow-[0_0_40px_rgba(16,185,129,0.1)] relative z-10">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2">
+<span class="bg-primary text-on-primary text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-primary/20">Most Popular</span>
+</div>
+<div class="mb-8">
+<h3 class="text-xl font-bold font-headline mb-4">Team</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-on-surface">$79</span>
+<span class="text-on-surface-variant text-sm">/org/month</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-1">$59/mo billed annually</p>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3 text-[14px] text-primary font-bold">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Up to 15 protected repos</span>
+</li>
+<li class="text-[12px] text-on-surface-variant font-medium pl-8 -mt-2">Everything in Developer, plus:</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Branch &amp; environment approval rules</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>N-of-M approver workflows</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Shared team dashboard</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Slack, Discord &amp; email notifications</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>90-day audit log + CSV export</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Email support (48h)</span>
+</li>
+</ul>
+<button class="w-full py-3.5 bg-primary text-on-primary font-bold font-headline rounded-lg hover:brightness-110 transition-all shadow-lg shadow-primary/20 text-sm uppercase tracking-wide">Start Free Trial</button>
+</div>
+<!-- Card 3: Production -->
+<div class="glass-card p-8 rounded-2xl border-outline-variant/30 flex flex-col hover:border-primary/20 transition-colors">
+<div class="mb-8">
+<h3 class="text-xl font-bold font-headline mb-4">Production</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-on-surface">$299</span>
+<span class="text-on-surface-variant text-sm">/org/month</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-1">$239/mo billed annually</p>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-start gap-3 text-[14px] text-primary font-bold">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Unlimited repos</span>
+</li>
+<li class="text-[12px] text-on-surface-variant font-medium pl-8 -mt-2">Everything in Team, plus:</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Webhook &amp; PagerDuty integrations</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Multi-step approval chains</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>SSO (Google, GitHub, Okta)</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Org-wide analytics</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Audit API + 1-year retention</span>
+</li>
+<li class="flex items-start gap-3 text-[14px] text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span>Priority support (24h) + Slack channel</span>
+</li>
+</ul>
+<button class="w-full py-3.5 border border-primary text-primary font-bold font-headline rounded-lg hover:bg-primary/5 transition-all text-sm uppercase tracking-wide">Request Access</button>
+</div>
+</div>
+<!-- Enterprise Callout -->
+<div class="glass-card rounded-2xl border border-emerald-500/20 bg-neutral-900/40 p-8 flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+<div class="flex-1 space-y-2 text-center md:text-left">
+<h4 class="text-2xl font-bold font-headline">Enterprise</h4>
+<p class="text-on-surface-variant leading-relaxed">For regulated teams needing deployment control and compliance evidence.</p>
+</div>
+<div class="flex-2 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3">
+<ul class="space-y-3">
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> Self-hosted / VPC / Air-gap
+            </li>
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> SAML &amp; SCIM
+            </li>
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> Unlimited retention
+            </li>
+</ul>
+<ul class="space-y-3">
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> Compliance exports (SOC2, ISO)
+            </li>
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> Multi-org federation
+            </li>
+<li class="flex items-center gap-2 text-xs text-on-surface/80">
+<span class="w-1 h-1 rounded-full bg-primary"></span> Dedicated support + SLA
+            </li>
+</ul>
+</div>
+<div class="shrink-0">
+<button class="px-8 py-3.5 border border-primary text-primary font-bold font-headline rounded-lg hover:bg-primary/5 transition-all text-sm uppercase tracking-wide">Talk to Sales</button>
+</div>
+</div>
+</section>
+<!-- FAQ -->
+<section class="py-24 max-w-4xl mx-auto px-8">
+<h2 class="font-headline text-3xl font-bold mb-12 text-center">Common questions</h2>
+<div class="space-y-4">
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">How does it differ from traditional RBAC?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">Traditional RBAC is identity-based at the gateway. Permission Protocol is intent-based at the execution point, requiring a fresh signed receipt for every high-stakes payload.</p>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">Does this introduce significant latency?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">Median latency for a gate check is under 200ms. The approval wait time depends on your signers, but we provide multi-channel routing (Slack/SMS) to minimize delays.</p>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">Is the enforcement layer open source?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">Yes, the enforcement SDKs and local verification libraries are MIT-licensed. You own the code that says 'Yes' or 'No'.</p>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">Can an agent bypass the protocol?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">Not if you place the gate at the resource level (e.g., inside your deployment runner or database proxy). The resource won't accept commands without a valid signed receipt.</p>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">What counts as a protected repo?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">Any repo where you install the Deploy Gate. Unprotected repos are unlimited on all plans.</p>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/20 rounded-xl p-6 group cursor-pointer">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">What if I hit my repo limit?</h4>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</div>
+<p class="text-[16px] text-on-surface-variant leading-[1.6]">You'll be prompted to upgrade. Existing protections stay active — we never silently disable enforcement.</p>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-32 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 -z-10"></div>
+<div class="max-w-4xl mx-auto px-8 text-center space-y-10">
+<h2 class="font-headline text-5xl md:text-6xl font-bold leading-tight">Try the approval flow now. Then protect a real repo.</h2>
+<p class="text-on-surface-variant text-2xl">Start with one repo. Scale to every agent.</p>
+<div class="flex flex-col md:flex-row justify-center gap-6">
+<button class="px-10 py-5 bg-primary text-on-primary font-bold font-headline text-xl rounded-xl hover:scale-105 transition-all shadow-xl shadow-primary/20">Protect Your First Repo</button>
+<button class="px-10 py-5 border-2 border-primary text-primary font-bold font-headline text-xl rounded-xl hover:bg-primary/10 transition-all">Try the 15-second demo</button>
+</div>
+</div>
+<div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+</section>
+</main>
+<!-- Footer Implementation -->
+<footer class="bg-neutral-950 w-full py-12 border-t border-neutral-900">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-7xl mx-auto space-y-8 md:space-y-0">
+<div class="flex items-center">
+<span class="text-lg font-semibold text-neutral-200 font-headline">Permission Protocol</span>
+</div>
+<div class="flex items-center space-x-8">
+<a class="text-neutral-500 hover:text-emerald-400 transition-colors text-sm font-body" href="#">Privacy Policy</a>
+<a class="text-neutral-500 hover:text-emerald-400 transition-colors text-sm font-body" href="#">Terms of Service</a>
+<a class="text-neutral-500 hover:text-emerald-400 transition-colors text-sm font-body" href="#">Status</a>
+<a class="text-neutral-500 hover:text-emerald-400 transition-colors text-sm font-body" href="#">Contact</a>
+</div>
+<div class="text-neutral-500 text-sm font-body">
+        © 2024 Permission Protocol. All rights reserved.
+      </div>
+</div>
+</footer>
+```</body></html>

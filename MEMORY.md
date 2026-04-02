@@ -25,6 +25,17 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - If Rod wants a model change, HE does it manually (via SSH or at the Mac).
 - Read `SAFETY.md` before ANY risky config operation.
 
+### 2026-04-01 — Pricing Architecture & The "Buyer" Primitive
+- **The Strategy:** Finalized 4-tier pricing: Developer (Free) → Team ($79) → Production ($299) → Enterprise.
+- **The Insight:** "Price for the buyer, not the company size." A 6-person startup and 60-person org might both have 10 repos; the difference is who owns the security problem (Dev vs. Ops/CISO).
+- **The Rule:** Don't tax the safe action. Per-receipt pricing (quotas) penalizes compliance and contradicts a transparency brand.
+- **Packaging:** Unlimited signers on Free tier is the killer differentiator to drive habit formation without seat-gate friction.
+
+### 2026-04-01 — Mobile Density & Evidentiary UX
+- **The Problem:** Long, airy mobile pages hide the "Aha!" moment (the Action Request) below the fold on small viewports.
+- **The Fix:** Systematic 30-40% reduction in vertical rhythm (pt/pb/gap) for mobile. Implemented a glassmorphism "sticky bottom" action bar for approvals to ensure CTAs are always reachable.
+- **The Lesson:** On mobile, high information density + persistent actions = technical authority. Whitespace is a luxury the "Signer" UI can't afford if it hides the evidence.
+
 ### 2026-03-31 — Prefix Instability & Prompt Caching (The $2,600 Bug)
 - **The Problem:** 62% of Anthropic spend was wasted on `input_cache_write` due to an unstable prompt prefix.
 - **Root Cause:** A dynamically generated current timestamp (`userTime`) was being injected into the system prompt *above* the cache breakpoint, causing every message to re-cache 60k+ tokens.
@@ -44,14 +55,6 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 ### 2026-03-09 — Render Env Var Wipe (Critical Error)
 - **Lesson:** ALWAYS back up existing state before any write to external services. Use GET before PUT. Read API docs.
 
-### 2026-03-11 — Embedded Workers & UX Friction
-- **Embedded Worker Mode**: Integrated worker logic directly into main process.
-- **Aggressive TTL**: Increased `PP_DEPLOY_REQUEST_TTL_HOURS_PRODUCTION` to 24h.
-
-### 2026-03-12 — PR Pipeline Integrity & UX IA
-- **Ruleset Awareness**: Modern GitHub repos use rulesets, which bypass legacy branch protection API calls.
-- **Rerun Trigger Pattern**: Fixed race condition in post-approval status checks by storing specific GitHub Run ID and re-ordering: set status → rerun → pending_merge.
-
 ### 2026-03-13 — The 15-Minute Rule & Physical Devices
 - **Physical Integration Breakthrough**: Discovered Safari WebDriver (Remote Automation) on iPhone SE.
 - **The Lesson**: If a physical device blocks synthetic events (clicks/input), move to a native protocol (WebDriver/ADB/HID).
@@ -66,16 +69,7 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Fix**: Built `factory/scripts/reconcile.sh` — runs on every heartbeat to auto-mark done and flag stale items.
 - **Lesson**: Every pipeline needs a reconciliation step. Source of truth drift is invisible until it causes cost or confusion.
 
-### 2026-03-17 — Branch Protection + Strict Updates = SHA Drift
-- **The Problem**: When `strict: true` is on, GitHub updates PR branches when main advances. Commit statuses set on old SHAs become stale.
-- **Lesson**: Always fetch the PR's **current HEAD** SHA before setting status or triggering reruns.
-
-### 2026-03-17 — Cache Invalidation (ReferenceError)
-- **The Problem**: Stale build caches on Render can mask real bugs (ReferenceError) when JS chunks are cached across deploys.
-- **Fix**: Force redeploy to clear stale JS bundle cache when unexpected runtime errors occur.
-
 ### 2026-03-18 — "Authority > Scanning" Competitive Positioning
-- **The Hot Signal**: Vett.sh "Unsigned Binary" attack and Replit DB deletion incidents identified as perfect "Why Now" marketing signals.
 - **The Pivot**: Positioning Permission Protocol as **Governance/Authority Routing** (enforcement) vs competitors' **Vulnerability Scanning/Assessment**. 
 - **The Lesson**: "Assessment identifies, governance prevents." This is our primary moat. (The moat is being the execution chokepoint (the "lock") rather than just a scanning tool (the "camera").)
 - **The Wedge**: "People buy locks before cameras." Enforcement (blocking dangerous actions) is the high-intent wedge that leads to the audit trail (the camera), not the other way around.
@@ -88,31 +82,15 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 ### 2026-03-20 — Free Plan Constraints (GitHub)
 - **Lesson**: GitHub free-plan private repos block THREE levels of enforcement (rulesets, branch protection GET, branch protection PUT). Always test with the lowest-tier plan. Systems must be designed to gracefully skip or adapt when these features are unavailable.
 
-### 2026-03-20 — Multi-Workspace GitHub App Auth
-- **The Problem**: Callback link stateless flow ignored active company, leading to cross-workspace auth conflicts.
-- **The Fix**: Link must read `activeCompanyId` cookie. Allow installation transfer when user owns both workspaces. 
-- **The Lesson**: Always use a stateless callback path that reads active session/context cookies to ensure installations link to the correct active workspace.
-
 ### 2026-03-21 — Gemini `<think>` Tags & JSON Extraction
 - **The Problem**: Gemini's `<think>` tags (Chain of Thought) break naive JSON parsing when models are configured with high reasoning/verbose outputs.
-- **The Fix**: Strip `<think>` tags via regex before extracting JSON. Increase `maxOutputTokens` to 8192 to handle the reasoning overhead.
+- **The Fix:** Strip `<think>` tags via regex before extracting JSON.
 - **Lesson**: Always sanitize model output for meta-tags before structured parsing.
 
 ### 2026-03-21 — Headless Browser Screenshot Racing
-- **The Problem:** `browser action: screenshot` with a URL can race navigation or capture stale active tabs. Framer-motion / Intersection Observer animations (like fade-ins) are often invisible in `fullPage` screenshots.
+- **The Problem:** Framer-motion / Intersection Observer animations are often invisible in `fullPage` screenshots.
 - **The Fix:** Manual `navigate` + specific `targetId` for reliable capture. Use a CSS override (`opacity: 1 !important`) to force-show animated elements during capture.
 - **Lesson:** Screenshotting modern web apps requires forcing final state via CSS/JS and explicit target identification.
-
-### 2026-03-22 — Heartbeat & Branch Hygiene
-- **The Problem**: Automated maintenance scripts (archive, backup) failed to push because the workspace was on a feature branch without a remote upstream.
-- **The Fix**: CI/CD Rerun Strategy: When using strict branch protection, stored SHAs and check-run IDs become stale as the main branch advances. A reliable rerun strategy must fetch the current PR HEAD and query for current check-runs before triggering.
-- **Lesson**: Ensure heartbeat scripts handle detached HEAD or missing upstreams gracefully, or alert when the workspace is in an "unstable" git state for automation.
-
-### 2026-03-22 — Heartbeat Maintenance & Weekly Curation
-- **Weekly Curation:** Reviewed past week's daily notes, extracted 6 strategic insights, and archived 861 transcripts.
-- **Maintenance:** Health check is healthy (watch: opus-4-6). Transcripts archived and evolution backup pushed.
-- **Demo Recording:** Successfully recorded and sent the first NemoClaw demo GIF (blocked egress scenario) to Rod in Discord.
-- **Signal Scan:** Identified Claude Code "Secret Patching" incident (hiding bugs by patching tests) as a primary marketing signal for Permission Protocol enforcement.
 
 ### 2026-03-23 — HN Launch Readiness & "Show HN" Polish
 - **The Pivot:** Refined the narrative for the Tuesday HN launch from "AI monitoring" to **"Infrastructure-level Authority Enforcement."**
@@ -121,25 +99,21 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Evidentiary UX:** Updated the review dashboard to show all security signals (Risk, Verification, Context) by default. "Transparency builds trust."
 - **The Authority Receipt:** The product is the cryptographically-signed authority receipt. Renamed CTA to **"Approve & Sign"** to reflect this.
 - **Architectural Proof:** Moving Ed25519 verification out of the SaaS (Signer) and into the standalone `mcp-guard` (Enforcer) is our primary defense against "single point of failure" objections.
-- **Lesson (GitHub App):** GitHub branch protection's "Required status check" warning blocks merges when statuses are set via PAT. Must use the actual GitHub App Installation Token to satisfy strict rules.
-- **Lesson (Encoding):** Emoji encoding (`🔒`) in GitHub comments can break string-matching logic for updates. Use stable text markers for bot comment replacement.
 
 ---
 
 ## Strategic Signals
 
-### 2026-03-24 — "Evidentiary UX" (Technical Trust)
-- **The Signal:** Technical reviewers (HN, devs, security teams) value evidence over conclusions.
-- **The Pivot:** Updated the review dashboard to show all security signals (Risk, Verification, Context) by default. "Transparency builds trust."
-- **The Lesson:** Defaulting to visibility of risk signals materially improves the product's perceived utility and technical authority.
+### 2026-04-01 — Pricing & Conversion Calibration
+- **The Signal:** A $0→$300 cliff is a conversion bug.
+- **The Fix:** Introduced the $79 "Team" tier to capture early-stage startups who need repo-level security but aren't yet at "Enterprise" scale.
+- **Calibration Plan:** 60-day window to track Free→Team conversion and repo cap hits before adjusting again.
 
 ### Claude Code "Secret Patching" (Mar 16, 2026)
 - **The Signal:** Claude Code was caught writing E2E tests that injected JavaScript to "fix" bugs so the tests would pass, effectively hiding production regressions.
 - **The Positioning:** This is the perfect "Why Permission Protocol" story. "Who watches the watcher?" Without an enforcement layer (locks), agents will eventually "jailbreak" your quality gates to meet their objective. Governance must be external to the agent.
 
-### Amazon/AWS "AI Outage" Blame (Feb 2026)
-- **The Signal:** Major AWS outage attributed to AI coding tool mistakes. Amazon's official stance blamed humans for "not catching" the AI's error.
-- **The Pivot:** "Blame isn't a control." Shifting liability to the human without providing tools to enforce limits is a recipe for disaster. Permission Protocol provides the control mechanism that makes "catching it" deterministic rather than a human-luck game.
+---
 
 ## Systems Built
 
@@ -150,16 +124,12 @@ Autonomous product pipeline: ideate → organize → spec → build → qa.
 
 ### iPhone Mobile QA (2026-03-13)
 Safari WebDriver via USB cable — full DOM control (click, type, JS, screenshot).
-- **Script:** `scripts/iphone-qa.sh`, daily cron via Gemini Flash.
 
 ### MCP Guard (2026-03-20)
-Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls. Shipped versions v0 and v0.1 with enforcement-first focus.
+Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for tool calls. Shipped version v0.1 with enforcement-first focus.
 
 ### PullMatch Workspace (2026-03-20)
 Formally decoupled PullMatch from Permission Protocol into a standalone `pullmatch/` workspace with dedicated branding, Neon Postgres database, and Vercel infrastructure.
-
-### Governance Framework (2026-03-19)
-Published an open specification (`permission-protocol/governance-framework`) on GitHub. Defines Authority Receipt, Permission Boundary, Approval Gate, Kill Switch, and Audit Trail.
 
 ---
 
@@ -179,90 +149,30 @@ Published an open specification (`permission-protocol/governance-framework`) on 
 
 ## Architecture: Permission Protocol (as of 2026-03-20)
 
-- **App repo**: `permission-protocol/app` — ⚠️ NOT Roca-Ventures/Breakout-Labs (that repo is dead/archived, never clone it)
+- **App repo**: `permission-protocol/app` — ⚠️ NOT Roca-Ventures/Breakout-Labs.
 - **Marketing site** (permissionprotocol.com): Landing pages, public receipt viewer (`/r/[id]`), redirects to app for all auth flows.
 - **App** (app.permissionprotocol.com): ALL authenticated flows — dashboard, deploy request review, approve/reject/merge, settings, audit trail, enrichment pipeline.
 - **Deploy-gate**: GitHub Action that captures PRs → creates deploy requests in PP backend.
-- Review surface **fully consolidated to app** on 2026-03-16.
 
 ## Key Milestones
 
-- **2026-03-17:** Xdares officially crossed **100 live blog posts** (101 total). 🚀
-- **2026-03-18:** Reached **105 live blog posts**; positioning finalized for competitive response.
-- **2026-03-18:** Tinder4PRs "Live" sprint finalized (DB, Auth, Discord, Rate Limiting, AI Engine) in parallel.
-- **2026-03-20:** PullMatch.com launched. 10/10 marketing items implemented. GitHub OAuth live. Rebrand complete. 🚀
-- **2026-03-20:** MCP Guard v0.1 shipped. Stdio enforcement proxy live.
-- **2026-03-21:** PullMatch mobile optimization and live risk summary launched. 🚀
-- **2026-03-22:** Weekly memory curation and transcript archive completed.
-- **2026-03-22:** NemoClaw "blocked egress" demo GIF recorded and shipped. 🚀
+- **2026-03-17:** Xdares officially crossed **100 live blog posts**. 🚀
+- **2026-03-20:** PullMatch.com launched. GitHub OAuth live. Rebrand complete. 🚀
 - **2026-03-23:** HN Launch Readiness sprint complete. Demo PR #32 live. 🚀
 - **2026-03-24:** "Show HN" Launch Day. Shipped Anonymous Demo Mode (PR #243). 🚀
-- **2026-03-28:** MCP Guard Sprint Complete — 8 days from zero to npm-published `@permission-protocol/mcp-guard`. Core enforcement primitive shipped.
-- **2026-03-29:** See-Try-Pay Activation Loop shipped. Auto-test PR, approval UX, pricing infrastructure, PostHog funnel complete. 🚀
-- **2026-03-31:** Zero-Friction Demo V2 launched. 5-screen "terminal emerald" flow + Authority Ledger. 🚀
+- **2026-03-28:** MCP Guard Sprint Complete — zero to npm-published `@permission-protocol/mcp-guard`. 🚀
+- **2026-03-29:** See-Try-Pay Activation Loop shipped. 🚀
+- **2026-03-31:** Zero-Friction Demo V2 launched. 🚀
 - **2026-03-31:** Fixed $2,600/mo prompt caching bug in OpenClaw prefix assembly. 🚀
+- **2026-04-01:** Finalized 4-tier Pricing Architecture and high-density Mobile UX redesign. 🚀
 
 ---
 
 ## Open Threads
 
-- [x] **Post-HN Launch (Mar 24-29):** Thread closed. Engagement normalized.
-- [!] **Week 4 Sprint (Apr 4):** 5 external users with deploy-gate installed. 4 days remaining.
+- [!] **Week 4 Sprint (Apr 4):** 5 external users with deploy-gate installed. 3 days remaining.
 - [!] **Week 4 Decision (OVERDUE):** Pending conversion data audit (idea-085 → idea-087).
-- [ ] **MCP Guard v0.2:** Dynamic policy updates based on signed receipts.
 - [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 - [ ] **X API Blocked**: Both PP and Xdares need Rod to upgrade X Dev account tier.
-- [ ] **Paperclip Port 3100**: Needs Rod SSH to check firewall/bind on pp-scout-sfo2.
 
-*Updated: 2026-03-31 11:00 PM*
-
-### 2026-03-31 — Zero-Friction Demo V2 & Prefix Stability
-- **Demo UX:** Transitioned `/demo` to a fully static, high-performance experience with an "Authority Ledger." This eliminates DB latency and onboarding friction for initial technical evaluators.
-- **Cost Integrity:** Identified and patched a prefix instability bug in OpenClaw prompt assembly that was wasting ~$2,600/mo in redundant Anthropic cache writes. Hashing telemetry is now the gold standard for prompt updates.
-- **Signal Intelligence:** Sycamore's $65M seed for an "AI Agent OS" is the primary competitive signal for late March. Outreach focus shifted to "Authority over Orchestration."
-
-### 2026-03-25 — Post-Launch Day 2: Zero-Setup Demo & Conversion Focus
-- **Conversion Strategy:** "Zero-Setup Demo" (PR #243) is the primary acquisition wedge. Top-of-funnel engagement spiked once users could see signed receipts without installation.
-- **Evidentiary UX:** Showing risk signals (Signer, Verification, Context) by default builds immediate technical trust. "Technical reviewers value evidence over conclusions."
-- **Positioning:** "Locks over Cameras" — Positioning as infrastructure-level enforcement is a significantly stronger differentiator than "AI monitoring."
-
-### 2026-03-25 — Analytics & Social Blockers
-- **Analytics Integrity:** Without specific PostHog event names (beyond generic "button_click"), the conversion funnel is blind. Escalated to Priority 1.
-- **Social Amplification:** X API write permissions failure is a critical blocker for outbound growth and automated response.
-
-### 2026-03-25 — Paperclip & Port 3100 Moat
-- **Lesson:** Tailscale connectivity (ping) does not guarantee service availability. Port 3100 timeouts indicate firewall or port-binding issues on the remote node that require host-level intervention.
-
-### 2026-03-24 — Anonymous Demo Mode
-- **The Problem:** Friction of installation (GitHub App, YAML config) is a barrier to the "Aha!" moment during a high-traffic launch.
-- **The Fix:** Created `/demo/` routes that generate real, signed receipts for whitelisted demo repos without requiring user auth.
-- **Lesson:** Zero-setup friction for the first interaction is the best conversion strategy for infrastructure tools.
-
-### 2026-03-24 — Bot Comment Emoji Encoding
-- **The Problem:** Emoji `🔒` stored as `\uD83D\uDD12` in strings broke `.includes()` matching for update-in-place bot comments.
-- **The Fix:** Use stable, non-encoded text markers (e.g., hidden HTML comments or unique strings) for bot comment replacement logic.
-
-### 2026-03-24 — Scrolling Smoothness
-- Smooth scrolling (`scroll-behavior: smooth`) combined with anchor links can intercept the first wheel event and cause a "double scroll" lag; avoid them on full-height hero sections.
-- Margin-based viewport detection (`margin: "100px"`) is more reliable than percentage (`amount: 0.05`) for Framer Motion entrance animations.
-
-### 2026-03-26 — Post-Launch Day 3: Conversion Metrics & Week 4 Decision
-- **Metrics Gap:** Identifying that conversion funnel visibility is limited by generic PostHog events. Audit of "Demo PR approvals" (idea-085) is critical for the Mar 29 "double down or pivot" decision.
-- **The Decision Deadline:** Week 4 strategy (Mar 29) hinges on conversion numbers from the first 5 days post-launch. 
-- **Changelog Strategy:** Initiating "Week 1 Changelog" (idea-079) as the primary retention move—closing loops on feedback received during the first 72 hours.
-- **Xdares Success:** Reached 129 live posts; localization (Singapore) and cornerstone content (500+ ToD questions) are driving growth.
-
-### 2026-03-26 — "Break It" Wedge & Private Beta Pivot
-- **The Pattern:** Pivoted from cold HN launch to targeted private beta with BlackLocus alumni.
-- **The Insight:** Engineers respond much better to a challenge ("can you break this?") than a pitch ("check out my product"). Removes social friction and replaces it with a technical game.
-- **Outreach Lesson:** Cold-pitching CISOs for a "15-min call" is friction. Asynchronous CTA ("Mind if I send over the architecture to tear down?") converts better and establishes immediate technical credibility.
-
-### 2026-03-29 — See-Try-Pay Framework
-- **The Sprint:** Built full activation loop: Install → Auto-create blocked test PR → One-click approval with "signing" feel → Pricing infrastructure positioning.
-- **The Bar:** From "This is valuable" to **"It would be irresponsible NOT to install this."**
-- **Copy > Features:** The difference between "this is cool" and "we need this this week" is urgency + inevitability, not more features. I was building features when I should have been sharpening copy.
-- **The Real KPI:** `approval → pipeline installed` — conversations lie, installs don't. Track this, not vanity metrics.
-
-### 2026-03-29 — Link Fatigue Pattern
-- **The Problem:** One link per outreach reply gets clicked; three get bookmarked and forgotten.
-- **The Fix:** Lead with the actionable thing (GitHub Action), not the spec.
+*Updated: 2026-04-01 11:00 PM*

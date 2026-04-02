@@ -1,20 +1,17 @@
-# HOT SIGNAL: 2026-04-01 — GitHub/Copilot Trust Backlash & The Rise of "Agent Infrastructure"
+# HOT SIGNAL: The Amazon AWS 13-Hour AI Outage (Feb 2026)
 
-## 🚨 The Incident: GitHub/Copilot "Hints" Controversy
-GitHub is facing a massive trust backlash (Mar 30 - Apr 1, 2026) after it was discovered that **GitHub Copilot was injecting promotional messages ("Hints") into over 1.5 million human-written PR reviews** without explicit user consent.
-- **Why it matters:** Engineers treat PR descriptions as "sacred territory" where clarity and trust are paramount. 
-- **The fallout:** Tim Rogers (GitHub Principal PM) admitted it was a "wrong judgement call." This incident has reopened the debate on how far agentic platforms should go when operating inside developer infrastructure.
-- **Source:** [Technobezz](https://www.technobezz.com/news/github-removes-copilot-promotional-messages-from-15-million-code-reviews)
+## The Signal
+Amazon AWS recently suffered a **13-hour disruption** caused by its in-house agentic coding tool, **Kiro**. This is the second such outage linked to AI tools at Amazon (following Q Developer).
 
-## 🛠️ The Response: Emerging "Control Layers"
-In parallel with this backlash, a new category of "Agent Infrastructure" tools is emerging to manage and secure these agents:
+## Why It Matters (The "Rod" Filter)
+1. **The Accountability Gap:** Amazon’s response—blaming "human employees" for the AI's mistake—is exactly the **"Liability Shift"** narrative we need. Humans are currently held liable for AI actions they cannot realistically audit in real-time.
+2. **Governance vs. Self-Policing:** Kiro (and similar tools) operate inside the dev loop without external authority gates. When they fail, they fail at the speed of light.
+3. **The Enforcement Wedge:** This incident proves that **Reviewing AI code is not enough; you must Enforce the Permission.** The "Signer" (Permission Protocol) should have gated the change based on policy, not just relied on a "junior engineer" (AI) + a "distracted mentor" (Human).
 
-1. **Microsoft/GitHub APM (Agent Package Manager):** A new tool to manage agent dependencies (skills, rules, MCP servers) with **lockfiles and security audits** (scanning for hidden Unicode/Supply Chain attacks). [GitHub](https://github.com/microsoft/apm)
-2. **Optio (Open Source):** An orchestration system specifically for turning tickets into **merged PRs** using isolated K8s pods. It includes "self-healing" to auto-resume agents on CI failures. [GitHub](https://github.com/jonwiggins/optio)
-3. **G0 (Guard Zero):** A dedicated "control layer" for AI agents featuring **cognitive drift monitoring** and a **kill switch** for autonomous agents. [GitHub](https://github.com/guard0-ai/g0)
+## Action Items
+- [ ] Incorporate this into the "Week 4 Decision Brief" as the ultimate cautionary tale.
+- [ ] Draft a blog post: "Amazon Blames Humans for AI Outages: Why Your Dev Loop Needs a Cryptographically Signed Authority Gate."
+- [ ] Use "Kiro" as a codename for the "Agent Gone Rogue" test suite in the Demo.
 
-## 💡 PP Narrative Opportunity: "The Identity Gap"
-Discussion on *Dev.to* and *Hacker News* highlights that while we are building tools to *orchestrate* agents, we still have a massive **identity and authorization problem** when agents open PRs or touch production data. 
-
-**Permission Protocol's "Stripe of AI Authority" narrative fits perfectly here:** 
-> "The Copilot 'Hints' incident proves that even well-meaning agents will manipulate data to satisfy their own internal goals (or their creator's marketing goals). We don't just need a 'package manager' or 'orchestration' — we need a cryptographically-signed **Authority Receipt** that gates every action an agent takes."
+## Source
+[Futurism: Amazon's Blundering AI Caused Multiple AWS Outages](https://futurism.com/artificial-intelligence/amazon-ai-aws-outages)
