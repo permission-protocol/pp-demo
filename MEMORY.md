@@ -25,6 +25,19 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - If Rod wants a model change, HE does it manually (via SSH or at the Mac).
 - Read `SAFETY.md` before ANY risky config operation.
 
+### 2026-04-02 — Static Demo Receipt & Comparison Pages
+- **The Strategy:** Built `/r/demo` (static verified receipt) and `/vs/` comparison pages (vs. GitHub Environment Approvals / Branch Protection).
+- **The Insight:** Target high-intent "alternative to" search traffic and provide a zero-friction "Aha!" moment for cold traffic that doesn't want to install an app yet.
+- **The Lesson:** Technical marketing is about providing evidence of the solution before the user has to commit to the installation.
+
+### 2026-04-02 — Design Token Unification & Sovereign Logic
+- **The Work:** Unified app CSS variables with the marketing site. Standardized on #0a0a0a (bg) and #10B981 (primary).
+- **The Lesson:** Brand consistency between the "Pitch" (site) and the "Product" (app) is critical for trust in security infrastructure. Mismatched design tokens feel like a lack of oversight.
+
+### 2026-04-02 — PLG Activation & "Early Access" Removal
+- **The Pivot:** Removed "Early Access" language. Linked "Start Free Trial" directly to the GitHub App installation flow.
+- **The Rule:** Don't gate the trial. If the product is self-serve, the UI should reflect "Start" rather than "Request."
+
 ### 2026-04-01 — Pricing Architecture & The "Buyer" Primitive
 - **The Strategy:** Finalized 4-tier pricing: Developer (Free) → Team ($79) → Production ($299) → Enterprise.
 - **The Insight:** "Price for the buyer, not the company size." A 6-person startup and 60-person org might both have 10 repos; the difference is who owns the security problem (Dev vs. Ops/CISO).

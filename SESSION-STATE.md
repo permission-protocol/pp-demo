@@ -1,2 +1,2 @@
 # SESSION-STATE.md
-Status: Cleared after Mar 31 Nightly Consolidation.
+Status: Cleared after Apr 2 Nightly Consolidation.
