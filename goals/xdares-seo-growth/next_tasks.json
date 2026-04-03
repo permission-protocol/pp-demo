@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "task-524",
+    "action": "promo",
+    "target": "twitter-easter-thread",
+    "priority": "high",
+    "impact": "medium",
+    "status": "ready",
+    "notes": "3-part X thread for last-minute Easter brunch planning."
+  },
+  {
+    "id": "task-525",
+    "action": "outreach",
+    "target": "420-followup",
+    "priority": "medium",
+    "impact": "medium",
+    "status": "ready",
+    "notes": "Follow up on 4/20 outreach to cannabis bloggers."
+  },
+  {
+    "id": "task-526",
+    "action": "draft",
+    "target": "outdoor-adventure-games",
+    "priority": "medium",
+    "impact": "high",
+    "status": "ready",
+    "notes": "Draft 'Outdoor Adventure Games: Bonfires, Hiking & Nature Dares'."
+  },
+  {
+    "id": "task-527",
+    "action": "draft",
+    "target": "backyard-beer-olympics",
+    "priority": "medium",
+    "impact": "high",
+    "status": "ready",
+    "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'."
+  }
+]

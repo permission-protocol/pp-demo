@@ -2,8 +2,8 @@
   "version": 2,
   "goal": {
     "id": "xdares-seo-growth",
-    "description": "Grow blog.xdares.com organic traffic. 157 blog posts live. 520 tasks completed.",
-    "context": "154 blog posts live on blog.xdares.com. 497 total tasks completed. Budgeting 10 tasks/day. All summer + fall content (through Friendsgiving) published. Winter content needed for queue: Christmas, New Year's Eve, Super Bowl, Valentine's Day.",
+    "description": "Grow blog.xdares.com organic traffic. 159 blog posts live. 523 tasks completed.",
+    "context": "159 blog posts live on blog.xdares.com. 523 total tasks completed. Budgeting 10 tasks/day. All seasonal content for 2026 drafted and in queue. Now monitoring traffic trends and executing promo pushes.",
     "success_metric": {
       "current": "~120 visitors/month",
       "target": "291 sessions/month",
@@ -32,370 +32,106 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 7,
-    "total_tasks_completed": 520,
-    "tasks_since_replan": 268,
-    "tasks_since_metric_update": 411,
-    "last_run_at": "2026-04-03T08:08:00Z",
+    "daily_tasks_completed": 10,
+    "total_tasks_completed": 523,
+    "tasks_since_replan": 271,
+    "tasks_since_metric_update": 414,
+    "last_run_at": "2026-04-03T14:08:00Z",
     "last_run_date": "2026-04-03",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
       {
+        "timestamp": "2026-04-03T14:08:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 8:08 AM Denver. Budget already reached for today (10/10). Queue is empty. Queued 4 tasks for tomorrow (April 4th)."
+      },
+      {
+        "timestamp": "2026-04-03T12:15:00Z",
+        "tasks_completed": 3,
+        "notes": "Tick executed at 6:15 AM Denver. Completed: (task-521) Published Mother's Day Games 2026 via Tor. (task-522) Published Christmas Party Games 2026 via Tor. (task-523) Posted 3 Mother's Day promo tweets via X API. Daily progress: 10/10 (Budget Reached)."
+      },
+      {
         "timestamp": "2026-04-03T08:08:00Z",
         "tasks_completed": 2,
         "notes": "Tick executed at 2:08 AM Denver. Completed: (task-518) Finalized 4/20 promo push via X API. (task-519) Published Memorial Day BBQ Guide 2026 via Tor. Daily progress: 7/10."
-      },
-      {
-        "timestamp": "2026-04-03T08:01:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 2:01 AM Denver. Completed: (task-516) Posted 5 Coachella promo tweets via X API. (task-517) Drafted Memorial Day BBQ Guide 2026. Daily progress: 5/10."
-      },
-      {
-        "timestamp": "2026-04-03T06:15:00Z",
-        "tasks_completed": 3,
-        "notes": "Tick executed at 12:15 AM Denver. Completed: (task-513) Updated Truth or Dare (2268) and NHIE (2301) hubs via Tor. (task-514) Posted 2 Spring Break promo tweets via X API. (task-515) Published Music Festival Games Hub page via Tor. Daily progress: 3/10."
-      },
-      {
-        "timestamp": "2026-04-03T04:08:00Z",
-        "tasks_completed": 6,
-        "notes": "Tick executed at 10:08 PM Denver. Completed: (task-508) Verified EDM publication & cleaned duplicate. (task-509) Posted 5 EDM promo tweets. (task-510) Drafted 2 guest post outreach emails. (task-511) Updated 2 hub pages (Adult Party Games, Drinking Games). (task-512) Posted 4 Truth or Dare promo tweets. Total tasks completed: 513. Daily progress: 10/10 (Budget Reached)."
-      },
-      {
-        "timestamp": "2026-04-03T02:08:30Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 8:08 PM Denver. Completed: (task-507) Published Cinco de Mayo Party Games 2026 via Tor. Total tasks completed: 508. Daily progress: 4/10."
-      },
-      {
-        "timestamp": "2026-04-03T02:08:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 8:08 PM Denver. Completed: (task-505) Posted 3-part Easter promo thread via X API for last-minute brunch planning. (task-506) Drafted Cinco de Mayo Party Games 2026. Daily progress: 3/10. Reset daily count for April 3rd (UTC) including the graduation post at 00:08Z."
       }
     ]
   },
   "tasks": {
-    "queue": [],
-    "on_hold": [],
-    "completed": [
+    "queue": [
       {
-        "id": "task-519",
-        "action": "publish",
-        "target": "memorial-day-bbq",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-03T08:08:00Z",
-        "notes": "Published Memorial Day BBQ Guide 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/memorial-day-bbq-2026-guide/"
-      },
-      {
-        "id": "task-518",
-        "action": "promo",
-        "target": "twitter-420-finalize",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T08:08:00Z",
-        "notes": "Finalized 4/20 promo push via X API.",
-        "result": "Posted 5/5 4/20 promo tweets via X API. Log: goals/xdares-seo-growth/logs/tweets-420-20260403.json"
-      },
-      {
-        "id": "task-517",
-        "action": "draft",
-        "target": "memorial-day-bbq",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T08:01:00Z",
-        "notes": "Draft Memorial Day BBQ Guide 2026.",
-        "result": "Drafted: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/memorial-day-bbq-2026.md"
-      },
-      {
-        "id": "task-516",
-        "action": "promo",
-        "target": "twitter-coachella",
-        "priority": "high",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T08:01:00Z",
-        "notes": "Post 5 Coachella promo tweets via X API.",
-        "result": "Posted 5/5 tweets. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-coachella-20260403-020227.json"
-      },
-      {
-        "id": "task-515",
-        "action": "publish",
-        "target": "festival-hub",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-03T06:15:00Z",
-        "notes": "Published 'The Ultimate Guide to Music Festival Games' hub via Tor.",
-        "result": "Published at: https://blog.xdares.com/music-festival-party-games/"
-      },
-      {
-        "id": "task-514",
-        "action": "promo",
-        "target": "twitter-spring-break",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T06:15:00Z",
-        "notes": "Post promo tweets for Spring Break drinking games via X API.",
-        "result": "Posted 2/4 tweets. Log: goals/xdares-seo-growth/logs/tweets-spring-break-20260403-001007.json"
-      },
-      {
-        "id": "task-513",
-        "action": "update",
-        "target": "hubs-tod-nhie",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T06:15:00Z",
-        "notes": "Update Truth or Dare (2268) and Never Have I Ever (2301) hub pages via Tor.",
-        "result": "Updated 2 posts."
-      },
-      {
-        "id": "task-512",
-        "action": "promo",
-        "target": "twitter-tod-500",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T04:08:00Z",
-        "notes": "Post 4 promo tweets for 500+ Truth or Dare questions via X API.",
-        "result": "Posted 4/4 tweets. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-truth-or-dare-500-20260402-220358.json"
-      },
-      {
-        "id": "task-511",
-        "action": "update",
-        "target": "hubs",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T04:08:00Z",
-        "notes": "Update Adult Party Games and Drinking Games hub pages via Tor.",
-        "result": "Updated 2 posts (4471, 2299)."
-      },
-      {
-        "id": "task-510",
-        "action": "outreach",
-        "target": "guest-post",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T04:08:00Z",
-        "notes": "Draft 2 guest post outreach emails for Date Your Spouse and Open Love 101.",
-        "result": "Drafts saved: goals/xdares-seo-growth/outreach/guest-post-drafts-20260402-220335.md"
-      },
-      {
-        "id": "task-509",
-        "action": "promo",
-        "target": "twitter-edm",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T04:08:00Z",
-        "notes": "Post 5 promo tweets for EDM Drinking Games via X API.",
-        "result": "Posted 5/5 tweets. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-edm-20260402-220334.json"
-      },
-      {
-        "id": "task-508",
-        "action": "verify",
-        "target": "edm-drinking-games",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T04:08:00Z",
-        "notes": "Verify EDM Drinking Games publication and clean up duplicates.",
-        "result": "Confirmed live at: https://blog.xdares.com/edm-drinking-games-2026/ (ID 4738). Deleted duplicate ID 4997."
-      },
-      {
-        "id": "task-507",
-        "action": "publish",
-        "target": "cinco-de-mayo-2026",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T02:08:30Z",
-        "notes": "Publish Cinco de Mayo Party Games 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/cinco-de-mayo-party-games-tequila-tacos-teasing-dares-2026-guide/"
-      },
-      {
-        "id": "task-506",
-        "action": "draft",
-        "target": "cinco-de-mayo-2026",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T02:08:00Z",
-        "notes": "Draft Cinco de Mayo Party Games 2026. Tequila, tacos, and fiesta dares.",
-        "result": "Drafted: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/cinco-de-mayo-party-games-2026.md"
-      },
-      {
-        "id": "task-505",
+        "id": "task-524",
         "action": "promo",
         "target": "twitter-easter-thread",
         "priority": "high",
         "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T02:08:00Z",
-        "notes": "Post 3-part Easter promo thread via X API for last-minute brunch planning.",
-        "result": "Posted 3/3 Easter thread via X API. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/easter-thread-20260402-200218.json"
+        "status": "ready",
+        "notes": "3-part X thread for last-minute Easter brunch planning."
       },
       {
-        "id": "task-503",
-        "action": "publish",
-        "target": "graduation-party-games-2026",
+        "id": "task-525",
+        "action": "outreach",
+        "target": "420-followup",
         "priority": "medium",
         "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-03T00:08:00Z",
-        "notes": "Publish Graduation Party Games 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/graduation-party-games-2026/"
+        "status": "ready",
+        "notes": "Follow up on 4/20 outreach to cannabis bloggers."
       },
       {
-        "id": "task-502",
-        "action": "publish",
-        "target": "outdoor-adventure-games",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T18:08:00Z",
-        "notes": "Publish Outdoor Adventure Games 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/outdoor-adventure-games-2026/"
-      },
-      {
-        "id": "task-501",
-        "action": "publish",
-        "target": "backyard-beer-olympics",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T16:15:00Z",
-        "notes": "Publish Backyard Beer Olympics 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/backyard-beer-olympics-2026/"
-      },
-      {
-        "id": "task-500",
-        "action": "draft",
-        "target": "backyard-beer-olympics",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T10:08:00Z",
-        "notes": "Draft Backyard Beer Olympics. Rules, scoresheets, and winning strategy for outdoor games.",
-        "result": "Drafted: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/backyard-beer-olympics-2026.md"
-      },
-      {
-        "id": "task-499",
+        "id": "task-526",
         "action": "draft",
         "target": "outdoor-adventure-games",
         "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T10:08:00Z",
-        "notes": "Draft Outdoor Adventure Games. Bonfires, hiking dares, and nature-themed activities.",
-        "result": "Drafted: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/outdoor-adventure-games-2026.md"
-      },
-      {
-        "id": "task-498",
-        "action": "promo",
-        "target": "twitter-easter",
-        "priority": "high",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T10:08:00Z",
-        "notes": "Post 5 Easter promo tweets via X API for brunch and last-minute planning.",
-        "result": "Posted 5/5 Easter promo tweets via X API. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-easter-20260402-040918.json"
-      },
-      {
-        "id": "task-497",
-        "action": "publish",
-        "target": "april-fools-dares",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T10:08:00Z",
-        "notes": "Publish April Fools Dares via Tor (one day late).",
-        "result": "Published at: https://blog.xdares.com/april-fools-drinking-games-2026/"
-      },
-      {
-        "id": "task-481",
-        "action": "publish",
-        "target": "coachella-playbook",
-        "priority": "high",
         "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-02T10:08:00Z",
-        "notes": "Publish Coachella Playbook 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/coachella-festival-party-guide-2026/"
+        "status": "ready",
+        "notes": "Draft 'Outdoor Adventure Games: Bonfires, Hiking & Nature Dares'."
       },
       {
-        "id": "task-496",
-        "action": "publish",
-        "target": "super-bowl-2027",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T06:08:00Z",
-        "notes": "Publish Super Bowl 2027 Party Games via Tor.",
-        "result": "Published at: https://blog.xdares.com/super-bowl-2027/"
-      },
-      {
-        "id": "task-495",
+        "id": "task-527",
         "action": "draft",
-        "target": "super-bowl-2027",
+        "target": "backyard-beer-olympics",
+        "priority": "medium",
+        "impact": "high",
+        "status": "ready",
+        "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'."
+      }
+    ],
+    "on_hold": [],
+    "completed": [
+      {
+        "id": "task-523",
+        "action": "promo",
+        "target": "twitter-mothers-day",
         "priority": "medium",
         "impact": "medium",
         "status": "completed",
-        "completed_at": "2026-04-02T06:08:00Z",
-        "notes": "Draft Super Bowl 2027 Party Games. Commercial bingo, half-time dares, drinking games.",
-        "result": "Drafted: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/super-bowl-2027.md"
+        "completed_at": "2026-04-03T12:15:00Z",
+        "notes": "Posted 3 Mother's Day promo tweets via X API.",
+        "result": "Posted 3/3 tweets. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-mothers-day-20260403-061440.json"
       },
       {
-        "id": "task-494",
-        "action": "promo",
-        "target": "twitter-420",
-        "priority": "high",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-02T06:08:00Z",
-        "notes": "Post 5 promo tweets for 4/20 guide via X API.",
-        "result": "Posted 5/5 4/20 promo tweets via X API. Log: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-420-20260325.json"
-      },
-      {
-        "id": "task-493",
+        "id": "task-522",
         "action": "publish",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-02T06:08:00Z",
-        "notes": "Publish 'The Ultimate 4/20 Party Guide 2026' via Tor.",
-        "result": "Published at: https://blog.xdares.com/420-party-guide-2026/"
-      },
-      {
-        "id": "task-492",
-        "action": "promo",
-        "target": "twitter-nye",
+        "target": "christmas-2026",
         "priority": "low",
-        "impact": "medium",
+        "impact": "high",
         "status": "completed",
-        "completed_at": "2026-04-02T02:08:00Z",
-        "notes": "Post 5 promo tweets for NYE 2026 content via X API.",
-        "result": "Posted 5/5 NYE promo tweets via X API. Final Tweet: https://x.com/xdares_/status/2039525362141700275"
+        "completed_at": "2026-04-03T12:15:00Z",
+        "notes": "Published Christmas Party Games 2026 via Tor.",
+        "result": "Published at: https://blog.xdares.com/christmas-party-games-2026-2/"
       },
       {
-        "id": "task-491",
+        "id": "task-521",
         "action": "publish",
-        "target": "nye-party-games-2026",
-        "priority": "medium",
-        "impact": "medium",
+        "target": "mothers-day-2026",
+        "priority": "high",
+        "impact": "high",
         "status": "completed",
-        "completed_at": "2026-04-01T20:01:00Z",
-        "notes": "Publish NYE Party Games 2026 via Tor.",
-        "result": "Published at: https://blog.xdares.com/nye-party-games-2026/"
+        "completed_at": "2026-04-03T12:15:00Z",
+        "notes": "Published Mother's Day Games 2026 via Tor.",
+        "result": "Published at: https://blog.xdares.com/mothers-day-party-games-2026-2/"
       }
     ],
     "failed": [],
