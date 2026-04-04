@@ -252,6 +252,14 @@ Array.from(document.querySelectorAll("*")).forEach(el => {
 
 ---
 
+## Prompt Cache Auditing (Infrastructure Cost)
+**Observation (Apr 2026):** $2,150+/mo in redundant Anthropic costs due to dynamic variables breaking the cache prefix.
+**Rule:** Always run `scripts/prefix-telemetry.sh` to check for prefix hash drift.
+**Cache-Control Boundary:** OpenClaw injects `cache_control: { type: "ephemeral" }` at the end of the system prompt. Any dynamic content (time, session IDs) above this point kills 100% of the cache benefit.
+**Fix (Source):** Move dynamic variables below the `cache_control` breakpoint in the OpenClaw adapter.
+
+---
+
 ## Deployment & Cache Troubleshooting
 
 ### Render Stale JS Bundles

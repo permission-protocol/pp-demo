@@ -27,6 +27,7 @@ Rod's goal is to build the "Stripe of AI authority." This is a infrastructure pl
 - **Authority over Assessment.** We are the "Signer," not just the "Auditor." The product is the cryptographically-signed authority receipt, not just the AI summary.
 - **Evidentiary UX.** Show the work. Security signals (Risk, Verification, Context) should be visible by default on the review dashboard. Don't hide the "why" behind clicks; present the evidence to build trust immediately.
 - **Onboarding is the Product.** If a user can't go from "What is this?" to "I have a gated PR" in 5 minutes, we've failed.
+- **Authority > Dashboard.** When a user arrives from an external signal (GitHub PR, Slack notification), they are in a "decide" mindset. Minimize UI chrome and maximize the clarity of the action. The power comes from the signature, not the dashboard.
 - **Ask yourself:** "Does this task improve the core enforcement primitive or just the interface?" If it's interface, flag it as low priority unless the primitive is ready.
 
 ## Strategic Narratives (Narrative Hooks)

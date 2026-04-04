@@ -16,7 +16,7 @@ echo "Date: $(date)"
 
 for FILE in "${STABLE_FILES[@]}"; do
   if [ -f "$FILE" ]; then
-    MD5=$(md5 -q "$FILE" 2>/dev/null || md5sum "$FILE" | awk '{print $1}')
+    MD5=$(openssl md5 "$FILE" 2>/dev/null | awk -F'= ' '{print $2}')
     echo "[$MD5] $(basename "$FILE")"
   else
     echo "[MISSING] $FILE"
@@ -24,7 +24,7 @@ for FILE in "${STABLE_FILES[@]}"; do
 done
 
 # Combine all stable files for a single prefix hash
-COMBINED_HASH=$(cat "${STABLE_FILES[@]}" 2>/dev/null | md5 -q 2>/dev/null || cat "${STABLE_FILES[@]}" 2>/dev/null | md5sum | awk '{print $1}')
+COMBINED_HASH=$(cat "${STABLE_FILES[@]}" 2>/dev/null | openssl md5 2>/dev/null | awk -F'= ' '{print $2}')
 echo "-------------------------------"
 echo "TOTAL PREFIX HASH: $COMBINED_HASH"
 echo "-------------------------------"

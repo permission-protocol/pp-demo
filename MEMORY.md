@@ -113,6 +113,27 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **The Authority Receipt:** The product is the cryptographically-signed authority receipt. Renamed CTA to **"Approve & Sign"** to reflect this.
 - **Architectural Proof:** Moving Ed25519 verification out of the SaaS (Signer) and into the standalone `mcp-guard` (Enforcer) is our primary defense against "single point of failure" objections.
 
+### 2026-04-03 — Onboarding Activation & Authority Route
+- **The Problem:** GitHub Marketplace search indexing is unreliable for new products, causing 100% bounce rates in onboarding. High-chrome dashboards distract from the "Authority" of signing.
+- **The Fix:** 
+    - Moved to **Direct File Creation URLs** (`/new/main?filename=...`) for the `.github/workflows/deploy-gate.yml` setup, bypassing the marketplace search.
+    - Built a dedicated **chromeless `/approve/:id` route** to maximize authority signal and minimize dashboard noise during the signing act.
+- **The Lesson:** In security infrastructure, the "Signer" mindset is "decide," not "explore." Remove the chrome. Direct URLs > Marketplace indexing.
+
+### 2026-04-03 — Prompt Caching Fix ($2,600/mo savings)
+- **The Problem:** Redundant prefix re-caching was wasting ~50% of Anthropic spend ($2,150+ in March).
+- **The Fix:** Identified a dynamic `userTime` timestamp injected *above* the cache boundary in the OpenClaw prompt prefix. Patched the adapter to move dynamic context below the `cache_control` breakpoint.
+- **The Result:** Confirmed 100% cache hits on repeated calls and ~400ms reduction in response latency.
+
+### 2026-04-03 — Activation Redefinition
+- **The Insight:** Real activation is **Blocked Action → Signer Decision → Receipt**. Everything before (installing, YAML setup) is just setup.
+- **The Strategy:** Prioritize the "Hello World" auto-PR loop to get users to the first blocked action in <5 minutes.
+- **Monetization:** Use the second signer (teammate) as the natural upgrade trigger from Free to Team tier.
+
+### 2026-04-03 — Design System Enforcement (DESIGN.md)
+- **The Build:** Created `permission-protocol/app/DESIGN.md` to enforce the "Sovereign Logic" aesthetic (Obsidian/Emerald/Glass) for AI-generated UI.
+- **The Goal:** Prevent "AI UI slop" and maintain a high-authority technical feel across all agent-generated components.
+
 ---
 
 ## Strategic Signals
@@ -189,6 +210,12 @@ Formally decoupled PullMatch from Permission Protocol into a standalone `pullmat
 - [ ] **X API Blocked**: Both PP and Xdares need Rod to upgrade X Dev account tier.
 
 *Updated: 2026-04-01 11:00 PM*
+
+### 2026-04-03 — Activation Redefinition & Hello World Auto-PR
+- **The Insight:** "Installed" ≠ activated. Real activation = blocked action → signer decision → receipt. Everything before that is setup theater.
+- **The Build:** Hello World auto-PR is Priority 1. Two-phase commit: (1) PP commits gate YAML via GitHub App, (2) PP opens safe test PR that triggers the gate. User experiences blocked → sign → receipt in minutes, not days.
+- **The Edge Cases:** `contents:write` permission upgrade needed. Branch protection unreadable on Free plans — need try-commit-then-fallback strategy. Org-level installs need explicit repo selection step.
+- **The Monetization Hook:** Solo user = Free forever. Second signer (teammate) = paid tier. Design the upgrade moment as carefully as activation.
 
 ### 2026-04-03 — Permission Protocol Design System
 - **The Sovereign Logic:** Enforced the design system for AI UI generation by creating `permission-protocol/app/DESIGN.md`. The design moves away from SaaS tropes, leaning into a terminal-chic aesthetic (Obsidian background, Neon Emerald primary, Glassmorphism, and Space Grotesk/Inter typography). This ensures agents maintain the "Evidentiary UX" feel.

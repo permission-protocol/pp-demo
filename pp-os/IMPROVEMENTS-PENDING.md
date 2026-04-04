@@ -17,9 +17,14 @@
 - **Proposed Fix**: SSH into `pp-scout-sfo2` and verify the Fastify server and port 3100 availability.
 - **Type**: Process Change / DevOps
 
+### 4. OpenClaw Prompt Cache Fix ($2,150+/mo Waste)
+- **Problem**: Dynamic `userTime` variables in the OpenClaw prompt prefix are causing a 100% cache-miss rate for Anthropic models, costing $2,150+/mo in redundant tokens.
+- **Proposed Fix**: Apply the source patch to the OpenClaw adapter (move `userTime` and session IDs below the `cache_control` block) and restart the gateway.
+- **Type**: Code Change / Gateway Restart
+
 ## Product / Strategy
 
-### 4. Week 4 Decision Brief (Urgent)
+### 5. Week 4 Decision Brief (Urgent)
 - **Problem**: The final sprint decision brief is overdue because we lack the audit data for demo approval counts.
 - **Proposed Fix**: Rod to provide the query results from PostHog/PP DB (Mar 24–Apr 2) and Stripe conversion counts.
 - **Type**: Process Change

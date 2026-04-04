@@ -145,6 +145,13 @@ When integrating physical devices (phones, hardware, IoT):
 - **Verify Prefix Hash:** Before starting a high-volume task (batch generation, large refactors), run `scripts/prefix-telemetry.sh`.
 - **Alert on Change:** If the prefix hash has changed since the last known stable state, document WHY in the session log. Unintentional changes can waste thousands of dollars.
 
+### 🚀 Registry-less Onboarding Protocol
+**Learned from Onboarding Sprint (Apr 2026).**
+- **Avoid External Registries**: Do not depend on GitHub Marketplace or Actions Registry for critical onboarding paths. Indexing is opaque and brittle.
+- **Prefer Direct Action URLs**: Use GitHub direct file creation URLs (`/new/main?filename=...&value=...`) for 100% deterministic setup.
+- **Server-Orchestrated Hello World**: Use a server-side state machine to open a "Hello World" PR and inject a blocking status via the Statuses API (`statuses:write`) to demonstrate the product immediately.
+- **UX Moat**: Governance should be visible natively in the user's existing workflow (PR checks) before they ever visit the dashboard.
+
 ### 🌐 Infrastructure Debugging Protocol (CDN/Hosting)
 **Use when a feature is "BLOCKED" by hosting/CDN issues (10Web, Render, Vercel, Cloudflare).**
 1. **Bypass the Cache:** Use `curl -H "Cache-Control: no-cache"` or append a random query param (`?v=123`) to see if the issue is stale content.
