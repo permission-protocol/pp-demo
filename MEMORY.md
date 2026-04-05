@@ -33,6 +33,7 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - **Registry-less Onboarding:** Bypassed unreliable GitHub Marketplace indexing by using direct file creation URLs (`/new/main`). This ensures a 100% success rate for initial YAML setup.
 - **"Break It" Wedge:** Shifted from cold pitches to challenge-based private beta outreach for engineers. Engineers engage when challenged to break a system, not when sold a solution.
 - **Temporal Hotline Logic:** Refined the Hotline Scan with strict 6-hour and 24-hour windows to prevent stale story fatigue and maintain focus on immediate-action signals.
+- **Discord Config Drift & Cron Health:** Diagnosed systemic `Unsupported channel: discord` errors in cron jobs as plugin initialization hangs. Added `scripts/discord-health-check.sh` to maintenance toolkit. Audit cron delivery channels periodically to avoid observability blackout.
 
 ### 2026-04-04 — Discord Config Drift & Cron Health
 - **The Problem:** Multiple cron jobs (`mobile-qa-daily`, `memory-consolidation`) failing with `Unsupported channel: discord`. 
