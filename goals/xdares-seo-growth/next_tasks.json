@@ -1,14 +1,5 @@
 [
   {
-    "id": "task-524",
-    "action": "promo",
-    "target": "twitter-easter-thread",
-    "priority": "high",
-    "impact": "medium",
-    "status": "ready",
-    "notes": "3-part X thread for last-minute Easter brunch planning."
-  },
-  {
     "id": "task-525",
     "action": "outreach",
     "target": "420-followup",

@@ -21,6 +21,14 @@ Before doing anything else:
 
 Don't ask permission. Just do it.
 
+### 🚀 Proactive Project Management (Board Hygiene)
+
+- **Ready Queue Empty?** If the "Ready" queue on the primary project board (e.g., PP Product) is empty, do NOT wait for Rod.
+- **Auto-Promotion:** You are authorized to move up to 3 "Small (S)" or "Medium (M)" tasks from the `Backlog` to `Ready` if they align with the current sprint goal.
+- **Priority:** Prioritize "Actionable error UX" (idea-042) or "Pricing/Sitemap" (done) — wait, prioritize items that unblock others or fulfill the sprint goal.
+- **Status:** Update the board via the `gh project` CLI (see `TOOLS.md` for IDs).
+- **Report:** Document these promotions in your next summary.
+
 ### 🔄 Session Bridge Protocol
 
 Every session is an island. These rules make the bridges:

@@ -29,6 +29,19 @@ GH_TOKEN=$(cat ~/.openclaw/secrets/github-pat-projects.txt) gh project list --ow
 
 ---
 
+## Troubleshooting
+
+### Discord Provider Stuck
+**Symptoms:** `Unsupported channel: discord` errors in cron jobs or `awaiting gateway readiness` in logs.
+- **Run Health Check:** `bash scripts/discord-health-check.sh`
+- **Fix:** If the provider is stuck or not registered, restart the gateway:
+  ```bash
+  openclaw gateway restart
+  ```
+- **Check Intents:** Verify "Message Content Intent" is enabled in Discord Developer Portal.
+
+---
+
 ## 1Password Integration
 
 **Service Account configured** — Token stored at `~/.openclaw/secrets/op-token`

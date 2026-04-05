@@ -27,10 +27,17 @@ One search: "AI agent security" with freshness=ph (past hour) — but only if we
 ## Trigger Criteria
 
 **IMMEDIATE ACTION (score 5):**
-- AI agent incident/breach with named company (within 6 hours)
-- Funding round >$10M for agent company (within 24 hours)  
-- Regulatory action on AI agents
-- Mention of Permission Protocol anywhere
+- AI agent incident/breach with named company (STRICTLY within 6 hours of publication/tweet time)
+- Funding round >$10M for agent company (STRICTLY within 24 hours of publication/tweet time)
+- Regulatory action on AI agents (STRICTLY within 24 hours)
+- Mention of Permission Protocol anywhere (discovery date is fine)
+
+**TEMPORAL VERIFICATION (CRITICAL):**
+Before flagging a signal as Score 5:
+1. Extract the specific publication or tweet timestamp (e.g., `created_at` from X, `created_at_i` from HN).
+2. Compare it to the current time.
+3. If it is OLDER than the window (6h/24h), it is NOT a hotline trigger. It may be a regular Scout signal for the standard pipeline, but NOT for fast-track action.
+4. If the timestamp is missing or ambiguous, do NOT fast-track.
 
 **When triggered:**
 1. Skip the normal pipeline entirely
