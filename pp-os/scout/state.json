@@ -1,6 +1,6 @@
 {
   "last_research_run": "2026-03-08T02:00:00Z",
-  "last_hotline_run": "2026-04-06T15:01:29Z",
+  "last_hotline_run": "2026-04-06T19:02:09Z",
   "last_outreach_run": "2026-03-07T15:00:00Z",
   "last_response_check": "2026-03-07T23:00:00Z",
   "last_signal_count": 0,
@@ -52,5 +52,5 @@
     "grantex",
     "agentseal"
   ],
-  "notes": "2026-04-06 15:01Z hotline scan: no actionable signal cleared the hotline bar. Re-checking live coverage did not surface a new Permission Protocol mention, a named AI-agent breach inside the 6-hour window, a >$10M agent-company funding round inside the 24-hour window, or a Hacker News agent-security/authorization story above the 50-point threshold. Carry-forward only: sycamore remains the active lead pending Rod approval. Existing outbound blockers still halt blocked channels: X API write access is blocked and HN login is unavailable."
+  "notes": "2026-04-06 19:02Z hotline scan: no actionable signal cleared the hotline bar. Live checks did not surface a new Permission Protocol mention, a named AI-agent breach inside the 6-hour window, a >$10M agent-company funding round inside the 24-hour window, or a Hacker News agent-security/authorization story above the 50-point threshold. Recent AI-agent security coverage reviewed during validation was stale for hotline purposes (for example: TechRadar/NIST standards coverage from Apr 1 and older X discussion about Meta's rogue agent from Mar 19). Carry-forward only: sycamore remains the active lead pending Rod approval. Existing outbound blockers still halt blocked channels: X API write access is blocked and HN login is unavailable."
 }

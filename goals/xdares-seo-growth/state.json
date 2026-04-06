@@ -36,12 +36,17 @@
     "total_tasks_completed": 580,
     "tasks_since_replan": 328,
     "tasks_since_metric_update": 471,
-    "last_run_at": "2026-04-06T18:12:00Z",
+    "last_run_at": "2026-04-06T20:01:00Z",
     "last_run_date": "2026-04-06",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
+      {
+        "timestamp": "2026-04-06T20:01:00Z",
+        "tasks_completed": 0,
+        "notes": "Tick executed at 2:01 PM Denver (Apr 6) / 8:01 PM UTC (Apr 6). Budget status: 10/10. Daily limit reached. Tasks 539 (promote) and 540 (draft) added to queue from next_tasks.json but skipped due to budget. Content verified ahead of schedule (Coachella, EDM, Outdoor, Cinco de Mayo all live)."
+      },
       {
         "timestamp": "2026-04-06T18:12:00Z",
         "tasks_completed": 3,
@@ -90,7 +95,26 @@
     ]
   },
   "tasks": {
-    "queue": [],
+    "queue": [
+      {
+        "id": "task-539",
+        "action": "promote",
+        "target": "outdoor-adventure",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "ready",
+        "notes": "Promote Outdoor Adventure Games on X (5 tweets)."
+      },
+      {
+        "id": "task-540",
+        "action": "draft",
+        "target": "backyard-beer-olympics",
+        "priority": "high",
+        "impact": "high",
+        "status": "ready",
+        "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'."
+      }
+    ],
     "on_hold": [],
     "completed": [
       {
