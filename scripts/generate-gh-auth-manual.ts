@@ -7,7 +7,9 @@ async function generateAuth() {
   
   const password = execSync(`export OP_SERVICE_ACCOUNT_TOKEN=$(cat ~/.openclaw/secrets/op-token) && op item get "GitHub" --vault "Charles on OpenClaw" --fields password --reveal`).toString().trim();
 
-  const browser = await chromium.launch({ 
+  const userDataDir = path.join(process.cwd(), '.auth/chrome_profile');
+  
+  const context = await chromium.launchPersistentContext(userDataDir, { 
     headless: false,
     channel: 'chrome', 
     args: [
@@ -15,8 +17,7 @@ async function generateAuth() {
     ]
   });
   
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
 
   console.log('🌐 Navigating to GitHub login...');
   await page.goto('https://github.com/login');
@@ -29,11 +30,9 @@ async function generateAuth() {
   console.log('🛑 Waiting indefinitely. Let me know in Discord when you hit the dashboard.');
   
   // We will expose a global function to save state when triggered manually from the REPL
-  (global as any).saveStateAndExit = async () => {
-    const statePath = path.join(__dirname, '../.auth/github_state.json');
-    await context.storageState({ path: statePath });
-    console.log(`✅ Auth state saved to ${statePath}`);
-    await browser.close();
+  (global as any).saveAndExit = async () => {
+    console.log('✅ Manual trigger received. Closing...');
+    await context.close();
     process.exit(0);
   };
 }
