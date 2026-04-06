@@ -1,20 +1,20 @@
 [
   {
-    "id": "task-528",
-    "action": "research",
-    "target": "cinco-de-mayo",
+    "id": "task-539",
+    "action": "promote",
+    "target": "outdoor-adventure",
     "priority": "medium",
     "impact": "medium",
     "status": "ready",
-    "notes": "Research keywords and content ideas for Cinco de Mayo (May 5)."
+    "notes": "Promote Outdoor Adventure Games on X (5 tweets)."
   },
   {
-    "id": "task-529",
-    "action": "publish",
-    "target": "420-party-guide",
+    "id": "task-540",
+    "action": "draft",
+    "target": "backyard-beer-olympics",
     "priority": "high",
     "impact": "high",
     "status": "ready",
-    "notes": "Publish the Ultimate 4/20 Party Guide to blog.xdares.com."
+    "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'."
   }
 ]
