@@ -1,32 +1,26 @@
-# HOT SIGNAL — April 5th, 2026
+# HOT SIGNALS - 2026-04-06
 
-## 🚨 Incident: Claude Code Malware Campaign & Source Leak
-**Source:** [Wired](https://www.wired.com/story/security-news-this-week-hackers-are-posting-the-claude-code-leak-with-bonus-malware/), [Dark Reading](https://www.darkreading.com/application-security/source-code-leaks-highlight-lack-supply-chain-oversight)
+## 🚀 Orchestration: Ticket-to-Merge is Here (Optio)
+**Signal:** [Optio (Show HN)](https://github.com/jonwiggins/optio)
+**Summary:** An open-source system that orchestrates Claude Code and Codex to take a ticket and go all the way to a merged PR. It handles intake, isolated execution in K8s, PR monitoring, self-healing on CI failures, and squashing/merging.
+**PP Context:** This is the "Full Wedge." Optio is essentially a "User" of the Permission Protocol. Any system like this *must* have an enforcement layer to prevent unauthorized merges or bad code deployments. We should target teams using Optio or similar orchestration patterns.
 
-**Summary:** 
-Hackers are running sponsored Google ads leading to fake Claude Code installation guides. These guides contain a "one-liner" installation command that downloads malware instead of the Anthropic agent. Concurrently, reports of a Claude source code leak are circulating, allegedly involving a misconfigured GitHub Action that allowed attackers to capture credentials and push malicious code.
+## 🛡️ Governance: Microsoft APM (Agent Package Manager)
+**Signal:** [APM (Show HN)](https://github.com/microsoft/apm)
+**Summary:** A Microsoft OSS CLI for managing agent dependencies (plugins, skills, rules) with a lockfile (`apm.lock`) and security audits. 
+**PP Context:** Validates our focus on the "Control Layer." The industry is moving from "How do I prompt an agent?" to "How do I govern what the agent can do and use?" APM provides the static governance; Permission Protocol provides the runtime enforcement.
 
-**Why it matters for PP:** 
-This is a prime example of the "Authority Gap." Users are eager to deploy agents (Claude Code) and are bypassing security checks to get them running. PP's "Authority over Assessment" is the solution—verifying the identity of the signer (Anthropic) and the integrity of the agent *before* it gets access to the terminal/repo.
+## ⚔️ Security: G0 (The Agent Control Layer)
+**Signal:** [G0 (Show HN)](https://github.com/guard0-ai/g0)
+**Summary:** A comprehensive security layer for AI agents (scan, test, monitor, comply). It explicitly mentions "First-class OpenClaw support."
+**PP Context:** High-priority integration or partnership target. They are building the "Scanner/Auditor"; we are building the "Signer/Enforcement." Their mention of OpenClaw shows we are already part of the conversation in the agent security space.
 
----
+## 🚨 Market Sentiment: "AI Slop" Frustration
+**Signal:** [Study: Counter-strategies for 'AI Slop' in PRs](https://the-decoder.com/study-maps-developer-frustration-over-ai-slop-as-a-tragedy-of-the-commons-in-software-development/)
+**Summary:** Developers are implementing size limits on AI-generated PRs and mandatory self-reviews to deal with a flood of low-quality AI code.
+**PP Context:** This is the "Why now?" Narrative. Teams aren't just worried about security; they're drowning in noise. Permission Protocol can be the "Quality Gate" that enforces these human-defined counter-strategies automatically.
 
-## 🚀 Tool: Optio — Automated Ticket-to-Merge
-**Source:** [GitHub - jonwiggins/optio](https://github.com/jonwiggins/optio) (Show HN)
-
-**Summary:** 
-Optio is a new orchestration system that turns tickets into merged PRs using isolated K8s pods running Claude Code or Codex. It monitors CI checks, review status, and handles "self-healing" (auto-resuming agents on failures).
-
-**Why it matters for PP:** 
-Optio is the "engine," but it lacks a "governor." It automates the *merge* based on "merge readiness," but who defines "ready"? This is the perfect integration point for Permission Protocol—providing the audit receipt and human-approval gate before Optio triggers the final `squash-merge`.
-
----
-
-## 📊 Discussion: "AI Slop" Resistance
-**Source:** [The Decoder](https://the-decoder.com/study-maps-developer-frustration-over-ai-slop-as-a-tragedy-of-the-commons-in-software-development/)
-
-**Summary:** 
-Large engineering teams are moving from "AI optimism" to "AI restriction." New policies include PR size limits (<500 LOC) for AI code and mandatory "double code reviews" by external teams.
-
-**Why it matters for PP:** 
-"Restriction" is a sign of missing infrastructure. Teams are using blunt instruments (size limits) because they lack granular control (policy gates). PP's "Evidentiary UX" can provide the signals needed to trust AI PRs without arbitrary LOC caps.
+## ⚡ Execution: Agent-made Rust (Urlx)
+**Signal:** [Urlx (Show HN)](https://github.com/jonwiggins/urlx)
+**Summary:** An agent (Claude Code) reimplemented 180k lines of C (curl) into Rust in days by iterating on a test suite.
+**PP Context:** Proof of velocity. This level of autonomous code generation makes automated governance (Permission Protocol) a non-negotiable requirement for any team that wants to adopt these tools safely.
