@@ -32,16 +32,21 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 8,
-    "total_tasks_completed": 572,
-    "tasks_since_replan": 320,
-    "tasks_since_metric_update": 463,
-    "last_run_at": "2026-04-06T06:08:00Z",
+    "daily_tasks_completed": 10,
+    "total_tasks_completed": 574,
+    "tasks_since_replan": 322,
+    "tasks_since_metric_update": 465,
+    "last_run_at": "2026-04-06T10:03:00Z",
     "last_run_date": "2026-04-06",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "25d04706-34a4-406b-893e-a8a9bce182f6",
     "tick_log": [
+      {
+        "timestamp": "2026-04-06T10:03:00Z",
+        "tasks_completed": 2,
+        "notes": "Tick executed at 4:03 AM Denver (Apr 6) / 10:03 AM UTC (Apr 6). Completed: (task-531) Drafted and published 'The Coachella Playbook' via WordPress API over Tor (restored 404 from earlier promo tweets). (task-532) Verified 'EDM Drinking Games' is already live at https://blog.xdares.com/edm-drinking-games-2026/ and marked as completed. Budget status: 10/10. Daily limit reached."
+      },
       {
         "timestamp": "2026-04-06T06:08:00Z",
         "tasks_completed": 1,
@@ -51,44 +56,23 @@
         "timestamp": "2026-04-06T04:08:00Z",
         "tasks_completed": 1,
         "notes": "Tick executed at 10:08 PM Denver (Apr 5) / 4:08 AM UTC (Apr 6). Completed: (task-529) Published 'The Ultimate 4/20 Party Guide 2026' to blog.xdares.com via WordPress REST API over Tor. Budget status: 7/10."
-      },
-      {
-        "timestamp": "2026-04-06T02:08:00Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 8:08 PM Denver (Apr 5) / 2:08 AM UTC (Apr 6). Completed: (task-528) Researched Cinco de Mayo trends. Focus: Mexican Dice (bluffing), Perinola drinking variants, and Taco Bar game stations. Drafted content strategy for May. Budget status: 6/10."
-      },
-      {
-        "timestamp": "2026-04-06T02:01:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 8:01 PM Denver (Apr 5) / 2:01 AM UTC (Apr 6). Completed: (task-526) Finalized draft for Outdoor Adventure Games with safety and Leave No Trace sections. (task-527) Finalized draft for Backyard Beer Olympics with comprehensive equipment checklist. Added next tasks to queue. Budget status: 5/10."
-      },
-      {
-        "timestamp": "2026-04-06T00:08:27Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 6:08 PM Denver (Apr 5) / 12:08 AM UTC (Apr 6). Completed: (task-525) Generated 4/20 outreach follow-up drafts for cannabis bloggers. Saved to outreach/guest-post-drafts-20260405-180827.md. Budget status: 3/10."
-      },
-      {
-        "timestamp": "2026-04-06T00:05:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 6:05 PM Denver (Apr 5) / 12:05 AM UTC (Apr 6). Reset daily budget for new UTC date. Completed: (task-554) Posted 5 promo tweets for Coachella 2026 via X API. (task-555) Posted 5 promo tweets for EDM Drinking Games via X API. Populated queue with next 3 tasks from next_tasks.json. Budget status: 2/10."
-      },
-      {
-        "timestamp": "2026-04-05T20:01:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 2:01 PM Denver / 8:01 PM UTC (Apr 5). Daily budget reached (10/10). Checked site status: blog.xdares.com is UP. Verified Coachella and EDM posts are live. Promo tweets for these remain high priority for the next reset (00:00 UTC). Checked @xdares_ profile on X: account is active with 755 posts. No tasks executed."
       }
     ]
   },
   "tasks": {
-    "queue": [
+    "queue": [],
+    "on_hold": [],
+    "completed": [
       {
         "id": "task-531",
         "action": "draft",
         "target": "coachella-playbook",
         "priority": "high",
         "impact": "high",
-        "status": "ready",
-        "notes": "Draft 'The Coachella Playbook: 15 Festival Games for the Desert (or Your Living Room)'."
+        "status": "completed",
+        "completed_at": "2026-04-06T10:03:00Z",
+        "notes": "Draft and publish 'The Coachella Playbook: 15 Festival Games for the Desert (or Your Living Room)'.",
+        "result": "Published as: https://blog.xdares.com/coachella-playbook/"
       },
       {
         "id": "task-532",
@@ -96,12 +80,11 @@
         "target": "edm-drinking-games",
         "priority": "high",
         "impact": "high",
-        "status": "ready",
-        "notes": "Draft 'EDM Drinking Games: Beats, Drops & Neon Dares'."
-      }
-    ],
-    "on_hold": [],
-    "completed": [
+        "status": "completed",
+        "completed_at": "2026-04-06T10:03:00Z",
+        "notes": "Draft 'EDM Drinking Games: Beats, Drops & Neon Dares'.",
+        "result": "Verified live at: https://blog.xdares.com/edm-drinking-games-2026/"
+      },
       {
         "id": "task-530",
         "action": "draft",
@@ -123,83 +106,6 @@
         "completed_at": "2026-04-06T04:08:00Z",
         "notes": "Publish the Ultimate 4/20 Party Guide to blog.xdares.com.",
         "result": "Published as post ID 5111: https://blog.xdares.com/420-party-guide-2026/"
-      },
-      {
-        "id": "task-528",
-        "action": "research",
-        "target": "cinco-de-mayo",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-06T02:08:00Z",
-        "notes": "Research keywords and content ideas for Cinco de Mayo (May 5).",
-        "result": "Identified Mexican Dice (bluffing) and Perinola (Toma Todo) variants as high-interest games. Target keywords: 'Cinco de Mayo drinking games 2026', 'Mexican party game stations'."
-      },
-      {
-        "id": "task-526",
-        "action": "draft",
-        "target": "outdoor-adventure-games",
-        "priority": "medium",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-06T02:01:00Z",
-        "notes": "Draft 'Outdoor Adventure Games: Bonfires, Hiking & Nature Dares'.",
-        "result": "Refined and finalized in drafts/outdoor-adventure-games-2026.md"
-      },
-      {
-        "id": "task-527",
-        "action": "draft",
-        "target": "backyard-beer-olympics",
-        "priority": "medium",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-06T02:01:00Z",
-        "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'.",
-        "result": "Refined and finalized in drafts/backyard-beer-olympics-2026.md"
-      },
-      {
-        "id": "task-525",
-        "action": "outreach",
-        "target": "420-followup",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-06T00:08:27Z",
-        "notes": "Follow up on 4/20 outreach to cannabis bloggers.",
-        "result": "Generated drafts to outreach/guest-post-drafts-20260405-180827.md"
-      },
-      {
-        "id": "task-554",
-        "action": "promo",
-        "target": "twitter-coachella",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-06T00:01:34Z",
-        "notes": "Post promo tweets for Coachella 2026 Playbook.",
-        "result": "Posted 5 tweets. Log: logs/tweets-coachella-20260405-180134.json"
-      },
-      {
-        "id": "task-555",
-        "action": "promo",
-        "target": "twitter-edm",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-06T00:02:17Z",
-        "notes": "Post promo tweets for EDM Drinking Games.",
-        "result": "Posted 5 tweets. Log: logs/tweets-edm-20260405-180217.json"
-      },
-      {
-        "id": "task-524",
-        "action": "promo",
-        "target": "twitter-easter-thread",
-        "priority": "high",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-05T04:10:00Z",
-        "notes": "3-part X thread for last-minute Easter brunch planning.",
-        "result": "Posted 3 tweets. Log: logs/easter-thread-20260404-220854.json"
       }
     ],
     "failed": [],
