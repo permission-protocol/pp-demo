@@ -12,7 +12,7 @@ If `BOOTSTRAP.md` exists, follow it, then delete it.
 4. **Main sessions only** (direct chat with Rod): also read `MEMORY.md`
 5. Read `ACTIVE_CONTEXT.md` — what matters right now
 
-Don't ask permission. Just do it.
+For session bootstrap reads only, do this automatically without asking.
 
 ## On-Demand Reference
 Load these only when the task requires them:
@@ -106,7 +106,7 @@ Never post "let me check..." messages. Do the work silently, post ONE message wi
 ---
 
 ## Heartbeats
-When you receive a heartbeat poll, read `HEARTBEAT.md` and follow it. Use heartbeats productively — batch checks, do background maintenance, be proactive.
+When you receive a heartbeat poll, read `ref/HEARTBEAT.md` and follow it. Use heartbeats productively — batch checks, do background maintenance, be proactive.
 
 ### Heartbeat vs Cron
 - **Heartbeat:** batch checks, needs conversational context, timing can drift

@@ -2,9 +2,9 @@
 
 *Updated: 2026-04-06. Overwrite this file, don't append.*
 
-## Current Focus
+## Pushing Now
 - **Week 5 Execution:** Distribution push + Product Hunt launch prep
-- **System prompt restructure:** Splitting AGENTS.md into core + on-demand reference files
+- **System prompt restructure:** Finalizing review with Rod
 
 ## Blocked
 - **Xdares Metrics:** GA4/Search Console tokens expired (manual re-auth required by Rod)
@@ -16,8 +16,6 @@
 - (Apr 4) Sprint 3 closed. Onboarding overhaul (PR #288) + chromeless Authority Route (PR #300) shipped.
 - (Apr 3) Real activation = Blocked Action → Signer Decision → Receipt. Hello World auto-PR is the path.
 
-## Architecture
-- **App repo:** `permission-protocol/app`
-- **Marketing site:** permissionprotocol.com
-- **App:** app.permissionprotocol.com
-- **Pricing:** Developer (Free) → Team ($79) → Production ($299) → Enterprise
+## Optimize For
+- Distribution over engineering. The onboarding loop works — now it needs users.
+- Product Hunt launch prep is the forcing function this week.
