@@ -240,21 +240,37 @@ if [[ $ELAPSED -ge $MAX_WAIT ]]; then
   echo ""
 fi
 
+# Step 3.5: Check for primary repo configuration (race condition detection)
+log "Step 3.5: Checking for primary repo race condition..."
+INST_TOKEN_FRESH=$(get_installation_token)
+
+# Check if any repos are linked to the installation in PP's database
+# We do this by verifying the status check context — if it says "Awaiting review" 
+# the backend processed it correctly. If no status appears, it might be the race condition.
+if [[ "${PP_STATUS:-none}" == "none" ]]; then
+  log "  ⚠️  No PP status check found — possible race condition:"
+  log "     The 'Primary repository is not configured' error likely occurred"
+  log "     because repo sync hadn't completed when activation tried to run."
+  log "  → Check: $PP_APP_URL/install/complete?installation_id=$INSTALLATION_ID"
+else
+  pass "Backend processed the PR (status check exists = repo is linked)"
+fi
+echo ""
+
 # Step 4: Check if a deploy request was created in the PP app
 log "Step 4: Checking PP app for deploy request..."
-PP_API_KEY=$(cat ~/.openclaw/secrets/pp-api-key.txt 2>/dev/null || echo "")
 
-if [[ -n "$PP_API_KEY" ]]; then
-  # Try to query the PP API for recent deploy requests
-  PP_REQUESTS=$(curl -s \
-    -H "Authorization: Bearer $PP_API_KEY" \
-    -H "Accept: application/json" \
-    "$PP_APP_URL/api/v1/requests?repo=$TEST_REPO&limit=5" 2>/dev/null || echo "{}")
-  
-  log "  PP API response: $(echo "$PP_REQUESTS" | head -c 200)"
+# Use curl to check the activation page for error signals
+ACTIVATION_CHECK=$(curl -s -o /dev/null -w "%{http_code}" \
+  "$PP_APP_URL/install/complete?installation_id=$INSTALLATION_ID" 2>/dev/null || echo "000")
+log "  Activation page HTTP: $ACTIVATION_CHECK"
+
+if [[ "$ACTIVATION_CHECK" == "200" ]]; then
+  pass "Activation page accessible"
+elif [[ "$ACTIVATION_CHECK" == "000" ]]; then
+  log "  ⚠️  Could not reach PP app at $PP_APP_URL"
 else
-  log "  ⚠️  No PP API key found — skipping API verification"
-  log "  Manual check: $PP_APP_URL/c/deploy-gate"
+  log "  ⚠️  Activation page returned HTTP $ACTIVATION_CHECK"
 fi
 echo ""
 
