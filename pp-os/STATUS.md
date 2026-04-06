@@ -1,9 +1,10 @@
-# PP Status — Last Updated: 2026-04-05 8:20 AM MDT
+# PP Status — Last Updated: 2026-04-05 11:30 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 4 SPRINT OPEN — Distribution Push (Apr 5–11)
 - **Sprint Goal:** 10 active external installations with successful signature loops.
 - **Focus:** Product Hunt launch prep (idea-094), 10-install target (idea-088), first loop user (idea-089).
+- **System Health:** Investigating Discord provider drift and mobile QA failures.
 
 ## ACTIVE Tasks (Today's Priority)
 - **idea-094** — Product Hunt launch prep: hunter outreach + brief (pp-os/launch/product-hunt-launch-brief.md)

@@ -37,6 +37,8 @@ Every session is an island. These rules make the bridges:
 
 **On session END (or before long responses):** Update STATUS.md with anything that changed. Not a log — just the current state. Overwrite, don't append.
 
+**On session FAULT:** If a cron or tool call fails 3+ times with the same error, run the relevant diagnostic script (e.g., `bash scripts/discord-health-check.sh`) and append the result to `memory/connectivity-diagnostics.log`.
+
 **What goes in STATUS.md:**
 - What's active RIGHT NOW (in-flight work)
 - Pending items (next up)

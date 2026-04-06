@@ -25,6 +25,11 @@ Rodrigo Carvalho (Rod). System-builder at the frontier of AI, infrastructure, an
 - If Rod wants a model change, HE does it manually (via SSH or at the Mac).
 - Read `SAFETY.md` before ANY risky config operation.
 
+### 2026-04-05 — Discord Config Drift & Cron Health
+- **The Problem:** Multiple cron jobs (`mobile-qa-daily`, `memory-consolidation`) failing with `Unsupported channel: discord`.
+- **The Insight:** System health alerts are only useful if the delivery channel is stable. Config drift in Discord integration can silently kill observability.
+- **The Lesson:** Audit cron delivery channels periodically. Cron-based observability needs a fallback (e.g., local logs or a secondary channel) if the primary messaging surface fails. Added `scripts/discord-health-check.sh` to the maintenance toolkit.
+
 ### 2026-04-05 — Weekly Curation (Mar 29 – Apr 4)
 - **Activation vs. Installation:** Discovered that "Installed" is a vanity metric. Real activation is **Blocked Action → Signer Decision → Receipt**. Built the "Hello World" auto-PR loop (PR #288) to get users to their first signature in <2min.
 - **Copy over Features:** Realized the conversion gap was copy and urgency, not functionality. Replaced abstract security claims with visceral, irreversible consequences (e.g., "deletes 12,847 user records"). The bar: "It would be irresponsible NOT to install this."
@@ -174,9 +179,10 @@ Stdio proxy for MCP policy enforcement. YAML-based block/allow/hold rules for to
 
 ## Open Threads
 
-- [!] **Week 5 Execution (Apr 5):** Transitioning from Week 5 Planning to execution.
+- [!] **Week 5 Execution (Apr 5):** Commenced execution. Focus on distribution and Product Hunt launch prep.
+- [!] **System Health:** Addressing systemic Discord provider drift and mobile QA errors (6 failures).
 - [!] **Week 4 Decision (OVERDUE):** Pending conversion data audit (idea-085 → idea-087).
 - [ ] **Xdares Metrics Blocked**: GA4/Search Console tokens expired (manual re-auth required).
 - [ ] **X API Blocked**: Both PP and Xdares need Rod to upgrade X Dev account tier.
 
-*Updated: 2026-04-05 11:20 PM*
+*Updated: 2026-04-05 11:35 PM*
