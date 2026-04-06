@@ -1,29 +1,20 @@
 [
   {
-    "id": "task-525",
-    "action": "outreach",
-    "target": "420-followup",
+    "id": "task-528",
+    "action": "research",
+    "target": "cinco-de-mayo",
     "priority": "medium",
     "impact": "medium",
     "status": "ready",
-    "notes": "Follow up on 4/20 outreach to cannabis bloggers."
+    "notes": "Research keywords and content ideas for Cinco de Mayo (May 5)."
   },
   {
-    "id": "task-526",
-    "action": "draft",
-    "target": "outdoor-adventure-games",
-    "priority": "medium",
+    "id": "task-529",
+    "action": "publish",
+    "target": "420-party-guide",
+    "priority": "high",
     "impact": "high",
     "status": "ready",
-    "notes": "Draft 'Outdoor Adventure Games: Bonfires, Hiking & Nature Dares'."
-  },
-  {
-    "id": "task-527",
-    "action": "draft",
-    "target": "backyard-beer-olympics",
-    "priority": "medium",
-    "impact": "high",
-    "status": "ready",
-    "notes": "Draft 'Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy'."
+    "notes": "Publish the Ultimate 4/20 Party Guide to blog.xdares.com."
   }
 ]

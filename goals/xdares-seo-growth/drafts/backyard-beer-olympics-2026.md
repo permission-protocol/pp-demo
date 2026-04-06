@@ -17,12 +17,22 @@ To keep things organized and competitive, follow these simple rules:
 - **Quarters:** A high-precision game for 2-player teams.
 - **The Beer Mile (Modified):** Chug a cup, run a lap, repeat 4 times. *Stay safe!*
 
-## 3. Winning Strategy
+## 3. Equipment Checklist
+Don't let the games stop because you're missing a key item:
+- **Cups:** At least 100 sturdy plastic cups (red and blue).
+- **Ping Pong Balls:** 12-24 high-quality balls.
+- **Tables:** 2 long folding tables (at least 8 feet).
+- **Stopwatch:** For timing the Beer Mile and Flip Cup relays.
+- **Whistle:** For the designated "Referee" to signal game starts.
+- **Medals/Trophy:** For the final awards ceremony.
+- **Coolers & Ice:** To keep the supply cold throughout the day.
+
+## 4. Winning Strategy
 - **Pacing is Key:** Don't go too hard in the first round; save your energy for the Beer Mile.
 - **Team Synergy:** Practice your "Flip Cup" technique together before the tournament.
 - **Mind Games:** Use friendly banter to distract your opponents during high-stakes shots.
 
-## 4. Scoresheet Template
+## 5. Scoresheet Template
 Create a simple scoresheet on a whiteboard or a large piece of poster board:
 | Team Name | Beer Pong | Flip Cup | Quarters | Beer Mile | Total |
 |-----------|-----------|----------|----------|-----------|-------|

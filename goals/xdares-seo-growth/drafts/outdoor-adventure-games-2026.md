@@ -19,6 +19,16 @@ Keep the energy up on the trail:
 - **Stone Skipping Tournament:** Find the flatest stone and skip it across the lake; the person with the fewest skips does a dare chosen by the group.
 - **Starlight Truth or Dare:** Classic truth or dare, but with a focus on your wildest outdoor experiences and "what-if" survival scenarios.
 
+## 4. Safety & Leave No Trace Principles
+While having fun outdoors, it's crucial to respect the environment and ensure everyone stays safe:
+- **Plan Ahead and Prepare:** Check the weather and trail conditions before you go.
+- **Travel and Camp on Durable Surfaces:** Stick to established trails and campsites.
+- **Dispose of Waste Properly:** Pack it in, pack it out.
+- **Leave What You Find:** Preserve the natural state of the area.
+- **Minimize Campfire Impacts:** Use established fire rings and keep fires small.
+- **Respect Wildlife:** Observe from a distance and never feed animals.
+- **Be Considerate of Other Visitors:** Keep noise levels respectful, especially at night.
+
 Looking for more ways to level up your next party? Check out our other [party guides](https://blog.xdares.com/category/party-guides/) and [adult drinking games](https://blog.xdares.com/category/drinking-games/).
 
 *Stay safe and respect the environment. Always follow Leave No Trace principles.*

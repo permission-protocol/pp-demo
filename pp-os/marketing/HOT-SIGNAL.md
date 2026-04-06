@@ -1,25 +1,32 @@
-# HOT SIGNALS — April 4th, 2026
+# HOT SIGNAL — April 5th, 2026
 
-## 1. Show HN: Optio – Ticket to Merged PR Orchestration
-- **Source:** [HN](https://github.com/jonwiggins/optio)
-- **Signal:** A tool that spins up K8s pods to run Claude Code/Codex and handles the full lifecycle: issue → code → PR → review loop → **SQUASH-MERGE**.
-- **The Hook:** This is the ultimate "autonomy without authority" scenario. It removes humans from the merge bottleneck.
-- **Narrative:** "While others are building tools to merge without you, we're building the only gate that keeps you in the loop without the friction."
+## 🚨 Incident: Claude Code Malware Campaign & Source Leak
+**Source:** [Wired](https://www.wired.com/story/security-news-this-week-hackers-are-posting-the-claude-code-leak-with-bonus-malware/), [Dark Reading](https://www.darkreading.com/application-security/source-code-leaks-highlight-lack-supply-chain-oversight)
 
-## 2. Claude Code Source Leak: "Unhinged" Codebase
-- **Source:** [Reddit](https://www.reddit.com/r/ClaudeAI/comments/1s8lkkm/i_dug_through_claude_codes_leaked_source_and/)
-- **Signal:** Leaked source for Claude Code's harness reveals unprincipled, unhinged patterns. Users are realizing agents need "tight leashes."
-- **The Hook:** AI is writing the infrastructure for AI. If the infrastructure is unhinged, the results will be too.
-- **Narrative:** "The Claude Code leak proved that agents will prioritize completion over correctness if not governed. You need a signed receipt for every agent action."
+**Summary:** 
+Hackers are running sponsored Google ads leading to fake Claude Code installation guides. These guides contain a "one-liner" installation command that downloads malware instead of the Anthropic agent. Concurrently, reports of a Claude source code leak are circulating, allegedly involving a misconfigured GitHub Action that allowed attackers to capture credentials and push malicious code.
 
-## 3. Microsoft/GitHub: Agent Package Manager (APM)
-- **Source:** [HN](https://github.com/microsoft/apm)
-- **Signal:** A dependency manager for agent config (skills, prompts). This is the first enterprise-backed attempt to govern agentic environments.
-- **The Hook:** If your agent configuration is drifting across projects, your governance is too.
-- **Narrative:** "Standardizing agent configuration is the first step toward standardizing agent authority. We're the second step."
+**Why it matters for PP:** 
+This is a prime example of the "Authority Gap." Users are eager to deploy agents (Claude Code) and are bypassing security checks to get them running. PP's "Authority over Assessment" is the solution—verifying the identity of the signer (Anthropic) and the integrity of the agent *before* it gets access to the terminal/repo.
 
-## 4. G0 – Control Layer for AI Agents (OpenClaw Support)
-- **Source:** [HN](https://github.com/guard0-ai/g0)
-- **Signal:** A security scanner and control layer that explicitly mentions OpenClaw support.
-- **The Hook:** Governance is becoming a first-class citizen in the agent stack.
-- **Narrative:** "The market is moving from 'can agents do this?' to 'should agents do this?'. We're the gate for the 'should'."
+---
+
+## 🚀 Tool: Optio — Automated Ticket-to-Merge
+**Source:** [GitHub - jonwiggins/optio](https://github.com/jonwiggins/optio) (Show HN)
+
+**Summary:** 
+Optio is a new orchestration system that turns tickets into merged PRs using isolated K8s pods running Claude Code or Codex. It monitors CI checks, review status, and handles "self-healing" (auto-resuming agents on failures).
+
+**Why it matters for PP:** 
+Optio is the "engine," but it lacks a "governor." It automates the *merge* based on "merge readiness," but who defines "ready"? This is the perfect integration point for Permission Protocol—providing the audit receipt and human-approval gate before Optio triggers the final `squash-merge`.
+
+---
+
+## 📊 Discussion: "AI Slop" Resistance
+**Source:** [The Decoder](https://the-decoder.com/study-maps-developer-frustration-over-ai-slop-as-a-tragedy-of-the-commons-in-software-development/)
+
+**Summary:** 
+Large engineering teams are moving from "AI optimism" to "AI restriction." New policies include PR size limits (<500 LOC) for AI code and mandatory "double code reviews" by external teams.
+
+**Why it matters for PP:** 
+"Restriction" is a sign of missing infrastructure. Teams are using blunt instruments (size limits) because they lack granular control (policy gates). PP's "Evidentiary UX" can provide the signals needed to trust AI PRs without arbitrary LOC caps.
