@@ -32,20 +32,20 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 7,
-    "total_tasks_completed": 587,
-    "tasks_since_replan": 335,
-    "tasks_since_metric_update": 478,
-    "last_run_at": "2026-04-07T06:08:00Z",
+    "daily_tasks_completed": 10,
+    "total_tasks_completed": 590,
+    "tasks_since_replan": 338,
+    "tasks_since_metric_update": 481,
+    "last_run_at": "2026-04-07T08:03:00Z",
     "last_run_date": "2026-04-07",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "cron_job_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
     "tick_log": [
       {
-        "timestamp": "2026-04-07T06:08:00Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 12:08 AM Denver (Apr 7) / 6:08 AM UTC (Apr 7). Budget status: 7/10. Completed: (task-541) Published 'Backyard Beer Olympics 2026: Rules, Scoresheets & Winning Strategy' to blog.xdares.com via WordPress API over Tor. Verified 200 OK at https://blog.xdares.com/backyard-beer-olympics-2026-rules-scoresheets-winning-strategy/. Task 542 (promote) queued for next tick."
+        "timestamp": "2026-04-07T08:03:00Z",
+        "tasks_completed": 3,
+        "notes": "Tick executed at 2:03 AM Denver (Apr 7) / 8:03 AM UTC (Apr 7). Budget status: 10/10. Completed: (task-542) Promoted 'Backyard Beer Olympics 2026' on X (5 tweets). (task-543) Promoted 'Mother's Day Party Games 2026' on X (5 tweets). (task-544) Fixed Father's Day 2026 post by publishing correct content to /fathers-day-party-games-2026/ via Tor. (The /fathers-day-2027/ post remains but is now superseded). Verified all April and May seasonal content is live and promoted. Daily budget reached."
       },
       {
         "timestamp": "2026-04-07T06:05:00Z",
@@ -115,19 +115,42 @@
     ]
   },
   "tasks": {
-    "queue": [
+    "queue": [],
+    "on_hold": [],
+    "completed": [
+      {
+        "id": "task-544",
+        "action": "publish",
+        "target": "fathers-day",
+        "priority": "medium",
+        "impact": "high",
+        "status": "completed",
+        "completed_at": "2026-04-07T08:02:00Z",
+        "notes": "Fixed Father's Day post by publishing correct content to /fathers-day-party-games-2026/ over Tor.",
+        "result": "Published at: https://blog.xdares.com/fathers-day-party-games-2026/"
+      },
+      {
+        "id": "task-543",
+        "action": "promote",
+        "target": "mothers-day",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "completed",
+        "completed_at": "2026-04-07T08:02:00Z",
+        "notes": "Promoted Mother's Day on X (5 tweets).",
+        "result": "Posted: https://x.com/xdares_/status/2041426254835179988 - 2041426310048936189"
+      },
       {
         "id": "task-542",
         "action": "promote",
         "target": "backyard-beer-olympics",
         "priority": "medium",
         "impact": "medium",
-        "status": "queued",
-        "notes": "Promote Backyard Beer Olympics on X (5 tweets)."
-      }
-    ],
-    "on_hold": [],
-    "completed": [
+        "status": "completed",
+        "completed_at": "2026-04-07T08:01:00Z",
+        "notes": "Promoted Backyard Beer Olympics on X (5 tweets).",
+        "result": "Posted: https://x.com/xdares_/status/2041426096105848898 - 2041426151852347560"
+      },
       {
         "id": "task-541",
         "action": "publish",

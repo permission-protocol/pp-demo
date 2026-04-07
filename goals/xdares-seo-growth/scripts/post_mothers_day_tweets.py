@@ -18,11 +18,15 @@ client = tweepy.Client(
     access_token_secret=creds['oauth1']['access_token_secret']
 )
 
-# 3 Mother's Day promo tweets
+url = "https://blog.xdares.com/mothers-day-party-games-2026/"
+
+# 5 Mother's Day promo tweets
 tweets = [
-    "Mother's Day is coming! 🌸 Make it unforgettable this year with 50+ party games and activities for the whole family: https://blog.xdares.com/mothers-day-party-games-2026-2/",
-    "Hosting Mother's Day brunch? 🥂 Turn it into a party with these 10 boozy brunch games for adults: https://blog.xdares.com/mothers-day-party-games-drinking/",
-    "Want to make Mom laugh? 🐰 Try these 25 hilarious Mother's Day dares for your family gathering: https://blog.xdares.com/mothers-day-party-games-2026-2/"
+    f"Mother's Day is coming! 🌸 Make it unforgettable this year with 50+ party games and activities for the whole family: {url}",
+    f"Hosting Mother's Day brunch? 🥂 Turn it into a party with these boozy brunch games for adults: {url}",
+    f"Want to make Mom laugh? 🐰 Try these 25 hilarious Mother's Day dares for your family gathering: {url}",
+    f"From 'All About Mom' trivia to Flower Crown contests, we've got the ultimate guide for Mother's Day 2026: {url}",
+    f"Make Mom the star of the show this year with these creative games and activities: {url}"
 ]
 
 posted = []
