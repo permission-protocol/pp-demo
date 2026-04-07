@@ -34,7 +34,8 @@ One search: "AI agent security" with freshness=ph (past hour) — but only if we
 
 **TEMPORAL VERIFICATION (CRITICAL):**
 Before flagging a signal as Score 5:
-1. Extract the specific publication or tweet timestamp (e.g., `created_at` from X, `created_at_i` from HN).
+1. Check `pp-os/scout/scripts/hotline-ignore.log` for the identifier or headline. If present, SKIP.
+2. Extract the specific publication or tweet timestamp (e.g., `created_at` from X, `created_at_i` from HN).
 2. Compare it to the current time.
 3. If it is OLDER than the window (6h/24h), it is NOT a hotline trigger. It may be a regular Scout signal for the standard pipeline, but NOT for fast-track action.
 4. If the timestamp is missing or ambiguous, do NOT fast-track.

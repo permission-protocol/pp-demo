@@ -17,7 +17,13 @@ To keep things organized and competitive, follow these simple rules:
 - **Quarters:** A high-precision game for 2-player teams.
 - **The Beer Mile (Modified):** Chug a cup, run a lap, repeat 4 times. *Stay safe!*
 
-## 3. Equipment Checklist
+## 3. Team Themes & Opening Ceremonies
+Elevate the event by assigning countries or ridiculous team themes:
+- **Country Representation:** Every team picks a country and dresses in its colors/flag.
+- **The Opening Ceremony:** A parade of teams with a "ceremonial chug" to light the "Olympic Flame" (a decorated cooler).
+- **Custom Team Names:** "The Chug-a-Luggers," "The Hop-Sovereigns," "Pabst Blue Ribbon Winners."
+
+## 4. Equipment Checklist
 Don't let the games stop because you're missing a key item:
 - **Cups:** At least 100 sturdy plastic cups (red and blue).
 - **Ping Pong Balls:** 12-24 high-quality balls.

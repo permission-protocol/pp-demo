@@ -46,6 +46,10 @@ At ~60% context usage (check `session_status`):
 "Mental notes" don't survive restarts. Files do.
 - "Remember this" → update daily note or relevant file
 - Lesson learned → update MEMORY.md or relevant protocol file
+- **Critical Fix Pattern:** If a bug fix took >1 hour to find or was "silent," immediately:
+    1. Update `MEMORY.md` with the "Hard Rule" (Scar Tissue).
+    2. Add/Update a health check script (in `scripts/`).
+    3. Ensure a daily cron monitors this health check.
 - **Text > Brain** 📝
 
 ---

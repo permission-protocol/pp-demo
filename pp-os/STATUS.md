@@ -1,14 +1,14 @@
-# PP Status — Last Updated: 2026-04-06 8:20 AM MDT
+# PP Status — Last Updated: 2026-04-06 11:20 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 4 SPRINT — Distribution Push (Apr 5–11)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
 - **Focus:** Product Hunt brief (idea-094), install tracking (idea-088), first loop user (idea-089).
-- **System Health:** Discord provider drift ongoing. Gateway restart needed — escalate to Rod.
+- **System Health:** Fixed GITHUB_APP_PRIVATE_KEY PKCS#8 bug (onboarding operational again).
 
 ## ACTIVE Tasks (Today's Priority)
-- **idea-094** — Product Hunt launch prep: write pp-os/launch/product-hunt-launch-brief.md (PENDING — not yet written). Hunter outreach next.
-- **idea-088** — Drive 10 external deploy-gate installs. Monitor GitHub App webhook logs.
+- **idea-094** — Product Hunt launch prep: write pp-os/launch/product-hunt-launch-brief.md (READY — PR #314). Hunter outreach next.
+- **idea-088** — Drive 10 external deploy-gate installs. Monitor GitHub App webhook logs. Use smoke-test script to verify.
 - **idea-089** — First complete loop user (non-PP org approved PR + receipt). Monitor PP dashboard.
 
 ## BLOCKED (needs Rod)
@@ -30,6 +30,12 @@
 - Week 4 direction: Product Hunt as primary distribution lever (post-HN)
 - Sprint target doubled: 5 → 10 external installs
 - Sycamore outreach drafted but awaiting Rod approval
+
+## Recently Shipped (Apr 6)
+- **System Prompt Restructure** — 72% reduction in context size. ✅
+- **PKCS#8 Auth Fix** — GitHub App JWT generation fixed for Render. ✅
+- **PR #309, #310, #311, #313** — Race conditions, startup checks, logging, UX. ✅
+- **Onboarding Smoke Test** (`scripts/pp-onboarding-smoke-test.sh`) ✅
 
 ## Recently Shipped (Apr 1–5)
 - PR #288: Onboarding direct file creation fix ✅

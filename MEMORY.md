@@ -29,8 +29,14 @@ Do the work silently. Post one message with the result. Never "let me check..."
 ### Sequential Merge Pattern
 Merge one PR → rebase others → repeat. Avoid conflict cascades.
 
+### Health Check Philosophy
+Silent failures are the most dangerous. Any critical infrastructure (Auth, Webhooks, Onboarding) must have a daily E2E health check script + cron. Fix-and-forget is a myth; fix-and-monitor is the rule.
+
 ### GitHub App Auth
 JWT = app-level calls. Installation Token = repo-level calls. 401/403 on repo call with JWT → you need an Installation Token.
+
+### PKCS#8 for JWT
+`GITHUB_APP_PRIVATE_KEY` in Node/Render `crypto.subtle` requires PKCS#8 format (`BEGIN PRIVATE KEY`). PKCS#1 (`BEGIN RSA PRIVATE KEY`) causes silent JWT generation failures in many ASN.1 wrappers.
 
 ### Webhook Integration
 Always check `middleware.ts` PUBLIC_PATHS first. Add both `/path` and `/path/` to avoid trailing slash 401s.
@@ -67,6 +73,7 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **Create Factory** (Mar 13): Autonomous pipeline — ideate → organize → spec → build → qa. Discord: #factory-control/pipeline/wip/done. Reconciliation via `factory/scripts/reconcile.sh`.
 - **iPhone Mobile QA** (Mar 13): Safari WebDriver via USB cable.
 - **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement, YAML-based rules. Published as `@permission-protocol/mcp-guard`.
+- **Onboarding Smoke Test** (Apr 6): `scripts/pp-onboarding-smoke-test.sh` — E2E verification for GitHub App installation and PR status check feedback loop.
 
 ---
 
@@ -88,6 +95,6 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - Mar 31: Fixed $2,600/mo prompt caching bug
 - Apr 1: Pricing architecture finalized
 - Apr 4: Onboarding overhaul shipped (PR #288, #300)
-- Apr 6: System prompt restructured (AGENTS split into core + ref)
+- Apr 6: System prompt restructured (72% reduction in always-injected context)
 
-*Updated: 2026-04-06*
+*Updated: 2026-04-06 11:15 PM*
