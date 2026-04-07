@@ -1,23 +1,29 @@
-# PP Status — Last Updated: 2026-04-06 11:20 PM MDT
+# PP Status — Last Updated: 2026-04-07 8:20 AM MDT
 
 ## Active Right Now
-- **Mode:** Week 4 SPRINT — Distribution Push (Apr 5–11)
+- **Mode:** Week 5 Sprint — Distribution Push (Apr 5–11)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
-- **Focus:** Product Hunt brief (idea-094), install tracking (idea-088), first loop user (idea-089).
-- **System Health:** Fixed GITHUB_APP_PRIVATE_KEY PKCS#8 bug (onboarding operational again).
+- **Day 46 outreach drought:** The only thing that matters is unblocking outreach.
+- **Onboarding status:** OPERATIONAL (PKCS#8 fix verified Apr 6).
 
-## ACTIVE Tasks (Today's Priority)
-- **idea-094** — Product Hunt launch prep: write pp-os/launch/product-hunt-launch-brief.md (READY — PR #314). Hunter outreach next.
-- **idea-088** — Drive 10 external deploy-gate installs. Monitor GitHub App webhook logs. Use smoke-test script to verify.
-- **idea-089** — First complete loop user (non-PP org approved PR + receipt). Monitor PP dashboard.
+## P0 — Requires Action Today
+
+### 🔴 ROD ACTION REQUIRED
+- **idea-092** — Sycamore/Sri Viswanath LinkedIn pitch is drafted and waiting approval. Day 46 at zero outreach. Approve or deny.
+- **idea-085** — Re-auth GA4/Search Console tokens (expired).
+
+### Charles (READY to execute)
+- **idea-094** — Merge PR #314. Begin Product Hunt hunter identification (idea-095).
+- **idea-097** — Shortlist 5 warm leads from 123-person list. Draft messages. Queue for Rod batch-approval.
+- **idea-096** — Email dang@ycombinator.com re: HN account unban.
 
 ## BLOCKED (needs Rod)
-- **idea-085** — PostHog approval count + Stripe Team conversions (key metrics still missing)
-- **idea-082** — X API write permissions (needs X Dev account tier upgrade)
-- **idea-086** — Paperclip port 3100 (needs SSH into pp-scout-sfo2)
-- **idea-092** — Sycamore/Sri Viswanath LinkedIn pitch (needs Rod approval before send)
+- **idea-092** — Sycamore outreach (approval pending — Day 46)
+- **idea-085** — PostHog/Stripe conversion audit (GA4 token expired)
+- **idea-082** — X API write permissions (tier upgrade)
+- **idea-086** — Paperclip port 3100 on pp-scout-sfo2 (SSH needed)
 
-## Backlog (ready when sprint clears)
+## Backlog
 - **idea-030** — AI-generated code summary on approval screen (M)
 - **idea-002** — Blast radius indicator on approval page (M)
 - **idea-042** — Actionable error UX: every error has a fix path (M)
@@ -27,22 +33,12 @@
 - **idea-081** — PullMatch viral risk profile card (M)
 
 ## Recent Decisions
-- Week 4 direction: Product Hunt as primary distribution lever (post-HN)
-- Sprint target doubled: 5 → 10 external installs
-- Sycamore outreach drafted but awaiting Rod approval
+- (Apr 7) ideas.jsonl created with proper state machine schema. 17 ideas tracked.
+- (Apr 6) System prompt restructured (72% reduction). PKCS#8 auth fix deployed.
+- (Apr 4) Sprint 3 closed. Onboarding overhaul (PR #288, #300) shipped.
 
-## Recently Shipped (Apr 6)
-- **System Prompt Restructure** — 72% reduction in context size. ✅
-- **PKCS#8 Auth Fix** — GitHub App JWT generation fixed for Render. ✅
-- **PR #309, #310, #311, #313** — Race conditions, startup checks, logging, UX. ✅
-- **Onboarding Smoke Test** (`scripts/pp-onboarding-smoke-test.sh`) ✅
-
-## Recently Shipped (Apr 1–5)
-- PR #288: Onboarding direct file creation fix ✅
-- PR #300: Chromeless Authority route (/approve/:id) ✅
-- Sprint retro + Week 5 planning (idea-093) ✅
-- Week 4 Decision Brief → Product Hunt direction ✅
-- Week 1 Changelog ✅
-- Mobile UX revamp, Demo Context polish, Static demo receipt ✅
-- Pricing, sitemap, SEO, comparison pages ✅
-- Easter Sunday Xdares X promo ✅
+## Recently Shipped
+- PR #314: Launch alerts (READY to merge) ✅
+- PR #309–#313: Race conditions, startup checks, logging, UX ✅
+- Onboarding smoke test script ✅
+- PKCS#8 GitHub App auth fix ✅

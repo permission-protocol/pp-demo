@@ -1,21 +1,28 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-06. Overwrite this file, don't append.*
+*Updated: 2026-04-07 8:20 AM MDT. Overwrite this file, don't append.*
 
 ## Pushing Now
-- **Week 5 Execution:** Distribution push + Product Hunt launch prep
-- **System prompt restructure:** Finalizing review with Rod
+- **Week 5 Sprint:** Distribution push + Product Hunt launch prep (Apr 5–11)
+- **Day 46 outreach drought:** Zero messages sent. Sycamore pitch waiting on Rod. 123 leads compiled but untouched.
+- **Sprint goal:** 10 external installs. Currently 0.
+
+## Rod Actions Required (Unblock These)
+1. **Approve or deny Sycamore/Sri Viswanath outreach** (idea-092) — Day 46 zero outreach. Top priority.
+2. **Re-auth GA4/Search Console tokens** — needed for conversion audit (idea-085).
+
+## Charles Queue (Ready)
+1. Merge PR #314 (launch alerts), then start PH hunter outreach (idea-094 + idea-095)
+2. Shortlist 5 warm leads from 123-person list, draft messages for Rod batch-approval (idea-097)
+3. Email dang@ycombinator.com re: HN account unban (idea-096)
 
 ## Blocked
-- **Xdares Metrics:** GA4/Search Console tokens expired (manual re-auth required by Rod)
-- **X API:** Both PP and Xdares need Rod to upgrade X Dev account tier
-- **Week 4 Decision (OVERDUE):** Pending conversion data audit (idea-085 → idea-087)
+- X API write access (both accounts — needs Dev tier upgrade)
+- Paperclip port 3100 on pp-scout-sfo2 (needs SSH)
 
-## Recent Decisions
-- (Apr 6) Restructured system prompt: AGENTS.md → core behavior only; coding/ops/tools → `ref/` on-demand files
-- (Apr 4) Sprint 3 closed. Onboarding overhaul (PR #288) + chromeless Authority Route (PR #300) shipped.
-- (Apr 3) Real activation = Blocked Action → Signer Decision → Receipt. Hello World auto-PR is the path.
+## Key Files Added Today
+- `pp-os/ideas.jsonl` — state machine idea tracker (17 ideas, proper schema)
 
 ## Optimize For
-- Distribution over engineering. The onboarding loop works — now it needs users.
-- Product Hunt launch prep is the forcing function this week.
+- Outreach > everything. Onboarding is fixed. The primitive works. We have 123 leads. Ship a message today.
+- Distribution over engineering. Product Hunt is the forcing function.
