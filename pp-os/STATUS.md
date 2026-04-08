@@ -9,8 +9,10 @@
 ## P0 — Requires Action Today
 
 ### 🔴 ROD ACTION REQUIRED
-- **idea-092** — Sycamore/Sri Viswanath LinkedIn pitch is drafted and waiting approval. Day 46 at zero outreach. Approve or deny.
-- **Trent AI Outreach** — Fresh hotline lead from Apr 7 funding news ($13M seed). Approve or deny Eno Thereska LinkedIn pitch.
+- **DISCORD PROVIDER HUNG** — `openclaw gateway restart` required to restore connectivity.
+- **OUTREACH DROUGHT (Day 46)** — Stale drafts pending >24h:
+    - `idea-092` (Sycamore/Sri Viswanath)
+    - `Trent AI Outreach` (Eno Thereska)
 - **idea-085** — Re-auth GA4/Search Console tokens (expired).
 
 ### Charles (READY to execute)

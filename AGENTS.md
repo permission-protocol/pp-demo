@@ -42,6 +42,9 @@ At ~60% context usage (check `session_status`):
 3. Preserve IDs, tokens, credentials explicitly
 4. After compaction: read buffer first, never ask "what were we doing?"
 
+### GitHub Hygiene (Mandatory)
+When listing GitHub issues (e.g., via `gh issue list` or `github-sensor.sh`), you MUST ensure they are labeled correctly. If an issue is actionable, add the labels `factory` and `ready`. If it's a bug, add `bug`. If it's high priority, add `p0` or `p1`. Do not wait for Rod to label them; sanitize as you go.
+
 ### Write It Down
 "Mental notes" don't survive restarts. Files do.
 - "Remember this" → update daily note or relevant file
@@ -111,6 +114,11 @@ Never post "let me check..." messages. Do the work silently, post ONE message wi
 
 ## Heartbeats
 When you receive a heartbeat poll, read `ref/HEARTBEAT.md` and follow it. Use heartbeats productively — batch checks, do background maintenance, be proactive.
+
+**Mandatory Heartbeat Checks:**
+1. Run `scripts/connectivity-heartbeat.sh` and `scripts/outreach-nudge.sh`.
+2. If `pp-os/scout/DISCORD_HUNG` exists, prioritize requesting a gateway restart.
+3. If `pp-os/scout/outreach/STALE_OUTREACH` exists, flag it prominently in your next response.
 
 ### Heartbeat vs Cron
 - **Heartbeat:** batch checks, needs conversational context, timing can drift
