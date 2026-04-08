@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-04-08T04:08:48.893657",
+  "posted": [],
+  "errors": [
+    {
+      "index": 1,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    },
+    {
+      "index": 2,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    },
+    {
+      "index": 3,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    }
+  ],
+  "total_posted": 0
+}
