@@ -5,11 +5,13 @@
 ## Pushing Now
 - **Week 5 Sprint:** Distribution push + Product Hunt launch prep (Apr 5–11)
 - **Day 46 outreach drought:** Zero messages sent. Sycamore pitch waiting on Rod. 123 leads compiled but untouched.
+- **New hotline lead:** Trent AI founder outreach is drafted off today's $13M seed announcement and waiting on Rod approval.
 - **Sprint goal:** 10 external installs. Currently 0.
 
 ## Rod Actions Required (Unblock These)
 1. **Approve or deny Sycamore/Sri Viswanath outreach** (idea-092) — Day 46 zero outreach. Top priority.
-2. **Re-auth GA4/Search Console tokens** — needed for conversion audit (idea-085).
+2. **Approve or deny Trent AI / Eno Thereska LinkedIn outreach** — fresh hotline lead from Apr 7 funding news.
+3. **Re-auth GA4/Search Console tokens** — needed for conversion audit (idea-085).
 
 ## Charles Queue (Ready)
 1. Merge PR #314 (launch alerts), then start PH hunter outreach (idea-094 + idea-095)

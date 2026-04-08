@@ -1,0 +1,61 @@
+{
+  "company": "Trent AI",
+  "slug": "trent-ai",
+  "url": "https://trent.ai",
+  "description": "Agentic AI security platform that continuously scans, judges, mitigates, and evaluates risk across AI agents and autonomous software workflows.",
+  "agents": [
+    "Positions itself as security for AI agents and autonomous workflows",
+    "Covers prompt injection, tool misuse, unintended autonomous actions, data exfiltration, and privilege escalation",
+    "Already publishes a security solution for OpenClaw agents"
+  ],
+  "funding": {
+    "stage": "Seed",
+    "total": "$13M",
+    "announced_at": "2026-04-07T16:34:00Z",
+    "lead_investor": "LocalGlobe and Cambridge Innovation Capital",
+    "other_investors": [
+      "Joaquin Quinonero Candela",
+      "Avinash Bhat",
+      "Ippokratis Pandis",
+      "Tony Jebara"
+    ]
+  },
+  "contacts": [
+    {
+      "name": "Eno Thereska",
+      "title": "Co-founder and CEO",
+      "email": "unknown",
+      "linkedin": "Founder LinkedIn linked from https://trent.ai/about-us/ and https://trent.ai/",
+      "notes": "Best reachable channel visible on the public site is LinkedIn or Trent's request-demo/contact flow."
+    }
+  ],
+  "pp_fit": {
+    "feature": "Trent solves assessment and remediation for agentic risk. PP solves action-time authorization and cryptographic receipts before an agent executes the risky step. The stack is complementary, not redundant.",
+    "actions_needing_receipts": [
+      "agent remediation steps opened through PRs",
+      "configuration changes proposed by security agents",
+      "high-impact mitigations that touch prod systems or secrets"
+    ],
+    "integration_complexity": "medium",
+    "urgency": "high - fresh funding, fresh launch, and direct overlap in agent security timing",
+    "strategic_angle": "Use Trent's own language: continuous scanning is necessary, but enterprises still need an explicit signer and immutable receipt for the final action. Trent already speaks to OpenClaw builders, so PP can plug into an active wedge they understand."
+  },
+  "lead_type": "ally",
+  "score": 5,
+  "score_breakdown": {
+    "consequence": 5,
+    "funding": 5,
+    "tech_fit": 5,
+    "regulatory": 3,
+    "timing": 5,
+    "notes": "Directly in the agent-security lane, fresh funding inside the hotline window, and clearly complementary to PP's enforcement thesis."
+  },
+  "source_signal": "signals/2026-04-07.jsonl",
+  "created": "2026-04-07",
+  "status": "outreach_drafted",
+  "outreach_drafted_at": "2026-04-07T23:00:12Z",
+  "channels_drafted": [
+    "linkedin"
+  ],
+  "pending_approval": "rod"
+}

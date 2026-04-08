@@ -31,9 +31,13 @@ def publish_post(title, content_path, auth_base64):
     return result.stdout
 
 if __name__ == "__main__":
-    # Inlined base64 to avoid interactive exec issues
+    import sys
+    if len(sys.argv) < 3:
+        print("Usage: python publish_tor.py <title> <content_path>")
+        sys.exit(1)
+        
     auth = "Y2dvbGRiZXI4MkBnbWFpbC5jb206eVlEMiB0Y2Q1IGxaWEogb3h0YSBhSFdWIFVHbDM="
-    title = "Backyard Beer Olympics 2026: Rules, Scoresheets & Winning Strategy"
-    path = "/Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/drafts/backyard-beer-olympics-2026.md"
+    title = sys.argv[1]
+    path = sys.argv[2]
     
     print(publish_post(title, path, auth))
