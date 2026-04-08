@@ -1,0 +1,61 @@
+## main...origin/main
+ M AGENTS.md
+ M MEMORY.md
+ m Xdares
+ M company-os/governance/drift-log.jsonl
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M goals/xdares-seo-growth/STATUS.md
+ M goals/xdares-seo-growth/state.json
+ M logs/crons/daily-briefing.log
+ M logs/crons/execute-ready.log
+ M logs/crons/unified-hotline.log
+ m mcp-guard
+ M memory/heartbeat-state.json
+ M ops/threads.yaml
+ M ops/threads_manager.py
+ M permission-protocol-repo
+ M permissionprotocol-site
+ M pp-os/IMPROVEMENTS-PENDING.md
+ M pp-os/STATUS.md
+ M pp-os/master-plan.md
+ M pp-os/scout/state.json
+ M reports/cron-runs/daily-briefing/latest.json
+ M reports/cron-runs/daily-briefing/latest.md
+ M reports/cron-runs/execute-ready/latest.json
+ M reports/cron-runs/execute-ready/latest.md
+ M scripts/crons/weekly-scorecard.sh
+?? .learnings/2026-03-29.md
+?? company-os/governance/snapshots/gov_scan_20260329_1300.json
+?? company-os/governance/snapshots/gov_scan_20260330_1300.json
+?? deploy-gate/
+?? goals/xdares-seo-growth/drafts/fathers-day-party-games-2026.md
+?? goals/xdares-seo-growth/drafts/fourth-of-july-party-games-2026.md
+?? goals/xdares-seo-growth/drafts/graduation-party-games-2026.md
+?? goals/xdares-seo-growth/drafts/summer-bbq-drinking-games-2026.md
+?? goals/xdares-seo-growth/drafts/summer-pool-party-games-2026.md
+?? logs/crons/codex-issue-264.log
+?? logs/crons/weekly-scorecard.log
+?? memory/2026-03-27.md
+?? memory/2026-03-28.md
+?? memory/2026-03-30.md
+?? pp-demo/
+?? pp-os/SEE-TRY-PAY-PRD.md
+?? pp-os/SEE-TRY-PAY.md
+?? pp-os/demo-mode-spec.md
+?? pp-os/marketing/signals/2026-03-29.jsonl
+?? pp-os/marketing/signals/2026-03-30.jsonl
+?? pp-os/outreach/signals/2026-03-30.json
+?? reports/cron-runs/daily-briefing/20260329T143019Z/
+?? reports/cron-runs/daily-briefing/20260330T143020Z/
+?? reports/cron-runs/daily-briefing/20260330T143109Z/
+?? reports/cron-runs/execute-ready/20260329T150518Z/
+?? reports/cron-runs/execute-ready/20260329T170618Z/
+?? reports/cron-runs/execute-ready/20260329T190518Z/
+?? reports/cron-runs/execute-ready/20260329T210518Z/
+?? reports/cron-runs/execute-ready/20260329T230518Z/
+?? reports/cron-runs/execute-ready/20260330T150546Z/
+?? reports/cron-runs/execute-ready/20260330T170518Z/
+?? reports/cron-runs/unified-hotline/20260330T150048Z/
+?? reports/cron-runs/weekly-scorecard/

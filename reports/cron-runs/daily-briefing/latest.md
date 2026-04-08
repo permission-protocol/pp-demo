@@ -1,13 +1,13 @@
 Daily briefing:
 
-System health is stable but not clean. Heartbeat is `watch`, with no active alerts or cron errors; the only warning is that `opus-4-6` could not be confirmed. Thread state validated cleanly at 32/32. Workspace is active and dirty, with the current branch `feature/orchestration-state-machine` ahead by 8 commits and multiple in-flight changes across PP, factory, memory, and Xdares.
+System health is watch, not broken. Thread state validated cleanly at 46/46, disk is fine at 12%, and one gateway process is up. The operational risk is cron reliability: 6 cron errors are active, with the highest-signal failures in `Token Health Check`, `unified-hotline` timeout, `memory-consolidation`, `nightly-self-improvement`, `hn-recovery-article-finder` channel config, and `pp-os-weekly-review` timeout.
 
-Active focus remains Permission Protocol post-launch conversion. PP has exited HN launch mode and is now focused on reducing install friction, analyzing launch feedback, and converting early adopters, with the near-term target of 100+ demo PR approvals and 5 Team-plan conversions. Secondary active tracks are MCP Guard v0.2 planning and PullMatch growth work, but the sprint filter still points to deploy-gate adoption as the main wedge.
+Active focus remains Permission Protocol distribution. Onboarding is operational after the PKCS#8 fix, PR #314 is ready to merge, and the sprint goal is now 10 active external installs plus Product Hunt launch. The main business constraint is unchanged: outreach is still blocked, with Day 46 at zero outreach and Rod-dependent approvals on `idea-092` plus expired GA4/Search Console auth on `idea-085`.
 
 Immediate actions:
-- Confirm actual model health for `opus-4-6` so the warning does not mask a real degradation.
-- Triage post-launch PP friction points first, especially install bugs and review-flow blockers.
-- Review the 8 unpushed commits and decide whether they should be pushed, split, or cleaned up before more work accumulates.
-- Ignore Xdares/content churn unless it directly supports deploy-gate adoption.
+- Approve or deny `idea-092` so Sycamore outreach can move today.
+- Re-auth GA4/Search Console so conversion audit work can resume.
+- Merge PR #314 and let Charles start Product Hunt hunter identification and warm lead drafting.
+- Triage the 6 failing crons, starting with token health and timeout-heavy jobs.
 
-Highest-leverage next step: audit the PP install-to-approval flow end to end today and fix the single biggest friction point blocking external users from completing their first approved demo PR.
+Highest-leverage next step: approve `idea-092` immediately to restart outbound motion.

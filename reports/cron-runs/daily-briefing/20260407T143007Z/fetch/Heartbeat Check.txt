@@ -1,0 +1,16 @@
+{
+  "status": "watch",
+  "alerts": [],
+  "warnings": [
+    "cron:Token Health Check - 1 error(s): ",
+    "cron:unified-hotline - 1 error(s): cron: job execution timed out",
+    "cron:memory-consolidation - 2 error(s): ?? ?? Message failed",
+    "cron:nightly-self-improvement - 2 error(s): ?? ? Edit failed",
+    "cron:hn-recovery-article-finder - 1 error(s): Channel is required when multiple channels are configured: telegram, discord Set delivery.channel ex",
+    "cron:pp-os-weekly-review - 1 error(s): cron: job execution timed out"
+  ],
+  "cron_errors": 6,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

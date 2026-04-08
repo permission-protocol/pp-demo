@@ -1,0 +1,163 @@
+[
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "jawiggins"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "ai",
+          "coding",
+          "agent",
+          "deploy"
+        ],
+        "value": "I think like many of you, I've been jumping between many claude code/codex sessions at a time, managing multiple lines of work and worktrees in multiple repos. I wanted a way to easily manage multiple lines of work and reduce the amount of input I need to give, allowing the <em>agents</em> to remove me as a bottleneck from as much of the process as I can. So I built an orchestration tool for <em>AI</em> <em>coding</em> <em>agents</em>:<p>Optio is an open-source orchestration system that turns tickets into merged pull requests using <em>AI</em> <em>coding</em> <em>agents</em>. You point it at your repos, and it handles the full lifecycle:<p>- Intake — pull tasks from GitHub Issues, Linear, or create them manually<p>- Execution — spin up isolated K8s pods per repo, run Claude Code or Codex in git worktrees<p>- PR monitoring — watch CI checks, review status, and merge readiness every 30s<p>- Self-healing — auto-resume the <em>agent</em> on CI failures, merge conflicts, or reviewer change requests<p>- Completion — squash-merge the PR and close the linked issue<p>The key idea is the feedback loop. Optio doesn't just run an <em>agent</em> and walk away — when CI breaks, it feeds the failure back to the <em>agent</em>. When a reviewer requests changes, the comments become the <em>agent</em>'s next prompt. It keeps going until the PR merges or you tell it to stop.<p>Built with Fastify, Next.js, BullMQ, and Drizzle on Postgres. Ships with a Helm chart for production <em>deploy</em>ment."
+      },
+      "title": {
+        "fullyHighlighted": false,
+        "matchLevel": "partial",
+        "matchedWords": [
+          "ai",
+          "coding",
+          "agent"
+        ],
+        "value": "Show HN: Optio – Orchestrate <em>AI</em> <em>coding</em> <em>agents</em> in K8s to go from ticket to PR"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/jonwiggins/optio"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_jawiggins",
+      "story_47520220",
+      "show_hn"
+    ],
+    "author": "jawiggins",
+    "children": [
+      47524587,
+      47524594,
+      47524726,
+      47525020,
+      47525213,
+      47525242,
+      47525453,
+      47525855,
+      47526092,
+      47527007,
+      47527060,
+      47527135,
+      47528314,
+      47528440,
+      47529597,
+      47529759,
+      47530037,
+      47530136,
+      47530263,
+      47530431,
+      47531010,
+      47532271,
+      47557361,
+      47560717,
+      47598854,
+      47622871
+    ],
+    "created_at": "2026-03-25T17:10:21Z",
+    "created_at_i": 1774458621,
+    "num_comments": 61,
+    "objectID": "47520220",
+    "points": 87,
+    "story_id": 47520220,
+    "story_text": "I think like many of you, I&#x27;ve been jumping between many claude code&#x2F;codex sessions at a time, managing multiple lines of work and worktrees in multiple repos. I wanted a way to easily manage multiple lines of work and reduce the amount of input I need to give, allowing the agents to remove me as a bottleneck from as much of the process as I can. So I built an orchestration tool for AI coding agents:<p>Optio is an open-source orchestration system that turns tickets into merged pull requests using AI coding agents. You point it at your repos, and it handles the full lifecycle:<p>- Intake — pull tasks from GitHub Issues, Linear, or create them manually<p>- Execution — spin up isolated K8s pods per repo, run Claude Code or Codex in git worktrees<p>- PR monitoring — watch CI checks, review status, and merge readiness every 30s<p>- Self-healing — auto-resume the agent on CI failures, merge conflicts, or reviewer change requests<p>- Completion — squash-merge the PR and close the linked issue<p>The key idea is the feedback loop. Optio doesn&#x27;t just run an agent and walk away — when CI breaks, it feeds the failure back to the agent. When a reviewer requests changes, the comments become the agent&#x27;s next prompt. It keeps going until the PR merges or you tell it to stop.<p>Built with Fastify, Next.js, BullMQ, and Drizzle on Postgres. Ships with a Helm chart for production deployment.",
+    "title": "Show HN: Optio – Orchestrate AI coding agents in K8s to go from ticket to PR",
+    "updated_at": "2026-04-06T16:34:50Z",
+    "url": "https://github.com/jonwiggins/optio"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "jellyotsiro"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "ai",
+          "coding",
+          "agent",
+          "deploy"
+        ],
+        "value": "Hi HN, I am Arlan and I am building Nia (<a href=\"https://trynia.ai\" rel=\"nofollow\">https://trynia.<em>ai</em></a>), a context layer for <em>AI</em> <em>coding</em> <em>agents</em>. Nia lets tools like Cursor, Claude Code, and other MCP clients index and query real codebases and documentation so they stop hallucinating against outdated or wrong sources, with applications beyond <em>coding</em> <em>agents</em> to any <em>AI</em> system that requires grounded context across domains.<p><em>Coding</em> <em>agents</em> are only as good as the context you give them. General models are trained on public code and documentation that is often old, and they usually have no idea what is inside your actual repo, internal wiki, or the exact version of a third party SDK you use. The result is very familiar: you paste URLs and code snippets into the prompt, the <em>agent</em> confidently uses an outdated API or the wrong framework version, and you spend more time verifying and correcting it than if you had written the code yourself. Once models are good enough at generating code, feeding them precise, up-to-date context becomes the bottleneck.<p>I ran into this pattern first on my own projects when (a few months ago) I was still in high school in Kazakhstan, obsessed with codegen tools and trying every <em>coding</em> <em>agent</em> I could find. I saw it again when I got into YC and talked to other teams who were also trying to use <em>agents</em> on real work.<p>The first version of Nia was basically “my personal MCP server that knows my repos and favorite doc sites so I do not have to paste URLs into Cursor anymore.” Once I saw how much smoother my own workflow became, it felt obvious that this should be a product other people could use too.<p>Under the hood, Nia is an indexing and retrieval service with an MCP interface and an API. You point it at sources like GitHub repositories, framework or provider docs, SDK pages, PDF manuals, etc. We fetch and parse those with some simple heuristics for code structures, headings, and tables, then normalize them into chunks and build several indexes: a semantic index with embeddings for natural language queries; a symbol and usage index for functions, classes, types, and endpoints; a basic reference graph between files, symbols, and external docs; regex and file tree search for cases where you want deterministic matches over raw text.<p>When an <em>agent</em> calls Nia, it sends a natural language query plus optional hints like the current file path, stack trace, or repository. Nia runs a mix of BM25 style search, embedding similarity, and graph walks to rank relevant snippets, and can also return precise locations like “this function definition in this file and the three places it is used” instead of just a fuzzy paragraph. The calling <em>agent</em> then decides how to use those snippets in its own prompt.\nOne Nia <em>deploy</em>ment can serve multiple <em>agents</em> and multiple projects at once. For example, you can have Cursor, Claude Code, and a browser based <em>agent</em> all pointed at the same Nia instance that knows about your monorepo, your internal wiki, and the provider docs you care about. We keep an <em>agent</em> agnostic session record that tracks which sources were used and which snippets the user accepted. Any MCP client can attach to that session id, fetch the current context, and extend it, so switching tools does not mean losing what has already been discovered.<p>A lot of work goes into keeping indexes fresh without reprocessing everything. Background workers periodically refetch configured sources, detect which files or pages changed, and reindex those incrementally. This matters because many of the worst “hallucinations” I have seen are actually the model quoting valid documentation for the wrong version. Fixing that is more about version and change tracking than about model quality.<p>We ship Nia with a growing set of pre-indexed public sources. Today this includes around 6k packages from common frameworks and provider docs, plus package search over thousands of libraries from ecosystems like PyPI, npm, and RubyGems, as well as pre indexed /explore page where everyone can contribute their sources! The idea is that a new user can install Nia, connect nothing, and still get useful answers for common libraries. Then, as soon as you add your own repos and internal docs, those private sources are merged into the same index.\nSome examples of how people use Nia so far: - migrating from one payments provider or API version to another by indexing the provider docs plus example repos and letting the <em>agent</em> propose and iterate on patches; - answering “how do I do X in this framework” by indexing the framework source directly instead of relying only on official docs that might be stale; - turning an unfamiliar public codebase into a temporary wiki to self onboard, where you can ask structural questions and jump to specific files, functions, or commits; - building a browser <em>agent</em> that answers questions using up to date code and docs even when the public documentation lags behind.<p>Nia is a paid product (<a href=\"https://www.trynia.ai/\" rel=\"nofollow\">https://www.trynia.<em>ai</em>/</a>) but we have a free tier that should be enough for individuals to try it on real projects. Above that there is a self-serve paid plan for heavier individual use, and organization plans with higher limits, SOC 2, seat based billing, and options for teams that want to keep indexing inside their own environment. For private GitHub repos we can clone and index locally so code does not leave your infrastructure.<p>We store account details and basic telemetry like query counts and errors to operate the service, and we store processed representations of content you explicitly connect (chunks, metadata, embeddings, and small graphs) so we can answer queries. We do not train foundation models on customer content and we do not sell user data.\nMoreover, I can see Nia play out in the larger context of the <em>agents</em> space due to the global problem of providing reliable context to those systems. Early signals show that people are already using Nia for healthcare data, cloning Paul Graham by indexing all of his essays and turning him into an <em>AI</em> <em>agent</em>, using Naval’s archive to build a personalized <em>agent</em>, and more.<p>I would love to get Nia into the hands of more engineers who are already pushing <em>coding</em> <em>agents</em> hard and see where it breaks. I am especially interested in hearing about failure modes, annoying onboarding steps, places where the retrieval logic is obviously wrong or incomplete, or any security concerns I should address. I will be in the thread to answer questions, share more technical details, and collect any brutal feedback you are willing to give!"
+      },
+      "title": {
+        "fullyHighlighted": false,
+        "matchLevel": "partial",
+        "matchedWords": [
+          "coding",
+          "agent"
+        ],
+        "value": "Launch HN: Nia (YC S25) – Give better context to <em>coding</em> <em>agents</em>"
+      },
+      "url": {
+        "fullyHighlighted": false,
+        "matchLevel": "partial",
+        "matchedWords": [
+          "ai"
+        ],
+        "value": "https://www.trynia.<em>ai</em>/"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_jellyotsiro",
+      "story_46194828",
+      "launch_hn"
+    ],
+    "author": "jellyotsiro",
+    "children": [
+      46195184,
+      46195263,
+      46195303,
+      46195319,
+      46195493,
+      46195560,
+      46195884,
+      46196036,
+      46196226,
+      46196404,
+      46196408,
+      46196691,
+      46197128,
+      46197285,
+      46198224,
+      46198777,
+      46200558,
+      46203166,
+      46203258,
+      46203308,
+      46204257,
+      46204838,
+      46209274,
+      46209344,
+      46218017
+    ],
+    "created_at": "2025-12-08T17:10:14Z",
+    "created_at_i": 1765213814,
+    "num_comments": 87,
+    "objectID": "46194828",
+    "points": 131,
+    "story_id": 46194828,
+    "story_text": "Hi HN, I am Arlan and I am building Nia (<a href=\"https:&#x2F;&#x2F;trynia.ai\" rel=\"nofollow\">https:&#x2F;&#x2F;trynia.ai</a>), a context layer for AI coding agents. Nia lets tools like Cursor, Claude Code, and other MCP clients index and query real codebases and documentation so they stop hallucinating against outdated or wrong sources, with applications beyond coding agents to any AI system that requires grounded context across domains.<p>Coding agents are only as good as the context you give them. General models are trained on public code and documentation that is often old, and they usually have no idea what is inside your actual repo, internal wiki, or the exact version of a third party SDK you use. The result is very familiar: you paste URLs and code snippets into the prompt, the agent confidently uses an outdated API or the wrong framework version, and you spend more time verifying and correcting it than if you had written the code yourself. Once models are good enough at generating code, feeding them precise, up-to-date context becomes the bottleneck.<p>I ran into this pattern first on my own projects when (a few months ago) I was still in high school in Kazakhstan, obsessed with codegen tools and trying every coding agent I could find. I saw it again when I got into YC and talked to other teams who were also trying to use agents on real work.<p>The first version of Nia was basically “my personal MCP server that knows my repos and favorite doc sites so I do not have to paste URLs into Cursor anymore.” Once I saw how much smoother my own workflow became, it felt obvious that this should be a product other people could use too.<p>Under the hood, Nia is an indexing and retrieval service with an MCP interface and an API. You point it at sources like GitHub repositories, framework or provider docs, SDK pages, PDF manuals, etc. We fetch and parse those with some simple heuristics for code structures, headings, and tables, then normalize them into chunks and build several indexes: a semantic index with embeddings for natural language queries; a symbol and usage index for functions, classes, types, and endpoints; a basic reference graph between files, symbols, and external docs; regex and file tree search for cases where you want deterministic matches over raw text.<p>When an agent calls Nia, it sends a natural language query plus optional hints like the current file path, stack trace, or repository. Nia runs a mix of BM25 style search, embedding similarity, and graph walks to rank relevant snippets, and can also return precise locations like “this function definition in this file and the three places it is used” instead of just a fuzzy paragraph. The calling agent then decides how to use those snippets in its own prompt.\nOne Nia deployment can serve multiple agents and multiple projects at once. For example, you can have Cursor, Claude Code, and a browser based agent all pointed at the same Nia instance that knows about your monorepo, your internal wiki, and the provider docs you care about. We keep an agent agnostic session record that tracks which sources were used and which snippets the user accepted. Any MCP client can attach to that session id, fetch the current context, and extend it, so switching tools does not mean losing what has already been discovered.<p>A lot of work goes into keeping indexes fresh without reprocessing everything. Background workers periodically refetch configured sources, detect which files or pages changed, and reindex those incrementally. This matters because many of the worst “hallucinations” I have seen are actually the model quoting valid documentation for the wrong version. Fixing that is more about version and change tracking than about model quality.<p>We ship Nia with a growing set of pre-indexed public sources. Today this includes around 6k packages from common frameworks and provider docs, plus package search over thousands of libraries from ecosystems like PyPI, npm, and RubyGems, as well as pre indexed &#x2F;explore page where everyone can contribute their sources! The idea is that a new user can install Nia, connect nothing, and still get useful answers for common libraries. Then, as soon as you add your own repos and internal docs, those private sources are merged into the same index.\nSome examples of how people use Nia so far: - migrating from one payments provider or API version to another by indexing the provider docs plus example repos and letting the agent propose and iterate on patches; - answering “how do I do X in this framework” by indexing the framework source directly instead of relying only on official docs that might be stale; - turning an unfamiliar public codebase into a temporary wiki to self onboard, where you can ask structural questions and jump to specific files, functions, or commits; - building a browser agent that answers questions using up to date code and docs even when the public documentation lags behind.<p>Nia is a paid product (<a href=\"https:&#x2F;&#x2F;www.trynia.ai&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.trynia.ai&#x2F;</a>) but we have a free tier that should be enough for individuals to try it on real projects. Above that there is a self-serve paid plan for heavier individual use, and organization plans with higher limits, SOC 2, seat based billing, and options for teams that want to keep indexing inside their own environment. For private GitHub repos we can clone and index locally so code does not leave your infrastructure.<p>We store account details and basic telemetry like query counts and errors to operate the service, and we store processed representations of content you explicitly connect (chunks, metadata, embeddings, and small graphs) so we can answer queries. We do not train foundation models on customer content and we do not sell user data.\nMoreover, I can see Nia play out in the larger context of the agents space due to the global problem of providing reliable context to those systems. Early signals show that people are already using Nia for healthcare data, cloning Paul Graham by indexing all of his essays and turning him into an AI agent, using Naval’s archive to build a personalized agent, and more.<p>I would love to get Nia into the hands of more engineers who are already pushing coding agents hard and see where it breaks. I am especially interested in hearing about failure modes, annoying onboarding steps, places where the retrieval logic is obviously wrong or incomplete, or any security concerns I should address. I will be in the thread to answer questions, share more technical details, and collect any brutal feedback you are willing to give!",
+    "title": "Launch HN: Nia (YC S25) – Give better context to coding agents",
+    "updated_at": "2026-03-31T22:34:57Z",
+    "url": "https://www.trynia.ai/"
+  }
+]

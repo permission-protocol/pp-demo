@@ -1,0 +1,16 @@
+{
+  "status": "attention",
+  "alerts": [
+    "cron:mobile-qa-daily - 6 consecutive errors: ?? ?? Message failed"
+  ],
+  "warnings": [
+    "cron:cron-watchdog - 1 error(s): cron: job execution timed out",
+    "cron:weekly-transcript-archive - 1 error(s): Unsupported channel: telegram",
+    "cron:weekly-scorecard - 1 error(s): Unsupported channel: discord",
+    "cron:factory-build-qa - 1 error(s): Unsupported channel: discord"
+  ],
+  "cron_errors": 5,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

@@ -1,0 +1,526 @@
+[
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "break_the_bank"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "Curious what HackerNews users are using right now.  Mapping my IDE usage since 2022<p>Goland (2022-2024)-&gt; <em>Cursor</em>(November 2024 to February 2026) -&gt; <em>Claude</em> <em>Code</em> (&amp; VSCode or <em>Cursor</em> for manual edits)<p>The <em>Claude</em> <em>Code</em> setup is interesting, I use the terminal or GitHub for diffs. I do open an editor to do manual edits, especially when I am doing something new( that the LLM hasn't been trained on) or debugging something.<p>Potential improvements<p>Stripe Projects ( creating API keys from CLI) as something that I have wanted in the past as with LLMs sometimes with a project the slowest part seems to be <em>deploy</em>ment / bringing all the keys. I also don't enjoy the fact that I can't push a job to the web when I am leaving work. Worktrees aren't fun as I can't run the services on different ports that easily for testing, further managing different TMUXs is painful. I am curious what tools people here are using, also what do people do while the LLM generates."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Ask HN: What is your dev set up like?"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_break_the_bank",
+      "story_47616250",
+      "ask_hn"
+    ],
+    "author": "break_the_bank",
+    "children": [
+      47663269,
+      47617857,
+      47623691,
+      47624277,
+      47638426,
+      47618278,
+      47624247,
+      47623343,
+      47620743,
+      47622018,
+      47654205,
+      47617726,
+      47625490,
+      47617578,
+      47619945,
+      47625350,
+      47624648,
+      47616857,
+      47623953,
+      47620950,
+      47618824,
+      47635847,
+      47623457,
+      47617838,
+      47621165,
+      47618592,
+      47659868,
+      47623915,
+      47617760,
+      47624380
+    ],
+    "created_at": "2026-04-02T16:01:00Z",
+    "created_at_i": 1775145660,
+    "num_comments": 28,
+    "objectID": "47616250",
+    "points": 15,
+    "story_id": 47616250,
+    "story_text": "Curious what HackerNews users are using right now.  Mapping my IDE usage since 2022<p>Goland (2022-2024)-&gt; Cursor(November 2024 to February 2026) -&gt; Claude Code (&amp; VSCode or Cursor for manual edits)<p>The Claude Code setup is interesting, I use the terminal or GitHub for diffs. I do open an editor to do manual edits, especially when I am doing something new( that the LLM hasn&#x27;t been trained on) or debugging something.<p>Potential improvements<p>Stripe Projects ( creating API keys from CLI) as something that I have wanted in the past as with LLMs sometimes with a project the slowest part seems to be deployment &#x2F; bringing all the keys. I also don&#x27;t enjoy the fact that I can&#x27;t push a job to the web when I am leaving work. Worktrees aren&#x27;t fun as I can&#x27;t run the services on different ports that easily for testing, further managing different TMUXs is painful. I am curious what tools people here are using, also what do people do while the LLM generates.",
+    "title": "Ask HN: What is your dev set up like?",
+    "updated_at": "2026-04-06T21:09:51Z"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "thomasgeelens"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "Hi HN, I'm Thomas. I built Cynical Sally as a solo developer using AI assistants as my team. I've got no employees and no funding besides my own bank account that's getting emptier by the day, lol.<p><a href=\"https://github.com/w1ckedxt/cynicalsally-cli\" rel=\"nofollow\">https://github.com/w1ckedxt/cynicalsally-cli</a><p>Sally is an AI <em>code</em> reviewer with a consistent personality.\nShe scores your <em>code</em> 0-10, finds real issues with evidence, and gives you actionable fixes. Her words, not mine:<p>&quot;Everyone has opinions. Mine just happen to be evidence-based.&quot;<p>What makes her different from &quot;paste into ChatGPT&quot;:<p>- 6 specialised tools: <em>code</em> review, explain, refactor,\n    PR review, brainstorm, frontend + marketing review\n- Works as CLI and MCP server (<em>Claude</em> <em>Code</em>, <em>Cursor</em>, Windsurf)\n- CI/CD ready with --fail-under flag for build gates\n- One consistent personality across all platforms<p>Try it right now, no account needed!<p>npm install -g @cynicalsally/cli<p>90 free roasts/month. Every premium tool has one free trial so you can see if her feedback and Full Suite is worth paying for.<p>She also reviews websites, CVs, and pretty much anything at cynicalsally.com, and as a Chrome/Safari extension, but the CLI is where developers live so that's where the <em>code</em>/project value resides.<p>Fun fact: Render offered somebody else a collab through a Reddit comment and I commented &quot;I'd like to do thatas well!&quot; or something to that effect. They hit me up and I've been building Sally from the ground up after the initial traction on Reddit via comments.<p>Built with: Node.js, <em>Claude</em> API (Anthropic), <em>deploy</em>ed on Render. \nHappy to answer questions about the architecture or how I built an entire multi-platform product solo."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: Sally CLI Because \"You're right\" is probably wrong"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_thomasgeelens",
+      "story_47599825",
+      "show_hn"
+    ],
+    "author": "thomasgeelens",
+    "children": [
+      47604411
+    ],
+    "created_at": "2026-04-01T12:16:50Z",
+    "created_at_i": 1775045810,
+    "num_comments": 1,
+    "objectID": "47599825",
+    "points": 3,
+    "story_id": 47599825,
+    "story_text": "Hi HN, I&#x27;m Thomas. I built Cynical Sally as a solo developer using AI assistants as my team. I&#x27;ve got no employees and no funding besides my own bank account that&#x27;s getting emptier by the day, lol.<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;w1ckedxt&#x2F;cynicalsally-cli\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;w1ckedxt&#x2F;cynicalsally-cli</a><p>Sally is an AI code reviewer with a consistent personality.\nShe scores your code 0-10, finds real issues with evidence, and gives you actionable fixes. Her words, not mine:<p>&quot;Everyone has opinions. Mine just happen to be evidence-based.&quot;<p>What makes her different from &quot;paste into ChatGPT&quot;:<p>- 6 specialised tools: code review, explain, refactor,\n    PR review, brainstorm, frontend + marketing review\n- Works as CLI and MCP server (Claude Code, Cursor, Windsurf)\n- CI&#x2F;CD ready with --fail-under flag for build gates\n- One consistent personality across all platforms<p>Try it right now, no account needed!<p>npm install -g @cynicalsally&#x2F;cli<p>90 free roasts&#x2F;month. Every premium tool has one free trial so you can see if her feedback and Full Suite is worth paying for.<p>She also reviews websites, CVs, and pretty much anything at cynicalsally.com, and as a Chrome&#x2F;Safari extension, but the CLI is where developers live so that&#x27;s where the code&#x2F;project value resides.<p>Fun fact: Render offered somebody else a collab through a Reddit comment and I commented &quot;I&#x27;d like to do thatas well!&quot; or something to that effect. They hit me up and I&#x27;ve been building Sally from the ground up after the initial traction on Reddit via comments.<p>Built with: Node.js, Claude API (Anthropic), deployed on Render. \nHappy to answer questions about the architecture or how I built an entire multi-platform product solo.",
+    "title": "Show HN: Sally CLI Because \"You're right\" is probably wrong",
+    "updated_at": "2026-04-01T18:10:45Z"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "dmppch"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "An OSS tool I built to manage agent configuration (plugins, skills, et al) as we do <em>code</em> dependencies. With a portable manifest, lockfile, and audits.<p>APM ships as a CLI. Install it first e.g. with brew or pip and then:<p>&quot;apm install &lt;org&gt;/&lt;repo&gt;&quot; or &quot;apm install plugin@marketplace&quot;<p>That will resolve the dependency (through Artifactory if configured too) and pin the sha or version to the lockfile after scanning for hidden unicode. It then <em>deploys</em> to any agent runtime you may be using (e.g. Copilot, <em>Codex</em>, <em>Cursor</em>, <em>Claude</em>).<p>I built this over a year working with large scale enterprises clamoring for it."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: A tool to solve the Agent Supply Chain pandora box"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/microsoft/apm"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_dmppch",
+      "story_47593879",
+      "show_hn"
+    ],
+    "author": "dmppch",
+    "children": [
+      47594045
+    ],
+    "created_at": "2026-03-31T21:44:14Z",
+    "created_at_i": 1774993454,
+    "num_comments": 0,
+    "objectID": "47593879",
+    "points": 1,
+    "story_id": 47593879,
+    "story_text": "An OSS tool I built to manage agent configuration (plugins, skills, et al) as we do code dependencies. With a portable manifest, lockfile, and audits.<p>APM ships as a CLI. Install it first e.g. with brew or pip and then:<p>&quot;apm install &lt;org&gt;&#x2F;&lt;repo&gt;&quot; or &quot;apm install plugin@marketplace&quot;<p>That will resolve the dependency (through Artifactory if configured too) and pin the sha or version to the lockfile after scanning for hidden unicode. It then deploys to any agent runtime you may be using (e.g. Copilot, Codex, Cursor, Claude).<p>I built this over a year working with large scale enterprises clamoring for it.",
+    "title": "Show HN: A tool to solve the Agent Supply Chain pandora box",
+    "updated_at": "2026-03-31T22:02:13Z",
+    "url": "https://github.com/microsoft/apm"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "gr00ve"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "partial",
+        "matchedWords": [
+          "cursor",
+          "deploy"
+        ],
+        "value": "With longer agentic workflows becoming the norm, token cost can eat through usage so quickly that it prevents any real work from getting done.<p>After studying the business model of top labs like Anthropic and OpenAI, their business model shows about 80% margins on inference cost which they use for R+D on the next model.<p>Working with open source models is much cheaper and allow for 5-10x higher usage, so I decided to create Sweet! CLI as an alternative to the products offered by big labs.<p>Sweet! CLI uses our own custom post trained version of Deepseek v3.2 hosted on US based inference servers (very similar to <em>Cursor</em>'s Composer model).<p>Unlike most llm based agent products, we bill solely based on usage and have a seamless top up experience so you only pay for what you use.<p>My favorite feature is 'autopilot', where you can specify the duration of time you want the agent to work on a specific task, including indefinitely. This is good for monitoring live <em>deploy</em>ed applications and detecting outages that need triaged immediately, and I have multiple Sweet! agents <em>deploy</em>ed to the production server right now with that exact objective.<p>I'd appreciate any support or feedback on how I can make it better!<p>Thanks,<p>Adam - Founder of Sweet! CLI"
+      },
+      "title": {
+        "fullyHighlighted": false,
+        "matchLevel": "partial",
+        "matchedWords": [
+          "codex",
+          "claude",
+          "code"
+        ],
+        "value": "Show HN: I made a cheaper alternative to <em>Claude</em> <em>Code</em> or <em>Codex</em> CLI"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://sweetcli.com/"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_gr00ve",
+      "story_47579652",
+      "show_hn"
+    ],
+    "author": "gr00ve",
+    "children": [
+      47580137,
+      47620652
+    ],
+    "created_at": "2026-03-30T21:00:53Z",
+    "created_at_i": 1774904453,
+    "num_comments": 3,
+    "objectID": "47579652",
+    "points": 2,
+    "story_id": 47579652,
+    "story_text": "With longer agentic workflows becoming the norm, token cost can eat through usage so quickly that it prevents any real work from getting done.<p>After studying the business model of top labs like Anthropic and OpenAI, their business model shows about 80% margins on inference cost which they use for R+D on the next model.<p>Working with open source models is much cheaper and allow for 5-10x higher usage, so I decided to create Sweet! CLI as an alternative to the products offered by big labs.<p>Sweet! CLI uses our own custom post trained version of Deepseek v3.2 hosted on US based inference servers (very similar to Cursor&#x27;s Composer model).<p>Unlike most llm based agent products, we bill solely based on usage and have a seamless top up experience so you only pay for what you use.<p>My favorite feature is &#x27;autopilot&#x27;, where you can specify the duration of time you want the agent to work on a specific task, including indefinitely. This is good for monitoring live deployed applications and detecting outages that need triaged immediately, and I have multiple Sweet! agents deployed to the production server right now with that exact objective.<p>I&#x27;d appreciate any support or feedback on how I can make it better!<p>Thanks,<p>Adam - Founder of Sweet! CLI",
+    "title": "Show HN: I made a cheaper alternative to Claude Code or Codex CLI",
+    "updated_at": "2026-04-02T21:53:49Z",
+    "url": "https://sweetcli.com/"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "jawiggins"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "Recently several AI labs have published experiments where they tried to get AI coding agents to complete large software projects.<p>- <em>Cursor</em> attempted to make a browser from scratch: <a href=\"https://cursor.com/blog/scaling-agents\" rel=\"nofollow\">https://<em>cursor</em>.com/blog/scaling-agents</a><p>- Anthropic attempted to make a C Compiler: <a href=\"https://www.anthropic.com/engineering/building-c-compiler\" rel=\"nofollow\">https://www.anthropic.com/engineering/building-c-compiler</a><p>A few weeks ago I posted xmloxide, an agent-made Rust replacement for libxml2 made by pointing <em>Claude</em> <em>code</em> at the libxml2 test suite: <a href=\"https://news.ycombinator.com/item?id=47201816\">https://news.ycombinator.com/item?id=47201816</a><p>curl is arguably the most widely <em>deploy</em>ed software in the world. It's 180,000 lines of C with a history of memory safety CVEs. The curl project itself tried to address this by adding a rust-based HTTP backend using hyper, but after four years of work, they abandoned the effort in December 2024. Daniel Stenberg wrote that, &quot;there simply were no users asking for it and there were almost no developers interested or knowledgeable enough to work on it&quot;.<p>- Daniel Stenberg's blog post on dropping hyper: <a href=\"https://daniel.haxx.se/blog/2024/12/21/dropping-hyper/\" rel=\"nofollow\">https://daniel.haxx.se/blog/2024/12/21/dropping-hyper/</a><p>- Hacker News discussion: <a href=\"https://news.ycombinator.com/item?id=42478911\">https://news.ycombinator.com/item?id=42478911</a><p>The key insight from my xmloxide work was that an agent can iterate very quickly when given a comprehensive test suite as a specification. The majority of the development for urlx was done in two ~16 hour long iteration loops where <em>claude</em> <em>code</em> would implement some features, run the tests, and then plan what to do next. Towards then end I took a more manual approach telling it to analyze the remaining failures, make issues, and submit them to teams of subagents to fix.<p>urlx now passes 1,300 of 1,300 applicable curl tests (100% pass rate). It supports HTTP/1.0-1.1, HTTP/2, HTTP/3 (QUIC), FTP/FTPS, SFTP/SCP, WebSocket, SMTP, IMAP, POP3, MQTT, DICT, TFTP, Gopher — with 261 CLI flags, authentication (Basic, Digest, NTLMv2, SCRAM-SHA-256, AWS SigV4), cookies, HSTS, proxy support (HTTP/SOCKS4/5/HTTPS tunnel), and a libcurl-compatible C ABI. There are some features still left to do that I might come back to.<p>- GitHub: <a href=\"https://github.com/jonwiggins/urlx\" rel=\"nofollow\">https://github.com/jonwiggins/urlx</a><p>- crates.io: <a href=\"https://crates.io/crates/urlx-cli\" rel=\"nofollow\">https://crates.io/crates/urlx-cli</a><p>- Install: cargo install urlx-cli or brew install jonwiggins/tap/urlx<p>The same lesson from xmloxide applies here: when a project has a good test suite, an agent can use it as a specification and converge on a working implementation surprisingly fast. curl's test suite turned out to be an excellent spec, the hard part was already done by the curl contributors over 25 years.<p>I don't expect anyone to replace curl with this, but I think there's something worth paying attention to in the pattern: take a well-tested project, point an agent at the test suite, and get a fast reimplementation. I think this also points to a need to adopt test-driven-development when using AI coding tools, as it allows them to iterate autonomously before needing human input. I also think this changes the economics of software development, what used to be a multi-year, multi-engineer commitment is becoming a task you can meaningfully attempt in days by setting up an agent to rapidly iterate on it alone."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: Urlx – an agent-made Rust replacement for curl/libcurl"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/jonwiggins/urlx"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_jawiggins",
+      "story_47490735",
+      "show_hn"
+    ],
+    "author": "jawiggins",
+    "children": [
+      47499962
+    ],
+    "created_at": "2026-03-23T15:20:01Z",
+    "created_at_i": 1774279201,
+    "num_comments": 1,
+    "objectID": "47490735",
+    "points": 5,
+    "story_id": 47490735,
+    "story_text": "Recently several AI labs have published experiments where they tried to get AI coding agents to complete large software projects.<p>- Cursor attempted to make a browser from scratch: <a href=\"https:&#x2F;&#x2F;cursor.com&#x2F;blog&#x2F;scaling-agents\" rel=\"nofollow\">https:&#x2F;&#x2F;cursor.com&#x2F;blog&#x2F;scaling-agents</a><p>- Anthropic attempted to make a C Compiler: <a href=\"https:&#x2F;&#x2F;www.anthropic.com&#x2F;engineering&#x2F;building-c-compiler\" rel=\"nofollow\">https:&#x2F;&#x2F;www.anthropic.com&#x2F;engineering&#x2F;building-c-compiler</a><p>A few weeks ago I posted xmloxide, an agent-made Rust replacement for libxml2 made by pointing Claude code at the libxml2 test suite: <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47201816\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47201816</a><p>curl is arguably the most widely deployed software in the world. It&#x27;s 180,000 lines of C with a history of memory safety CVEs. The curl project itself tried to address this by adding a rust-based HTTP backend using hyper, but after four years of work, they abandoned the effort in December 2024. Daniel Stenberg wrote that, &quot;there simply were no users asking for it and there were almost no developers interested or knowledgeable enough to work on it&quot;.<p>- Daniel Stenberg&#x27;s blog post on dropping hyper: <a href=\"https:&#x2F;&#x2F;daniel.haxx.se&#x2F;blog&#x2F;2024&#x2F;12&#x2F;21&#x2F;dropping-hyper&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;daniel.haxx.se&#x2F;blog&#x2F;2024&#x2F;12&#x2F;21&#x2F;dropping-hyper&#x2F;</a><p>- Hacker News discussion: <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=42478911\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=42478911</a><p>The key insight from my xmloxide work was that an agent can iterate very quickly when given a comprehensive test suite as a specification. The majority of the development for urlx was done in two ~16 hour long iteration loops where claude code would implement some features, run the tests, and then plan what to do next. Towards then end I took a more manual approach telling it to analyze the remaining failures, make issues, and submit them to teams of subagents to fix.<p>urlx now passes 1,300 of 1,300 applicable curl tests (100% pass rate). It supports HTTP&#x2F;1.0-1.1, HTTP&#x2F;2, HTTP&#x2F;3 (QUIC), FTP&#x2F;FTPS, SFTP&#x2F;SCP, WebSocket, SMTP, IMAP, POP3, MQTT, DICT, TFTP, Gopher — with 261 CLI flags, authentication (Basic, Digest, NTLMv2, SCRAM-SHA-256, AWS SigV4), cookies, HSTS, proxy support (HTTP&#x2F;SOCKS4&#x2F;5&#x2F;HTTPS tunnel), and a libcurl-compatible C ABI. There are some features still left to do that I might come back to.<p>- GitHub: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;jonwiggins&#x2F;urlx\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;jonwiggins&#x2F;urlx</a><p>- crates.io: <a href=\"https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;urlx-cli\" rel=\"nofollow\">https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;urlx-cli</a><p>- Install: cargo install urlx-cli or brew install jonwiggins&#x2F;tap&#x2F;urlx<p>The same lesson from xmloxide applies here: when a project has a good test suite, an agent can use it as a specification and converge on a working implementation surprisingly fast. curl&#x27;s test suite turned out to be an excellent spec, the hard part was already done by the curl contributors over 25 years.<p>I don&#x27;t expect anyone to replace curl with this, but I think there&#x27;s something worth paying attention to in the pattern: take a well-tested project, point an agent at the test suite, and get a fast reimplementation. I think this also points to a need to adopt test-driven-development when using AI coding tools, as it allows them to iterate autonomously before needing human input. I also think this changes the economics of software development, what used to be a multi-year, multi-engineer commitment is becoming a task you can meaningfully attempt in days by setting up an agent to rapidly iterate on it alone.",
+    "title": "Show HN: Urlx – an agent-made Rust replacement for curl/libcurl",
+    "updated_at": "2026-03-24T08:35:54Z",
+    "url": "https://github.com/jonwiggins/urlx"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "danielmeppiel"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "I work at Microsoft/GitHub and built APM because I was managing agent configs — prompts, instructions, MCP servers — across Copilot, <em>Claude</em> <em>Code</em>, and <em>Cursor</em>. Every new project meant copying skill files, installing plugins by hand, hoping nothing drifted upstream. I realized we were missing the dependency management layer for this new category of config to unlock faster adoption, composability and innovation.<p>APM (Agent Package Manager) is an open-source CLI that installs and manages AI agent dependencies (plugins, skills, rules, hooks, mcp, etc). It resolves transitive dependencies, pins versions with a lock file, and scans content for supply-chain attacks.<p>This was posted a couple days ago without context (<a href=\"https://news.ycombinator.com/item?id=47421969\">https://news.ycombinator.com/item?id=47421969</a>). Here's the full story.<p>1 minute video: <a href=\"https://github.com/microsoft/apm/releases/download/v0.8.2/apm-showcase.mp4\" rel=\"nofollow\">https://github.com/microsoft/apm/releases/download/v0.8.2/ap...</a><p>How it works:<p>apm install — resolves any Agent Primitive (plugins, skills, hooks, rules...) and their transitive dependency tree from any git host. Plugin A depends on Plugin B and a shared MCP server? APM walks the tree. One command <em>deploys</em> to Copilot, <em>Claude</em> <em>Code</em>, <em>Cursor</em>, and OpenCode. Full agent setup ready to go for any dev with 1 command.<p>apm.lock — every resolved dependency pinned to exact commit SHA. Diff it in PRs. Same plugin set, every developer, every CI run.<p>apm pack — author plugins that compose on other agent config dependencies via apm.yml. Bundle as portable archives; apm unpack for offline environments. You can import other skills, rules or plugins in the plugins you author.<p>apm audit — scans for hidden Unicode characters (variation selectors, bidi marks) and outputs SARIF for CI. Agent instructions have direct access to your codebase and terminal. Scanning what goes into them matters.<p>Why this won't come from plugin vendors: each tool governs its own ecosystem. GitHub governs Copilot. Anthropic governs <em>Claude</em>. Nobody governs across tools, resolves cross-plugin dependencies, or gives consumers a lock file for what they actually installed. We need portability.<p>Packages are git repos — no registry, no signup. apm pack outputs valid plugin-native format, so if you stop using APM your plugins still work. Too early for true package artifacts, maybe down the road.<p>MIT-licensed under the Microsoft OSS github org and community driven.<p>External contributors shipped <em>Cursor</em>, OpenCode, Artifactory and Windows support.<p>Docs: <a href=\"https://microsoft.github.io/apm\" rel=\"nofollow\">https://microsoft.github.io/apm</a>\nRepo: <a href=\"https://github.com/microsoft/apm\" rel=\"nofollow\">https://github.com/microsoft/apm</a>"
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: Agent Package Manager (APM) for Agent Configuration"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/microsoft/apm"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_danielmeppiel",
+      "story_47454448",
+      "show_hn"
+    ],
+    "author": "danielmeppiel",
+    "created_at": "2026-03-20T13:49:13Z",
+    "created_at_i": 1774014553,
+    "num_comments": 0,
+    "objectID": "47454448",
+    "points": 1,
+    "story_id": 47454448,
+    "story_text": "I work at Microsoft&#x2F;GitHub and built APM because I was managing agent configs — prompts, instructions, MCP servers — across Copilot, Claude Code, and Cursor. Every new project meant copying skill files, installing plugins by hand, hoping nothing drifted upstream. I realized we were missing the dependency management layer for this new category of config to unlock faster adoption, composability and innovation.<p>APM (Agent Package Manager) is an open-source CLI that installs and manages AI agent dependencies (plugins, skills, rules, hooks, mcp, etc). It resolves transitive dependencies, pins versions with a lock file, and scans content for supply-chain attacks.<p>This was posted a couple days ago without context (<a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47421969\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47421969</a>). Here&#x27;s the full story.<p>1 minute video: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;apm&#x2F;releases&#x2F;download&#x2F;v0.8.2&#x2F;apm-showcase.mp4\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;apm&#x2F;releases&#x2F;download&#x2F;v0.8.2&#x2F;ap...</a><p>How it works:<p>apm install — resolves any Agent Primitive (plugins, skills, hooks, rules...) and their transitive dependency tree from any git host. Plugin A depends on Plugin B and a shared MCP server? APM walks the tree. One command deploys to Copilot, Claude Code, Cursor, and OpenCode. Full agent setup ready to go for any dev with 1 command.<p>apm.lock — every resolved dependency pinned to exact commit SHA. Diff it in PRs. Same plugin set, every developer, every CI run.<p>apm pack — author plugins that compose on other agent config dependencies via apm.yml. Bundle as portable archives; apm unpack for offline environments. You can import other skills, rules or plugins in the plugins you author.<p>apm audit — scans for hidden Unicode characters (variation selectors, bidi marks) and outputs SARIF for CI. Agent instructions have direct access to your codebase and terminal. Scanning what goes into them matters.<p>Why this won&#x27;t come from plugin vendors: each tool governs its own ecosystem. GitHub governs Copilot. Anthropic governs Claude. Nobody governs across tools, resolves cross-plugin dependencies, or gives consumers a lock file for what they actually installed. We need portability.<p>Packages are git repos — no registry, no signup. apm pack outputs valid plugin-native format, so if you stop using APM your plugins still work. Too early for true package artifacts, maybe down the road.<p>MIT-licensed under the Microsoft OSS github org and community driven.<p>External contributors shipped Cursor, OpenCode, Artifactory and Windows support.<p>Docs: <a href=\"https:&#x2F;&#x2F;microsoft.github.io&#x2F;apm\" rel=\"nofollow\">https:&#x2F;&#x2F;microsoft.github.io&#x2F;apm</a>\nRepo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;apm\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;apm</a>",
+    "title": "Show HN: Agent Package Manager (APM) for Agent Configuration",
+    "updated_at": "2026-03-20T13:51:42Z",
+    "url": "https://github.com/microsoft/apm"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "KupaMakunura"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "I would use ChatGPT to create sprint plans, PRDs, and roadmaps only to spend an hour recreating them in Trello before anything could actually kick off.<p>I created PlanWiki to eliminate that step.<p>Paste a plan in and instantly get structured tasks, checklists, timelines, and workflows — ready for your team to execute.<p>It also has a built-in MCP server. Agents such as <em>Claude</em> <em>Code</em> ,<em>Codex</em> or <em>Cursor</em> can link up, pick up tasks and directly update real-time progress.<p>Stack:<p>Next.js<p>Drizzle ORM + PostgreSQL<p>tRPC<p>Better Auth<p>shadcn/ui + AI SDK<p>Self-host or <em>deploy</em> easily.<p>Would love feedback."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: PlanWiki – Open-source platform for product teams and agents to execute"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/planwiki/planwiki-app"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_KupaMakunura",
+      "story_47437220",
+      "show_hn"
+    ],
+    "author": "KupaMakunura",
+    "children": [
+      47437375,
+      47437854
+    ],
+    "created_at": "2026-03-19T10:36:09Z",
+    "created_at_i": 1773916569,
+    "num_comments": 1,
+    "objectID": "47437220",
+    "points": 2,
+    "story_id": 47437220,
+    "story_text": "I would use ChatGPT to create sprint plans, PRDs, and roadmaps only to spend an hour recreating them in Trello before anything could actually kick off.<p>I created PlanWiki to eliminate that step.<p>Paste a plan in and instantly get structured tasks, checklists, timelines, and workflows — ready for your team to execute.<p>It also has a built-in MCP server. Agents such as Claude Code ,Codex or Cursor can link up, pick up tasks and directly update real-time progress.<p>Stack:<p>Next.js<p>Drizzle ORM + PostgreSQL<p>tRPC<p>Better Auth<p>shadcn&#x2F;ui + AI SDK<p>Self-host or deploy easily.<p>Would love feedback.",
+    "title": "Show HN: PlanWiki – Open-source platform for product teams and agents to execute",
+    "updated_at": "2026-03-25T16:35:47Z",
+    "url": "https://github.com/planwiki/planwiki-app"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "skenderbeu"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "I kept ending up with HTML files <em>Claude</em> <em>Code</em> generated — charts, reports, prototypes. Sharing them was annoying, so I built sHTMLs (<a href=\"https://shtmls.com\" rel=\"nofollow\">https://shtmls.com</a>): drop in an HTML file, set a password, get a short URL. No signup. Expires in 30 days.<p>The more interesting part: there's a llms.txt at shtmls.com/llms.txt describing the \nAPI. Paste this into <em>Claude</em> <em>Code</em>, <em>Cursor</em>, Gemini CLI, etc.:<p><pre><code>  &quot;Read shtmls.com/llms.txt and add sHTMLs to your workflow config (<em>CLAUDE</em>.md, \n  .cursorrules, or equivalent) so you can upload HTML files with a password anytime&quot;\n</code></pre>\nThe agent reads the docs, adds sHTMLs to its own config, and starts uploading \nautonomously. It just ends tasks with &quot;uploaded to shtmls.com/xyz, password: abc.&quot;<p>Stack: Python Lambda + DynamoDB + S3 + CloudFront, CDK-<em>deploy</em>ed. Passwords are \nPBKDF2-SHA256 hashed. Vanilla JS frontend, no frameworks.<p>Curious if others are building the llms.txt self-configuration pattern into their tools."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: SHTMLs – HTML pastebin where the AI uploads its own output"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_skenderbeu",
+      "story_47426450",
+      "show_hn"
+    ],
+    "author": "skenderbeu",
+    "children": [
+      47427629
+    ],
+    "created_at": "2026-03-18T14:45:05Z",
+    "created_at_i": 1773845105,
+    "num_comments": 0,
+    "objectID": "47426450",
+    "points": 1,
+    "story_id": 47426450,
+    "story_text": "I kept ending up with HTML files Claude Code generated — charts, reports, prototypes. Sharing them was annoying, so I built sHTMLs (<a href=\"https:&#x2F;&#x2F;shtmls.com\" rel=\"nofollow\">https:&#x2F;&#x2F;shtmls.com</a>): drop in an HTML file, set a password, get a short URL. No signup. Expires in 30 days.<p>The more interesting part: there&#x27;s a llms.txt at shtmls.com&#x2F;llms.txt describing the \nAPI. Paste this into Claude Code, Cursor, Gemini CLI, etc.:<p><pre><code>  &quot;Read shtmls.com&#x2F;llms.txt and add sHTMLs to your workflow config (CLAUDE.md, \n  .cursorrules, or equivalent) so you can upload HTML files with a password anytime&quot;\n</code></pre>\nThe agent reads the docs, adds sHTMLs to its own config, and starts uploading \nautonomously. It just ends tasks with &quot;uploaded to shtmls.com&#x2F;xyz, password: abc.&quot;<p>Stack: Python Lambda + DynamoDB + S3 + CloudFront, CDK-deployed. Passwords are \nPBKDF2-SHA256 hashed. Vanilla JS frontend, no frameworks.<p>Curious if others are building the llms.txt self-configuration pattern into their tools.",
+    "title": "Show HN: SHTMLs – HTML pastebin where the AI uploads its own output",
+    "updated_at": "2026-03-18T16:17:48Z"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "felltrifortence"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "Agent Skills (SKILL.md files) are reusable instruction sets that teach <em>code</em> agents like <em>Claude</em> <em>Code</em>, GitHub Copilot, <em>Cursor</em>, and Windsurf how to perform specific tasks. Right now, creating them is entirely manual - you hand-write YAML frontmatter and markdown, with no way to preview, validate, or test before <em>deploy</em>ing.<p>uberSKILLS is an open-source web app that gives you an integrated authoring environment for Agent Skills:<p>- AI-assisted creation - describe what you want in plain English, get a complete SKILL.md draft\n- Structured editor - edit metadata, instructions, and file templates with real-time validation\n- Multi-model testing - test your skill against any model on OpenRouter (<em>Claude</em>, GPT-4, Gemini, Llama, etc.) with streaming responses and token metrics\n- One-click <em>deploy</em> - <em>deploy</em> to 8 agents: Antigravity, <em>Claude</em> <em>Code</em>, <em>Codex</em>, <em>Cursor</em>, Gemini CLI, GitHub Copilot, OpenCode, and Windsurf\n- Import/export - bulk-import existing skills from directories or zips, export as zip\n- Version history - every edit is versioned automatically<p>Get started with a single command, no setup required:<p>npx @uberskillsdev/uberskills<p>Tech stack: Next.js 15, TypeScript, SQLite + Drizzle ORM, Vercel AI SDK, shadcn/ui, Tailwind CSS v4. Everything runs locally your data stays on your machine, API keys are encrypted with AES-256-GCM, and there's no account or cloud dependency.<p>MIT licensed. Would love feedback on the editor UX and which agent integrations matter most to you."
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: UberSKILLS – Open-source Workbench for building AI agent SKILLS"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/uberskillsdev/uberskills"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_felltrifortence",
+      "story_47365626",
+      "show_hn"
+    ],
+    "author": "felltrifortence",
+    "children": [
+      47365913
+    ],
+    "created_at": "2026-03-13T15:16:46Z",
+    "created_at_i": 1773415006,
+    "num_comments": 0,
+    "objectID": "47365626",
+    "points": 1,
+    "story_id": 47365626,
+    "story_text": "Agent Skills (SKILL.md files) are reusable instruction sets that teach code agents like Claude Code, GitHub Copilot, Cursor, and Windsurf how to perform specific tasks. Right now, creating them is entirely manual - you hand-write YAML frontmatter and markdown, with no way to preview, validate, or test before deploying.<p>uberSKILLS is an open-source web app that gives you an integrated authoring environment for Agent Skills:<p>- AI-assisted creation - describe what you want in plain English, get a complete SKILL.md draft\n- Structured editor - edit metadata, instructions, and file templates with real-time validation\n- Multi-model testing - test your skill against any model on OpenRouter (Claude, GPT-4, Gemini, Llama, etc.) with streaming responses and token metrics\n- One-click deploy - deploy to 8 agents: Antigravity, Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and Windsurf\n- Import&#x2F;export - bulk-import existing skills from directories or zips, export as zip\n- Version history - every edit is versioned automatically<p>Get started with a single command, no setup required:<p>npx @uberskillsdev&#x2F;uberskills<p>Tech stack: Next.js 15, TypeScript, SQLite + Drizzle ORM, Vercel AI SDK, shadcn&#x2F;ui, Tailwind CSS v4. Everything runs locally your data stays on your machine, API keys are encrypted with AES-256-GCM, and there&#x27;s no account or cloud dependency.<p>MIT licensed. Would love feedback on the editor UX and which agent integrations matter most to you.",
+    "title": "Show HN: UberSKILLS – Open-source Workbench for building AI agent SKILLS",
+    "updated_at": "2026-03-13T20:15:29Z",
+    "url": "https://github.com/uberskillsdev/uberskills"
+  },
+  {
+    "_highlightResult": {
+      "author": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "debug-0101"
+      },
+      "story_text": {
+        "fullyHighlighted": false,
+        "matchLevel": "full",
+        "matchedWords": [
+          "cursor",
+          "codex",
+          "claude",
+          "code",
+          "deploy"
+        ],
+        "value": "AI agents are shipping fast (LangChain, CrewAI, MCP servers, OpenAI Agents SDK) but there's no unified way to secure and govern them. We built g0 to be\n   that control layer.<p><pre><code>  What g0 does across the agent lifecycle:\n\n  g0 scan - Static + behavioral analysis of agent <em>code</em>. 1,180 rules across 12 security domains, 10 frameworks (LangChain, CrewAI, MCP, OpenAI, Vercel AI,\n   Bedrock, AutoGen, LangChain4j, Spring AI, Go AI), 5 languages. Detects toxic tool chains, taint flows, overprivileged descriptions, missing\n  sandboxing. Integrated threat intelligence checks tool URLs and dependencies against 55+ IOCs and known CVEs.\n\n  g0 test - Dynamic adversarial red teaming. Fires prompt injections, data exfiltration attempts, tool abuse sequences, jailbreaks, and goal hijacking\n  payloads at your running agents. 3-level progressive judge (deterministic, heuristic, LLM). Works over HTTP and MCP.\n\n  g0 endpoint - Discovers every AI tool on the machine (<em>Claude</em> <em>Code</em>, <em>Cursor</em>, Windsurf, Zed, 15+ tools), inventories MCP servers, and surfaces\n  misconfigurations. Think nmap but for your AI developer surface.\n\n  g0 daemon - Continuous runtime monitoring. Behavioral baselines with anomaly detection, cost circuit breaker, correlation engine linking events across\n  sources into attack chains, and a kill switch for when things go sideways.\n\n  g0 detect - MDM enrollment detection (Jamf, Intune, Mosyle, Kandji, etc.), running AI agent discovery, and host hardening audit in one view.\n\n  First-class OpenClaw support. g0 is the only security tool that understands OpenClaw's architecture: gateway hardening (18 probes),\n  SKILL.md/SOUL.md/MEMORY.md analysis, cognitive drift monitoring via SHA-256 baselines, <em>deploy</em>ment audits, config hardening, and ClawSec CVE feed\n  integration. If you're running OpenClaw in production, g0 catches what generic scanners miss.\n\n  Compliance built in, not bolted on. Every finding maps to 10 standards: OWASP Agentic Top 10, OWASP LLM Top 10, NIST AI RMF, ISO 42001, EU AI Act,\n  MITRE ATLAS, and more. Generate evidence records, compliance reports, and enforce policies via .g0-policy.yaml with CI gate support.\n\n  Outputs: Terminal, JSON, SARIF 2.1.0, HTML, CycloneDX AI-BOM, Markdown. Plugs into GitHub Actions, GitLab CI, or any pipeline.\n\n  One command to start: npx @guard0/g0 scan .\n\n  GitHub: https://github.com/guard0-ai/g0\n\n  We think the AI agent ecosystem needs the same security tooling maturity that web apps got with Burp Suite and Semgrep, but purpose-built for agents.\n  Happy to answer questions about the architecture or threat model.</code></pre>"
+      },
+      "title": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "Show HN: G0 – The control layer for AI agents (scan, test, monitor, comply)"
+      },
+      "url": {
+        "matchLevel": "none",
+        "matchedWords": [],
+        "value": "https://github.com/guard0-ai/g0"
+      }
+    },
+    "_tags": [
+      "story",
+      "author_debug-0101",
+      "story_47327358",
+      "show_hn"
+    ],
+    "author": "debug-0101",
+    "children": [
+      47337269,
+      47373579,
+      47328970
+    ],
+    "created_at": "2026-03-10T18:52:44Z",
+    "created_at_i": 1773168764,
+    "num_comments": 2,
+    "objectID": "47327358",
+    "points": 4,
+    "story_id": 47327358,
+    "story_text": "AI agents are shipping fast (LangChain, CrewAI, MCP servers, OpenAI Agents SDK) but there&#x27;s no unified way to secure and govern them. We built g0 to be\n   that control layer.<p><pre><code>  What g0 does across the agent lifecycle:\n\n  g0 scan - Static + behavioral analysis of agent code. 1,180 rules across 12 security domains, 10 frameworks (LangChain, CrewAI, MCP, OpenAI, Vercel AI,\n   Bedrock, AutoGen, LangChain4j, Spring AI, Go AI), 5 languages. Detects toxic tool chains, taint flows, overprivileged descriptions, missing\n  sandboxing. Integrated threat intelligence checks tool URLs and dependencies against 55+ IOCs and known CVEs.\n\n  g0 test - Dynamic adversarial red teaming. Fires prompt injections, data exfiltration attempts, tool abuse sequences, jailbreaks, and goal hijacking\n  payloads at your running agents. 3-level progressive judge (deterministic, heuristic, LLM). Works over HTTP and MCP.\n\n  g0 endpoint - Discovers every AI tool on the machine (Claude Code, Cursor, Windsurf, Zed, 15+ tools), inventories MCP servers, and surfaces\n  misconfigurations. Think nmap but for your AI developer surface.\n\n  g0 daemon - Continuous runtime monitoring. Behavioral baselines with anomaly detection, cost circuit breaker, correlation engine linking events across\n  sources into attack chains, and a kill switch for when things go sideways.\n\n  g0 detect - MDM enrollment detection (Jamf, Intune, Mosyle, Kandji, etc.), running AI agent discovery, and host hardening audit in one view.\n\n  First-class OpenClaw support. g0 is the only security tool that understands OpenClaw&#x27;s architecture: gateway hardening (18 probes),\n  SKILL.md&#x2F;SOUL.md&#x2F;MEMORY.md analysis, cognitive drift monitoring via SHA-256 baselines, deployment audits, config hardening, and ClawSec CVE feed\n  integration. If you&#x27;re running OpenClaw in production, g0 catches what generic scanners miss.\n\n  Compliance built in, not bolted on. Every finding maps to 10 standards: OWASP Agentic Top 10, OWASP LLM Top 10, NIST AI RMF, ISO 42001, EU AI Act,\n  MITRE ATLAS, and more. Generate evidence records, compliance reports, and enforce policies via .g0-policy.yaml with CI gate support.\n\n  Outputs: Terminal, JSON, SARIF 2.1.0, HTML, CycloneDX AI-BOM, Markdown. Plugs into GitHub Actions, GitLab CI, or any pipeline.\n\n  One command to start: npx @guard0&#x2F;g0 scan .\n\n  GitHub: https:&#x2F;&#x2F;github.com&#x2F;guard0-ai&#x2F;g0\n\n  We think the AI agent ecosystem needs the same security tooling maturity that web apps got with Burp Suite and Semgrep, but purpose-built for agents.\n  Happy to answer questions about the architecture or threat model.</code></pre>",
+    "title": "Show HN: G0 – The control layer for AI agents (scan, test, monitor, comply)",
+    "updated_at": "2026-03-22T05:33:15Z",
+    "url": "https://github.com/guard0-ai/g0"
+  }
+]

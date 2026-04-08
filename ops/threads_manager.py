@@ -26,6 +26,7 @@ THREAD_FIELDS = {
     "blocked_until",
     "next_action",
     "resolution_artifact",
+    "archived_at",
     "summary",
     "open_tasks",
     "decisions",
@@ -82,6 +83,7 @@ def migrate_thread(thread: dict[str, Any]) -> dict[str, Any]:
         "blocked_until": normalize_scalar(legacy.get("blocked_until")),
         "next_action": next_action,
         "resolution_artifact": normalize_scalar(legacy.get("resolution_artifact")),
+        "archived_at": normalize_scalar(legacy.get("archived_at")),
         "summary": normalize_scalar(legacy.get("summary") or ""),
         "open_tasks": open_tasks,
         "decisions": normalize_list(legacy.get("decisions")),
@@ -114,7 +116,7 @@ def validate_thread(thread: dict[str, Any], index: int) -> None:
     if thread["status"] not in VALID_STATUSES:
         raise ValueError(f"threads[{index}].status must be one of {sorted(VALID_STATUSES)}")
 
-    for key in ("expires_at", "blocked_reason", "blocked_until", "next_action", "resolution_artifact"):
+    for key in ("expires_at", "blocked_reason", "blocked_until", "next_action", "resolution_artifact", "archived_at"):
         if thread[key] is not None and not isinstance(thread[key], str):
             raise ValueError(f"threads[{index}].{key} must be a string or null")
 

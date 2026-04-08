@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(68,170,153,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(68,170,153,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  /* subtle radial glow behind center */
+  body::after {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(68,170,153,0.06) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 120px;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .logo-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .logo-text {
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    color: #888;
+    font-weight: 500;
+  }
+  .logo-text span { color: #44aa99; }
+  .headline {
+    font-size: 64px;
+    font-weight: 700;
+    color: #e8e8e8;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .headline em {
+    color: #44aa99;
+    font-style: normal;
+  }
+  .sub {
+    font-size: 26px;
+    color: #666;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .badge {
+    margin-top: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1.5px solid #333;
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-size: 15px;
+    color: #888;
+    letter-spacing: 0.04em;
+  }
+  .badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #44aa99;
+    box-shadow: 0 0 8px rgba(68,170,153,0.5);
+  }
+  .bottom-bar {
+    position: absolute;
+    bottom: 40px;
+    left: 100px;
+    right: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 16px;
+    z-index: 1;
+  }
+  .url {
+    font-size: 15px;
+    color: #444;
+    letter-spacing: 0.05em;
+  }
+  .time {
+    font-size: 14px;
+    color: #444;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="logo-row">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+          <rect x="1.5" y="1.5" width="13" height="13" stroke="#e8e8e8" stroke-width="1.5" fill="none" />
+          <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#e8e8e8" stroke-width="1.5" />
+          <line x1="8" y1="1.5" x2="8" y2="5.5" stroke="#e8e8e8" stroke-width="1.5" />
+          <line x1="8" y1="10.5" x2="8" y2="14.5" stroke="#e8e8e8" stroke-width="1.5" />
+        </svg>
+      </div>
+      <div class="logo-text">PERMISSION <span>/</span> PROTOCOL</div>
+    </div>
+    <div class="headline">An AI agent just tried to<br>delete <em>12,847 user records</em>.</div>
+    <div class="sub">Watch what happens when production requires<br>an external human signer.</div>
+    <div class="badge">
+      <div class="dot"></div>
+      LIVE PRODUCT DEMO — 60 SECONDS
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="url">permissionprotocol.com</div>
+    <div class="time">2026</div>
+  </div>
+</body>
+</html>

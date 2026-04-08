@@ -1,0 +1,18 @@
+{
+  "status": "attention",
+  "alerts": [
+    "cron:daily-log-hygiene-metrics - 3 consecutive errors: cron: job execution timed out"
+  ],
+  "warnings": [
+    "cron:Token Health Check - 2 error(s): ",
+    "cron:rod-daily-briefing - 2 error(s): ",
+    "cron:mobile-qa-daily - 2 error(s): Error: All models failed (4): google/gemini-3-flash-preview: ?? API rate limit reached. Please try a",
+    "cron:scout-reddit-digest - 2 error(s): Error: All models failed (4): google/gemini-3-flash-preview: ?? API rate limit reached. Please try a",
+    "cron:weekly-transcript-archive - 1 error(s): Unsupported channel: telegram",
+    "cron:weekly-scorecard - 1 error(s): Unsupported channel: discord"
+  ],
+  "cron_errors": 7,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

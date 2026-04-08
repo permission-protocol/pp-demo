@@ -1,0 +1,13 @@
+{
+  "tapTargetIssues": 22,
+  "missingAlt": 0,
+  "smallText": 23,
+  "details": [
+    {
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "PERMISSION/PROTOCOL",
+      "size": "179x20"
+    }
+  ]
+}

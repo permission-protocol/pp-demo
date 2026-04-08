@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PP 60-Day War Room</title>
+<style>
+  @page { margin: 0.4in; size: letter; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    line-height: 1.35;
+    color: #1a1a1a;
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0.35in;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 3px;
+  }
+  h1 span { color: #44aa99; }
+  .subtitle {
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  h2 {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #44aa99;
+    margin-top: 9px;
+    margin-bottom: 4px;
+  }
+  .hero {
+    background: #0a0a0a;
+    color: #e8e8e8;
+    border-radius: 6px;
+    padding: 10px 14px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .hero .wedge {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .hero .wedge em {
+    color: #44aa99;
+    font-style: normal;
+  }
+  .hero .sub {
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .cols { display: flex; gap: 12px; }
+  .col { flex: 1; }
+  .col-narrow { flex: 0.85; }
+  .box {
+    border: 1.5px solid #ddd;
+    border-radius: 5px;
+    padding: 6px 8px;
+    margin-bottom: 5px;
+    background: #fafafa;
+  }
+  .box-red {
+    border-color: #ef4444;
+    background: #fef2f2;
+  }
+  .box-green {
+    border-color: #22c55e;
+    background: #f0fdf4;
+  }
+  .box-amber {
+    border-color: #f59e0b;
+    background: #fffbeb;
+  }
+  .label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #888;
+    margin-bottom: 2px;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    gap: 6px;
+  }
+  .stat {
+    flex: 1;
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.1;
+  }
+  .stat-num.teal { color: #44aa99; }
+  .stat-label {
+    font-size: 8px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  ul { padding-left: 12px; margin: 2px 0; }
+  li { margin-bottom: 1.5px; font-size: 10px; }
+  .big-rule {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    padding: 6px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+    font-size: 9.5px;
+  }
+  .pricing-cell {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 6px;
+    background: #fafafa;
+    text-align: center;
+  }
+  .pricing-cell .seg { font-weight: 700; font-size: 9px; color: #44aa99; }
+  .pricing-cell .price { font-size: 14px; font-weight: 800; }
+  .pricing-cell .ann { font-size: 8px; color: #666; }
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-bottom: 5px;
+  }
+  .tl-block {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 4px 6px;
+    font-size: 9px;
+    background: #fafafa;
+  }
+  .tl-block:first-child { border-radius: 5px 0 0 5px; }
+  .tl-block:last-child { border-radius: 0 5px 5px 0; }
+  .tl-block .tl-head {
+    font-weight: 700;
+    font-size: 9px;
+    color: #44aa99;
+    margin-bottom: 2px;
+  }
+  .footer {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 7.5px;
+    color: #bbb;
+  }
+  .check { color: #22c55e; }
+  .cross { color: #ef4444; }
+</style>
+</head>
+<body>
+
+<h1>PERMISSION PROTOCOL — <span>60-DAY WAR ROOM</span></h1>
+<div class="subtitle">April 7 – June 6, 2026 &nbsp;·&nbsp; No hire. No raise. Prove the wedge.</div>
+
+<div class="hero">
+  <div class="wedge">No AI deploy reaches production<br>without an <em>external signer</em>.</div>
+  <div class="sub">This is the only wedge. Do not add a second one for 60 days.</div>
+</div>
+
+<div class="stat-row" style="margin-bottom:8px">
+  <div class="stat"><div class="stat-num teal">2–3</div><div class="stat-label">Paid pilots<br>in 60 days</div></div>
+  <div class="stat"><div class="stat-num">$326k</div><div class="stat-label">Median 12-mo<br>ARR (P50)</div></div>
+  <div class="stat"><div class="stat-num">$0</div><div class="stat-label">New hires<br>this quarter</div></div>
+  <div class="stat"><div class="stat-num">1</div><div class="stat-label">Wedge<br>not two</div></div>
+  <div class="stat"><div class="stat-num">60</div><div class="stat-label">Days before<br>reassessing</div></div>
+</div>
+
+<div class="cols">
+<div class="col">
+
+<h2>Will they pay? (All 3 must be true)</h2>
+<div class="box box-green">
+  <ul>
+    <li><strong>Agent is live</strong> or about to go live</li>
+    <li><strong>It can take a high-impact action</strong> (deploy, delete, move money)</li>
+    <li><strong>A buyer feels personally accountable</strong> if it goes wrong</li>
+  </ul>
+  <div style="font-size:9px; color:#888; margin-top:3px">If any one is missing → move on. Don't convince. Find the pain.</div>
+</div>
+
+<h2>Pilot pricing (never free)</h2>
+<div class="pricing-grid">
+  <div class="pricing-cell">
+    <div class="seg">Startup / AI-native</div>
+    <div class="price">$10–15k</div>
+    <div class="ann">→ $18–30k ARR</div>
+  </div>
+  <div class="pricing-cell">
+    <div class="seg">Mid-market</div>
+    <div class="price">$25–40k</div>
+    <div class="ann">→ $45–80k ARR</div>
+  </div>
+  <div class="pricing-cell">
+    <div class="seg">Enterprise</div>
+    <div class="price">$40–60k</div>
+    <div class="ann">→ $100–250k ARR</div>
+  </div>
+</div>
+<div style="font-size:8.5px; color:#888; text-align:center; margin-bottom:4px">100% pilot fee credited to annual if they convert within 30 days. Price by protected workflow, not seats.</div>
+
+<h2>Revenue model (Monte Carlo, 120k draws)</h2>
+<div class="box">
+  <div style="display:flex; justify-content:space-between; font-size:9.5px; margin-bottom:2px">
+    <span>P10: <strong>$154k</strong></span>
+    <span>P25: <strong>$224k</strong></span>
+    <span style="color:#44aa99">P50: <strong>$326k</strong></span>
+    <span>P75: <strong>$468k</strong></span>
+    <span>P90: <strong>$648k</strong></span>
+  </div>
+  <div style="font-size:9px; color:#666">60% of outcomes land $200–500k. $1M+ is 1.4% (requires 2–3 enterprise wins). Median path = 8 startup + 3 mid-market + 0 enterprise.</div>
+</div>
+
+<h2>What drives variance</h2>
+<div class="box">
+  <div style="font-size:9.5px">
+    <strong>ACV / segment mix: ~39%</strong> — one enterprise logo changes everything<br>
+    <strong>Pipeline volume: ~23%</strong> — more at-bats = more outcomes<br>
+    <strong>Conversion rates: ~10%</strong> — pilot quality > pilot quantity<br>
+    <strong>Year-1 expansion: ~1%</strong> — basically noise. Don't optimize for it.
+  </div>
+</div>
+
+</div>
+<div class="col">
+
+<h2>60-day timeline</h2>
+<div class="timeline">
+  <div class="tl-block">
+    <div class="tl-head">Week 1–2</div>
+    Send 6 Day-1 outreach<br>
+    Prospect fintech targets<br>
+    10+ conversations booked<br>
+    Refine pitch from feedback
+  </div>
+  <div class="tl-block">
+    <div class="tl-head">Week 3–4</div>
+    20 serious meetings<br>
+    3–5 pilot proposals sent<br>
+    Build only pilot blockers<br>
+    First paid pilot signed
+  </div>
+  <div class="tl-block">
+    <div class="tl-head">Week 5–8</div>
+    6 total pilot proposals<br>
+    2–3 paid pilots running<br>
+    First case study drafted<br>
+    Annual conversion in sight
+  </div>
+</div>
+
+<h2>Outbound targets (8 weeks)</h2>
+<div class="box">
+  <div style="font-size:10px">
+    <strong>30</strong> AI-native engineering orgs (coding agents, deploy surfaces)<br>
+    <strong>20</strong> Regulated / security-sensitive mid-market<br>
+    <strong>10</strong> Enterprise stretch accounts<br>
+    <strong>Goal:</strong> 20 meetings → 6 proposals → 2–3 paid pilots
+  </div>
+</div>
+
+<h2>Rules</h2>
+<div class="box box-red">
+  <ul>
+    <li><span class="cross">✗</span> <strong>No free pilots.</strong> "100% credit toward annual." That's the offer.</li>
+    <li><span class="cross">✗</span> <strong>No second wedge.</strong> Deploy authorization only for 60 days.</li>
+    <li><span class="cross">✗</span> <strong>No hires.</strong> Founder-led sales + product until 2+ pilots convert.</li>
+    <li><span class="cross">✗</span> <strong>No raising.</strong> Get pilots first. Money on traction > money on story.</li>
+    <li><span class="cross">✗</span> <strong>No platform features.</strong> Build only what unblocks the next pilot.</li>
+    <li><span class="cross">✗</span> <strong>No broadening.</strong> Not IAM, not workflow automation, not admin dashboards.</li>
+  </ul>
+</div>
+
+<h2>Build only these (pilot blockers)</h2>
+<div class="box box-amber">
+  <ul>
+    <li>Exact-args binding (receipt ties to specific action payload)</li>
+    <li>Signer approval UX (clean, fast, mobile-friendly)</li>
+    <li>Receipts + audit export (customer can prove who approved what)</li>
+    <li>Basic policy config (which actions require sign-off)</li>
+    <li>Setup docs (reduce onboarding friction)</li>
+  </ul>
+</div>
+
+<h2>Hire / raise thresholds</h2>
+<div class="box">
+  <div style="font-size:9.5px">
+    <strong>First GTM hire</strong> after: 2+ paid pilots closed, 1+ annual conversion, ICP describable in one sentence.<br>
+    <strong>Raise</strong> after: paid pilots, short case studies, one repeatable wedge, pilot→annual conversion proof.
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="big-rule" style="background:#0a0a0a; color:#44aa99; margin-top:6px">
+  THE WHOLE GAME: PICK ONE WEDGE. CLOSE 2–3 PAID PILOTS. PROVE ANNUAL CONVERSION.
+</div>
+
+<div class="footer">PERMISSION PROTOCOL — 60-DAY WAR ROOM — APRIL 2026 — CONFIDENTIAL</div>
+
+</body>
+</html>

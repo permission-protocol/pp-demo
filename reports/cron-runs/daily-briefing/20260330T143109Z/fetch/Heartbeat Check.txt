@@ -1,0 +1,28 @@
+{
+  "status": "attention",
+  "alerts": [
+    "cron:factory-error-sensor - 21 consecutive errors: Unsupported channel: telegram",
+    "cron:unified-hotline - 4 consecutive errors: Unsupported channel: discord",
+    "cron:pp-os-execute-ready - 3 consecutive errors: Unsupported channel: discord",
+    "cron:goal-xdares-seo-main - 11 consecutive errors: Unsupported channel: discord",
+    "cron:xdares-seo-goal-executor - 11 consecutive errors: Unsupported channel: discord",
+    "cron:memory-consolidation - 3 consecutive errors: Unsupported channel: discord",
+    "cron:nightly-self-improvement - 3 consecutive errors: Unsupported channel: discord",
+    "cron:pp-os-qa-review - 3 consecutive errors: Unsupported channel: discord",
+    "cron:governance-integrity-check - 3 consecutive errors: Unsupported channel: telegram",
+    "cron:pp-onboarding-smoke-test - 3 consecutive errors: Unsupported channel: discord"
+  ],
+  "warnings": [
+    "cron:unified-signal-scan - 2 error(s): Unsupported channel: discord",
+    "cron:factory-build-qa - 1 error(s): Unsupported channel: discord",
+    "cron:pp-signal-scan - 2 error(s): Unsupported channel: discord",
+    "cron:daily-log-hygiene-metrics - 1 error(s): Unsupported channel: telegram",
+    "cron:daily-log-planning - 1 error(s): Unsupported channel: telegram",
+    "cron:weekly-transcript-archive - 1 error(s): Unsupported channel: telegram",
+    "cron:weekly-scorecard - 1 error(s): Unsupported channel: discord"
+  ],
+  "cron_errors": 17,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

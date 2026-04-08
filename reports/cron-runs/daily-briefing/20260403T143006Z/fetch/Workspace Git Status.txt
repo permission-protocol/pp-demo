@@ -1,0 +1,86 @@
+## main...origin/main
+ m Xdares
+ M company-os/governance/approval-log.jsonl
+ M company-os/governance/drift-log.jsonl
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M goals/xdares-seo-growth/STATUS.md
+ M goals/xdares-seo-growth/next_tasks.json
+ M goals/xdares-seo-growth/state.json
+ M logs/crons/daily-briefing.log
+ M logs/crons/execute-ready.log
+ M logs/crons/unified-hotline.log
+ m mcp-guard
+ M memory/heartbeat-state.json
+ M ops/threads.yaml
+ M ops/threads_manager.py
+ M permission-protocol-repo
+ M pp-os/STATUS.md
+ M pp-os/marketing/HOT-SIGNAL.md
+ M reports/cron-runs/daily-briefing/latest.json
+ M reports/cron-runs/daily-briefing/latest.md
+ M reports/cron-runs/execute-ready/latest.json
+ M reports/cron-runs/execute-ready/latest.md
+ M reports/cron-runs/unified-hotline/latest.json
+ M reports/cron-runs/unified-hotline/latest.md
+?? .learnings/2026-03-29.md
+?? .learnings/2026-03-30.md
+?? .learnings/2026-04-01.md
+?? company-os/governance/snapshots/gov_scan_20260329_1300.json
+?? company-os/governance/snapshots/gov_scan_20260330_1300.json
+?? company-os/governance/snapshots/gov_scan_20260401_1300.json
+?? company-os/governance/snapshots/gov_scan_20260402_1300.json
+?? company-os/governance/snapshots/gov_scan_20260403_1300.json
+?? deploy-gate/
+?? goals/xdares-seo-growth/content/mothers-day-party-games-2026.html
+?? goals/xdares-seo-growth/logs/tweets-mothers-day-20260403-061440.json
+?? goals/xdares-seo-growth/scripts/post_mothers_day_tweets.py
+?? goals/xdares-seo-growth/scripts/publish_mothers_day.py
+?? logs/crons/codex-issue-264.log
+?? logs/crons/weekly-scorecard.log
+?? memory/2026-04-03.md
+?? permission-protocol/app/
+?? pp-demo/
+?? pp-os/marketing/signals/2026-04-03.jsonl
+?? pp-os/outreach/signals/2026-04-03.json
+?? reports/cron-runs/daily-briefing/20260329T143019Z/
+?? reports/cron-runs/daily-briefing/20260330T143020Z/
+?? reports/cron-runs/daily-briefing/20260330T143109Z/
+?? reports/cron-runs/daily-briefing/20260401T143002Z/
+?? reports/cron-runs/daily-briefing/20260401T143020Z/
+?? reports/cron-runs/daily-briefing/20260402T143007Z/
+?? reports/cron-runs/daily-briefing/20260403T143006Z/
+?? reports/cron-runs/execute-ready/20260329T150518Z/
+?? reports/cron-runs/execute-ready/20260329T170618Z/
+?? reports/cron-runs/execute-ready/20260329T190518Z/
+?? reports/cron-runs/execute-ready/20260329T210518Z/
+?? reports/cron-runs/execute-ready/20260329T230518Z/
+?? reports/cron-runs/execute-ready/20260330T150546Z/
+?? reports/cron-runs/execute-ready/20260330T170518Z/
+?? reports/cron-runs/execute-ready/20260330T190517Z/
+?? reports/cron-runs/execute-ready/20260330T210518Z/
+?? reports/cron-runs/execute-ready/20260330T230518Z/
+?? reports/cron-runs/execute-ready/20260331T170501Z/
+?? reports/cron-runs/execute-ready/20260331T190503Z/
+?? reports/cron-runs/execute-ready/20260331T212931Z/
+?? reports/cron-runs/execute-ready/20260331T230501Z/
+?? reports/cron-runs/execute-ready/20260401T150702Z/
+?? reports/cron-runs/execute-ready/20260401T170502Z/
+?? reports/cron-runs/execute-ready/20260401T190713Z/
+?? reports/cron-runs/execute-ready/20260401T210501Z/
+?? reports/cron-runs/execute-ready/20260401T230501Z/
+?? reports/cron-runs/unified-hotline/20260330T150048Z/
+?? reports/cron-runs/unified-hotline/20260330T190043Z/
+?? reports/cron-runs/unified-hotline/20260330T230043Z/
+?? reports/cron-runs/unified-hotline/20260331T190024Z/
+?? reports/cron-runs/unified-hotline/20260331T230021Z/
+?? reports/cron-runs/unified-hotline/20260401T150350Z/
+?? reports/cron-runs/unified-hotline/20260401T190247Z/
+?? reports/cron-runs/unified-hotline/20260401T230013Z/
+?? reports/cron-runs/unified-hotline/20260402T150002Z/
+?? reports/cron-runs/unified-hotline/20260402T190007Z/
+?? reports/cron-runs/unified-hotline/20260402T230001Z/
+?? reports/cron-runs/weekly-scorecard/
+?? tmp/mobile-qa-daily/20260402-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260402-xdares-com/

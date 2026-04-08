@@ -15,7 +15,9 @@ REPOS=(
   "permission-protocol/app"
   "permission-protocol/site"
   "permission-protocol/deploy-gate"
-  "permission-protocol/sdk"
+  "permission-protocol/python-sdk"
+  "permission-protocol/cli"
+  "permission-protocol/mcp-guard"
 )
 
 # Labels that signal work for the Factory
@@ -81,11 +83,21 @@ for issue in issues:
     url = issue.get('url', '')
     body = (issue.get('body') or '')[:500]  # Truncate body
     
+    # Determine priority (check labels first, then title)
+    priority = 'p2'
+    if 'p0' in issue_labels or 'P0:' in title.upper():
+        priority = 'p0'
+    elif 'p1' in issue_labels or 'P1:' in title.upper():
+        priority = 'p1'
+    
+    # Determine if it's a bounty candidate
+    is_candidate = (issue_labels & target_labels) or (priority in ['p0', 'p1'])
+    
+    if not is_candidate:
+        continue
+    
     # Determine type from labels
     bounty_type = 'bugfix' if 'bug' in issue_labels else 'feature'
-    priority = 'p0' if 'p0' in issue_labels else ('p1' if 'p1' in issue_labels else 'p2')
-    
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
     
     # Sensor-sourced items go straight to 'ready' (skip PRD step).
     # build.sh now picks up 'ready' alongside 'prd-ready'.

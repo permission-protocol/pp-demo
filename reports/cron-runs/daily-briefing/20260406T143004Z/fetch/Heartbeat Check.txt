@@ -1,0 +1,15 @@
+{
+  "status": "watch",
+  "alerts": [],
+  "warnings": [
+    "cron:factory-build-qa - 1 error(s): Unsupported channel: discord",
+    "cron:memory-consolidation - 1 error(s): ?? ?? Message failed",
+    "cron:nightly-self-improvement - 1 error(s): ?? ? Edit failed",
+    "cron:pp-signal-scan - 1 error(s): ?? ?? Message failed",
+    "cron:pp-os-weekly-review - 1 error(s): cron: job execution timed out"
+  ],
+  "cron_errors": 5,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

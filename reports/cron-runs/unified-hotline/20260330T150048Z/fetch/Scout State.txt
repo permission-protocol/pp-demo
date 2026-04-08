@@ -1,0 +1,52 @@
+{
+  "last_research_run": "2026-03-08T02:00:00Z",
+  "last_hotline_run": "2026-03-26T19:01:24Z",
+  "last_outreach_run": "2026-03-07T15:00:00Z",
+  "last_response_check": "2026-03-07T23:00:00Z",
+  "last_signal_count": 0,
+  "fast_tracked_this_run": 0,
+  "pending_approvals": [
+    "lio-ai-email",
+    "email-lio-vlad-keil",
+    "meta-sev1-reachout-strategy",
+    "interloom-founder-outreach"
+  ],
+  "blocked": {
+    "tweet_write": {
+      "issue": "X API 403 Forbidden on create_tweet — app missing write permissions",
+      "fix": "developer.twitter.com → App settings → User auth settings → enable Read+Write → regenerate access tokens → update ~/.openclaw/secrets/x-pp-api.json",
+      "affected": [
+        "tweet-reply-2029949555169710488 (regtech/kill-switch, @MelodyLishuo)",
+        "tweet-reply-2029982761310732480 (@DavidElze, 7th layer governance)",
+        "tweet-reply-2030008301334016474 (@Absolcasso, bi-directional receipt / response poisoning)",
+        "tweet-reply-2030013150754373637 (@EUAIACTGUY, 3rd reply — game-day drills) — SEND THIS ONE FIRST",
+        "tweet-reply-2030028270549295248 (@wickedpands, dynamic capability-based auth / 'why' framing)",
+        "tweet-reply-mit-study-2026-03-06 (MIT study original tweet)",
+        "tweet-reply-al-grigor-db-wipe-2029889772181934425 (SCORE 5, 2.4M impressions — SEND URGENTLY)",
+        "tweet-reply-bitcoinnewscom-alibaba-2026-03-07 (SCORE 5, Alibaba Cloud rogue agent — spreading)",
+        "tweet-reply-absolcasso-response-layer-2030087847471141006 (response layer poisoning)"
+      ],
+      "flagged": "2026-03-06T17:05Z",
+      "re-flagged": "2026-03-07T03:00Z",
+      "status": "X API fix is #1 operational blocker."
+    }
+  },
+  "auto_sent_this_run": [],
+  "open_leads": [
+    "lio-ai",
+    "interloom"
+  ],
+  "hn_queue": [
+    "hn-comment-ietf-aiagent-auth-47262775 (IETF RFC draft, PP-adjacent, needs HN login)"
+  ],
+  "watching": [
+    "permit.io",
+    "cisco-ai-defense-skill-scanner",
+    "oculi-security",
+    "orchesis",
+    "oath-protocol",
+    "grantex",
+    "agentseal"
+  ],
+  "notes": "2026-03-26 19:01Z hotline scan: no new immediate-action triggers surfaced. Current X/web/HN checks did not show a fresh Permission Protocol mention, a named AI-agent breach inside the 6-hour hotline window, a >$10M agent-company funding round inside the 24-hour window, or an HN agent-security story above the 50-point threshold. No fast-track actions were opened this run. Existing outbound blockers remain: X API write access and HN login."
+}

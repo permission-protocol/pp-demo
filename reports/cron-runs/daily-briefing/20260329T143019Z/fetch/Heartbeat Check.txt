@@ -1,0 +1,26 @@
+{
+  "status": "attention",
+  "alerts": [
+    "cron:pp-os-execute-ready - 9 consecutive errors: Unsupported channel: discord",
+    "cron:unified-hotline - 4 consecutive errors: Unsupported channel: discord"
+  ],
+  "warnings": [
+    "cron:Token Health Check - 1 error(s): ",
+    "cron:rod-daily-briefing - 2 error(s): ",
+    "cron:mobile-qa-daily - 1 error(s): Error: All models failed (4): google/gemini-3-flash-preview: ?? API rate limit reached. Please try a",
+    "cron:scout-reddit-digest - 1 error(s): Error: All models failed (4): google/gemini-3-flash-preview: ?? API rate limit reached. Please try a",
+    "cron:pp-outreach-weekly-analysis - 1 error(s): ?? ? Nodes: `command sqlite3 /opt/pp-outreach/db/outreach.sqlite \"SELECT * FROM outreach_outcomes;\" ",
+    "cron:memory-curation-r1 - 1 error(s): ?? ? Edit: `in ~/.openclaw/workspace/MEMORY.md (4416 chars)` failed",
+    "cron:memory-consolidation - 2 error(s): Unsupported channel: discord",
+    "cron:nightly-self-improvement - 2 error(s): Unsupported channel: discord",
+    "cron:pp-os-qa-review - 2 error(s): Unsupported channel: discord",
+    "cron:governance-integrity-check - 2 error(s): Unsupported channel: telegram",
+    "cron:pp-onboarding-smoke-test - 2 error(s): Unsupported channel: discord",
+    "cron:pp-signal-scan - 1 error(s): Error: All models failed (4): google/gemini-3-flash-preview: ?? API rate limit reached. Please try a",
+    "cron:factory-build-qa - 1 error(s): Unsupported channel: discord"
+  ],
+  "cron_errors": 15,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

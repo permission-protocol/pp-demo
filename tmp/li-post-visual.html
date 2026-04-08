@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 628px;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  /* subtle grid texture */
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(68,170,153,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(68,170,153,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 80px;
+  }
+  .eyebrow {
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #44aa99;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+  .main-text {
+    font-size: 52px;
+    font-weight: 700;
+    color: #e8e8e8;
+    line-height: 1.2;
+    margin-bottom: 28px;
+  }
+  .highlight {
+    color: #44aa99;
+  }
+  .sub-text {
+    font-size: 22px;
+    color: #888;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .bottom-bar {
+    position: absolute;
+    bottom: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #222;
+    padding-top: 16px;
+  }
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: #555;
+    font-weight: 500;
+  }
+  .brand span {
+    color: #44aa99;
+  }
+  .url {
+    font-size: 13px;
+    color: #444;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="eyebrow">AWS DevOps Agent &mdash; April 2026</div>
+    <div class="main-text">The agent fixed production.<br><span class="highlight">Who authorized the fix?</span></div>
+    <div class="sub-text">Four minutes. No human. No signer. No receipt.</div>
+  </div>
+  <div class="bottom-bar">
+    <div class="brand">PERMISSION <span>/</span> PROTOCOL</div>
+    <div class="url">permissionprotocol.com</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+{"ts":"2026-04-04T15:02:49Z","source":"hotline","score":0,"status":"no_actionable_signal","summary":"No fresh score-5 hotline trigger validated across X/web search, Google News, or Hacker News. No new Permission Protocol mention, no named AI-agent breach within 6 hours, no >$10M agent funding within 24 hours, and no HN agent-security story above 50 points.","blockers":["X API write permissions still blocked","HN login still unavailable"],"carry_forward":["sycamore"]}
+

@@ -1,0 +1,17 @@
+{
+  "status": "attention",
+  "alerts": [
+    "cron:mobile-qa-daily - 4 consecutive errors: ?? ?? Message failed"
+  ],
+  "warnings": [
+    "cron:memory-consolidation - 2 error(s): Unsupported channel: discord",
+    "cron:nightly-self-improvement - 2 error(s): Unsupported channel: discord",
+    "cron:daily-log-hygiene-metrics - 1 error(s): cron: job execution timed out",
+    "cron:weekly-transcript-archive - 1 error(s): Unsupported channel: telegram",
+    "cron:weekly-scorecard - 1 error(s): Unsupported channel: discord"
+  ],
+  "cron_errors": 6,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

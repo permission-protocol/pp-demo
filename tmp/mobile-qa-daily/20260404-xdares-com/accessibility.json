@@ -1,0 +1,13 @@
+{
+  "tapTargetIssues": 42,
+  "missingAlt": 0,
+  "smallText": 7,
+  "details": [
+    {
+      "type": "small-tap-target",
+      "tag": "A",
+      "text": "Skip to content",
+      "size": "1x1"
+    }
+  ]
+}

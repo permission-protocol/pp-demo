@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PP Call Prep — One-Pager</title>
+<style>
+  @page { margin: 0.6in; size: letter; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #1a1a1a;
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0.5in;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border-bottom: 2.5px solid #1a1a1a;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+  }
+  h1 span { color: #44aa99; }
+  h2 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #44aa99;
+    margin-top: 14px;
+    margin-bottom: 5px;
+  }
+  .cols { display: flex; gap: 20px; }
+  .col { flex: 1; }
+  .box {
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    background: #fafafa;
+  }
+  .box-dark {
+    border-color: #1a1a1a;
+    background: #1a1a1a;
+    color: #e8e8e8;
+  }
+  .box-dark .label { color: #44aa99; }
+  .box-accent {
+    border-color: #44aa99;
+    background: #f0faf8;
+  }
+  .label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 3px;
+  }
+  .big {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .medium {
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+  blockquote {
+    font-size: 11.5px;
+    font-style: italic;
+    color: #333;
+    border-left: 3px solid #44aa99;
+    padding-left: 8px;
+    margin: 4px 0;
+  }
+  ul { padding-left: 14px; margin: 3px 0; }
+  li { margin-bottom: 2px; }
+  .use { color: #16803c; font-weight: 600; }
+  .avoid { color: #dc2626; font-weight: 600; }
+  .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #44aa99;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .step-text { font-size: 11px; }
+  .divider {
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+  }
+  .footer {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 0.05em;
+  }
+  .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .qa-item { font-size: 10.5px; }
+  .qa-q { font-weight: 700; color: #333; margin-bottom: 1px; }
+  .qa-a { color: #555; }
+</style>
+</head>
+<body>
+
+<h1>Permission Protocol — <span>Call Prep</span></h1>
+
+<div class="cols">
+<div class="col">
+
+<div class="box box-dark">
+  <div class="label">The one sentence</div>
+  <div class="big" style="color:#e8e8e8">We make sure no AI agent can take a high-stakes action — like deploying code or moving money — without a human signing off first.</div>
+</div>
+
+<div class="box box-accent">
+  <div class="label">30-second version</div>
+  <div class="medium">AI agents are starting to deploy code, access customer data, trigger payments — real actions with real consequences. Right now, most of them authorize themselves. There's no external check.<br><br>We're the external signer. Before a risky action executes, it has to be approved by the right human. If it's not approved, it gets rejected. If it is, you get a cryptographic receipt proving who authorized what.</div>
+</div>
+
+<h2>Words</h2>
+<div class="cols" style="gap:10px">
+  <div>
+    <div class="label">✅ Use these</div>
+    <ul>
+      <li class="use">External signer</li>
+      <li class="use">Unsigned actions get rejected</li>
+      <li class="use">Cryptographic receipt</li>
+      <li class="use">Who authorized this?</li>
+      <li class="use">High-stakes actions</li>
+      <li class="use">Prove who approved what</li>
+    </ul>
+  </div>
+  <div>
+    <div class="label">❌ Avoid these</div>
+    <ul>
+      <li class="avoid">Governance layer</li>
+      <li class="avoid">Authority infrastructure</li>
+      <li class="avoid">Canonicalization</li>
+      <li class="avoid">JWS / JWT</li>
+      <li class="avoid">Zero-trust enforcement</li>
+      <li class="avoid">Universal action receipt</li>
+      <li class="avoid">Fail-closed authorization</li>
+    </ul>
+  </div>
+</div>
+
+<h2>The closing question</h2>
+<div class="box" style="border-color:#44aa99; border-width:2px;">
+  <div class="big" style="color:#1a1a1a">"Do your agents currently do anything in production that nobody explicitly authorized?"</div>
+  <div style="color:#888; font-size:10px; margin-top:3px">Then shut up. Let them answer. Whatever they say is your next talking point.</div>
+</div>
+
+</div>
+<div class="col">
+
+<h2>15-minute call structure</h2>
+<div class="box">
+  <div class="step"><span class="num">1</span><div class="step-text"><strong>2 min</strong> — "Tell me about how your team uses AI agents today"<br><span style="color:#888">Let THEM talk. Listen for what agents touch.</span></div></div>
+  <div class="step"><span class="num">2</span><div class="step-text"><strong>2 min</strong> — "What's the scariest thing an agent could do if nobody's watching?"<br><span style="color:#888">Find the pain. Name the specific action.</span></div></div>
+  <div class="step"><span class="num">3</span><div class="step-text"><strong>3 min</strong> — Explain PP in context of THEIR pain, not abstractly<br><span style="color:#888">Use their words back to them.</span></div></div>
+  <div class="step"><span class="num">4</span><div class="step-text"><strong>3 min</strong> — Show the demo: block → approve → receipt<br><span style="color:#888">Share screen. 60 seconds. Don't over-explain.</span></div></div>
+  <div class="step"><span class="num">5</span><div class="step-text"><strong>2 min</strong> — "Would it be useful to try this on one workflow?"</div></div>
+  <div class="step"><span class="num">6</span><div class="step-text"><strong>3 min</strong> — Next steps: design partner invite or "I'll send the quickstart"</div></div>
+</div>
+
+<h2>Handle objections</h2>
+<div class="qa-grid">
+  <div class="qa-item">
+    <div class="qa-q">"How is this different from GitHub branch protection?"</div>
+    <div class="qa-a">Branch protection is a yes/no gate. We capture who approved it, what exactly they approved, and give you a tamper-evident receipt you can verify later.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q">"Can't we just use Slack approvals?"</div>
+    <div class="qa-a">Slack approvals are ephemeral. No cryptographic proof, no binding to the exact action. We bind the approval to the specific payload.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q">"We have audit logs already."</div>
+    <div class="qa-a">Audit logs tell you what happened after. We require authorization before. The action doesn't execute without the receipt.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q">"Who's using this?"</div>
+    <div class="qa-a">We're in early access. A handful of teams run it on deploy workflows. We're looking for design partners who want to shape the product.</div>
+  </div>
+</div>
+
+<h2>Mindset</h2>
+<div class="box" style="background:#fffbeb; border-color:#f59e0b">
+  <ul style="font-size:11px">
+    <li><strong>You're not selling PP.</strong> You're asking if the problem is real.</li>
+    <li><strong>Find the pain, shut up.</strong> Let silence do the work.</li>
+    <li><strong>Don't fake traction.</strong> "Early but real" beats "everyone loves us."</li>
+    <li><strong>If they don't have the pain, that's fine.</strong> "Thanks — can I check back in 3 months?"</li>
+    <li><strong>Demo > slides.</strong> Always share screen over deck.</li>
+  </ul>
+</div>
+
+<h2>Your credibility (use in follow-up, not pitch)</h2>
+<div class="box">
+  <div style="font-size:11px">"Quick context — I built BlackLocus, an enterprise ML company acquired by Home Depot. I've been on the buying side of this problem. Built distributed systems at Flying Manta. Now building the authorization layer for agents."</div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">PERMISSION PROTOCOL — CALL PREP — APRIL 2026 — CONFIDENTIAL</div>
+
+</body>
+</html>

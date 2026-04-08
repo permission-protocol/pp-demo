@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 2048px;
+    height: 1152px;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(68,170,153,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(68,170,153,0.02) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+  body::after {
+    content: '';
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(68,170,153,0.05) 0%, transparent 65%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .logo-icon svg {
+    width: 52px;
+    height: 52px;
+  }
+  .logo-text {
+    font-size: 22px;
+    letter-spacing: 0.16em;
+    color: #999;
+    font-weight: 500;
+  }
+  .logo-text span { color: #44aa99; }
+  .headline {
+    font-size: 52px;
+    font-weight: 700;
+    color: #e8e8e8;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .headline em {
+    color: #44aa99;
+    font-style: normal;
+  }
+  .sub {
+    font-size: 22px;
+    color: #555;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="logo-row">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none" style="shape-rendering: crispEdges;">
+          <rect x="1.5" y="1.5" width="13" height="13" stroke="#e8e8e8" stroke-width="1.5" fill="none" />
+          <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#e8e8e8" stroke-width="1.5" />
+          <line x1="8" y1="1.5" x2="8" y2="5.5" stroke="#e8e8e8" stroke-width="1.5" />
+          <line x1="8" y1="10.5" x2="8" y2="14.5" stroke="#e8e8e8" stroke-width="1.5" />
+        </svg>
+      </div>
+      <div class="logo-text">PERMISSION <span>/</span> PROTOCOL</div>
+    </div>
+    <div class="headline">No receipt. <em>No execution.</em></div>
+    <div class="sub">The Signer of Record for AI Systems</div>
+  </div>
+</body>
+</html>
