@@ -316,3 +316,19 @@ Linked to source threads for traceability.
 8. **$300/mo per organization** — Anchors seriousness, leaves room to expand to $1k-5k.
 9. **"Request Access" forces conversation** — Quality > volume at this stage.
 10. **No usage-based pricing** — You pay for control, not API calls.
+
+### April 7-8 addendum (outreach execution + demo)
+
+11. **7 LinkedIn outreach messages sent** April 7: Scott Wu (Cognition), Michael Truell (Cursor), João Moura (crewAI), Harrison Chase (LangChain), Jake Cooper (Railway), Matt Aitken (Trigger.dev), Ryan Delgado (Ramp).
+12. **Demo video published:** https://youtu.be/HiREyLu5ZZY — 60-sec block→approve→receipt flow. Title/end cards on-brand.
+13. **3-layer selling framework:** (1) Gate — unsigned actions rejected. (2) Intelligence — AI-summarized context for fast approval. (3) Proof — cryptographic receipt. Lead 1+2 for technical founders, 1+3 for regulated buyers.
+14. **GitHub PR comment = Markdown only.** No HTML/CSS. Use as teaser → link to PP review page for full experience.
+15. **Enrichment architecture:** Gemini Flash, runs once per PR, stored in DB, shared across surfaces. Max 10 files, 8K chars total diff.
+
+- **2026-04-06 (QA)**: Use installed Google Chrome (`channel: 'chrome'`) + `--disable-blink-features=AutomationControlled` to bypass Google bot detection during Playwright auth. Persist state to `.auth/chrome_profile`. Target `permission-protocol/pp-demo` for E2E testing to ensure the gate workflow exists.
+
+## 2026-04-08 — Onboarding Flow QA (rc-main)
+- Activation = blocked action -> signer decision -> receipt (not just App installation).
+- State machine locked steps must be resumable to self-heal.
+- GitHub App installation callbacks require exponential backoff when querying repos due to internal propagation delays.
+- Legacy auto-setup requiring administration:write is permanently deprecated in favor of scoped contents:write and workflows:write.

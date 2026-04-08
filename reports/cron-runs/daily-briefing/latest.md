@@ -1,13 +1,11 @@
-Daily briefing:
+Daily briefing: system health is `attention`, not critical. Thread state is clean (`VALID 46 threads`), disk is fine (12%), and only one gateway process is running. The main operational risk is cron reliability: `memory-consolidation` has 3 consecutive delivery failures, five other crons threw single-run errors/timeouts, and `pp-onboarding-healthcheck` is misconfigured on channel selection. Outreach remains the real system failure: Day 47 with stale Sycamore and Trent AI drafts still unsent.
 
-System health is watch, not broken. Thread state validated cleanly at 46/46, disk is fine at 12%, and one gateway process is up. The operational risk is cron reliability: 6 cron errors are active, with the highest-signal failures in `Token Health Check`, `unified-hotline` timeout, `memory-consolidation`, `nightly-self-improvement`, `hn-recovery-article-finder` channel config, and `pp-os-weekly-review` timeout.
-
-Active focus remains Permission Protocol distribution. Onboarding is operational after the PKCS#8 fix, PR #314 is ready to merge, and the sprint goal is now 10 active external installs plus Product Hunt launch. The main business constraint is unchanged: outreach is still blocked, with Day 46 at zero outreach and Rod-dependent approvals on `idea-092` plus expired GA4/Search Console auth on `idea-085`.
+Active focus is still Permission Protocol authority infrastructure, but engineering is temporarily ahead of distribution. The consequence engine sprint has Day 1/2 code complete, 10 briefs are ready for grading, and PR #314 is ready to merge. The bottleneck is no longer product work; it is Rod-side approvals and outbound motion.
 
 Immediate actions:
-- Approve or deny `idea-092` so Sycamore outreach can move today.
-- Re-auth GA4/Search Console so conversion audit work can resume.
-- Merge PR #314 and let Charles start Product Hunt hunter identification and warm lead drafting.
-- Triage the 6 failing crons, starting with token health and timeout-heavy jobs.
+- Grade the 10 consequence-analysis outputs so the sprint can tighten on real signal.
+- Approve or deny `idea-092` and the Trent AI / Eno Thereska outreach today.
+- Re-auth GA4/Search Console for `idea-085`.
+- Fix cron delivery health, starting with `memory-consolidation` and the onboarding healthcheck channel config.
 
-Highest-leverage next step: approve `idea-092` immediately to restart outbound motion.
+Highest-leverage next step: approve one of the two blocked outreach drafts right now and get a message sent today.

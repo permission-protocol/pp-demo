@@ -1,0 +1,25 @@
+## main...origin/main
+ M ACTIVE_CONTEXT.md
+ m Xdares
+ M company-os/governance/drift-log.jsonl
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M goals/xdares-seo-growth/state.json
+ M logs/crons/daily-briefing.log
+ m mcp-guard
+ M memory/2026-04-08.md
+ M memory/heartbeat-state.json
+ M permission-protocol-repo
+ M permissionprotocol-site
+ M pp-os/marketing/HOT-SIGNAL.md
+ M pp-os/plans/consequence-engine-sprint.md
+ M pp-os/scout/system-health.log
+?? company-os/governance/snapshots/gov_scan_20260408_1300.json
+?? goals/xdares-seo-growth/logs/tweets-coachella-v2-20260408-061213.json
+?? goals/xdares-seo-growth/scripts/post_coachella_promo_v2.py
+?? pp-os/marketing/signals/2026-04-08.jsonl
+?? pp-os/outreach/consequence-engine-templates.md
+?? pp-os/outreach/signals/2026-04-08.json
+?? pp-os/plans/consequence-brief-grading-batch1.md
+?? pp-os/plans/consequence-engine-gold-standard.md
+?? reports/cron-runs/daily-briefing/20260408T145701Z/

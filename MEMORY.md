@@ -103,3 +103,9 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - Apr 7: Trent AI $13M seed signal captured via Hotline scan; outreach drafted.
 
 *Updated: 2026-04-07 11:15 PM*
+
+### GitHub App Installation Race Conditions
+When receiving a GitHub App installation callback, querying `GET /installation/repositories` immediately can return an empty array due to GitHub's internal propagation delay. Always implement an exponential backoff (e.g., 1s, 2s, 4s) retry loop when the repo list is empty.
+
+### Idempotent State Machines
+When building state machines for onboarding (like ActivationAttempts), locked steps must be idempotent and resumable so users can recover from early failures without getting permanently stuck.

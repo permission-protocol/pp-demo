@@ -1,7 +1,22 @@
-Hot signal: `Trent AI` qualifies as a score-5 fast-track. Its `$13M seed` announcement was published on `April 7, 2026 at 12:34 PM ET`, which is inside the strict 24-hour hotline window, and Trent is directly in the AI-agent security lane.
+Hotline report: no new actionable hotline signals validated on the latest scan at `2026-04-08T15:02:07Z`.
 
-Fast-track actions taken: a lead dossier was written at [pp-os/scout/leads/trent-ai.json](/Users/moltbot/.openclaw/workspace/pp-os/scout/leads/trent-ai.json), a pending founder outreach draft was saved at [pp-os/scout/outreach/pending/trent-ai-eno-thereska-linkedin.md](/Users/moltbot/.openclaw/workspace/pp-os/scout/outreach/pending/trent-ai-eno-thereska-linkedin.md), the signal was logged at [pp-os/scout/signals/2026-04-07.jsonl](/Users/moltbot/.openclaw/workspace/pp-os/scout/signals/2026-04-07.jsonl), and scout state was updated in [pp-os/scout/state.json](/Users/moltbot/.openclaw/workspace/pp-os/scout/state.json).
+Hot signals:
+- No fresh Score 5 trigger.
+- No new Permission Protocol mention.
+- No named AI-agent breach validated inside the strict 6-hour window.
+- No new agent-company funding round above `$10M` validated inside the strict 24-hour window.
+- No Hacker News agent-security/authorization story above 50 points.
 
-No other actionable signals cleared the hotline bar. No fresh Permission Protocol mention was validated, no named AI-agent breach landed inside the 6-hour window, and no HN agent-security/authorization story crossed 50 points. `NeuBird` was reviewed and rejected for hotline use because its funding story was published on `April 6, 2026 at 9:15 AM EDT`, outside the 24-hour window.
+Carry-forward signal:
+- `Trent AI` remains the only live carry-forward hotline lead from the prior run. Its funding announcement was published on `2026-04-07T16:34:00Z`, and the lead dossier plus founder outreach were already drafted earlier. This is not a new trigger from the current scan.
 
-Blockers that should halt outbound action: `Rod approval is required` before sending the Trent LinkedIn note; `X API write access` is still blocked; `HN login` is still unavailable.
+Recommended fast-track actions:
+- No new fast-track action should be launched from this run.
+- Keep `Trent AI` and `Sycamore` in pending approval status only; do not send outbound yet.
+
+Blockers that should halt outbound action:
+- Rod approval is still required before any `Trent AI` or `Sycamore` outbound.
+- X outbound is blocked by missing write permissions on the X API.
+- Hacker News engagement is blocked by unavailable HN login.
+
+Bottom line: no actionable new hotline signal this run.

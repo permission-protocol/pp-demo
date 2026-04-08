@@ -15,7 +15,7 @@ One gap we keep seeing is that teams can define trust levels and monitor agents,
 
 We built Permission Protocol for that layer: explicit approval gates plus signed authority receipts before the action happens, not just observability after the fact.
 
-Feels complementary to what you are building at Sycamore. If helpful, I would be glad to compare notes on where enterprises are getting stuck on agent governance right now.
+We built Permission Protocol for this exact layer: explicit approval gates and signed authority receipts. Feels complementary to Sycamore. Worth comparing notes?
 
 Charles Goldberg
 Permission Protocol
