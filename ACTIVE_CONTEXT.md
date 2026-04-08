@@ -1,40 +1,40 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-08 11:28 AM MDT. Overwrite this file, don't append.*
+*Updated: 2026-04-08 3:34 PM MDT. Overwrite this file, don't append.*
 
-## Consequence Engine Sprint (Apr 8–12) — Day 3 of 5
+## Pushing Now
+- **Consequence Engine SHIPPED.** All 5 sprint days compressed into 1 day. PRs #315-#319 merged and deployed.
+- **Artifacts LOCKED.** 3 screenshot-ready artifacts produced on `demo-repository` (#12, #6, #8/9).
+- **Rod recording Loom demo** now. Script provided in #wedges. 60 seconds, no narration fluff.
+- **OUTREACH DROUGHT: Day 47.** Critical. 2 hot drafts (Sycamore, Trent AI) pending Rod approval.
 
-Code is **2 days ahead** of schedule:
-- **Day 1 & 2 ✅ Complete.** Consequence analysis, deterministic router, outcome status routing, clearance receipts pushed to `feat/consequence-engine`.
-- **Day 3 is TODAY.** Website rewrite + outreach template drafts.
-- **Validation:** 10 consequence briefs for Rod grading. Gold standard test set (30 fixtures) built.
+## Architecture (Locked)
+- **Outcomes:** cleared | approval_required | denied
+- **Receipt types:** clearance | authorization | execution
+- **Trust boundary:** LLM writes brief, deterministic rules decide gate
+- **Denied = hard stop.** No authorize button. Fix code, push again.
+- **Comment quieting:** Per-repo, first 5 cleared PRs, then silent.
 
-### Today's Charles Queue
-1. **Homepage rewrite** — consequence-first framing, three scenario cards (cleared/approval_required/denied), actual PR comment format shown.
-2. **Outreach templates** — consequence analysis lead, ≤3 sentences, include real PR screenshot.
-3. **OG image + meta tags** update.
-4. **Shortlist 5 warm leads** from 123-person list → queue for Rod approval (idea-097).
-5. **Merge PR #314** → PH hunter identification + DM outreach (idea-094/095).
-6. **Email dang@ycombinator.com** re: HN unban (idea-096).
+## Demo Repo
+- `permission-protocol/demo-repository` (Public) — All 3 artifact types now live on one repo.
+- Cleared (#12), Approval Required (#6), Denied (#8, #9).
+- Ready for unified demo recording.
 
-## Rod Actions Required (Unblock These)
-1. **Grade 10 consequence analysis outputs** (posted to Discord) — sets gold standard for Day 4 prompt tuning.
-- **Day 47 outreach drought:** zero messages sent. Critical system failure. Sycamore + Trent AI waiting on Rod.
-3. **Approve or deny Trent AI / Eno Thereska LinkedIn outreach** — hotline lead from Apr 7.
-4. **Re-auth GA4/Search Console tokens** — needed for conversion audit (idea-085).
+## Rod Actions Required
+1. **Record Loom** using provided script on `demo-repository`
+2. **Review homepage copy** (`feat/consequence-engine-site` branch)
+3. **Approve outreach** — Sycamore, Trent AI, warm leads (Day 47 drought)
 
-## Blocked
-- X API write access (both accounts — needs Dev tier upgrade).
-- Paperclip port 3100 on pp-scout-sfo2 (needs SSH).
-- idea-085 metrics (GA4/SC tokens).
-- idea-092 Sycamore pitch (pending Rod approval).
+## Charles Queue
+1. Deploy site branch with real screenshots after Rod approves homepage
+2. Send outreach after Loom + screenshots locked
+3. Fix enrichment timeout on large repos (app repo Gemini failures)
+4. Remove legacy deploy-gate workflows from demo repos
 
 ## Key Files
-- `pp-os/plans/consequence-engine-sprint.md` — 5-day execution plan.
-- `pp-os/plans/consequence-engine-gold-standard.md` — 30 fixture PR test set.
-- `pp-os/plans/consequence-brief-grading-batch1.md` — 10 outputs for grading.
+- `pp-os/plans/consequence-engine-sprint.md` — sprint plan
+- `pp-os/outreach/consequence-engine-templates.md` — 5 new templates
+- `pp-os/plans/consequence-engine-gold-standard.md` — 30-fixture test set
 
 ## Optimize For
-- **Day 3 = website + messaging.** Consequence-first language everywhere.
-- **Outreach > everything else.** Day 47. Break the drought today.
-- **Authority > Review.** Language must stay on consequence analysis and signed receipts.
+- Loom → Homepage → Outreach. That sequence. Don't skip steps.

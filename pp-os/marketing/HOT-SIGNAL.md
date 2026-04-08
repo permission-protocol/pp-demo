@@ -1,22 +1,16 @@
-# HOT SIGNAL: The "Director Auto-Merge" Mandate
+# HOT SIGNAL: Optio & APM (Supply Chain & Autonomous PRs)
 
-**Date:** 2026-04-08
-**Source:** Reddit r/programming
-**Signal:** [Discussion Thread](https://www.reddit.com/r/programming/comments/1nk8dmc/the_agent_kept_working_for_more_than_an_hour_at_a/)
+## 1. Optio (Ticket to PR Orchestration)
+**Source:** [Show HN: Optio](https://github.com/jonwiggins/optio) (88 points, March 2026)
+**What:** An orchestration tool for Claude Code/Codex that manages the full lifecycle from ticket to **merged PR**.
+**Significance:** This is exactly the "wedge" Permission Protocol is targeting. Optio handles the *how* (K8s pods, git worktrees), but relies on implicit trust or manual reviews for the *authority* to merge. PP is the missing "Authority Receipt" layer for tools like Optio.
 
-## Summary
-A verified comment in a viral thread about AI agent failures reveals a critical shift in management sentiment:
-> "I literally just got off a call where a director asked us to let our AI PR reviewing tool auto merge PRs."
+## 2. APM (Agent Package Manager)
+**Source:** [Microsoft/GitHub OSS](https://github.com/microsoft/apm)
+**What:** Dependency management for agent instructions/skills with lockfiles and security audits.
+**Significance:** Microsoft is moving on "Agent Supply Chain" security. They are focusing on the *input* (config/instructions). Permission Protocol's focus on the *output* (signed authority for deployment) is the perfect complement/counter-narrative.
 
-## Why This Matters (Permission Protocol POV)
-1. **The Human Bottleneck is the Target:** Managers are now explicitly trying to remove the human from the PR review loop to increase velocity.
-2. **Authority vs. Quality:** Even when agents are known to be "shittier" or "introduce regressions" (as discussed in the thread), the pressure to auto-merge is mounting.
-3. **The Signer Gap:** There is no infrastructure to safely fulfill this request. "Auto-merge" without a Permission Protocol is just "unauthenticated deploy." 
-
-## Actionable Opportunity
-- **Narrative Hook:** "The Director's Dilemma." Use this signal in outreach to engineering leaders: *Your directors want auto-merge; your devs are terrified of the regressions. Permission Protocol is the only way to say 'yes' safely.*
-- **Targeting:** This is a P0 signal for the "Consequence Engine." If we can quantify the consequence of an auto-merge (e.g., "This PR touches the auth module"), we can provide the governance layer that makes the Director's request actually viable.
-
-## Metadata
-- **Sentiment:** High-pressure, reckless efficiency.
-- **Urgency:** Immediate. The request is happening in calls *today*.
+## 3. User Pain: "Slowest part is deployment"
+**Source:** [Ask HN: Dev Setup](https://news.ycombinator.com/item?id=47616250)
+**Signal:** Users are frustrated that they can't leave work and let agents deploy safely. "The slowest part seems to be deployment... I also don't enjoy the fact that I can't push a job to the web when I am leaving work."
+**Narrative Hook:** "You don't need to stay at your desk to watch an agent deploy. You just need Permission Protocol to gate the signature."
