@@ -37,27 +37,55 @@ type ConsequenceBrief = {
 
 This is NOT a code review. It answers: **"what could this change do to production?"**
 
+**Critical architecture rule:** The LLM writes the consequence brief. **Deterministic signals decide the outcome.** The LLM never gates a merge.
+
+### 1b. Deterministic Outcome Routing (hard rules, not LLM)
+The policy outcome is decided by deterministic rules based on risk signals and file patterns:
+
+**Cleared (deterministic):**
+- Only docs, tests, static assets, copy changes
+- No risk signals detected
+- No files matching protected patterns
+
+**Denied (deterministic):**
+- Hardcoded secrets detected (`sk_live_`, `ghp_`, API keys in source)
+- Destructive migrations (DROP TABLE, column removal)
+- Known dangerous patterns (auth bypass, PII exposure without auth)
+- `denied` = **hard stop.** No signer button, no authorization path on the PR. Developer must fix the code and push again. Admin override available on PP dashboard only (rare, legitimate cases).
+
+**Approval Required (deterministic):**
+- Any file matching auth/billing/permissions/deploy/infra patterns
+- CI/CD workflow changes
+- Dependency changes with risk signals
+- Everything that isn't clearly `cleared` or `denied`
+
+**Branch scoping (prevents over-escalation):**
+- PRs targeting default/protected branches → full routing (cleared/approval_required/denied)
+- PRs targeting feature branches → consequence brief posted as comment, commit status always `success`. Informational only, no gating.
+
+The LLM then writes the consequence brief for whatever the deterministic engine decided. It explains, it doesn't decide.
+
 ### 2. Three Policy Outcomes (replaces verdict spectrum)
 ```ts
-type PolicyOutcome = 'cleared' | 'escalated' | 'blocked';
+type PolicyOutcome = 'cleared' | 'approval_required' | 'denied';
 ```
 
 | Outcome | PR Comment | Commit Status | Receipt Type |
 |---|---|---|---|
-| `cleared` | One-liner + classification receipt link | ✅ success | Classification |
-| `escalated` | Full consequence brief + signer request | ⏳ pending | Authorization (after sign-off) |
-| `blocked` | Full consequence brief + block notice | ❌ failure | None until unblocked |
+| `cleared` | One-liner + clearance receipt link (first 3-5 PRs only, then quiet) | ✅ success | Clearance |
+| `approval_required` | Full consequence brief + signer request | ⏳ pending | Authorization (after sign-off) |
+| `denied` | Full consequence brief + block notice | ❌ failure | None until overridden |
 
 ### 3. Three Receipt Types (data model)
 Add `receiptType` enum to receipts:
-- `classification` — PP analyzed, applied policy, no human involved
+- `clearance` — PP analyzed and cleared under policy, no human involved
 - `authorization` — human signer approved exact action
 - `execution` — action actually ran (future, for deploy-time)
 
 ### 4. Comment Format (consequence-first)
 Replace the Jake format with consequence-first language:
 
-**Cleared (low risk):**
+**Cleared** (shown for first 3-5 PRs after install, then quiet):
 ```
 ## 🔒 Permission Protocol
 
@@ -65,10 +93,10 @@ Replace the Jake format with consequence-first language:
 
 **What changed:** Hero headline updated, pricing link rewired.
 
-📋 [View classification receipt](link)
+📋 [View clearance receipt](link)
 ```
 
-**Escalated (medium/high risk):**
+**Approval Required:**
 ```
 ## 🔒 Permission Protocol
 
@@ -91,7 +119,7 @@ Replace the Jake format with consequence-first language:
 <sub>🔒 Permission Protocol · [Why was this flagged?](link)</sub>
 ```
 
-**Blocked (critical):**
+**Denied** (hard stop — no signer button, developer must fix and re-push):
 ```
 ## 🔒 Permission Protocol
 
@@ -103,9 +131,9 @@ Replace the Jake format with consequence-first language:
 • `sk_live_` key found in `src/lib/stripe.ts` line 14
 • database migration drops `users` table
 
-**Human sign-off required before unblock:** @rod
+**Fix required:** remove secrets from source, use environment variables. Rewrite migration to preserve data.
 
-🔒 [View authorization request →](link)
+📋 [View details](link)
 ```
 
 ### 5. Zero-Config Context Inference
@@ -127,35 +155,40 @@ No configuration screen. PP just gets smarter about your repo.
 1. **Rewrite enrichment prompt** (`enrich.ts`, Jake review section)
    - Current prompt: "is this safe to merge, what changed, what could go wrong"
    - New prompt: "what could this change do to production, why should PP flag it, what must a signer verify"
-   - Output schema changes:
+   - LLM output schema (brief only — NO outcome decision):
      ```ts
-     // Replace JakeReview with:
-     type ConsequenceReview = {
-       outcome: 'cleared' | 'escalated' | 'blocked';
+     type ConsequenceBrief = {
        potentialConsequence: string;     // max 12 words
        whyFlagged: string[];             // 1-3 items, specific to diff
-       verifyBefore: string[];           // 0-2 items, only for escalated/blocked
+       verifyBefore: string[];           // 0-2 items
        whatChanged: string;              // one sentence
      };
      ```
    - Temperature stays at 0.2 for consistency
    - Add Gemini response schema enforcement (already used for Jake)
 
-2. **Test against 20 real PRs**
-   - Pull 20 PRs from: vercel/next.js, supabase/supabase, maybe our own repos
-   - Grade each output: is `potentialConsequence` specific? Is the outcome correct?
-   - Iterate on prompt until outputs are sharp, not generic
-   - Store test results in `pp-os/plans/consequence-engine-test-results.md`
+2. **Build deterministic outcome router**
+   - Takes risk signals + file patterns → returns `cleared | approval_required | denied`
+   - Hard rules only — no LLM in the decision path
+   - Docs/tests only → cleared. Secrets detected → denied. Auth/infra touched → approval_required.
+   - Falls back to `approval_required` for anything ambiguous (safe default)
 
-3. **Add receiptType to data model**
+3. **Build gold standard test set (30 fixture PRs)**
+   - 10 that should clear (docs, tests, static copy, renames)
+   - 10 that should require approval (auth changes, billing logic, infra config, CI workflows)
+   - 10 that should deny (hardcoded secrets, destructive migrations, PII exposure)
+   - Grade against rubric: is consequence specific? Is outcome correct? Is evidence tied to diff?
+   - Store in `pp-os/plans/consequence-engine-test-results.md`
+
+4. **Add receiptType to data model**
    - Prisma migration: add `receiptType` enum field to receipt table
    - Default existing receipts to `authorization`
-   - New auto-cleared PRs get `classification` receipts
+   - New auto-cleared PRs get `clearance` receipts
 
-4. **Wire outcome to commit status**
+5. **Wire outcome to commit status**
    - `cleared` → status: success (currently only approval does this)
-   - `escalated` → status: pending (current behavior)
-   - `blocked` → status: failure (new — currently everything is pending)
+   - `approval_required` → status: pending (current behavior)
+   - `denied` → status: failure (new — currently everything is pending)
 
 #### Rod
 - **Grade 10 consequence analysis outputs** (30 min)
@@ -171,24 +204,31 @@ No configuration screen. PP just gets smarter about your repo.
 #### Charles
 1. **Rewrite `pr-review-comment.ts`**
    - Replace Jake/structured formats with consequence-first format (see above)
-   - Three templates: cleared, escalated, blocked
+   - Three templates: cleared, approval_required, denied
    - Footer: no "edit policies" — just "Why was this flagged?" link + receipt link
-   - Classification receipt link for cleared PRs (new)
-   - Authorization request link for escalated/blocked PRs (existing)
+   - Clearance receipt link for cleared PRs (new)
+   - Authorization request link for approval_required/denied PRs (existing)
 
-2. **Build classification receipt generation**
+2. **Build clearance receipt generation**
    - When outcome is `cleared`, auto-generate a receipt:
-     - Type: `classification`
+     - Type: `clearance`
      - Signer: `system/pp-engine` (not a human)
      - Contains: consequence brief, policy outcome, diff hash
    - Receipt page shows: "PP analyzed this change and cleared it under default policy"
 
-3. **Policy outcome routing in webhook handler**
-   - After enrichment returns `ConsequenceReview`:
-     - `cleared` → generate classification receipt → update comment → set status success
-     - `escalated` → keep current flow (pending status, await human)
-     - `blocked` → set status failure → comment with block notice
-   - The deploy-gate GH Action (for non-App users) gets the same routing via `/api/v1/receipts/verify` response
+3. **Cleared comment quieting logic**
+   - Track PR comment count per installation (simple counter on installation record)
+   - First 3-5 PRs after install: post cleared comment (teaches team what PP does)
+   - After that: cleared = check + receipt only, no top-level comment
+   - `approval_required` and `denied` always get full comments
+
+4. **Policy outcome routing in webhook handler**
+   - Deterministic router decides outcome from risk signals
+   - LLM writes consequence brief in parallel
+   - Combine: outcome + brief → comment + status + receipt
+     - `cleared` → generate clearance receipt → maybe comment → set status success
+     - `approval_required` → keep current flow (pending status, await human)
+     - `denied` → set status failure → comment with block notice
 
 4. **End-to-end test**
    - Test repo PRs covering all three outcomes
@@ -203,7 +243,7 @@ No configuration screen. PP just gets smarter about your repo.
 
 ---
 
-### Day 3 (Fri Apr 10) — Website + Messaging + Wedge Discovery
+### Day 3 (Fri Apr 10) — Website + Messaging
 
 #### Charles
 1. **Rewrite homepage** (`permissionprotocol-site/app/page.tsx`)
@@ -213,27 +253,18 @@ No configuration screen. PP just gets smarter about your repo.
      - "Know what AI-generated code could do before it ships."
    - Three scenario cards (replaces current features section):
      - Cleared: test file update → auto-cleared with receipt
-     - Escalated: auth code change → human sign-off required
-     - Blocked: hardcoded secret → blocked from merge
+     - Approval required: auth code change → human sign-off required
+     - Denied: hardcoded secret → blocked from merge
    - Each card shows the actual PR comment format
+   - **No wedge discovery in signup flow** — one live wedge, zero friction to install
+   - Wedge interest capture goes on thank-you page or secondary CTA, not before install
 
-2. **Build wedge discovery into signup**
-   - After "Get Started" click, show: "What matters most to your team?"
-   - Options:
-     - 🔒 **Deploy Authorization** — consequence analysis + human sign-off for risky PRs *(live)*
-     - 🛡️ **Agent Guardrails** — rules for what AI agents can change in your codebase *(coming soon)*
-     - 📋 **Audit Trail** — tamper-evident record of every AI-generated change *(coming soon)*
-     - 🔑 **Secrets & Infra Gate** — block AI from touching production secrets without approval *(coming soon)*
-     - 🧰 **Tool Access Control** — control which external APIs your AI agents can call *(coming soon)*
-   - Live wedge → install flow. Coming soon → email capture + "Talk to us about design partnership"
-   - Track which wedge gets clicked (PostHog event)
-
-3. **Draft new outreach templates**
+2. **Draft new outreach templates**
    - Lead with consequence analysis, not "approve from PP"
    - Include screenshot of a real PR comment
    - Short: 3 sentences max for cold outreach
 
-4. **Update OG image + meta tags**
+3. **Update OG image + meta tags**
 
 #### Rod
 - **Record 60-sec Loom demo** (20 min)
@@ -296,17 +327,16 @@ No configuration screen. PP just gets smarter about your repo.
    - Include screenshot of consequence brief on a real PR
 
 4. **Tracking verification**
-   - Wedge selection events flowing to PostHog
    - PR comment rendering correctly on fresh installs
-   - Receipt pages loading for classification receipts
+   - Clearance receipt pages loading correctly
+   - Cleared comment quieting working after threshold
 
 #### Rod
 - **Post Loom + narrative on LinkedIn** (15 min)
 - **Personal outreach to 3-5 people** (20 min)
   - "Install this on one repo, tell me what you think of the PR comments"
   - Target people already using AI coding tools
-- **Review wedge selection data** (10 min)
-- **Sprint decision:** based on feedback + wedge data, commit direction for next 2 weeks
+- **Sprint decision:** based on feedback, commit direction for next 2 weeks
 
 ---
 
@@ -323,7 +353,7 @@ No configuration screen. PP just gets smarter about your repo.
 | D4 | Write "what we built" narrative | 20 min |
 | D5 | Post Loom + narrative on LinkedIn | 15 min |
 | D5 | Personal outreach to 3-5 people | 20 min |
-| D5 | Review wedge data + sprint decision | 10 min |
+| D5 | Sprint decision | 10 min |
 | **Total** | | **~3.5 hours** |
 
 ---
@@ -331,23 +361,26 @@ No configuration screen. PP just gets smarter about your repo.
 ## Success Criteria (End of Day 5)
 
 1. Fresh install → first PR gets consequence brief in <10 seconds
-2. Three distinct outcomes work: cleared/escalated/blocked
-3. Classification receipts exist as separate artifact from authorization receipts
-4. Comment language is consequence + authority, never "review"
-5. At least 5 external people have seen the new flow
-6. Wedge selection data exists (any amount)
-7. Clear signal on whether this angle resonates
+2. Three distinct outcomes work: cleared / approval_required / denied
+3. Deterministic signals decide outcomes, LLM writes briefs
+4. Clearance receipts exist as separate artifact from authorization receipts
+5. Comment language is consequence + authority, never "review"
+6. Cleared comments quiet down after first 3-5 PRs per install
+7. At least 5 external people have seen the new flow
+8. Clear signal on whether this angle resonates
 
 ---
 
 ## What We Don't Do This Week
 
 - No policy editor UI (outcome routing uses smart defaults)
-- No new wedge implementations (just measure demand)
+- No wedge discovery in signup (capture interest post-install or via outreach)
+- No deploy-gate standalone action changes (GitHub App is the wedge)
 - No GitLab/Bitbucket support
 - No pricing changes
 - No "edit policies" in first-run experience
 - No AI-author detection dependency
+- No LLM in the outcome decision path
 
 ---
 
@@ -358,12 +391,16 @@ No configuration screen. PP just gets smarter about your repo.
 | Risk assessment | Consequence brief |
 | Intelligent reviewer | Consequence analysis engine |
 | Auto-approved with receipt | Cleared under default policy |
+| Escalated / blocked | Approval required / denied |
+| Classification receipt | Clearance receipt |
 | Review carefully | Human sign-off required |
 | Better PR comments | Authority routing |
 | AI-authored PR detection | Consequential change analysis |
 | Edit policies | Require sign-off next time |
+| LLM decides the gate | Deterministic rules decide the gate |
 
 ---
 
 *Created: 2026-04-07 10:20 PM MDT*
+*Updated: 2026-04-08 6:25 AM MDT — incorporated 6 corrections + denied semantics fix + branch scoping*
 *Source: #wedges thread — Rod + Charles strategy session*
