@@ -1,4 +1,4 @@
-# PP Status — Last Updated: 2026-04-07 8:20 AM MDT
+# PP Status — Last Updated: 2026-04-07 11:15 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Distribution Push (Apr 5–11)
@@ -10,11 +10,12 @@
 
 ### 🔴 ROD ACTION REQUIRED
 - **idea-092** — Sycamore/Sri Viswanath LinkedIn pitch is drafted and waiting approval. Day 46 at zero outreach. Approve or deny.
+- **Trent AI Outreach** — Fresh hotline lead from Apr 7 funding news ($13M seed). Approve or deny Eno Thereska LinkedIn pitch.
 - **idea-085** — Re-auth GA4/Search Console tokens (expired).
 
 ### Charles (READY to execute)
 - **idea-094** — Merge PR #314. Begin Product Hunt hunter identification (idea-095).
-- **idea-097** — Shortlist 5 warm leads from 123-person list. Draft messages. Queue for Rod batch-approval.
+- **idea-097** — Shortlist 5 warm leads from 123-person list (Trent AI is lead #1).
 - **idea-096** — Email dang@ycombinator.com re: HN account unban.
 
 ## BLOCKED (needs Rod)
@@ -33,6 +34,7 @@
 - **idea-081** — PullMatch viral risk profile card (M)
 
 ## Recent Decisions
+- (Apr 7) Critical Fix Pattern established: every high-impact bug fix requires a persistent monitoring script and a daily cron.
 - (Apr 7) ideas.jsonl created with proper state machine schema. 17 ideas tracked.
 - (Apr 6) System prompt restructured (72% reduction). PKCS#8 auth fix deployed.
 - (Apr 4) Sprint 3 closed. Onboarding overhaul (PR #288, #300) shipped.

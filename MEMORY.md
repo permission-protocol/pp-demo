@@ -32,6 +32,9 @@ Merge one PR → rebase others → repeat. Avoid conflict cascades.
 ### Health Check Philosophy
 Silent failures are the most dangerous. Any critical infrastructure (Auth, Webhooks, Onboarding) must have a daily E2E health check script + cron. Fix-and-forget is a myth; fix-and-monitor is the rule.
 
+### Critical Fix Pattern
+Any high-impact bug fix (e.g., onboarding breaks) requires a persistent monitoring script and a daily cron. Never trust a fix to stay fixed without external verification.
+
 ### GitHub App Auth
 JWT = app-level calls. Installation Token = repo-level calls. 401/403 on repo call with JWT → you need an Installation Token.
 
@@ -74,6 +77,7 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **iPhone Mobile QA** (Mar 13): Safari WebDriver via USB cable.
 - **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement, YAML-based rules. Published as `@permission-protocol/mcp-guard`.
 - **Onboarding Smoke Test** (Apr 6): `scripts/pp-onboarding-smoke-test.sh` — E2E verification for GitHub App installation and PR status check feedback loop.
+- **Onboarding Healthcheck** (Apr 7): `scripts/pp-onboarding-healthcheck.sh` — persistent monitoring script for critical onboarding flow.
 
 ---
 
@@ -96,5 +100,6 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - Apr 1: Pricing architecture finalized
 - Apr 4: Onboarding overhaul shipped (PR #288, #300)
 - Apr 6: System prompt restructured (72% reduction in always-injected context)
+- Apr 7: Trent AI $13M seed signal captured via Hotline scan; outreach drafted.
 
-*Updated: 2026-04-06 11:15 PM*
+*Updated: 2026-04-07 11:15 PM*
