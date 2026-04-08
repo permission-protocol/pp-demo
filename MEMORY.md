@@ -44,8 +44,11 @@ JWT = app-level calls. Installation Token = repo-level calls. 401/403 on repo ca
 ### Webhook Integration
 Always check `middleware.ts` PUBLIC_PATHS first. Add both `/path` and `/path/` to avoid trailing slash 401s.
 
-### Prompt Cache Stability
-Dynamic data above the cache boundary kills Anthropic prompt caching. Fixed a $2,600/mo bug from a `userTime` timestamp injected above the breakpoint. Run `scripts/prefix-telemetry.sh` before high-volume work.
+### Denied Status = Hard Stop
+In the Consequence Engine, a "denied" status is a hard stop with no authorize button. The only path forward is fixing the code and pushing a fresh diff.
+
+### Prerequisite Optimization
+Splitting the system prompt and context (reducing always-injected tokens by 70%+) was the prerequisite for the Consequence Engine's high performance and deterministic accuracy.
 
 ---
 
@@ -76,6 +79,7 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **Create Factory** (Mar 13): Autonomous pipeline — ideate → organize → spec → build → qa. Discord: #factory-control/pipeline/wip/done. Reconciliation via `factory/scripts/reconcile.sh`.
 - **iPhone Mobile QA** (Mar 13): Safari WebDriver via USB cable.
 - **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement, YAML-based rules. Published as `@permission-protocol/mcp-guard`.
+- **Consequence Engine** (Apr 8): Predictive enforcement layer that analyzes PR diffs to determine outcomes (`cleared`, `approval_required`, `denied`) before merge.
 - **Onboarding Smoke Test** (Apr 6): `scripts/pp-onboarding-smoke-test.sh` — E2E verification for GitHub App installation and PR status check feedback loop.
 - **Onboarding Healthcheck** (Apr 7): `scripts/pp-onboarding-healthcheck.sh` — persistent monitoring script for critical onboarding flow.
 
@@ -101,8 +105,9 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - Apr 4: Onboarding overhaul shipped (PR #288, #300)
 - Apr 6: System prompt restructured (72% reduction in always-injected context)
 - Apr 7: Trent AI $13M seed signal captured via Hotline scan; outreach drafted.
+- Apr 8: Consequence Engine shipped. 5-day sprint (Engine, Router, Routing, Receipts) compressed into 24 hours.
 
-*Updated: 2026-04-07 11:15 PM*
+*Updated: 2026-04-08 5:30 PM*
 
 ### GitHub App Installation Race Conditions
 When receiving a GitHub App installation callback, querying `GET /installation/repositories` immediately can return an empty array due to GitHub's internal propagation delay. Always implement an exponential backoff (e.g., 1s, 2s, 4s) retry loop when the repo list is empty.
