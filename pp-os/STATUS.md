@@ -3,7 +3,7 @@
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Consequence Engine Launch (Apr 5–11)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
-- **Outreach Drought:** Day 47. Critical system failure.
+- **Outreach Drought:** Day 47. P2 revenue pipeline stall.
 - **Consequence Engine:** LIVE. (Engine, Router, Routing, Receipts, Design v2).
 - **Onboarding status:** OPERATIONAL (Zero-config GitHub App flow).
 
