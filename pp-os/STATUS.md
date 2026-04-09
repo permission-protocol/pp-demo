@@ -1,4 +1,4 @@
-# PP Status — Last Updated: 2026-04-09 11:58 AM MDT
+# PP Status — Last Updated: 2026-04-09 12:58 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Outreach & Polish V2 (Apr 9–15)
@@ -19,6 +19,9 @@
 ### Charles (READY to execute)
 - **Site Deploy** — Push `feat/consequence-engine-site` once Rod approves.
 - **Outreach Send** — Ship Sycamore/Trent AI once Loom is done.
+- **Merge PR #328** — Success page latest repo fix (needs Rod PP approval).
+- **Merge PR #327** — Always-comment fix (needs Rod PP approval).
+- **Merge PR #326** — Surgical comment update (needs Rod PP approval).
 - **Merge PR #325** — Receipt page redesign & logo fix (needs Rod PP approval).
 - **Merge PR #324** — Branded success page & emoji fix (needs Rod PP approval).
 - **Merge PR #323** — Activation setup PR skip (needs Rod PP approval).
