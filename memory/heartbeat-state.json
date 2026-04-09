@@ -1,6 +1,6 @@
 {
-  "dailyCaptureCounter": 1190,
-  "lastDailyCapture": 1775740741,
+  "dailyCaptureCounter": 1192,
+  "lastDailyCapture": "2026-04-09T09:10:20.014062",
   "lastMemoryCuration": 1775484134,
   "description": "Tracks heartbeat-based daily work capture and memory curation cycles",
   "threadNudges": {
