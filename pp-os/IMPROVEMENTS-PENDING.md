@@ -34,3 +34,8 @@
 - **Diagnostics (Apr 5)**: Likely tied to the Discord provider drift (unable to report results) and a potential regression in the mobile age-gate on 10Web (CDN cache).
 - **Proposed Fix**: Debug the 10Web CDN cache issue and verify the `mobile-qa-daily` script logic independently of Discord delivery.
 - **Type**: Bug Fix / Process Change
+
+### 7. OpenClaw Core Update (v2026.4.9)
+- **Problem**: System heartbeats consistently flag that OpenClaw `2026.4.9` is available for manual update. Keeping the core updated ensures we have the latest tool improvements and stability fixes.
+- **Proposed Fix**: Run `openclaw update.run` (or equivalent) after a full backup of `~/.openclaw/config`.
+- **Type**: Maintenance / Update
