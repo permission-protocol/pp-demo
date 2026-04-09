@@ -1,8 +1,9 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-09 04:25 AM MDT. Overwrite this file, don't append.*
+*Updated: 2026-04-09 07:16 AM MDT. Overwrite this file, don't append.*
 
 ## Pushing Now
+- **Onboarding Smoke Test:** Verified 07:05 AM (PASS). All systems (Action, App, API, Marketing) healthy. <5 min flow confirmed.
 - **Consequence Engine SHIPPED.** Core primitive operational.
 - **OUTREACH DROUGHT: Day 47.** Flagged in #charles-log via morning health check.
 - **Board Sync:** Bounties promoted. Readiness verified.
@@ -11,7 +12,7 @@
 - **Outcomes:** cleared | approval_required | denied
 - **Receipt types:** clearance | authorization | execution
 - **Trust boundary:** LLM writes brief, deterministic rules decide gate
-- **Gateway Health:** `scripts/connectivity-heartbeat.sh` (OK) and `scripts/outreach-nudge.sh` (STALE) verified 04:20 AM.
+- **Gateway Health:** `scripts/connectivity-heartbeat.sh` (OK) and `scripts/outreach-nudge.sh` (STALE) verified 07:16 AM.
 
 ## Rod Actions Required (Signer Decisions)
 1. **APPROVE Sycamore/Sri Viswanath Outreach** — Draft ready. Day 47 blocker.
