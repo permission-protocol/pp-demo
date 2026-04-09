@@ -13,35 +13,31 @@ GW_PIDS=0
 DISK_USAGE=0
 
 # ─── 1. Cron Health ───
-CRON_ERRORS=$(openclaw cron list --json --all 2>/dev/null | python3 -c "
+# Use grep -v to strip [plugins] lines before parsing JSON
+CRON_ERRORS=$(openclaw cron list --json --all 2>/dev/null | grep -v "^\[plugins\]" | python3 -c "
 import json, sys
-data = json.load(sys.stdin)
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    print('[]')
+    sys.exit(0)
 errors = []
 for j in data.get('jobs', []):
     if not j.get('enabled', True):
         continue
-    errs = j.get('state', {}).get('consecutiveErrors', 0)
+    state = j.get('state', {})
+    errs = state.get('consecutiveErrors', 0)
     if errs > 0:
         # Sanitize error message to ASCII only
-        last = j.get('state',{}).get('lastError','')[:100]
+        last = state.get('lastError','')[:100]
         last = last.encode('ascii', 'replace').decode('ascii')
         errors.append({'name': j['name'], 'errors': errs, 'last': last})
 print(json.dumps(errors, ensure_ascii=True))
 " 2>/dev/null || echo "[]")
 CRON_ERROR_COUNT=$(echo "$CRON_ERRORS" | python3 -c "import json,sys; print(len(json.load(sys.stdin)))")
 
-# ─── 2. Model Health ───
-MODEL_STATUS=$(openclaw status 2>/dev/null | python3 -c "
-import sys
-lines = sys.stdin.read()
-# Look for default model in Sessions line
-if 'gemini-3.1-pro-preview' in lines and 'default gemini-3.1-pro-preview' in lines:
-    print('ok')
-elif 'gemini-3.1-pro-preview' in lines:
-    print('ok')
-else:
-    print('unknown')
-" 2>/dev/null || echo "unknown")
+# ─── 2. JSON Status Data (Multi-check) ───
+STATUS_JSON=$(openclaw status --json 2>/dev/null | grep -v "^\[plugins\]")
 
 # ─── 3. Gateway Process Health ───
 GW_PIDS=$(ps axo comm | grep -c "openclaw-gateway" 2>/dev/null || echo 0)
@@ -73,26 +69,44 @@ DISK_USAGE=$(df -h / | tail -1 | awk '{print $5}' | tr -d '%')
 
 # ─── Build alerts/warnings ───
 export CRON_ERRORS
+export STATUS_JSON
 python3 << PYEOF
 import json
 import os
 
 alerts = []
 warnings = []
+
+# Cron errors
 cron_errors_raw = os.environ.get('CRON_ERRORS', '[]')
 try:
     cron_errors = json.loads(cron_errors_raw)
-except Exception as e:
-    cron_errors = []
-    alerts.append(f"heartbeat_script_error: failed to parse cron errors JSON: {e}")
-
-# Cron errors
-if len(cron_errors) > 0:
     for e in cron_errors:
         if e['errors'] >= 3:
             alerts.append(f"cron:{e['name']} - {e['errors']} consecutive errors: {e['last']}")
         else:
             warnings.append(f"cron:{e['name']} - {e['errors']} error(s): {e['last']}")
+except Exception as e:
+    cron_errors = []
+    alerts.append(f"heartbeat_script_error: failed to parse cron errors: {e}")
+
+# JSON Status checks
+status_raw = os.environ.get('STATUS_JSON', '{}')
+try:
+    status_data = json.loads(status_raw)
+    
+    # Model
+    model = status_data.get('sessions', {}).get('defaults', {}).get('model', 'unknown')
+    if 'gemini-3.1-pro-preview' not in model:
+        warnings.append(f"model_check: unexpected default model '{model}' (expected gemini-3.1-pro-preview)")
+    
+    # Memory
+    mem_plugin = status_data.get('memoryPlugin', {})
+    if not mem_plugin.get('enabled') or mem_plugin.get('slot') not in ['memory-lancedb', 'memory-core']:
+        alerts.append(f"memory_offline: plugin {mem_plugin.get('slot')} not ready")
+        
+except Exception as e:
+    alerts.append(f"heartbeat_script_error: failed to parse status JSON: {e}")
 
 # Gateway
 gw = $GW_PIDS
@@ -112,17 +126,6 @@ if disk > 90:
     alerts.append(f"disk_critical: {disk}% used")
 elif disk > 80:
     warnings.append(f"disk_warning: {disk}% used")
-
-# Model
-model = "$MODEL_STATUS"
-if model == "unknown":
-    warnings.append("model_check: could not confirm opus-4-6")
-
-# Memory plugin — check memory is active (any plugin)
-import subprocess
-mem_check = subprocess.run(["openclaw", "status"], capture_output=True, text=True, timeout=10)
-if "memory-lancedb" not in mem_check.stdout and "memory-core" not in mem_check.stdout:
-    alerts.append("memory_offline: no memory plugin loaded — check openclaw status")
 
 status = "attention" if alerts else ("watch" if warnings else "clear")
 

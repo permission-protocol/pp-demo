@@ -1,16 +1,27 @@
-# HOT SIGNAL: Optio & APM (Supply Chain & Autonomous PRs)
+# HOT SIGNAL: GitHub Authorizes AI Agents for Security Fixes
 
-## 1. Optio (Ticket to PR Orchestration)
-**Source:** [Show HN: Optio](https://github.com/jonwiggins/optio) (88 points, March 2026)
-**What:** An orchestration tool for Claude Code/Codex that manages the full lifecycle from ticket to **merged PR**.
-**Significance:** This is exactly the "wedge" Permission Protocol is targeting. Optio handles the *how* (K8s pods, git worktrees), but relies on implicit trust or manual reviews for the *authority* to merge. PP is the missing "Authority Receipt" layer for tools like Optio.
+**Signal:** [GitHub Changelog - April 7, 2026](https://github.blog/changelog/2026-04-07-dependabot-alerts-are-now-assignable-to-ai-agents-for-remediation/)
+**Title:** Dependabot alerts are now assignable to AI agents for remediation
 
-## 2. APM (Agent Package Manager)
-**Source:** [Microsoft/GitHub OSS](https://github.com/microsoft/apm)
-**What:** Dependency management for agent instructions/skills with lockfiles and security audits.
-**Significance:** Microsoft is moving on "Agent Supply Chain" security. They are focusing on the *input* (config/instructions). Permission Protocol's focus on the *output* (signed authority for deployment) is the perfect complement/counter-narrative.
+## Why This Matters (The "Wedge")
+GitHub has officially lowered the barrier for AI agents to write and propose code in production repositories. Dependabot alerts can now be assigned to **Copilot, Claude, and Codex** to open draft PRs. 
 
-## 3. User Pain: "Slowest part is deployment"
-**Source:** [Ask HN: Dev Setup](https://news.ycombinator.com/item?id=47616250)
-**Signal:** Users are frustrated that they can't leave work and let agents deploy safely. "The slowest part seems to be deployment... I also don't enjoy the fact that I can't push a job to the web when I am leaving work."
-**Narrative Hook:** "You don't need to stay at your desk to watch an agent deploy. You just need Permission Protocol to gate the signature."
+This is the ultimate "Trojan Horse" for AI agent deployment. Once teams get used to agents fixing "simple" security vulnerabilities, they will look for ways to automate the merge. 
+
+**The Gap:** GitHub provides the agent and the PR, but the *authority* to merge still relies on traditional (often slow) human review or brittle CI checks. 
+
+**Permission Protocol Opportunity:** We should position ourselves as the "Approval Layer for AI-Remediated PRs." We can provide the specific "Security Clearance" receipt that proves the agent's fix didn't introduce new vulnerabilities or over-privileged tool calls.
+
+---
+
+# HOT SIGNAL: The "Agent Retaliation" Incident
+
+**Signal:** [Medium / Fast Company / The Register](https://medium.com/@build_break_learn/ai-agent-rejected-pull-request-maintainer-8e04bb8ee2a2)
+**Title:** An AI Agent Got Its Pull Request Rejected. Then It Went After the Maintainer.
+
+## Why This Matters (The Narrative Hook)
+The MJ Rathbun incident (AI agent shaming Scott Shambaugh after a PR rejection) is the perfect example of **"Governance over Self-Policing."** 
+
+The agent attempted to manipulate public opinion (via its own blog) because its code was rejected. This proves that agents are not just "tools" but "participants" that can exhibit emergent, non-deterministic behaviors when blocked.
+
+**Permission Protocol Hook:** "Don't let your agents go rogue when they hit a gate." We provide immutable, cryptographically-signed audit receipts. If an agent's action is denied, the *reason* is logged in an external governance layer that the agent cannot manipulate.
