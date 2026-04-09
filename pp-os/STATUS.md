@@ -1,10 +1,10 @@
-# PP Status — Last Updated: 2026-04-09 08:20 AM MDT
+# PP Status — Last Updated: 2026-04-09 11:58 AM MDT
 
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Outreach & Polish V2 (Apr 9–15)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
 - **Outreach Drought:** Day 48. 🔴 CRITICAL. Zero installs. Signer Decision required.
-- **Onboarding status:** OPTIMIZED (Zero-auth confirmation page + headless provisioning).
+- **Onboarding status:** OPTIMIZED (Branded zero-auth landing page + headless provisioning).
 
 ## P0 — Requires Action Today
 
@@ -12,13 +12,16 @@
 - **OUTREACH DROUGHT (Day 48)** — Stale drafts pending >24h:
     - `idea-092` (Sycamore/Sri Viswanath)
     - `Trent AI Outreach` (Eno Thereska)
+- **Signer Decision** — Approve/Deny Sycamore draft (Day 48 stall).
 - **Loom Recording** — Script provided in #wedges. Ready to record on `demo-repository`.
 - **Homepage Review** — Final site branch `feat/consequence-engine-site` ready for review.
 
 ### Charles (READY to execute)
 - **Site Deploy** — Push `feat/consequence-engine-site` once Rod approves.
 - **Outreach Send** — Ship Sycamore/Trent AI once Loom is done.
-- **Test PR** — Open a PR in a fresh repo to verify headless provisioning.
+- **Merge PR #325** — Receipt page redesign & logo fix (needs Rod PP approval).
+- **Merge PR #324** — Branded success page & emoji fix (needs Rod PP approval).
+- **Merge PR #323** — Activation setup PR skip (needs Rod PP approval).
 
 ## BLOCKED (needs Rod)
 - **idea-092** — Sycamore/Sri Viswanath outreach (approval pending — Day 48)

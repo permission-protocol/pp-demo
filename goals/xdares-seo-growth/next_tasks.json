@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "id": "task-576",
+    "action": "publish",
+    "target": "fathers-day-party-games-2026",
+    "priority": "medium",
+    "impact": "high",
+    "status": "queued",
+    "notes": "Publish 'Father's Day Party Games 2026' via Tor for early SEO indexing."
+  },
+  {
+    "id": "task-577",
+    "action": "promote",
+    "target": "fathers-day-party-games-2026",
+    "priority": "low",
+    "impact": "medium",
+    "status": "queued",
+    "notes": "Promote Father's Day guide on X (5 tweets)."
+  },
+  {
+    "id": "task-578",
+    "action": "fix",
+    "target": "hubs",
+    "priority": "low",
+    "impact": "medium",
+    "status": "queued",
+    "notes": "Update internal linking in 'Adult Party Games' and 'Drinking Games' hubs to include Father's Day 2026 guide."
+  }
+]
