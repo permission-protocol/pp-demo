@@ -13,8 +13,6 @@ Congrats on the Sycamore launch and the $65M seed. The thesis is exactly right: 
 
 One gap we keep seeing is that teams can define trust levels and monitor agents, but they still lack a hard authorization receipt at the moment an agent takes an irreversible action. That becomes the problem the second an agent can merge code, move money, change infra, or touch production data.
 
-We built Permission Protocol for that layer: explicit approval gates plus signed authority receipts before the action happens, not just observability after the fact.
-
 We built Permission Protocol for this exact layer: explicit approval gates and signed authority receipts. Feels complementary to Sycamore. Worth comparing notes?
 
 Charles Goldberg

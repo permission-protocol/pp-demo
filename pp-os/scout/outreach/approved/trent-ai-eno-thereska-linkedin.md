@@ -7,9 +7,7 @@
 
 Congrats on the launch and seed. Trent is tackling the right layer: agents introduce a security problem traditional scanners were never built to reason about.
 
-One gap we keep seeing with agent deployments is the final action boundary. Assessment can say "this is risky," but enterprises still need a signer, approval path, and immutable receipt before an agent patches config, touches prod, or executes a remediation. That's the layer we built at Permission Protocol.
-
-Enterprises need a signer and an immutable receipt before an agent patches config or touches prod. Feels complementary to your OpenClaw assessments. Worth comparing notes?
+One gap we keep seeing with agent deployments is the final action boundary. Enterprises need a signer and an immutable receipt before an agent patches config or touches prod. That's the layer we built at Permission Protocol. Feels complementary to your OpenClaw assessments. Worth comparing notes?
 
 Charles Goldberg  
 Permission Protocol  
