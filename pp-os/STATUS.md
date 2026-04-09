@@ -1,10 +1,9 @@
-# PP Status — Last Updated: 2026-04-08 5:35 PM MDT
+# PP Status — Last Updated: 2026-04-08 11:05 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Consequence Engine Launch (Apr 5–11)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
 - **Outreach Drought:** Day 47. P2 revenue pipeline stall.
-- **Consequence Engine:** LIVE. (Engine, Router, Routing, Receipts, Design v2).
 - **Onboarding status:** OPERATIONAL (Zero-config GitHub App flow).
 
 ## P0 — Requires Action Today

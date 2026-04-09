@@ -50,9 +50,18 @@ In the Consequence Engine, a "denied" status is a hard stop with no authorize bu
 ### Prerequisite Optimization
 Splitting the system prompt and context (reducing always-injected tokens by 70%+) was the prerequisite for the Consequence Engine's high performance and deterministic accuracy.
 
+### Comment Quieting
+Per-repo comment quieting is essential for developer experience in high-volume environments. First 5 cleared PRs comment, then silent.
+
 ---
 
 ## Strategic Truths
+
+### Consequence-First Framing
+The shift from "AI Reviewer" to "Consequence Engine" significantly reduces outbound friction and improves narrative clarity. Predictive clearance (knowing what code could do before it ships) is a stronger value prop than "reviewing" code.
+
+### Abstraction for Trust
+Deterministic outcome routing (cleared | approval_required | denied) is the correct abstraction for enterprise trust. LLMs provide the brief, but deterministic rules enforce the gate.
 
 ### Activation Definition
 Real activation = **Blocked Action → Signer Decision → Receipt**. Everything before (install, YAML setup) is just setup. Hello World auto-PR gets users to first blocked action in <5 minutes.
