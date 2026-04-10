@@ -1,10 +1,10 @@
 # PP Status — Last Updated: 2026-04-09 11:00 PM MDT
 
 ## Active Right Now
-- **Mode:** Week 5 Sprint — Outreach & Polish V2 (Apr 9–15)
+- **Mode:** Week 5 Sprint — Outreach & Polish V3 (Apr 9–15)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
-- **Outreach Drought:** Day 48. 🔴 CRITICAL. Zero installs. Signer Decision required.
-- **Onboarding status:** OPTIMIZED (Branded success page, headless provisioning, surgical comments).
+- **Polish V3 (Batch 1):** Typography, Gradients, and Radius tightening ready in PRs #337, #338, #339. ✅
+- **Outreach Drought:** Day 49. 🔴 CRITICAL. Zero installs. Signer Decision required.
 
 ## P0 — Requires Action Today
 

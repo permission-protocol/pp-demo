@@ -2,7 +2,7 @@
 
 *Updated: 2026-04-10 01:13 AM MDT. Overwrite this file, don't append.*
 
-## 🔴 SIGNER DECISION REQUIRED — Day 48 Outreach Drought
+## 🔴 SIGNER DECISION REQUIRED — Day 49 Outreach Drought
 The system is technically ready (Consequence Engine stable, Onboarding polished). Growth is the only bottleneck.
 
 **Messages Drafted & Waiting on Rod:**
@@ -12,10 +12,11 @@ The system is technically ready (Consequence Engine stable, Onboarding polished)
 Sprint 5 Goal: 10 external installs. Current: **0**.
 
 ## Pushing Now
+- **Polish V3 (Batch 1) Ready:** Typography, Gradient Buttons, and Border Radius PRs (#337, #338, #339) are pending approval.
 - **Polish V2 Shipped (Apr 9):** Success pages, headless provisioning, surgical comments, branding.
 - **Consequence Engine Stable:** Primitives verified via `acme-app` E2E testing.
 - **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
-- **Hotline (Apr 10 1:00 PM MDT):** No new score-5 hotline trigger validated. GitButler $17M round is watch-only, not fast-track.
+- **Hotline (Apr 10 5:00 PM MDT):** No new score-5 hotline trigger validated. X/HN shell fetches are DNS-blocked; web recency checks surfaced only watch-only adjacent items.
 
 ## Architecture (Locked)
 - **Outcomes:** cleared | approval_required | denied
