@@ -22,7 +22,7 @@ Sprint 5 goal is 10 external installs. Current installs: **0**. These are the on
 - **Trust boundary:** LLM writes brief, deterministic rules decide gate
 - **Gateway Health:** `scripts/connectivity-heartbeat.sh` and `scripts/outreach-nudge.sh` verified 08:16 AM. `heartbeat-check.sh` refactored for stability at 08:34 AM.
 - **Thread State:** `ops/threads.yaml` sanitized and validated.
-- **Hotline:** 1:02 PM MDT scan re-validated no fresh score-5 signal. No new PP mention, no fresh named AI-agent breach inside 6 hours, no qualifying >$10M agent-company funding inside 24 hours, and no HN agent-security/authorization story above 50 points.
+- **Hotline:** 5:02 PM MDT scan re-validated no fresh score-5 signal. No new PP mention, no fresh named AI-agent breach inside 6 hours, no qualifying >$10M agent-company funding inside 24 hours, and no HN agent-security/authorization story above 50 points.
 
 ## Rod Actions Required (Signer Decisions)
 1. **APPROVE or DENY: Sycamore/Sri Viswanath Outreach** (idea-092) — Day 48. Drafts ready.
