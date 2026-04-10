@@ -1,10 +1,10 @@
-# PP Status — Last Updated: 2026-04-09 02:18 PM MDT
+# PP Status — Last Updated: 2026-04-09 11:00 PM MDT
 
 ## Active Right Now
 - **Mode:** Week 5 Sprint — Outreach & Polish V2 (Apr 9–15)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
 - **Outreach Drought:** Day 48. 🔴 CRITICAL. Zero installs. Signer Decision required.
-- **Onboarding status:** OPTIMIZED (Branded zero-auth landing page + headless provisioning).
+- **Onboarding status:** OPTIMIZED (Branded success page, headless provisioning, surgical comments).
 
 ## P0 — Requires Action Today
 
@@ -19,12 +19,9 @@
 ### Charles (READY to execute)
 - **Site Deploy** — Push `feat/consequence-engine-site` once Rod approves.
 - **Outreach Send** — Ship Sycamore/Trent AI once Loom is done.
-- **Merge PR #331** — Missing comment fix & same-window links (needs Rod PP approval).
-- **Merge PR #328** — Success page latest repo fix (needs Rod PP approval).
-- **Merge PR #327** — Always-comment fix (needs Rod PP approval).
-- **Merge PR #326** — Surgical comment update (needs Rod PP approval).
-- **Merge PR #325** — Receipt page redesign & logo fix (needs Rod PP approval).
-- **Merge PR #323** — Activation setup PR skip (needs Rod PP approval).
+- **idea-097** — Shortlist 5 warm leads + draft personalized messages.
+- **idea-095** — PH hunter identification (2-3 hunters) + draft DMs.
+- **idea-096** — Draft HN unban email to dang@.
 
 ## BLOCKED (needs Rod)
 - **idea-092** — Sycamore/Sri Viswanath outreach (approval pending — Day 48)
@@ -39,12 +36,14 @@
 - **idea-084** — MCP Guard v0.2 spec (M)
 
 ## Recent Decisions
+- (Apr 9) Chad Bayer Signal: Safety > Crypto for engineering leaders.
+- (Apr 9) Comment quieting removed. PP always posts a comment on every PR.
+- (Apr 9) Surgical comment updates (preserve consequence brief).
 - (Apr 8) Consequence Engine SHIPPED. 5-day sprint compressed into 1 day.
 - (Apr 8) Denied status = hard stop (no authorize button). Path: fix code.
-- (Apr 8) Per-repo comment quieting. First 5 cleared PRs comment, then silent.
-- (Apr 7) Critical Fix Pattern established: every high-impact bug fix requires a persistent monitoring script and a daily cron.
 
 ## Recently Shipped
+- Polish V2 (PR #322-#330): Onboarding success page, headless provisioning, surgical comments, branding. ✅
 - Consequence Engine (Engine, Router, Routing, Receipts, Design v2) ✅
 - PR #314: Launch alerts ✅
 - Onboarding smoke test script ✅

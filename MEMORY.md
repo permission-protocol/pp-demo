@@ -50,15 +50,21 @@ In the Consequence Engine, a "denied" status is a hard stop with no authorize bu
 ### Prerequisite Optimization
 Splitting the system prompt and context (reducing always-injected tokens by 70%+) was the prerequisite for the Consequence Engine's high performance and deterministic accuracy.
 
-### Comment Quieting
-Per-repo comment quieting is essential for developer experience in high-volume environments. First 5 cleared PRs comment, then silent.
+### Always-Comment (Reversed Quieting)
+Removed per-repo comment quieting (Apr 9). The comment is the primary product touchpoint; if it's missing, the system feels "blind." PP now comments on every PR.
+
+### Surgical Comment Updates
+Updates to PR comments should be surgical (find-and-replace status lines) rather than full re-renders (Apr 9). This preserves the critical consequence brief provided by the LLM while updating the gate status.
+
+### Webhook-only Activation
+Activation engine skips setup PRs (Apr 9). Webhook handles headless provisioning; users get to the first blocked action in <5 minutes without repo pollution.
 
 ---
 
 ## Strategic Truths
 
-### Consequence-First Framing
-The shift from "AI Reviewer" to "Consequence Engine" significantly reduces outbound friction and improves narrative clarity. Predictive clearance (knowing what code could do before it ships) is a stronger value prop than "reviewing" code.
+### Safety > Crypto (Chad Bayer Signal)
+Engineering leaders value safety and velocity in an AI-agent-centric world more than the cryptographic receipt mechanism itself (Apr 9). Framing the product as a "Consequence Engine" for safety/governance has more traction than "Receipt Protocol."
 
 ### Abstraction for Trust
 Deterministic outcome routing (cleared | approval_required | denied) is the correct abstraction for enterprise trust. LLMs provide the brief, but deterministic rules enforce the gate.
@@ -115,6 +121,7 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - Apr 6: System prompt restructured (72% reduction in always-injected context)
 - Apr 7: Trent AI $13M seed signal captured via Hotline scan; outreach drafted.
 - Apr 8: Consequence Engine shipped. 5-day sprint (Engine, Router, Routing, Receipts) compressed into 24 hours.
+- Apr 9: Polish V2 Sprint. 10 PRs shipped. Onboarding, success pages, and surgical comment updates. Chad Bayer signal received.
 
 *Updated: 2026-04-08 5:30 PM*
 

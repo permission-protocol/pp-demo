@@ -35,7 +35,13 @@
 - **Proposed Fix**: Debug the 10Web CDN cache issue and verify the `mobile-qa-daily` script logic independently of Discord delivery.
 - **Type**: Bug Fix / Process Change
 
-### 7. OpenClaw Core Update (v2026.4.9)
-- **Problem**: System heartbeats consistently flag that OpenClaw `2026.4.9` is available for manual update. Keeping the core updated ensures we have the latest tool improvements and stability fixes.
-- **Proposed Fix**: Run `openclaw update.run` (or equivalent) after a full backup of `~/.openclaw/config`.
-- **Type**: Maintenance / Update
+### 8. Outreach Drought Emergency (Day 48)
+- **Problem**: The technical system is stable and optimized, but growth is zero. We are stalled on Rod's "Signer Decision" for the first outbound messages.
+- **Proposed Fix**: Rod to approve/deny Sycamore (idea-092) and Trent AI (idea-098) outreach drafts immediately.
+- **Type**: Process Change / Critical Blocker
+
+### 9. Coding Agent QA Protocol
+- **Problem**: Sprint #2 saw UI regressions due to lack of verification against PRDs.
+- **Status (Apr 9)**: Implemented protocol in `AGENTS.md`.
+- **Action**: Rod to review the new protocol in `AGENTS.md`.
+- **Type**: Process Change

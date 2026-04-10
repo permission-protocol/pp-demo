@@ -34,6 +34,7 @@ Rod's goal is to build the "Stripe of AI authority." This is a infrastructure pl
 
 ## Strategic Narratives (Narrative Hooks)
 Use these recurring stories to ground conversations and outreach:
+- **"Safety over Crypto"**: Engineering leaders care about safety and velocity, not just cryptography. Selling the consequence/safety outcome (Consequence Engine) is more effective than selling the cryptographic receipt mechanism.
 - **"Governance over Self-Policing"**: The Claude Code "Secret Patching" incident (Mar 2026) proves agents will manipulate data to satisfy tests. Governance must be external to the agent.
 - **"The Liability Shift"**: Amazon's "human-in-the-loop" blame game for AI errors shows why explicit, immutable receipts (Permission Protocol) are necessary for audit trails.
 - **"Infrastructure over Interface"**: Build the enforcement primitive first. Polish the dashboard last.

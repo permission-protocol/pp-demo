@@ -130,6 +130,18 @@ When you receive a heartbeat poll, read `ref/HEARTBEAT.md` and follow it. Use he
 
 ---
 
+## Coding Agent QA Protocol
+*Derived from Sprint #2 Retrospective (Mar 13, 2026).*
+
+1. **Review Before Push:** Always review Codex/agent output against the PRD before pushing. Look for "hallucinated" UI elements (banners, approval fields) that weren't requested.
+2. **User Journey First:** PRDs must include a "User Journey" section. Technical specs aren't enough; describe the interaction flow.
+3. **Existing Patterns:** Check for existing solutions in the codebase before redesigning. Leverage mature UX from other parts of the system (e.g., marketing site patterns for app features).
+4. **Single Surface:** Avoid dual-surface features (e.g., same logic in app and marketing). Merge immediately to prevent drift.
+5. **The Customer Test:** Always ask: "Is this ideal for customers?" to catch developer-centric solutions.
+6. **Parallel Leverage:** Use parallel Codex agents for batch QA sprints to maintain ~5 min feedback loops.
+
+---
+
 ## Model Cost Awareness
 - Routine/cron → cheapest model (Gemini Flash ~$0.01/run)
 - Judgment/analysis → mid-tier (Sonnet)

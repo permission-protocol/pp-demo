@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-04-10T04:02:56.397964",
+  "posted": [
+    {
+      "index": 5,
+      "id": "2042543845662167192",
+      "url": "https://x.com/xdares_/status/2042543845662167192",
+      "text": "PLUR Dares (Adult Edition) for your next EDM night..."
+    }
+  ],
+  "errors": [
+    {
+      "index": 1,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    },
+    {
+      "index": 2,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    },
+    {
+      "index": 3,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    },
+    {
+      "index": 4,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    }
+  ],
+  "total_posted": 1
+}

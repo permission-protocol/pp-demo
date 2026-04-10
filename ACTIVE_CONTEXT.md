@@ -1,46 +1,38 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-09 01:00 PM MDT. Overwrite this file, don't append.*
+*Updated: 2026-04-10 01:13 AM MDT. Overwrite this file, don't append.*
 
 ## 🔴 SIGNER DECISION REQUIRED — Day 48 Outreach Drought
-This is a system failure. Every day without outreach approvals is another day at zero installs.
+The system is technically ready (Consequence Engine stable, Onboarding polished). Growth is the only bottleneck.
 
-**Two messages. Both drafted. Both waiting on Rod.**
-1. **idea-092 — Sycamore / Sri Viswanath** — Approve or deny. Now.
-2. **idea-098 — Trent AI / Eno Thereska** — Approve or deny. Now.
+**Messages Drafted & Waiting on Rod:**
+1. **idea-092 — Sycamore / Sri Viswanath** — Approve or deny.
+2. **idea-098 — Trent AI / Eno Thereska** — Approve or deny.
 
-Sprint 5 goal is 10 external installs. Current installs: **0**. These are the only two P0 unblock paths in motion.
+Sprint 5 Goal: 10 external installs. Current: **0**.
 
 ## Pushing Now
-- **Sprint 5 (Apr 9–15):** 10 external installs + Product Hunt launch.
-- **Consequence Engine SHIPPED** (Apr 8). Onboarding smoke-tested and verified.
-- **Outreach Drought: Day 48.** Zero installs. Zero sends.
+- **Polish V2 Shipped (Apr 9):** Success pages, headless provisioning, surgical comments, branding.
+- **Consequence Engine Stable:** Primitives verified via `acme-app` E2E testing.
+- **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
 
 ## Architecture (Locked)
 - **Outcomes:** cleared | approval_required | denied
 - **Receipt types:** clearance | authorization | execution
 - **Trust boundary:** LLM writes brief, deterministic rules decide gate
-- **Gateway Health:** `scripts/connectivity-heartbeat.sh` and `scripts/outreach-nudge.sh` verified 08:16 AM. `heartbeat-check.sh` refactored for stability at 08:34 AM.
-- **Thread State:** `ops/threads.yaml` sanitized and validated.
-- **Hotline:** 5:02 PM MDT scan re-validated no fresh score-5 signal. No new PP mention, no fresh named AI-agent breach inside 6 hours, no qualifying >$10M agent-company funding inside 24 hours, and no HN agent-security/authorization story above 50 points.
+- **Comment Policy:** Always-comment (quieting removed). Surgical status updates.
 
 ## Rod Actions Required (Signer Decisions)
-1. **APPROVE or DENY: Sycamore/Sri Viswanath Outreach** (idea-092) — Day 48. Drafts ready.
-2. **APPROVE or DENY: Trent AI/Eno Thereska Outreach** (idea-098) — Day 48. Drafts ready.
-3. **Record Loom** — 60s demo on `demo-repository`.
-4. **Update OpenClaw** — `2026.4.9` manual update available.
-5. **Re-auth GA4** — PostHog/Stripe funnel audit blocked (idea-085).
+1. **APPROVE or DENY:** Sycamore (idea-092) and Trent AI (idea-098) outreach.
+2. **Record Loom:** 60s demo on `demo-repository`.
+3. **Re-auth GA4:** Blocked on idea-085.
 
-## Charles Queue (can start now, no Rod needed)
-1. idea-097: Shortlist 5 warm leads from 123-person list + draft personalized messages for Rod approval.
-2. idea-095: PH hunter identification — find 2-3 AI governance/devtools hunters, draft DMs.
-3. idea-096: Draft HN unban email to dang@ycombinator.com.
-4. Deploy `feat/consequence-engine-site` once Rod approves homepage.
-5. Outreach overhaul with real PR screenshots (supporting next send batch).
-
-## System Improvements (Nightly Run)
-- **Escalation Protocol:** Updated `AGENTS.md` and `SOUL.md` to prioritize breaking stagnation.
-- **Health Checks:** Gateway auto-restart and Board Sync automation added to scripts.
+## Charles Queue (Ready to execute)
+1. **idea-097:** Shortlist 5 warm leads + draft personalized messages.
+2. **idea-095:** PH hunter identification + draft DMs.
+3. **idea-096:** Draft HN unban email to dang@.
+4. **Deploy:** `feat/consequence-engine-site` once Rod approves homepage.
+5. **Outreach Assets:** Finalize outreach overhaul with real PR screenshots.
 
 ## Optimize For
-- **Breakthrough:** Get the first 2 outreach messages out today. Everything else is secondary.
+- **The First Install:** Break the drought. Get the first message out.
