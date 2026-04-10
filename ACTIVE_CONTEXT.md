@@ -15,6 +15,7 @@ Sprint 5 Goal: 10 external installs. Current: **0**.
 - **Polish V2 Shipped (Apr 9):** Success pages, headless provisioning, surgical comments, branding.
 - **Consequence Engine Stable:** Primitives verified via `acme-app` E2E testing.
 - **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
+- **Hotline (Apr 10 1:00 PM MDT):** No new score-5 hotline trigger validated. GitButler $17M round is watch-only, not fast-track.
 
 ## Architecture (Locked)
 - **Outcomes:** cleared | approval_required | denied
