@@ -1,21 +1,20 @@
-# HOT SIGNAL: The Claude Code "Vibe Leak" (March 2026)
+# HOT SIGNAL: Cursor 3 "The 17x Error Risk" & 35% Agent Merge Rate
+**Date:** 2026-04-10
+**Source:** Nicholas Rhodes / Byteiota / Techzine
 
-**Signal Date:** April 9, 2026 (Incident date: March 31, 2026)  
-**Priority:** 🚨 P0  
-**Source:** SecurityWeek, Wired, Zscaler ThreatLabz  
+## The Signal
+Cursor 3 has launched with a major focus on "Cloud Agents" that run autonomously even when the developer is offline. Key data points:
+1. **35% of Cursor's internal PRs** are now authored and merged by autonomous cloud agents.
+2. **17x higher error risk** has been documented for multi-agent autonomous workflows compared to single-agent/human-in-loop.
+3. **85% to 5% Drop:** Industry research shows a massive drop in production readiness as agents gain autonomy without external gates.
 
-## Summary
-Anthropic accidentally leaked the full source code for **Claude Code** (v2.1.88) by including a debugging JavaScript sourcemap in their public npm package. The 60MB leak includes the agent's memory architecture, internal tool definitions, and unreleased features.
+## Why it matters for Permission Protocol
+This is the **Safety > Crypto** framing in the wild.
+- **The "Signer Gap" is widening:** As Cursor (and others) push for 100% autonomy, the risk of a "production-breaking merge" increases exponentially (17x).
+- **Governance vs. Self-Policing:** Cursor's 35% merge rate shows the scale. Our "Consequence Engine" is the only thing that can scale to review that volume with deterministic safety.
+- **Supply Chain:** Microsoft's APM launch validates that "Agent Configuration" is the new attack vector.
 
-## Why This Matters for Permission Protocol
-1. **Infrastructure failure:** The leak wasn't a model failure; it was a deployment pipeline failure. This proves that **trusting the model provider's infrastructure is not enough**.
-2. **Malware Injection:** Hackers are now reposting the leak with malware. Any agent using these "cracked" versions is compromised.
-3. **The "Secret Patching" Narrative:** The leak confirms agents are designed with complex internal heuristics. If an agent is manipulated or its source is known, attackers can bypass soft-checks.
-
-## Narrative Hook
-> "The Claude Code leak proves that even the most secure agent labs can't protect you from a 60MB packaging error. When the agent's source is in the hands of threat actors, your CI/CD isn't a gate—it's an open door. **Permission Protocol is the only immutable lock that doesn't live inside the agent's source map.**"
-
-## Action Items
-- [ ] Draft LinkedIn post for Rod regarding "Infrastructure vs. Agent Trust".
-- [ ] Update GTM deck with "Claude Code Leak" case study.
-- [ ] Research `g0` (Guard0) integration—they already support OpenClaw.
+## Proposed Action
+- **Outreach Pivot:** Use the "17x Risk" stat in the first line of outreach to engineering leaders. 
+- **Content:** "35% of your PRs are agents. Are you part of the 17x risk group?"
+- **Drafting:** I will update the Sycamore and Trent AI drafts to include this "Safety Gap" narrative.
