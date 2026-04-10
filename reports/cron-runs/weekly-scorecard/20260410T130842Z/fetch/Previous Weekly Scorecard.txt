@@ -1,0 +1,23 @@
+{
+  "week": "2026-03-16 to 2026-03-22",
+  "generated": "2026-03-23T08:15:00-07:00",
+  "metrics": {
+    "followers_x": 36,
+    "blog_views_7d": 171,
+    "subscribers_new": 0,
+    "x_impressions": null,
+    "content": {
+      "tweets": 21,
+      "blog_posts": 1,
+      "linkedin_posts": 2,
+      "hn_comments": 2
+    },
+    "leads": {
+      "watching": 15,
+      "contacted": 0,
+      "outreach_drafted": 7,
+      "outreach_sent_week": 0,
+      "responses_received": 3
+    }
+  }
+}

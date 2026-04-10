@@ -1,0 +1,16 @@
+{
+ "source": "github_actions",
+ "repo": "permission-protocol/error-sensor-sandbox",
+ "workflow_name": "CI",
+ "workflow_run_id": 123456789,
+ "run_attempt": 1,
+ "head_branch": "main",
+ "base_branch": "main",
+ "head_sha": "8e08176456e3406ab220b649f8175dc10f25cf35",
+ "failure_class": "test_failure",
+ "failing_job": "test",
+ "failing_step": "Run npm test -- --runInBand",
+ "command": "npm test -- --runInBand",
+ "log_excerpt": "FAIL src/normalizeAction.test.ts\nExpected: \"delete_user_data\"\nReceived: \"delete user data\"",
+ "detected_at": "2026-04-08T12:00:00Z"
+}

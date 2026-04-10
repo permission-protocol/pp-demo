@@ -23,7 +23,7 @@ IDEA_ID_ARG=""
 for arg in "$@"; do
   case "$arg" in
     --auto) AUTO=true ;;
-    idea-*) IDEA_ID_ARG="$arg" ;;
+    idea-*|gh-*) IDEA_ID_ARG="$arg" ;;
   esac
 done
 

@@ -1,0 +1,17 @@
+{
+  "name": "Permission Protocol",
+  "repo": "permission-protocol/app",
+  "personas": [
+    "Marco — Engineering Manager. Cares about speed, trust signals, approving in <5 seconds for routine deploys.",
+    "Sarah — Security Lead. Cares about blast radius, audit trail, what exactly changed, compliance evidence."
+  ],
+  "context_files": [
+    "pp-os/FOCUS.md",
+    "pp-os/STATUS.md",
+    "pp-os/master-plan.md",
+    "pp-os/pp-strategy-v2.md"
+  ],
+  "branch_prefix": "factory/",
+  "ideate_prompt": "What are the top 3 product improvements you could build with Codex TODAY that would make Permission Protocol better for both Marco and Sarah? Be specific — name the file, the component, the behavior change. Each idea must be completable in a single Codex session.",
+  "clone_cmd": "gh repo clone permission-protocol/app"
+}

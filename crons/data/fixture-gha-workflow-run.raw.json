@@ -1,0 +1,14 @@
+{
+  "workflow_run": {
+    "id": 123456789,
+    "name": "CI",
+    "head_branch": "main",
+    "head_sha": "e318782df4bb1d4ceccc4a979e6d2abfc9b4d8f5",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "repository": {
+      "full_name": "permission-protocol/error-sensor-sandbox"
+    }
+  }
+}

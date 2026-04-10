@@ -1,11 +1,13 @@
-Daily briefing: system health is `attention`, not critical. Thread state is clean (`VALID 46 threads`), disk is fine (12%), and only one gateway process is running. The main operational risk is cron reliability: `memory-consolidation` has 3 consecutive delivery failures, five other crons threw single-run errors/timeouts, and `pp-onboarding-healthcheck` is misconfigured on channel selection. Outreach remains the real system failure: Day 47 with stale Sycamore and Trent AI drafts still unsent.
+**Daily Briefing**
 
-Active focus is still Permission Protocol authority infrastructure, but engineering is temporarily ahead of distribution. The consequence engine sprint has Day 1/2 code complete, 10 briefs are ready for grading, and PR #314 is ready to merge. The bottleneck is no longer product work; it is Rod-side approvals and outbound motion.
+System health is stable but not clean. Heartbeat is `watch`: 1 cron issue (`pp-os-weekly-review` timed out), 49/49 threads validated, gateway process present, disk usage 12%. Workspace is dirty, so avoid treating git state as deploy-ready without a deliberate check.
+
+Active focus should stay on deploy-gate adoption, even though current PP status has drifted into Week 5 outreach polish. Operationally, the real constraint is still zero external installs and a 48-day outreach drought. Product is in a stronger state: onboarding is optimized, Consequence Engine is shipped, Loom script is ready, and the homepage branch is ready for review.
 
 Immediate actions:
-- Grade the 10 consequence-analysis outputs so the sprint can tighten on real signal.
-- Approve or deny `idea-092` and the Trent AI / Eno Thereska outreach today.
-- Re-auth GA4/Search Console for `idea-085`.
-- Fix cron delivery health, starting with `memory-consolidation` and the onboarding healthcheck channel config.
+- Rod: approve or deny the stalled Sycamore and Trent AI outreach drafts today.
+- Rod: record the Loom demo on `demo-repository`.
+- Charles: immediately send outreach once Loom is done, then move on `idea-097`, `idea-095`, and `idea-096`.
+- Ops: inspect and fix the `pp-os-weekly-review` timeout before it masks a real regression.
 
-Highest-leverage next step: approve one of the two blocked outreach drafts right now and get a message sent today.
+Highest-leverage next step: make the signer decision on the Sycamore outreach draft now.

@@ -6,6 +6,12 @@ threads:
     priority: high
     status: ARCHIVED
     created_at: '2026-04-03'
+    updated_at: '2026-04-08'
+    archived_at: '2026-04-08'
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: null
     open_tasks: []
     decisions:
       - >-
@@ -18,8 +24,6 @@ threads:
       - >-
         Legacy auto-setup requiring administration:write is permanently
         deprecated in favor of scoped contents:write and workflows:write.
-    updated_at: '2026-04-08'
-    archived_at: '2026-04-08'
     summary: >-
       Overhauled the Permission Protocol onboarding flow into a deterministic,
       server-orchestrated "Hello World" loop. Squashed race conditions and built
@@ -37,7 +41,7 @@ threads:
     expires_at: null
     blocked_reason: null
     blocked_until: null
-    next_action: Wait for Rod archive confirmation
+    next_action: null
     resolution_artifact: 'E2E test run on pp-demo PR #38'
     summary: >-
       E2E zero-to-merge test executed on pp-demo. Reached blocked PR state
@@ -1333,3 +1337,30 @@ threads:
     open_tasks: []
     decisions:
       - PR
+
+  - id: '1491226981730353324'
+    title: Wedges (Consequence Engine Sprint)
+    channel: rc-main
+    owner: rod
+    priority: critical
+    status: ARCHIVED
+    created_at: '2026-04-07'
+    updated_at: '2026-04-08'
+    archived_at: '2026-04-08'
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: null
+    resolution_artifact: "Consequence Engine v1 shipped (PRs #310–325)"
+    summary: "Refactored Permission Protocol from a 'reviewer' to an 'enforcement engine'. Implemented clearance/authorization/execution receipt loop and deterministic gating."
+    open_tasks: []
+    decisions:
+      - "PP = consequence brief + policy decision + human authorization event. Not a reviewer."
+      - "Three outcomes: cleared | approval_required | denied."
+      - "Three receipt types: clearance | authorization | execution."
+      - "LLM writes brief, deterministic rules decide gate. LLM never blocks a merge."
+      - "Denied = hard stop. No authorize CTA. Fix code, push again."
+      - "Per-repo comment quieting (first 5 cleared PRs, then silent)."
+      - "Block merge from day one, but only on consequential PRs."
+      - "Single entry point for onboarding: one install link."
+      - "Comment design v2: blockquotes, tables, details sections, authority language."

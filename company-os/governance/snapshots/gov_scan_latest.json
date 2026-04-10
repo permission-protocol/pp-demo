@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-08T13:00:04Z",
+  "generated_at": "2026-04-10T13:00:15Z",
   "host": "moltbot-macbook-pro",
   "stats": {
     "total": 41,
@@ -34,7 +34,7 @@
       "session_target": "main",
       "next_run": "2027-02-12T16:30:00Z",
       "last_run": null,
-      "sla_days_left": -7,
+      "sla_days_left": -9,
       "last_reviewed": "2026-03-02",
       "cron_id": "6d3da517-dbd3-4cc6-a9bb-ca6674252a91"
     },
@@ -55,8 +55,8 @@
       "model": "default",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:30:00Z",
-      "last_run": "2026-04-07T14:31:22Z",
+      "next_run": "2026-04-10T14:30:00Z",
+      "last_run": "2026-04-09T14:34:35Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "266425d8-ce1b-4771-8748-740684357bfd"
@@ -78,8 +78,8 @@
       "model": "gemini-flash",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T16:00:00Z",
-      "last_run": "2026-04-07T16:00:00Z",
+      "next_run": "2026-04-10T16:00:00Z",
+      "last_run": "2026-04-09T16:00:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "ed19710e-1989-4d02-84ec-f7733e0986c0"
@@ -99,10 +99,10 @@
       "schedule_tz": null,
       "schedule_ledger": null,
       "model": "gemini-flash",
-      "timeout_seconds": 300,
+      "timeout_seconds": 3600,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:03:00Z",
-      "last_run": "2026-04-07T14:03:00Z",
+      "next_run": "2026-04-10T14:03:00Z",
+      "last_run": "2026-04-09T14:03:56Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "f9d08ca6-2067-4644-ac08-323314acc834"
@@ -124,8 +124,8 @@
       "model": "anthropic/claude-sonnet-4-6",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:20:00Z",
-      "last_run": "2026-04-07T14:20:00Z",
+      "next_run": "2026-04-10T14:20:00Z",
+      "last_run": "2026-04-09T14:20:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "2fc62916-13c3-4613-9101-2bb1cc8dda9c"
@@ -147,8 +147,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 0,
       "session_target": "isolated",
-      "next_run": "2026-04-08T23:00:00Z",
-      "last_run": "2026-04-07T23:07:43Z",
+      "next_run": "2026-04-10T23:00:00Z",
+      "last_run": "2026-04-09T23:02:06Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "3d556c8c-19a4-48b6-aade-d279f0757ca1"
@@ -170,8 +170,8 @@
       "model": "gemini-flash",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:15:59Z",
-      "last_run": "2026-04-08T12:15:59Z",
+      "next_run": "2026-04-10T13:11:30Z",
+      "last_run": "2026-04-10T12:11:30Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "3de4efda-6a11-4f03-baeb-552a55c35796"
@@ -193,8 +193,8 @@
       "model": "gemini-flash",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:45:01Z",
-      "last_run": "2026-04-08T12:45:01Z",
+      "next_run": "2026-04-10T13:15:33Z",
+      "last_run": "2026-04-10T12:15:33Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "9da440b5-5461-49a1-8b37-60457d18e480"
@@ -218,8 +218,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -239,8 +239,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:01:02Z",
-      "last_run": "2026-04-08T12:01:02Z",
+      "next_run": "2026-04-10T14:01:02Z",
+      "last_run": "2026-04-10T12:01:02Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "25d04706-34a4-406b-893e-a8a9bce182f6"
@@ -264,8 +264,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -285,10 +285,10 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 120,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:00:00Z",
-      "last_run": "2026-04-07T13:00:00Z",
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "next_run": "2026-04-10T13:00:00Z",
+      "last_run": "2026-04-09T13:00:00Z",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": "60a9e179-3d6b-4051-8124-255b9f40cda0"
     },
     {
@@ -308,8 +308,8 @@
       "model": "gemini-flash",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:00:00Z",
-      "last_run": "2026-04-07T13:01:39Z",
+      "next_run": "2026-04-10T13:00:00Z",
+      "last_run": "2026-04-09T13:02:30Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "78ab936d-2da4-4989-a896-f5e96460218b"
@@ -331,8 +331,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-09T05:00:00Z",
-      "last_run": "2026-04-08T05:00:00Z",
+      "next_run": "2026-04-11T05:00:00Z",
+      "last_run": "2026-04-10T05:00:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "5b6f94d4-ff3d-4c1c-97ef-392ab3296b4f"
@@ -356,8 +356,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -377,8 +377,8 @@
       "model": "gemini-flash",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-08T15:00:00Z",
-      "last_run": "2026-04-07T15:06:27Z",
+      "next_run": "2026-04-10T15:00:00Z",
+      "last_run": "2026-04-09T15:09:35Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "31f3cfee-b9ae-4bf5-baf1-cf50bdd162f7"
@@ -400,8 +400,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-09T05:30:00Z",
-      "last_run": "2026-04-08T05:30:00Z",
+      "next_run": "2026-04-11T05:30:00Z",
+      "last_run": "2026-04-10T05:30:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "e41fa6e0-3fc3-42ab-a339-6f45a3883106"
@@ -425,7 +425,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
+      "sla_days_left": -9,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -448,8 +448,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -469,8 +469,8 @@
       "model": "default",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:30:00Z",
-      "last_run": "2026-04-07T13:30:00Z",
+      "next_run": "2026-04-10T13:30:00Z",
+      "last_run": "2026-04-09T13:30:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "1c443958-3217-4141-b1f2-1b2eb70a3c9a"
@@ -492,8 +492,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 300,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:00:00Z",
-      "last_run": "2026-04-07T13:00:20Z",
+      "next_run": "2026-04-10T13:00:00Z",
+      "last_run": "2026-04-09T13:02:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "d953a651-632d-4bae-84ae-28e6617f0888"
@@ -517,8 +517,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -540,8 +540,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -563,7 +563,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
+      "sla_days_left": -9,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -586,8 +586,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -605,12 +605,12 @@
       "schedule_tz": "America/Denver",
       "schedule_ledger": "0 10 * * 0 (Denver)",
       "model": "anthropic/claude-sonnet-4-6",
-      "timeout_seconds": 600,
+      "timeout_seconds": 1800,
       "session_target": "isolated",
       "next_run": "2026-04-12T16:00:00Z",
       "last_run": "2026-04-05T16:00:00Z",
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": "8e8f1d36-f14b-4144-977f-cb8b1f6fa97a"
     },
     {
@@ -653,8 +653,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:00:00Z",
-      "last_run": "2026-04-07T14:00:38Z",
+      "next_run": "2026-04-10T14:00:00Z",
+      "last_run": "2026-04-09T14:00:41Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "37ccde70-5e71-4805-a1c0-c40087cbda5a"
@@ -678,8 +678,8 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
-      "last_reviewed": "2026-03-02",
+      "sla_days_left": 29,
+      "last_reviewed": "2026-04-09",
       "cron_id": null
     },
     {
@@ -701,7 +701,7 @@
       "session_target": null,
       "next_run": null,
       "last_run": null,
-      "sla_days_left": -7,
+      "sla_days_left": -9,
       "last_reviewed": "2026-03-02",
       "cron_id": null
     },
@@ -722,8 +722,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 300,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:30:00Z",
-      "last_run": "2026-04-07T14:30:00Z",
+      "next_run": "2026-04-10T14:30:00Z",
+      "last_run": "2026-04-09T14:30:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "8d5f8e98-f13a-459d-9734-c7159761d07a"
@@ -745,8 +745,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": null,
       "session_target": "isolated",
-      "next_run": "2026-04-08T15:00:00Z",
-      "last_run": "2026-04-07T15:05:14Z",
+      "next_run": "2026-04-10T15:00:00Z",
+      "last_run": "2026-04-09T15:09:05Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "cfe7e472-484e-4679-a3cf-8d7e9d94905e"
@@ -768,8 +768,8 @@
       "model": "gemini-flash",
       "timeout_seconds": 60,
       "session_target": "isolated",
-      "next_run": "2026-04-08T13:30:51Z",
-      "last_run": "2026-04-08T12:30:51Z",
+      "next_run": "2026-04-10T13:16:29Z",
+      "last_run": "2026-04-10T12:16:29Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "a4236508-b84f-4de9-bcc5-bb2199177abc"
@@ -791,8 +791,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 1200,
       "session_target": "isolated",
-      "next_run": "2026-04-08T15:00:00Z",
-      "last_run": "2026-04-07T23:00:00Z",
+      "next_run": "2026-04-10T15:00:00Z",
+      "last_run": "2026-04-09T23:00:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "e6325458-1c96-4293-ad1f-50cde96d4b44"
@@ -814,8 +814,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 300,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:00:00Z",
-      "last_run": "2026-04-07T22:00:00Z",
+      "next_run": "2026-04-10T14:00:00Z",
+      "last_run": "2026-04-09T22:00:00Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "b925a425-70b4-41b9-b2ee-7c33f4da7593"
@@ -883,8 +883,8 @@
       "model": "google/gemini-3-flash-preview",
       "timeout_seconds": 600,
       "session_target": "isolated",
-      "next_run": "2026-04-08T14:08:21Z",
-      "last_run": "2026-04-08T12:08:21Z",
+      "next_run": "2026-04-10T14:56:23Z",
+      "last_run": "2026-04-10T12:56:23Z",
       "sla_days_left": null,
       "last_reviewed": null,
       "cron_id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416"
@@ -997,12 +997,6 @@
       "detail": "goal-xdares-seo-daily: ledger_only"
     },
     {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "goal-xdares-seo-daily",
-      "detail": "goal-xdares-seo-daily: Authority B SLA breached (7 days overdue)"
-    },
-    {
       "severity": "HIGH",
       "type": "shadow_process",
       "process": "goal-xdares-seo-main",
@@ -1033,12 +1027,6 @@
       "detail": "memory-curation-r1: ledger_only"
     },
     {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "memory-curation-r1",
-      "detail": "memory-curation-r1: Authority B SLA breached (7 days overdue)"
-    },
-    {
       "severity": "HIGH",
       "type": "shadow_process",
       "process": "mobile-qa-daily",
@@ -1055,12 +1043,6 @@
       "type": "ledger_only",
       "process": "pp-linkedin-weekly",
       "detail": "pp-linkedin-weekly: ledger_only"
-    },
-    {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "pp-linkedin-weekly",
-      "detail": "pp-linkedin-weekly: Authority C SLA breached (7 days overdue)"
     },
     {
       "severity": "HIGH",
@@ -1081,34 +1063,16 @@
       "detail": "pp-os-daily-log-and-plan: ledger_only"
     },
     {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "pp-os-daily-log-and-plan",
-      "detail": "pp-os-daily-log-and-plan: Authority B SLA breached (7 days overdue)"
-    },
-    {
       "severity": "WARN",
       "type": "ledger_only",
       "process": "pp-os-execute-ready",
       "detail": "pp-os-execute-ready: ledger_only"
     },
     {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "pp-os-execute-ready",
-      "detail": "pp-os-execute-ready: Authority C SLA breached (7 days overdue)"
-    },
-    {
       "severity": "WARN",
       "type": "ledger_only",
       "process": "pp-os-qa-review",
       "detail": "pp-os-qa-review: ledger_only"
-    },
-    {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "pp-os-qa-review",
-      "detail": "pp-os-qa-review: Authority B SLA breached (7 days overdue)"
     },
     {
       "severity": "HIGH",
@@ -1127,12 +1091,6 @@
       "type": "ledger_only",
       "process": "pr-prescreen-auto",
       "detail": "pr-prescreen-auto: ledger_only"
-    },
-    {
-      "severity": "CRITICAL",
-      "type": "sla_breach",
-      "process": "pr-prescreen-auto",
-      "detail": "pr-prescreen-auto: Authority B SLA breached (7 days overdue)"
     },
     {
       "severity": "WARN",
@@ -1197,8 +1155,8 @@
         "label": "ai.openclaw.node"
       },
       {
-        "pid": "71929",
-        "exit_code": "0",
+        "pid": "24169",
+        "exit_code": "1",
         "label": "ai.openclaw.gateway"
       },
       {

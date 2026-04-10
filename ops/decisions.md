@@ -332,3 +332,14 @@ Linked to source threads for traceability.
 - State machine locked steps must be resumable to self-heal.
 - GitHub App installation callbacks require exponential backoff when querying repos due to internal propagation delays.
 - Legacy auto-setup requiring administration:write is permanently deprecated in favor of scoped contents:write and workflows:write.
+
+## 2026-04-08 — Consequence Engine Architecture (from #Wedges)
+- PP = consequence brief → policy decision → human authorization event
+- Outcomes: cleared | approval_required | denied
+- Receipt types: clearance | authorization | execution
+- Trust boundary: LLM writes brief, deterministic rules decide gate
+- Denied = hard stop, no authorize CTA
+- Per-repo comment quieting, not per-installation
+- Block merge from day one, only on consequential PRs
+- Single entry point: github.com/apps/permission-protocol/installations/select_target
+- Comment design v2: blockquotes, tables, details, authority language ("Human authorization required", "Decision: blocked by policy")

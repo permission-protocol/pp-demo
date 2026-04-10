@@ -1,0 +1,13 @@
+{
+  "status": "watch",
+  "alerts": [],
+  "warnings": [
+    "cron:scout-reddit-digest - 2 error(s): ?? ?? Message failed",
+    "cron:governance-integrity-check - 1 error(s): cron: job execution timed out",
+    "cron:pp-os-weekly-review - 1 error(s): cron: job execution timed out"
+  ],
+  "cron_errors": 3,
+  "gateway_processes": 1,
+  "disk_usage_pct": 12,
+  "cooldown": "unknown"
+}

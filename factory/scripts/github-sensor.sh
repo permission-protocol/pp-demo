@@ -102,6 +102,7 @@ for issue in issues:
     # Sensor-sourced items go straight to 'ready' (skip PRD step).
     # build.sh now picks up 'ready' alongside 'prd-ready'.
     # The GitHub Issue body serves as the build spec for Codex.
+    now = datetime.datetime.utcnow().isoformat() + 'Z'
     bounty = {
         'id': f'gh-{repo.split(\"/\")[1]}-{number}',
         'title': f'[{repo}] {title}',

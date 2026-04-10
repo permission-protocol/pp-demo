@@ -21,7 +21,7 @@ echo ""
 
 # 1. Drift Detection
 echo "--- Drift Detection ---"
-DRIFT_OUTPUT=$(bash "$SCRIPT_DIR/drift-check.sh" 2>&1) || true
+DRIFT_OUTPUT=$(bash "$SCRIPT_DIR/drift-check.sh" 2>&1)
 DRIFT_EXIT=$?
 echo "$DRIFT_OUTPUT"
 if [ $DRIFT_EXIT -ne 0 ]; then
@@ -33,7 +33,7 @@ echo ""
 
 # 2. Review SLA Enforcement
 echo "--- Review SLA Check ---"
-SLA_OUTPUT=$(bash "$SCRIPT_DIR/review-sla-enforce.sh" 2>&1) || true
+SLA_OUTPUT=$(bash "$SCRIPT_DIR/review-sla-enforce.sh" 2>&1)
 SLA_EXIT=$?
 if [ -n "$SLA_OUTPUT" ]; then
   echo "$SLA_OUTPUT"

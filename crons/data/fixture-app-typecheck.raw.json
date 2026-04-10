@@ -1,0 +1,14 @@
+{
+  "workflow_run": {
+    "id": 23960940933,
+    "name": "Build",
+    "head_branch": "feature/approve-page-v2",
+    "head_sha": "f42302a5fcebc1aec73a36216941d986d55fda09",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "repository": {
+      "full_name": "permission-protocol/app"
+    }
+  }
+}

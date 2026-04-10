@@ -1,0 +1,15 @@
+{
+  "url": "https://www.permissionprotocol.com/",
+  "title": "Permission Protocol — Human Approval Gates for AI Agent Actions",
+  "w": 390,
+  "h": 844,
+  "sh": 9936,
+  "dpr": 2,
+  "links": 29,
+  "buttons": 3,
+  "images": 0,
+  "inputs": 0,
+  "h1": "A bot-authored deploy is about to delete 12,847 user records.",
+  "meta_desc": "Block AI agents from deploying to production, accessing sensitive data, or moving money without a cryptographically signed human approval. Ed25519 receipts, <200ms enforcement, MIT-licensed. Start free.",
+  "meta_viewport": "width=device-width, initial-scale=1"
+}

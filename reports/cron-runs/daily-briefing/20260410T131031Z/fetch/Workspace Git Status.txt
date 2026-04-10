@@ -1,0 +1,775 @@
+## log/2026-04-09
+ m Xdares
+ M company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md
+ M company-os/governance/drift-log.jsonl
+ M company-os/governance/scripts/governance-check.sh
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M factory/scripts/github-sensor.sh
+ M factory/scripts/spec.sh
+ M factory/thread-map.json
+ M logs/crons/daily-briefing.log
+ M logs/crons/unified-hotline.log
+ M logs/crons/weekly-scorecard.log
+ m mcp-guard
+ D node_modules/.bin/playwright
+ D node_modules/.bin/playwright-core
+ M node_modules/.package-lock.json
+ D node_modules/@playwright/test/LICENSE
+ D node_modules/@playwright/test/NOTICE
+ D node_modules/@playwright/test/README.md
+ D node_modules/@playwright/test/cli.js
+ D node_modules/@playwright/test/index.d.ts
+ D node_modules/@playwright/test/index.js
+ D node_modules/@playwright/test/index.mjs
+ D node_modules/@playwright/test/package.json
+ D node_modules/@playwright/test/reporter.d.ts
+ D node_modules/@playwright/test/reporter.js
+ D node_modules/@playwright/test/reporter.mjs
+ D node_modules/playwright-core/LICENSE
+ D node_modules/playwright-core/NOTICE
+ D node_modules/playwright-core/README.md
+ D node_modules/playwright-core/ThirdPartyNotices.txt
+ D node_modules/playwright-core/bin/install_media_pack.ps1
+ D node_modules/playwright-core/bin/install_webkit_wsl.ps1
+ D node_modules/playwright-core/bin/reinstall_chrome_beta_linux.sh
+ D node_modules/playwright-core/bin/reinstall_chrome_beta_mac.sh
+ D node_modules/playwright-core/bin/reinstall_chrome_beta_win.ps1
+ D node_modules/playwright-core/bin/reinstall_chrome_stable_linux.sh
+ D node_modules/playwright-core/bin/reinstall_chrome_stable_mac.sh
+ D node_modules/playwright-core/bin/reinstall_chrome_stable_win.ps1
+ D node_modules/playwright-core/bin/reinstall_msedge_beta_linux.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_beta_mac.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_beta_win.ps1
+ D node_modules/playwright-core/bin/reinstall_msedge_dev_linux.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_dev_mac.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_dev_win.ps1
+ D node_modules/playwright-core/bin/reinstall_msedge_stable_linux.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_stable_mac.sh
+ D node_modules/playwright-core/bin/reinstall_msedge_stable_win.ps1
+ D node_modules/playwright-core/browsers.json
+ D node_modules/playwright-core/cli.js
+ D node_modules/playwright-core/index.d.ts
+ D node_modules/playwright-core/index.js
+ D node_modules/playwright-core/index.mjs
+ D node_modules/playwright-core/lib/androidServerImpl.js
+ D node_modules/playwright-core/lib/bootstrap.js
+ D node_modules/playwright-core/lib/browserServerImpl.js
+ D node_modules/playwright-core/lib/cli/browserActions.js
+ D node_modules/playwright-core/lib/cli/driver.js
+ D node_modules/playwright-core/lib/cli/installActions.js
+ D node_modules/playwright-core/lib/cli/program.js
+ D node_modules/playwright-core/lib/cli/programWithTestStub.js
+ D node_modules/playwright-core/lib/client/android.js
+ D node_modules/playwright-core/lib/client/api.js
+ D node_modules/playwright-core/lib/client/artifact.js
+ D node_modules/playwright-core/lib/client/browser.js
+ D node_modules/playwright-core/lib/client/browserContext.js
+ D node_modules/playwright-core/lib/client/browserType.js
+ D node_modules/playwright-core/lib/client/cdpSession.js
+ D node_modules/playwright-core/lib/client/channelOwner.js
+ D node_modules/playwright-core/lib/client/clientHelper.js
+ D node_modules/playwright-core/lib/client/clientInstrumentation.js
+ D node_modules/playwright-core/lib/client/clientStackTrace.js
+ D node_modules/playwright-core/lib/client/clock.js
+ D node_modules/playwright-core/lib/client/connect.js
+ D node_modules/playwright-core/lib/client/connection.js
+ D node_modules/playwright-core/lib/client/consoleMessage.js
+ D node_modules/playwright-core/lib/client/coverage.js
+ D node_modules/playwright-core/lib/client/debugger.js
+ D node_modules/playwright-core/lib/client/dialog.js
+ D node_modules/playwright-core/lib/client/disposable.js
+ D node_modules/playwright-core/lib/client/download.js
+ D node_modules/playwright-core/lib/client/electron.js
+ D node_modules/playwright-core/lib/client/elementHandle.js
+ D node_modules/playwright-core/lib/client/errors.js
+ D node_modules/playwright-core/lib/client/eventEmitter.js
+ D node_modules/playwright-core/lib/client/events.js
+ D node_modules/playwright-core/lib/client/fetch.js
+ D node_modules/playwright-core/lib/client/fileChooser.js
+ D node_modules/playwright-core/lib/client/fileUtils.js
+ D node_modules/playwright-core/lib/client/frame.js
+ D node_modules/playwright-core/lib/client/harRouter.js
+ D node_modules/playwright-core/lib/client/input.js
+ D node_modules/playwright-core/lib/client/jsHandle.js
+ D node_modules/playwright-core/lib/client/jsonPipe.js
+ D node_modules/playwright-core/lib/client/localUtils.js
+ D node_modules/playwright-core/lib/client/locator.js
+ D node_modules/playwright-core/lib/client/network.js
+ D node_modules/playwright-core/lib/client/page.js
+ D node_modules/playwright-core/lib/client/platform.js
+ D node_modules/playwright-core/lib/client/playwright.js
+ D node_modules/playwright-core/lib/client/screencast.js
+ D node_modules/playwright-core/lib/client/selectors.js
+ D node_modules/playwright-core/lib/client/stream.js
+ D node_modules/playwright-core/lib/client/timeoutSettings.js
+ D node_modules/playwright-core/lib/client/tracing.js
+ D node_modules/playwright-core/lib/client/types.js
+ D node_modules/playwright-core/lib/client/video.js
+ D node_modules/playwright-core/lib/client/waiter.js
+ D node_modules/playwright-core/lib/client/webError.js
+ D node_modules/playwright-core/lib/client/worker.js
+ D node_modules/playwright-core/lib/client/writableStream.js
+ D node_modules/playwright-core/lib/generated/bindingsControllerSource.js
+ D node_modules/playwright-core/lib/generated/clockSource.js
+ D node_modules/playwright-core/lib/generated/injectedScriptSource.js
+ D node_modules/playwright-core/lib/generated/pollingRecorderSource.js
+ D node_modules/playwright-core/lib/generated/storageScriptSource.js
+ D node_modules/playwright-core/lib/generated/utilityScriptSource.js
+ D node_modules/playwright-core/lib/generated/webSocketMockSource.js
+ D node_modules/playwright-core/lib/inProcessFactory.js
+ D node_modules/playwright-core/lib/inprocess.js
+ D node_modules/playwright-core/lib/mcpBundle.js
+ D node_modules/playwright-core/lib/mcpBundleImpl.js
+ D node_modules/playwright-core/lib/outofprocess.js
+ D node_modules/playwright-core/lib/protocol/serializers.js
+ D node_modules/playwright-core/lib/protocol/validator.js
+ D node_modules/playwright-core/lib/protocol/validatorPrimitives.js
+ D node_modules/playwright-core/lib/remote/playwrightConnection.js
+ D node_modules/playwright-core/lib/remote/playwrightPipeServer.js
+ D node_modules/playwright-core/lib/remote/playwrightServer.js
+ D node_modules/playwright-core/lib/remote/playwrightWebSocketServer.js
+ D node_modules/playwright-core/lib/remote/serverTransport.js
+ D node_modules/playwright-core/lib/server/android/android.js
+ D node_modules/playwright-core/lib/server/android/backendAdb.js
+ D node_modules/playwright-core/lib/server/artifact.js
+ D node_modules/playwright-core/lib/server/bidi/bidiBrowser.js
+ D node_modules/playwright-core/lib/server/bidi/bidiChromium.js
+ D node_modules/playwright-core/lib/server/bidi/bidiConnection.js
+ D node_modules/playwright-core/lib/server/bidi/bidiDeserializer.js
+ D node_modules/playwright-core/lib/server/bidi/bidiExecutionContext.js
+ D node_modules/playwright-core/lib/server/bidi/bidiFirefox.js
+ D node_modules/playwright-core/lib/server/bidi/bidiInput.js
+ D node_modules/playwright-core/lib/server/bidi/bidiNetworkManager.js
+ D node_modules/playwright-core/lib/server/bidi/bidiOverCdp.js
+ D node_modules/playwright-core/lib/server/bidi/bidiPage.js
+ D node_modules/playwright-core/lib/server/bidi/bidiPdf.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiCommands.d.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiKeyboard.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiProtocol.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiProtocolCore.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiProtocolPermissions.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/bidiSerializer.js
+ D node_modules/playwright-core/lib/server/bidi/third_party/firefoxPrefs.js
+ D node_modules/playwright-core/lib/server/browser.js
+ D node_modules/playwright-core/lib/server/browserContext.js
+ D node_modules/playwright-core/lib/server/browserType.js
+ D node_modules/playwright-core/lib/server/callLog.js
+ D node_modules/playwright-core/lib/server/chromium/appIcon.png
+ D node_modules/playwright-core/lib/server/chromium/chromium.js
+ D node_modules/playwright-core/lib/server/chromium/chromiumSwitches.js
+ D node_modules/playwright-core/lib/server/chromium/crBrowser.js
+ D node_modules/playwright-core/lib/server/chromium/crConnection.js
+ D node_modules/playwright-core/lib/server/chromium/crCoverage.js
+ D node_modules/playwright-core/lib/server/chromium/crDevTools.js
+ D node_modules/playwright-core/lib/server/chromium/crDragDrop.js
+ D node_modules/playwright-core/lib/server/chromium/crExecutionContext.js
+ D node_modules/playwright-core/lib/server/chromium/crInput.js
+ D node_modules/playwright-core/lib/server/chromium/crNetworkManager.js
+ D node_modules/playwright-core/lib/server/chromium/crPage.js
+ D node_modules/playwright-core/lib/server/chromium/crPdf.js
+ D node_modules/playwright-core/lib/server/chromium/crProtocolHelper.js
+ D node_modules/playwright-core/lib/server/chromium/crServiceWorker.js
+ D node_modules/playwright-core/lib/server/chromium/defaultFontFamilies.js
+ D node_modules/playwright-core/lib/server/chromium/protocol.d.js
+ D node_modules/playwright-core/lib/server/clock.js
+ D node_modules/playwright-core/lib/server/codegen/csharp.js
+ D node_modules/playwright-core/lib/server/codegen/java.js
+ D node_modules/playwright-core/lib/server/codegen/javascript.js
+ D node_modules/playwright-core/lib/server/codegen/jsonl.js
+ D node_modules/playwright-core/lib/server/codegen/language.js
+ D node_modules/playwright-core/lib/server/codegen/languages.js
+ D node_modules/playwright-core/lib/server/codegen/python.js
+ D node_modules/playwright-core/lib/server/codegen/types.js
+ D node_modules/playwright-core/lib/server/console.js
+ D node_modules/playwright-core/lib/server/cookieStore.js
+ D node_modules/playwright-core/lib/server/debugController.js
+ D node_modules/playwright-core/lib/server/debugger.js
+ D node_modules/playwright-core/lib/server/deviceDescriptors.js
+ D node_modules/playwright-core/lib/server/deviceDescriptorsSource.json
+ D node_modules/playwright-core/lib/server/dialog.js
+ D node_modules/playwright-core/lib/server/dispatchers/androidDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/artifactDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/browserContextDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/browserDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/browserTypeDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/cdpSessionDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/debugControllerDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/debuggerDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/dialogDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/dispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/disposableDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/electronDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/elementHandlerDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/frameDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/jsHandleDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/jsonPipeDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/localUtilsDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/networkDispatchers.js
+ D node_modules/playwright-core/lib/server/dispatchers/pageDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/playwrightDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/streamDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/tracingDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/webSocketRouteDispatcher.js
+ D node_modules/playwright-core/lib/server/dispatchers/writableStreamDispatcher.js
+ D node_modules/playwright-core/lib/server/disposable.js
+ D node_modules/playwright-core/lib/server/dom.js
+ D node_modules/playwright-core/lib/server/download.js
+ D node_modules/playwright-core/lib/server/electron/electron.js
+ D node_modules/playwright-core/lib/server/electron/loader.js
+ D node_modules/playwright-core/lib/server/errors.js
+ D node_modules/playwright-core/lib/server/fetch.js
+ D node_modules/playwright-core/lib/server/fileChooser.js
+ D node_modules/playwright-core/lib/server/fileUploadUtils.js
+ D node_modules/playwright-core/lib/server/firefox/ffBrowser.js
+ D node_modules/playwright-core/lib/server/firefox/ffConnection.js
+ D node_modules/playwright-core/lib/server/firefox/ffExecutionContext.js
+ D node_modules/playwright-core/lib/server/firefox/ffInput.js
+ D node_modules/playwright-core/lib/server/firefox/ffNetworkManager.js
+ D node_modules/playwright-core/lib/server/firefox/ffPage.js
+ D node_modules/playwright-core/lib/server/firefox/firefox.js
+ D node_modules/playwright-core/lib/server/firefox/protocol.d.js
+ D node_modules/playwright-core/lib/server/formData.js
+ D node_modules/playwright-core/lib/server/frameSelectors.js
+ D node_modules/playwright-core/lib/server/frames.js
+ D node_modules/playwright-core/lib/server/har/harRecorder.js
+ D node_modules/playwright-core/lib/server/har/harTracer.js
+ D node_modules/playwright-core/lib/server/harBackend.js
+ D node_modules/playwright-core/lib/server/helper.js
+ D node_modules/playwright-core/lib/server/index.js
+ D node_modules/playwright-core/lib/server/input.js
+ D node_modules/playwright-core/lib/server/instrumentation.js
+ D node_modules/playwright-core/lib/server/javascript.js
+ D node_modules/playwright-core/lib/server/launchApp.js
+ D node_modules/playwright-core/lib/server/localUtils.js
+ D node_modules/playwright-core/lib/server/macEditingCommands.js
+ D node_modules/playwright-core/lib/server/network.js
+ D node_modules/playwright-core/lib/server/overlay.js
+ D node_modules/playwright-core/lib/server/page.js
+ D node_modules/playwright-core/lib/server/pipeTransport.js
+ D node_modules/playwright-core/lib/server/playwright.js
+ D node_modules/playwright-core/lib/server/progress.js
+ D node_modules/playwright-core/lib/server/protocolError.js
+ D node_modules/playwright-core/lib/server/recorder.js
+ D node_modules/playwright-core/lib/server/recorder/chat.js
+ D node_modules/playwright-core/lib/server/recorder/recorderApp.js
+ D node_modules/playwright-core/lib/server/recorder/recorderRunner.js
+ D node_modules/playwright-core/lib/server/recorder/recorderSignalProcessor.js
+ D node_modules/playwright-core/lib/server/recorder/recorderUtils.js
+ D node_modules/playwright-core/lib/server/recorder/throttledFile.js
+ D node_modules/playwright-core/lib/server/registry/browserFetcher.js
+ D node_modules/playwright-core/lib/server/registry/dependencies.js
+ D node_modules/playwright-core/lib/server/registry/index.js
+ D node_modules/playwright-core/lib/server/registry/nativeDeps.js
+ D node_modules/playwright-core/lib/server/registry/oopDownloadBrowserMain.js
+ D node_modules/playwright-core/lib/server/screencast.js
+ D node_modules/playwright-core/lib/server/screenshotter.js
+ D node_modules/playwright-core/lib/server/selectors.js
+ D node_modules/playwright-core/lib/server/socksClientCertificatesInterceptor.js
+ D node_modules/playwright-core/lib/server/socksInterceptor.js
+ D node_modules/playwright-core/lib/server/trace/recorder/snapshotter.js
+ D node_modules/playwright-core/lib/server/trace/recorder/snapshotterInjected.js
+ D node_modules/playwright-core/lib/server/trace/recorder/tracing.js
+ D node_modules/playwright-core/lib/server/trace/viewer/traceViewer.js
+ D node_modules/playwright-core/lib/server/transport.js
+ D node_modules/playwright-core/lib/server/types.js
+ D node_modules/playwright-core/lib/server/usKeyboardLayout.js
+ D node_modules/playwright-core/lib/server/utils/ascii.js
+ D node_modules/playwright-core/lib/server/utils/comparators.js
+ D node_modules/playwright-core/lib/server/utils/crypto.js
+ D node_modules/playwright-core/lib/server/utils/debug.js
+ D node_modules/playwright-core/lib/server/utils/debugLogger.js
+ D node_modules/playwright-core/lib/server/utils/disposable.js
+ D node_modules/playwright-core/lib/server/utils/env.js
+ D node_modules/playwright-core/lib/server/utils/eventsHelper.js
+ D node_modules/playwright-core/lib/server/utils/expectUtils.js
+ D node_modules/playwright-core/lib/server/utils/fileUtils.js
+ D node_modules/playwright-core/lib/server/utils/happyEyeballs.js
+ D node_modules/playwright-core/lib/server/utils/hostPlatform.js
+ D node_modules/playwright-core/lib/server/utils/httpServer.js
+ D node_modules/playwright-core/lib/server/utils/image_tools/colorUtils.js
+ D node_modules/playwright-core/lib/server/utils/image_tools/compare.js
+ D node_modules/playwright-core/lib/server/utils/image_tools/imageChannel.js
+ D node_modules/playwright-core/lib/server/utils/image_tools/stats.js
+ D node_modules/playwright-core/lib/server/utils/linuxUtils.js
+ D node_modules/playwright-core/lib/server/utils/network.js
+ D node_modules/playwright-core/lib/server/utils/nodePlatform.js
+ D node_modules/playwright-core/lib/server/utils/pipeTransport.js
+ D node_modules/playwright-core/lib/server/utils/processLauncher.js
+ D node_modules/playwright-core/lib/server/utils/profiler.js
+ D node_modules/playwright-core/lib/server/utils/socksProxy.js
+ D node_modules/playwright-core/lib/server/utils/spawnAsync.js
+ D node_modules/playwright-core/lib/server/utils/task.js
+ D node_modules/playwright-core/lib/server/utils/userAgent.js
+ D node_modules/playwright-core/lib/server/utils/wsServer.js
+ D node_modules/playwright-core/lib/server/utils/zipFile.js
+ D node_modules/playwright-core/lib/server/utils/zones.js
+ D node_modules/playwright-core/lib/server/videoRecorder.js
+ D node_modules/playwright-core/lib/server/webkit/protocol.d.js
+ D node_modules/playwright-core/lib/server/webkit/webkit.js
+ D node_modules/playwright-core/lib/server/webkit/wkBrowser.js
+ D node_modules/playwright-core/lib/server/webkit/wkConnection.js
+ D node_modules/playwright-core/lib/server/webkit/wkExecutionContext.js
+ D node_modules/playwright-core/lib/server/webkit/wkInput.js
+ D node_modules/playwright-core/lib/server/webkit/wkInterceptableRequest.js
+ D node_modules/playwright-core/lib/server/webkit/wkPage.js
+ D node_modules/playwright-core/lib/server/webkit/wkProvisionalPage.js
+ D node_modules/playwright-core/lib/server/webkit/wkWorkers.js
+ D node_modules/playwright-core/lib/serverRegistry.js
+ D node_modules/playwright-core/lib/third_party/pixelmatch.js
+ D node_modules/playwright-core/lib/tools/backend/browserBackend.js
+ D node_modules/playwright-core/lib/tools/backend/common.js
+ D node_modules/playwright-core/lib/tools/backend/config.js
+ D node_modules/playwright-core/lib/tools/backend/console.js
+ D node_modules/playwright-core/lib/tools/backend/context.js
+ D node_modules/playwright-core/lib/tools/backend/cookies.js
+ D node_modules/playwright-core/lib/tools/backend/devtools.js
+ D node_modules/playwright-core/lib/tools/backend/dialogs.js
+ D node_modules/playwright-core/lib/tools/backend/evaluate.js
+ D node_modules/playwright-core/lib/tools/backend/files.js
+ D node_modules/playwright-core/lib/tools/backend/form.js
+ D node_modules/playwright-core/lib/tools/backend/keyboard.js
+ D node_modules/playwright-core/lib/tools/backend/logFile.js
+ D node_modules/playwright-core/lib/tools/backend/mouse.js
+ D node_modules/playwright-core/lib/tools/backend/navigate.js
+ D node_modules/playwright-core/lib/tools/backend/network.js
+ D node_modules/playwright-core/lib/tools/backend/pdf.js
+ D node_modules/playwright-core/lib/tools/backend/response.js
+ D node_modules/playwright-core/lib/tools/backend/route.js
+ D node_modules/playwright-core/lib/tools/backend/runCode.js
+ D node_modules/playwright-core/lib/tools/backend/screenshot.js
+ D node_modules/playwright-core/lib/tools/backend/sessionLog.js
+ D node_modules/playwright-core/lib/tools/backend/snapshot.js
+ D node_modules/playwright-core/lib/tools/backend/storage.js
+ D node_modules/playwright-core/lib/tools/backend/tab.js
+ D node_modules/playwright-core/lib/tools/backend/tabs.js
+ D node_modules/playwright-core/lib/tools/backend/tool.js
+ D node_modules/playwright-core/lib/tools/backend/tools.js
+ D node_modules/playwright-core/lib/tools/backend/tracing.js
+ D node_modules/playwright-core/lib/tools/backend/utils.js
+ D node_modules/playwright-core/lib/tools/backend/verify.js
+ D node_modules/playwright-core/lib/tools/backend/video.js
+ D node_modules/playwright-core/lib/tools/backend/wait.js
+ D node_modules/playwright-core/lib/tools/backend/webstorage.js
+ D node_modules/playwright-core/lib/tools/cli-client/cli.js
+ D node_modules/playwright-core/lib/tools/cli-client/help.json
+ D node_modules/playwright-core/lib/tools/cli-client/minimist.js
+ D node_modules/playwright-core/lib/tools/cli-client/program.js
+ D node_modules/playwright-core/lib/tools/cli-client/registry.js
+ D node_modules/playwright-core/lib/tools/cli-client/session.js
+ D node_modules/playwright-core/lib/tools/cli-client/skill/SKILL.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/element-attributes.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/playwright-tests.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/request-mocking.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/running-code.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/session-management.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/storage-state.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/test-generation.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/tracing.md
+ D node_modules/playwright-core/lib/tools/cli-client/skill/references/video-recording.md
+ D node_modules/playwright-core/lib/tools/cli-daemon/command.js
+ D node_modules/playwright-core/lib/tools/cli-daemon/commands.js
+ D node_modules/playwright-core/lib/tools/cli-daemon/daemon.js
+ D node_modules/playwright-core/lib/tools/cli-daemon/helpGenerator.js
+ D node_modules/playwright-core/lib/tools/cli-daemon/program.js
+ D node_modules/playwright-core/lib/tools/dashboard/appIcon.png
+ D node_modules/playwright-core/lib/tools/dashboard/dashboardApp.js
+ D node_modules/playwright-core/lib/tools/dashboard/dashboardController.js
+ D node_modules/playwright-core/lib/tools/exports.js
+ D node_modules/playwright-core/lib/tools/mcp/browserFactory.js
+ D node_modules/playwright-core/lib/tools/mcp/cdpRelay.js
+ D node_modules/playwright-core/lib/tools/mcp/cli-stub.js
+ D node_modules/playwright-core/lib/tools/mcp/config.d.js
+ D node_modules/playwright-core/lib/tools/mcp/config.js
+ D node_modules/playwright-core/lib/tools/mcp/configIni.js
+ D node_modules/playwright-core/lib/tools/mcp/extensionContextFactory.js
+ D node_modules/playwright-core/lib/tools/mcp/index.js
+ D node_modules/playwright-core/lib/tools/mcp/log.js
+ D node_modules/playwright-core/lib/tools/mcp/program.js
+ D node_modules/playwright-core/lib/tools/mcp/protocol.js
+ D node_modules/playwright-core/lib/tools/mcp/watchdog.js
+ D node_modules/playwright-core/lib/tools/trace/SKILL.md
+ D node_modules/playwright-core/lib/tools/trace/installSkill.js
+ D node_modules/playwright-core/lib/tools/trace/traceActions.js
+ D node_modules/playwright-core/lib/tools/trace/traceAttachments.js
+ D node_modules/playwright-core/lib/tools/trace/traceCli.js
+ D node_modules/playwright-core/lib/tools/trace/traceConsole.js
+ D node_modules/playwright-core/lib/tools/trace/traceErrors.js
+ D node_modules/playwright-core/lib/tools/trace/traceOpen.js
+ D node_modules/playwright-core/lib/tools/trace/traceParser.js
+ D node_modules/playwright-core/lib/tools/trace/traceRequests.js
+ D node_modules/playwright-core/lib/tools/trace/traceScreenshot.js
+ D node_modules/playwright-core/lib/tools/trace/traceSnapshot.js
+ D node_modules/playwright-core/lib/tools/trace/traceUtils.js
+ D node_modules/playwright-core/lib/tools/utils/connect.js
+ D node_modules/playwright-core/lib/tools/utils/mcp/http.js
+ D node_modules/playwright-core/lib/tools/utils/mcp/server.js
+ D node_modules/playwright-core/lib/tools/utils/mcp/tool.js
+ D node_modules/playwright-core/lib/tools/utils/socketConnection.js
+ D node_modules/playwright-core/lib/utils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/ariaSnapshot.js
+ D node_modules/playwright-core/lib/utils/isomorphic/assert.js
+ D node_modules/playwright-core/lib/utils/isomorphic/colors.js
+ D node_modules/playwright-core/lib/utils/isomorphic/cssParser.js
+ D node_modules/playwright-core/lib/utils/isomorphic/cssTokenizer.js
+ D node_modules/playwright-core/lib/utils/isomorphic/formatUtils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/headers.js
+ D node_modules/playwright-core/lib/utils/isomorphic/imageUtils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/jsonSchema.js
+ D node_modules/playwright-core/lib/utils/isomorphic/locatorGenerators.js
+ D node_modules/playwright-core/lib/utils/isomorphic/locatorParser.js
+ D node_modules/playwright-core/lib/utils/isomorphic/locatorUtils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/lruCache.js
+ D node_modules/playwright-core/lib/utils/isomorphic/manualPromise.js
+ D node_modules/playwright-core/lib/utils/isomorphic/mimeType.js
+ D node_modules/playwright-core/lib/utils/isomorphic/multimap.js
+ D node_modules/playwright-core/lib/utils/isomorphic/protocolFormatter.js
+ D node_modules/playwright-core/lib/utils/isomorphic/protocolMetainfo.js
+ D node_modules/playwright-core/lib/utils/isomorphic/rtti.js
+ D node_modules/playwright-core/lib/utils/isomorphic/selectorParser.js
+ D node_modules/playwright-core/lib/utils/isomorphic/semaphore.js
+ D node_modules/playwright-core/lib/utils/isomorphic/stackTrace.js
+ D node_modules/playwright-core/lib/utils/isomorphic/stringUtils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/time.js
+ D node_modules/playwright-core/lib/utils/isomorphic/timeoutRunner.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/entries.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/snapshotRenderer.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/snapshotServer.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/snapshotStorage.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/traceLoader.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/traceModel.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/traceModernizer.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/traceUtils.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV3.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV4.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV5.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV6.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV7.js
+ D node_modules/playwright-core/lib/utils/isomorphic/trace/versions/traceV8.js
+ D node_modules/playwright-core/lib/utils/isomorphic/types.js
+ D node_modules/playwright-core/lib/utils/isomorphic/urlMatch.js
+ D node_modules/playwright-core/lib/utils/isomorphic/utilityScriptSerializers.js
+ D node_modules/playwright-core/lib/utils/isomorphic/yaml.js
+ D node_modules/playwright-core/lib/utilsBundle.js
+ D node_modules/playwright-core/lib/utilsBundleImpl/index.js
+ D node_modules/playwright-core/lib/utilsBundleImpl/xdg-open
+ D node_modules/playwright-core/lib/vite/dashboard/assets/index-BAOybkp8.js
+ D node_modules/playwright-core/lib/vite/dashboard/assets/index-CZAYOG76.css
+ D node_modules/playwright-core/lib/vite/dashboard/index.html
+ D node_modules/playwright-core/lib/vite/htmlReport/index.html
+ D node_modules/playwright-core/lib/vite/htmlReport/report.css
+ D node_modules/playwright-core/lib/vite/htmlReport/report.js
+ D node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule-C8KMvO9L.js
+ D node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule-DYBRYzYX.css
+ D node_modules/playwright-core/lib/vite/recorder/assets/codicon-DCmgc-ay.ttf
+ D node_modules/playwright-core/lib/vite/recorder/assets/index-BSjZa4pk.css
+ D node_modules/playwright-core/lib/vite/recorder/assets/index-CqAYX1I3.js
+ D node_modules/playwright-core/lib/vite/recorder/index.html
+ D node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg
+ D node_modules/playwright-core/lib/vite/traceViewer/assets/codeMirrorModule-DS0FLvoc.js
+ D node_modules/playwright-core/lib/vite/traceViewer/assets/defaultSettingsView-GTWI-W_B.js
+ D node_modules/playwright-core/lib/vite/traceViewer/assets/xtermModule-CsJ4vdCR.js
+ D node_modules/playwright-core/lib/vite/traceViewer/codeMirrorModule.DYBRYzYX.css
+ D node_modules/playwright-core/lib/vite/traceViewer/codicon.DCmgc-ay.ttf
+ D node_modules/playwright-core/lib/vite/traceViewer/defaultSettingsView.B4dS75f0.css
+ D node_modules/playwright-core/lib/vite/traceViewer/index.C5466mMT.js
+ D node_modules/playwright-core/lib/vite/traceViewer/index.CzXZzn5A.css
+ D node_modules/playwright-core/lib/vite/traceViewer/index.html
+ D node_modules/playwright-core/lib/vite/traceViewer/manifest.webmanifest
+ D node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg
+ D node_modules/playwright-core/lib/vite/traceViewer/snapshot.html
+ D node_modules/playwright-core/lib/vite/traceViewer/sw.bundle.js
+ D node_modules/playwright-core/lib/vite/traceViewer/uiMode.Btcz36p_.css
+ D node_modules/playwright-core/lib/vite/traceViewer/uiMode.Vipi55dB.js
+ D node_modules/playwright-core/lib/vite/traceViewer/uiMode.html
+ D node_modules/playwright-core/lib/vite/traceViewer/xtermModule.DYP7pi_n.css
+ D node_modules/playwright-core/lib/zipBundle.js
+ D node_modules/playwright-core/lib/zipBundleImpl.js
+ D node_modules/playwright-core/lib/zodBundle.js
+ D node_modules/playwright-core/lib/zodBundleImpl.js
+ D node_modules/playwright-core/package.json
+ D node_modules/playwright-core/types/protocol.d.ts
+ D node_modules/playwright-core/types/structs.d.ts
+ D node_modules/playwright-core/types/types.d.ts
+ D node_modules/playwright/LICENSE
+ D node_modules/playwright/NOTICE
+ D node_modules/playwright/README.md
+ D node_modules/playwright/ThirdPartyNotices.txt
+ D node_modules/playwright/cli.js
+ D node_modules/playwright/index.d.ts
+ D node_modules/playwright/index.js
+ D node_modules/playwright/index.mjs
+ D node_modules/playwright/jsx-runtime.js
+ D node_modules/playwright/jsx-runtime.mjs
+ D node_modules/playwright/lib/agents/agentParser.js
+ D node_modules/playwright/lib/agents/copilot-setup-steps.yml
+ D node_modules/playwright/lib/agents/generateAgents.js
+ D node_modules/playwright/lib/agents/playwright-test-coverage.prompt.md
+ D node_modules/playwright/lib/agents/playwright-test-generate.prompt.md
+ D node_modules/playwright/lib/agents/playwright-test-generator.agent.md
+ D node_modules/playwright/lib/agents/playwright-test-heal.prompt.md
+ D node_modules/playwright/lib/agents/playwright-test-healer.agent.md
+ D node_modules/playwright/lib/agents/playwright-test-plan.prompt.md
+ D node_modules/playwright/lib/agents/playwright-test-planner.agent.md
+ D node_modules/playwright/lib/common/config.js
+ D node_modules/playwright/lib/common/configLoader.js
+ D node_modules/playwright/lib/common/esmLoaderHost.js
+ D node_modules/playwright/lib/common/expectBundle.js
+ D node_modules/playwright/lib/common/expectBundleImpl.js
+ D node_modules/playwright/lib/common/fixtures.js
+ D node_modules/playwright/lib/common/globals.js
+ D node_modules/playwright/lib/common/ipc.js
+ D node_modules/playwright/lib/common/poolBuilder.js
+ D node_modules/playwright/lib/common/process.js
+ D node_modules/playwright/lib/common/suiteUtils.js
+ D node_modules/playwright/lib/common/test.js
+ D node_modules/playwright/lib/common/testLoader.js
+ D node_modules/playwright/lib/common/testType.js
+ D node_modules/playwright/lib/common/validators.js
+ D node_modules/playwright/lib/errorContext.js
+ D node_modules/playwright/lib/fsWatcher.js
+ D node_modules/playwright/lib/index.js
+ D node_modules/playwright/lib/internalsForTest.js
+ D node_modules/playwright/lib/isomorphic/events.js
+ D node_modules/playwright/lib/isomorphic/folders.js
+ D node_modules/playwright/lib/isomorphic/stringInternPool.js
+ D node_modules/playwright/lib/isomorphic/teleReceiver.js
+ D node_modules/playwright/lib/isomorphic/teleSuiteUpdater.js
+ D node_modules/playwright/lib/isomorphic/testServerConnection.js
+ D node_modules/playwright/lib/isomorphic/testServerInterface.js
+ D node_modules/playwright/lib/isomorphic/testTree.js
+ D node_modules/playwright/lib/isomorphic/types.d.js
+ D node_modules/playwright/lib/loader/loaderMain.js
+ D node_modules/playwright/lib/matchers/expect.js
+ D node_modules/playwright/lib/matchers/matcherHint.js
+ D node_modules/playwright/lib/matchers/matchers.js
+ D node_modules/playwright/lib/matchers/toBeTruthy.js
+ D node_modules/playwright/lib/matchers/toEqual.js
+ D node_modules/playwright/lib/matchers/toHaveURL.js
+ D node_modules/playwright/lib/matchers/toMatchAriaSnapshot.js
+ D node_modules/playwright/lib/matchers/toMatchSnapshot.js
+ D node_modules/playwright/lib/matchers/toMatchText.js
+ D node_modules/playwright/lib/mcp/test/browserBackend.js
+ D node_modules/playwright/lib/mcp/test/generatorTools.js
+ D node_modules/playwright/lib/mcp/test/plannerTools.js
+ D node_modules/playwright/lib/mcp/test/seed.js
+ D node_modules/playwright/lib/mcp/test/streams.js
+ D node_modules/playwright/lib/mcp/test/testBackend.js
+ D node_modules/playwright/lib/mcp/test/testContext.js
+ D node_modules/playwright/lib/mcp/test/testTool.js
+ D node_modules/playwright/lib/mcp/test/testTools.js
+ D node_modules/playwright/lib/plugins/gitCommitInfoPlugin.js
+ D node_modules/playwright/lib/plugins/index.js
+ D node_modules/playwright/lib/plugins/webServerPlugin.js
+ D node_modules/playwright/lib/program.js
+ D node_modules/playwright/lib/reportActions.js
+ D node_modules/playwright/lib/reporters/base.js
+ D node_modules/playwright/lib/reporters/blob.js
+ D node_modules/playwright/lib/reporters/dot.js
+ D node_modules/playwright/lib/reporters/empty.js
+ D node_modules/playwright/lib/reporters/github.js
+ D node_modules/playwright/lib/reporters/html.js
+ D node_modules/playwright/lib/reporters/internalReporter.js
+ D node_modules/playwright/lib/reporters/json.js
+ D node_modules/playwright/lib/reporters/junit.js
+ D node_modules/playwright/lib/reporters/line.js
+ D node_modules/playwright/lib/reporters/list.js
+ D node_modules/playwright/lib/reporters/listModeReporter.js
+ D node_modules/playwright/lib/reporters/markdown.js
+ D node_modules/playwright/lib/reporters/merge.js
+ D node_modules/playwright/lib/reporters/multiplexer.js
+ D node_modules/playwright/lib/reporters/reporterV2.js
+ D node_modules/playwright/lib/reporters/teleEmitter.js
+ D node_modules/playwright/lib/reporters/versions/blobV1.js
+ D node_modules/playwright/lib/runner/dispatcher.js
+ D node_modules/playwright/lib/runner/failureTracker.js
+ D node_modules/playwright/lib/runner/lastRun.js
+ D node_modules/playwright/lib/runner/loadUtils.js
+ D node_modules/playwright/lib/runner/loaderHost.js
+ D node_modules/playwright/lib/runner/processHost.js
+ D node_modules/playwright/lib/runner/projectUtils.js
+ D node_modules/playwright/lib/runner/rebase.js
+ D node_modules/playwright/lib/runner/reporters.js
+ D node_modules/playwright/lib/runner/sigIntWatcher.js
+ D node_modules/playwright/lib/runner/taskRunner.js
+ D node_modules/playwright/lib/runner/tasks.js
+ D node_modules/playwright/lib/runner/testGroups.js
+ D node_modules/playwright/lib/runner/testRunner.js
+ D node_modules/playwright/lib/runner/testServer.js
+ D node_modules/playwright/lib/runner/uiModeReporter.js
+ D node_modules/playwright/lib/runner/vcs.js
+ D node_modules/playwright/lib/runner/watchMode.js
+ D node_modules/playwright/lib/runner/workerHost.js
+ D node_modules/playwright/lib/testActions.js
+ D node_modules/playwright/lib/third_party/pirates.js
+ D node_modules/playwright/lib/third_party/tsconfig-loader.js
+ D node_modules/playwright/lib/transform/babelBundle.js
+ D node_modules/playwright/lib/transform/babelBundleImpl.js
+ D node_modules/playwright/lib/transform/compilationCache.js
+ D node_modules/playwright/lib/transform/esmLoader.js
+ D node_modules/playwright/lib/transform/portTransport.js
+ D node_modules/playwright/lib/transform/transform.js
+ D node_modules/playwright/lib/util.js
+ D node_modules/playwright/lib/utilsBundle.js
+ D node_modules/playwright/lib/utilsBundleImpl.js
+ D node_modules/playwright/lib/worker/fixtureRunner.js
+ D node_modules/playwright/lib/worker/testInfo.js
+ D node_modules/playwright/lib/worker/testTracing.js
+ D node_modules/playwright/lib/worker/timeoutManager.js
+ D node_modules/playwright/lib/worker/util.js
+ D node_modules/playwright/lib/worker/workerMain.js
+ D node_modules/playwright/package.json
+ D node_modules/playwright/test.d.ts
+ D node_modules/playwright/test.js
+ D node_modules/playwright/test.mjs
+ D node_modules/playwright/types/test.d.ts
+ D node_modules/playwright/types/testReporter.d.ts
+ M ops/decisions.md
+ M ops/threads.yaml
+ M package-lock.json
+ M package.json
+ M permission-protocol-repo
+ M pp-os/scout/system-health.log
+ M reports/cron-runs/daily-briefing/latest.json
+ M reports/cron-runs/daily-briefing/latest.md
+ M reports/cron-runs/unified-hotline/latest.json
+ M reports/cron-runs/unified-hotline/latest.md
+ M reports/cron-runs/weekly-scorecard/latest.json
+ M reports/cron-runs/weekly-scorecard/latest.md
+?? company-os/governance/snapshots/gov_scan_20260409_1300.json
+?? company-os/governance/snapshots/gov_scan_20260409_2001.json
+?? company-os/governance/snapshots/gov_scan_20260409_2002.json
+?? company-os/governance/snapshots/gov_scan_20260409_2303.json
+?? company-os/governance/snapshots/gov_scan_20260410_1300.json
+?? consequence-engine-demo/
+?? cron_list.json
+?? crons/
+?? error-sensor-sandbox/
+?? factory/logs/codex-gh-app-233.log
+?? factory/prds/gh-app-233.md
+?? factory/qa-reports/gh-app-233-build.log
+?? factory/qa-reports/gh-app-233-qa.md
+?? factory/targets/app.json
+?? node_modules/.bin/esbuild
+?? node_modules/.bin/js-yaml
+?? node_modules/.bin/node-gyp
+?? node_modules/.bin/node-which
+?? node_modules/.bin/nopt
+?? node_modules/.bin/prebuild-install
+?? node_modules/.bin/rc
+?? node_modules/.bin/semver
+?? node_modules/.bin/tsx
+?? node_modules/@esbuild/
+?? node_modules/@gar/
+?? node_modules/@isaacs/
+?? node_modules/@npmcli/
+?? node_modules/abbrev/
+?? node_modules/agent-base/
+?? node_modules/argparse/
+?? node_modules/balanced-match/
+?? node_modules/base64-js/
+?? node_modules/bindings/
+?? node_modules/bl/
+?? node_modules/brace-expansion/
+?? node_modules/buffer/
+?? node_modules/cacache/
+?? node_modules/chownr/
+?? node_modules/debug/
+?? node_modules/decompress-response/
+?? node_modules/deep-extend/
+?? node_modules/detect-libc/
+?? node_modules/end-of-stream/
+?? node_modules/env-paths/
+?? node_modules/esbuild/
+?? node_modules/expand-template/
+?? node_modules/exponential-backoff/
+?? node_modules/fdir/
+?? node_modules/file-uri-to-path/
+?? node_modules/fs-constants/
+?? node_modules/fs-minipass/
+?? node_modules/fsevents/
+?? node_modules/get-tsconfig/
+?? node_modules/github-from-package/
+?? node_modules/glob/
+?? node_modules/graceful-fs/
+?? node_modules/http-cache-semantics/
+?? node_modules/http-proxy-agent/
+?? node_modules/https-proxy-agent/
+?? node_modules/iconv-lite/
+?? node_modules/ieee754/
+?? node_modules/inherits/
+?? node_modules/ini/
+?? node_modules/ip-address/
+?? node_modules/isexe/
+?? node_modules/js-yaml/
+?? node_modules/lru-cache/
+?? node_modules/make-fetch-happen/
+?? node_modules/mimic-response/
+?? node_modules/minimatch/
+?? node_modules/minimist/
+?? node_modules/minipass-collect/
+?? node_modules/minipass-fetch/
+?? node_modules/minipass-flush/
+?? node_modules/minipass-pipeline/
+?? node_modules/minipass-sized/
+?? node_modules/minipass/
+?? node_modules/minizlib/
+?? node_modules/mkdirp-classic/
+?? node_modules/ms/
+?? node_modules/napi-build-utils/
+?? node_modules/negotiator/
+?? node_modules/node-abi/
+?? node_modules/node-addon-api/
+?? node_modules/node-gyp/
+?? node_modules/nopt/
+?? node_modules/once/
+?? node_modules/p-map/
+?? node_modules/path-scurry/
+?? node_modules/picomatch/
+?? node_modules/prebuild-install/
+?? node_modules/proc-log/
+?? node_modules/pump/
+?? node_modules/rc/
+?? node_modules/readable-stream/
+?? node_modules/resolve-pkg-maps/
+?? node_modules/safe-buffer/
+?? node_modules/safer-buffer/
+?? node_modules/semver/
+?? node_modules/simple-concat/
+?? node_modules/simple-get/
+?? node_modules/smart-buffer/
+?? node_modules/socks-proxy-agent/
+?? node_modules/socks/
+?? node_modules/sqlite/
+?? node_modules/sqlite3/
+?? node_modules/ssri/
+?? node_modules/string_decoder/
+?? node_modules/strip-json-comments/
+?? node_modules/tar-fs/
+?? node_modules/tar-stream/
+?? node_modules/tar/
+?? node_modules/tinyglobby/
+?? node_modules/tsx/
+?? node_modules/tunnel-agent/
+?? node_modules/util-deprecate/
+?? node_modules/which/
+?? node_modules/wrappy/
+?? node_modules/yallist/
+?? reports/cron-runs/daily-briefing/20260409T143015Z/
+?? reports/cron-runs/daily-briefing/20260409T143107Z/
+?? reports/cron-runs/daily-briefing/20260409T143303Z/
+?? reports/cron-runs/daily-briefing/20260409T143320Z/
+?? reports/cron-runs/daily-briefing/20260409T143347Z/
+?? reports/cron-runs/daily-briefing/20260410T131031Z/
+?? reports/cron-runs/unified-hotline/20260408T230043Z/
+?? reports/cron-runs/unified-hotline/20260408T230650Z/
+?? reports/cron-runs/unified-hotline/20260409T150637Z/
+?? reports/cron-runs/unified-hotline/20260409T190008Z/
+?? reports/cron-runs/unified-hotline/20260409T190225Z/
+?? reports/cron-runs/unified-hotline/20260409T230008Z/
+?? reports/cron-runs/unified-hotline/20260410T130814Z/
+?? reports/cron-runs/weekly-scorecard/20260410T130842Z/
+?? src/
+?? tmp/mobile-qa-daily/20260409-permissionprotocol-com/
+?? tmp/mobile-qa-daily/20260409-xdares-com/

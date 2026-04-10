@@ -1,0 +1,16 @@
+{
+ "source": "github_actions",
+ "repo": "permission-protocol/error-sensor-sandbox",
+ "workflow_name": "CI",
+ "workflow_run_id": 987654321,
+ "run_attempt": 1,
+ "head_branch": "main",
+ "base_branch": "main",
+ "head_sha": "77904f2b92651ab0e1c26e1eab4b0f063eb49502",
+ "failure_class": "typecheck_failure",
+ "failing_job": "typecheck",
+ "failing_step": "Run npm run typecheck",
+ "command": "npm run typecheck",
+ "log_excerpt": "src/config.ts:5:3 - error TS2322: Type 'string' is not assignable to type 'number'.",
+ "detected_at": "2026-04-08T13:00:00Z"
+}

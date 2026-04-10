@@ -1,0 +1,16 @@
+{
+ "source": "github_actions",
+ "repo": "permission-protocol/app",
+ "workflow_name": "Build",
+ "workflow_run_id": 23960940933,
+ "run_attempt": 1,
+ "head_branch": "feature/approve-page-v2",
+ "base_branch": "main",
+ "head_sha": "f42302a5fcebc1aec73a36216941d986d55fda09",
+ "failure_class": "test_failure",
+ "failing_job": "Build and test",
+ "failing_step": "Test",
+ "command": "npm test",
+ "log_excerpt": "FAIL tests/deploy-gate-verify-request.test.ts > Deploy gate request creation on verify missing receipt > returns requestId and approvalUrl for trusted missing-receipt calls\nAssertionError: expected 'http://localhost/approve/d1ee69f5-49f…' to contain '/pp/c/global/deploy-requests/'",
+ "detected_at": "2026-04-03T20:25:46Z"
+}
