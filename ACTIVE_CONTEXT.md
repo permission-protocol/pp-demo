@@ -1,8 +1,8 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-10 01:13 AM MDT. Overwrite this file, don't append.*
+*Updated: 2026-04-11 05:20 AM MDT. Overwrite this file, don't append.*
 
-## 🔴 SIGNER DECISION REQUIRED — Day 49 Outreach Drought
+## 🔴 SIGNER DECISION REQUIRED — Day 50 Outreach Drought
 The system is technically ready (Consequence Engine stable, Onboarding polished). Growth is the only bottleneck.
 
 **Messages Drafted & Waiting on Rod:**
@@ -12,11 +12,15 @@ The system is technically ready (Consequence Engine stable, Onboarding polished)
 Sprint 5 Goal: 10 external installs. Current: **0**.
 
 ## Pushing Now
-- **Polish V3 (Batch 1) Ready:** Typography, Gradient Buttons, and Border Radius PRs (#337, #338, #339) are pending approval.
+- **Polish V3 SHIPPED (Apr 10):** 12 PRs merged in ~3 hours. Full DESIGN.md alignment: typography, gradients, radius, glassmorphism, surface tokens, input focus, no-line rule, rounded audit, grid overlay, whitespace expansion, accent rename, superseded escape route.
 - **Polish V2 Shipped (Apr 9):** Success pages, headless provisioning, surgical comments, branding.
 - **Consequence Engine Stable:** Primitives verified via `acme-app` E2E testing.
 - **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
-- **Hotline (Apr 10 5:00 PM MDT):** No new score-5 hotline trigger validated. X/HN shell fetches are DNS-blocked; web recency checks surfaced only watch-only adjacent items.
+
+## Maintenance & System
+- **Heartbeat (Run 1515):** Counter incremented. Daily work capture performed.
+- **Update Available:** OpenClaw `2026.4.10` is available (npm update required).
+- **Factory Status:** 19 active items. `idea-042` ("Actionable error UX") is STALE in `prd-wip` (58.0h).
 
 ## Architecture (Locked)
 - **Outcomes:** cleared | approval_required | denied

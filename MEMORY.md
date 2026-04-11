@@ -26,8 +26,8 @@ Spent 2+ hours hacking iPhone Mirroring before discovering Safari WebDriver does
 ### No Thinking Out Loud
 Do the work silently. Post one message with the result. Never "let me check..."
 
-### Sequential Merge Pattern
-Merge one PR → rebase others → repeat. Avoid conflict cascades.
+### Parallel Batch Pattern
+Mature throughput achieved: ~12 PRs in 3h using parallel Codex agents (up to 11) with git worktrees (Apr 10). This supersedes the sequential pattern for large-scale UI/UX alignment sprints.
 
 ### Health Check Philosophy
 Silent failures are the most dangerous. Any critical infrastructure (Auth, Webhooks, Onboarding) must have a daily E2E health check script + cron. Fix-and-forget is a myth; fix-and-monitor is the rule.
@@ -111,19 +111,20 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 
 ## Key Milestones
 
-- Mar 17: Xdares crossed 100 live blog posts
-- Mar 20: PullMatch.com launched
-- Mar 24: Show HN Launch Day
-- Mar 28: MCP Guard shipped to npm
-- Mar 31: Fixed $2,600/mo prompt caching bug
-- Apr 1: Pricing architecture finalized
-- Apr 4: Onboarding overhaul shipped (PR #288, #300)
-- Apr 6: System prompt restructured (72% reduction in always-injected context)
-- Apr 7: Trent AI $13M seed signal captured via Hotline scan; outreach drafted.
-- Apr 8: Consequence Engine shipped. 5-day sprint (Engine, Router, Routing, Receipts) compressed into 24 hours.
-- Apr 9: Polish V2 Sprint. 10 PRs shipped. Onboarding, success pages, and surgical comment updates. Chad Bayer signal received.
+- **Polish V3 Sprint — Completed** (Apr 10)
+    - 12 PRs (#337-#348) merged in ~3 hours across 4 batches.
+    - Full DESIGN.md alignment: typography, gradients, radius, glassmorphism, surface tokens, input focus, grid overlay, whitespace expansion.
+    - 11 Codex agents used in parallel with git worktrees.
+- **Polish V2 Sprint** (Apr 9)
+    - 10 PRs shipped. Onboarding success page, headless provisioning, surgical comments, branding.
+- **Consequence Engine Shipped** (Apr 8)
+    - 5-day engineering sprint (Engine, Router, Routing, Receipts) compressed into 24 hours. Core authority primitive operational.
+- **Chad Bayer Signal** (Apr 9)
+    - Feedback validates Safety > Crypto framing for engineering leaders.
+- **System Prompt Restructured** (Apr 6)
+    - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
 
-*Updated: 2026-04-08 5:30 PM*
+*Updated: 2026-04-10 11:00 PM*
 
 ### GitHub App Installation Race Conditions
 When receiving a GitHub App installation callback, querying `GET /installation/repositories` immediately can return an empty array due to GitHub's internal propagation delay. Always implement an exponential backoff (e.g., 1s, 2s, 4s) retry loop when the repo list is empty.
