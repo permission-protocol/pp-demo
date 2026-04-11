@@ -1,6 +1,6 @@
 {
-  "dailyCaptureCounter": 1593,
-  "lastDailyCapture": "2026-04-11T19:25:00Z",
+  "dailyCaptureCounter": 1594,
+  "lastDailyCapture": "2026-04-11T19:30:00Z",
   "lastMemoryCuration": 1775484134,
   "description": "Tracks heartbeat-based daily work capture and memory curation cycles",
   "threadNudges": {
@@ -9,7 +9,7 @@
     "1485726442888233136": "2026-04-10T13:04:00Z",
     "1487892319309926563": "2026-04-03T15:52:00Z"
   },
-  "lastEvolutionBackup": 1776284340,
-  "lastHeartbeat": 1776371100,
-  "lastHeartbeatISO": "2026-04-11T19:25:00Z"
+  "lastEvolutionBackup": 1776371400,
+  "lastHeartbeat": 1776371400,
+  "lastHeartbeatISO": "2026-04-11T19:30:00Z"
 }
