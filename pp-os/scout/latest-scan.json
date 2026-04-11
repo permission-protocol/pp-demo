@@ -1,10 +1,14 @@
 {
-  "ts": "2026-04-01T19:06:23Z",
+  "ts": "2026-04-11T23:00:24Z",
   "source": "hotline",
-  "run": "1:06 PM MDT April 1, 2026",
+  "run": "2026-04-11 17:00 MDT",
   "signals_found": 0,
   "hot_signals": 0,
   "fast_tracked": [],
-  "tweet_api_status": "403 Forbidden — write access not enabled on @PermissionPrtcl app keys",
-  "next_run": "2026-04-01T20:06:23Z"
+  "blocked": [
+    "X API shell DNS/read failure for api.x.com; existing X write permissions blocker remains",
+    "HN Algolia shell DNS failure; HN login remains unavailable",
+    "Rod approval still required for Sycamore/Trent outbound"
+  ],
+  "next_run": "2026-04-12T00:00:24Z"
 }

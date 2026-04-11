@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-04-11T16:56:52.499250",
+  "posted": [
+    {
+      "index": 1,
+      "id": "2043100982301855970",
+      "url": "https://x.com/xdares_/status/{tweet_id}"
+    },
+    {
+      "index": 2,
+      "id": "2043100992083022095",
+      "url": "https://x.com/xdares_/status/{tweet_id}"
+    },
+    {
+      "index": 3,
+      "id": "2043101001536934305",
+      "url": "https://x.com/xdares_/status/{tweet_id}"
+    }
+  ],
+  "errors": [],
+  "total_posted": 3
+}
