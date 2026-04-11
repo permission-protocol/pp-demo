@@ -9,8 +9,8 @@ cron_init "unified-hotline"
 
 cron_load_file "Hotline Prompt" "$WORKSPACE/pp-os/scout/scripts/hotline-scan-prompt.md"
 cron_load_file "PP Status" "$WORKSPACE/pp-os/STATUS.md"
-cron_load_file "Recent Memory" "$WORKSPACE/memory/2026-04-04.md"
-cron_load_file "Yesterday's Memory" "$WORKSPACE/memory/2026-04-03.md"
+cron_load_file "Recent Memory" "$WORKSPACE/memory/$(date +%Y-%m-%d).md"
+cron_load_file "Yesterday's Memory" "$WORKSPACE/memory/$(date -v-1d +%Y-%m-%d).md"
 
 cron_fetch_cmd "Scout State" "sed -n '1,220p' \"$WORKSPACE/pp-os/scout/state.json\""
 cron_fetch_cmd "Recent Hotline Signals" "python3 -c \"from datetime import date; from pathlib import Path; p = Path('$WORKSPACE/pp-os/scout/signals') / f'{date.today().isoformat()}.jsonl'; print(p.read_text() if p.exists() else '[]')\""

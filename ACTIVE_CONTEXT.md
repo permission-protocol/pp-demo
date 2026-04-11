@@ -1,9 +1,9 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-11 05:20 AM MDT. Overwrite this file, don't append.*
+*Updated: 2026-04-11 08:20 AM MDT. Overwrite this file, don't append.*
 
 ## 🔴 SIGNER DECISION REQUIRED — Day 50 Outreach Drought
-The system is technically ready (Consequence Engine stable, Onboarding polished). Growth is the only bottleneck.
+The system is technically ready (Consequence Engine stable, Polish V3 deployed). Growth is the only bottleneck.
 
 **Messages Drafted & Waiting on Rod:**
 1. **idea-092 — Sycamore / Sri Viswanath** — Approve or deny.
@@ -18,9 +18,8 @@ Sprint 5 Goal: 10 external installs. Current: **0**.
 - **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
 
 ## Maintenance & System
-- **Heartbeat (Run 1515):** Counter incremented. Daily work capture performed.
+- **Daily Plan (Apr 11):** Factory hygiene complete. 4 stale ideas updated (076, 078 → done; 079 → archived; 042 → BLOCKED).
 - **Update Available:** OpenClaw `2026.4.10` is available (npm update required).
-- **Factory Status:** 19 active items. `idea-042` ("Actionable error UX") is STALE in `prd-wip` (58.0h).
 
 ## Architecture (Locked)
 - **Outcomes:** cleared | approval_required | denied
@@ -30,15 +29,21 @@ Sprint 5 Goal: 10 external installs. Current: **0**.
 
 ## Rod Actions Required (Signer Decisions)
 1. **APPROVE or DENY:** Sycamore (idea-092) and Trent AI (idea-098) outreach.
-2. **Record Loom:** 60s demo on `demo-repository`.
-3. **Re-auth GA4:** Blocked on idea-085.
+2. **Record Loom:** 60s demo on `demo-repository`. Script is in #wedges.
+3. **Review Homepage:** `feat/consequence-engine-site` — approve to deploy.
+4. **Re-auth GA4:** Blocked on idea-085.
 
 ## Charles Queue (Ready to execute)
 1. **idea-097:** Shortlist 5 warm leads + draft personalized messages.
 2. **idea-095:** PH hunter identification + draft DMs.
 3. **idea-096:** Draft HN unban email to dang@.
 4. **Deploy:** `feat/consequence-engine-site` once Rod approves homepage.
-5. **Outreach Assets:** Finalize outreach overhaul with real PR screenshots.
+
+## Factory Pipeline (Active, no Rod needed)
+- **gh-deploy-gate-22** — Auto-approve on branch update (high user value, ready to build)
+- **gh-cli-3 / gh-cli-4** — Permission gap analyzer + CLI reporter (distribution surface)
+- **idea-080** — Fix PostHog generic event names (S, unblocked)
+- **idea-042** — BLOCKED: PRD stale 60+ hrs, escalate to Rod or Charles to spec it
 
 ## Optimize For
 - **The First Install:** Break the drought. Get the first message out.
