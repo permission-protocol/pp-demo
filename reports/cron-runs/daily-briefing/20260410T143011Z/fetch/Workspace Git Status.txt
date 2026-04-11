@@ -1,0 +1,8 @@
+## log/2026-04-09
+ m Xdares
+ M factory/.last_sentry_scan
+ M logs/crons/daily-briefing.log
+ m mcp-guard
+ M memory/heartbeat-state.json
+ ? permission-protocol-repo
+?? reports/cron-runs/daily-briefing/20260410T143011Z/

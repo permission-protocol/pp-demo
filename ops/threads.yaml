@@ -1364,3 +1364,25 @@ threads:
       - "Block merge from day one, but only on consequential PRs."
       - "Single entry point for onboarding: one install link."
       - "Comment design v2: blockquotes, tables, details sections, authority language."
+
+  - id: "1492294890024079390"
+    title: "Polish V3"
+    channel: "#rc-main"
+    status: ARCHIVED
+    owner: rod
+    priority: high
+    created_at: '2026-04-10'
+    updated_at: '2026-04-10'
+    archived_at: '2026-04-10'
+    summary: "Full DESIGN.md alignment sprint. 12 PRs (#337-#348) shipped across 4 batches."
+    decisions:
+      - "DESIGN.md is enforced, not aspirational"
+      - "Parallel Codex + git worktrees is the validated batch pattern"
+      - "Force-push rebases cause superseded deploy requests — escape route added"
+      - "accent-blue renamed to accent-primary globally"
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: null
+    open_tasks: []
+    resolution_artifact: "12 PRs (#337-#348) shipped"

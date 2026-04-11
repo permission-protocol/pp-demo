@@ -343,3 +343,10 @@ Linked to source threads for traceability.
 - Block merge from day one, only on consequential PRs
 - Single entry point: github.com/apps/permission-protocol/installations/select_target
 - Comment design v2: blockquotes, tables, details, authority language ("Human authorization required", "Decision: blocked by policy")
+
+## 2026-04-10 — Polish V3 Sprint (Thread: #rc-main › Polish V3)
+- **DESIGN.md is now enforced, not aspirational.** All 9 audit items from the original assessment are implemented and deployed.
+- **Parallel Codex agents with git worktrees** is the validated batch execution pattern: 3 agents at a time, separate worktrees at ~/pp-agent-work/, sequential merge with rebase.
+- **Force-push rebases cause superseded deploy requests.** Added escape route (PR #348) — "Open newer request" + "Go to Dashboard" links.
+- **Surface tokens aligned:** Background #131313 (obsidian), cards #1C1B1B, elevated #353534. accent-blue renamed to accent-primary globally.
+- **Sign-in UX:** Grid overlay, Space Grotesk, glassmorphism card. Error states handled for AccessDenied, CallbackRouteError, Configuration. Auth error page has "Try again" + "Back to home" links. NextAuth's built-in open redirect protection is in place (no custom redirect callback).

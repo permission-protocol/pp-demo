@@ -1,0 +1,58 @@
+{
+  "last_research_run": "2026-03-08T02:00:00Z",
+  "last_hotline_run": "2026-04-09T23:00:19Z",
+  "last_outreach_run": "2026-03-07T15:00:00Z",
+  "last_response_check": "2026-03-07T23:00:00Z",
+  "last_signal_count": 0,
+  "fast_tracked_this_run": 0,
+  "pending_approvals": [
+    "lio-ai-email",
+    "email-lio-vlad-keil",
+    "meta-sev1-reachout-strategy",
+    "interloom-founder-outreach",
+    "sycamore-sri-viswanath-linkedin",
+    "nicholas-carlini-dm",
+    "trent-ai-eno-thereska-linkedin"
+  ],
+  "blocked": {
+    "tweet_write": {
+      "issue": "X API 403 Forbidden on create_tweet \u2014 app missing write permissions",
+      "fix": "developer.twitter.com \u2192 App settings \u2192 User auth settings \u2192 enable Read+Write \u2192 regenerate access tokens \u2192 update ~/.openclaw/secrets/x-pp-api.json",
+      "affected": [
+        "tweet-reply-2029949555169710488 (regtech/kill-switch, @MelodyLishuo)",
+        "tweet-reply-2029982761310732480 (@DavidElze, 7th layer governance)",
+        "tweet-reply-2030008301334016474 (@Absolcasso, bi-directional receipt / response poisoning)",
+        "tweet-reply-2030013150754373637 (@EUAIACTGUY, 3rd reply \u2014 game-day drills) \u2014 SEND THIS ONE FIRST",
+        "tweet-reply-2030028270549295248 (@wickedpands, dynamic capability-based auth / 'why' framing)",
+        "tweet-reply-mit-study-2026-03-06 (MIT study original tweet)",
+        "tweet-reply-al-grigor-db-wipe-2029889772181934425 (SCORE 5, 2.4M impressions \u2014 SEND URGENTLY)",
+        "tweet-reply-bitcoinnewscom-alibaba-2026-03-07 (SCORE 5, Alibaba Cloud rogue agent \u2014 spreading)",
+        "tweet-reply-absolcasso-response-layer-2030087847471141006 (response layer poisoning)"
+      ],
+      "flagged": "2026-03-06T17:05Z",
+      "re-flagged": "2026-03-07T03:00Z",
+      "status": "X API fix is #1 operational blocker."
+    }
+  },
+  "auto_sent_this_run": [],
+  "open_leads": [
+    "lio-ai",
+    "interloom",
+    "sycamore",
+    "nicholas-carlini",
+    "trent-ai"
+  ],
+  "hn_queue": [
+    "hn-comment-ietf-aiagent-auth-47262775 (IETF RFC draft, PP-adjacent, needs HN login)"
+  ],
+  "watching": [
+    "permit.io",
+    "cisco-ai-defense-skill-scanner",
+    "oculi-security",
+    "orchesis",
+    "oath-protocol",
+    "grantex",
+    "agentseal"
+  ],
+  "notes": "2026-04-09 23:00Z hotline scan: no actionable hotline trigger validated. Fresh local state review, hotline ignore log review, and live recency checks still do not validate any new Permission Protocol mention, named AI-agent breach inside the strict 6-hour window, new >$10M agent-company funding round inside the strict 24-hour window, or HN agent-security/authorization story above 50 points. Trent AI remains outside the strict 24-hour funding window, Sycamore remains aged out, and Nava still does not qualify as a hotline trigger despite its 2026-04-09T04:15:46Z publication time because it is not a clear agent-company match. Project Glasswing remains watch-only, not fast-track. Direct shell fetches to X/HN remain blocked in this environment, so no outbound action should be initiated from blocked channels. Existing blockers still halt blocked channels: X API write access is blocked, HN login is unavailable, and Rod approval is still required before any Trent or Sycamore outbound."
+}

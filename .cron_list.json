@@ -1,0 +1,971 @@
+{
+  "jobs": [
+    {
+      "id": "e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479281042690019358",
+      "name": "nightly-self-improvement",
+      "enabled": true,
+      "createdAtMs": 1772841782352,
+      "updatedAtMs": 1775799040087,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 23 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "NIGHTLY SELF-IMPROVEMENT RUN. You are Charles, reflecting on today and making yourself better.\n\n## Step 1: Review the Day\nRead today's memory/YYYY-MM-DD.md, pp-os/STATUS.md, goals/xdares-seo-growth/STATUS.md, and .learnings/ directory if it exists.\n\n## Step 2: Identify Learnings\nAnswer honestly:\n- What went well today? What patterns worked?\n- What went wrong or was inefficient? What took too long?\n- Were there any corrections from Rod? What did he have to fix or redo?\n- What capabilities are missing? What would have made today smoother?\n- Are there recurring manual tasks that should be automated?\n\n## Step 3: Pick Top 3 Improvements\nFrom your learnings, pick the 3 most impactful improvements. For each one:\n- Describe the problem clearly\n- Propose a specific fix\n- Categorize: AGENTS.md update | TOOLS.md update | SOUL.md update | new script | new cron | config change | process change\n\n## Step 4: Implement\nFor each improvement that is SAFE to implement without Rod's approval (file updates, scripts, documentation, non-destructive automation):\n- Implement it now\n- Log what you changed\n\nFor improvements that need Rod's approval (config changes, new external integrations, anything destructive):\n- Write them to pp-os/IMPROVEMENTS-PENDING.md for Rod to review\n\n## Step 5: Report\nSend a summary to #daily-log (Discord channel 1479273618876792893) with:\n- Top 3 learnings from today\n- What you implemented\n- What needs Rod's approval\n\nKeep it concise. Be honest about failures. This is how you get better.",
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479839047567409214"
+      },
+      "state": {
+        "nextRunAtMs": 1775885400000,
+        "lastRunAtMs": 1775799000018,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 40069,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true,
+        "runningAtMs": 1775885400017
+      }
+    },
+    {
+      "id": "25d04706-34a4-406b-893e-a8a9bce182f6",
+      "agentId": "cron-worker",
+      "name": "goal-xdares-seo-main",
+      "createdAtMs": 1770352228163,
+      "updatedAtMs": 1775880133904,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 */2 * * *",
+        "tz": "America/Denver",
+        "staggerMs": 300000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "GOAL_EXECUTOR_TICK: Goal ID 'xdares-seo-growth'. Load state from goals/xdares-seo-growth/state.json, check status, execute next GREEN task if budget allows. Save state after. Use Tor for WordPress publishing (bash goals/xdares-seo-growth/scripts/publish_post.py). For tweets use X API via ~/.openclaw/secrets/x-api.json.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 600
+      },
+      "state": {
+        "lastRunAtMs": 1775880062210,
+        "lastStatus": "ok",
+        "lastDurationMs": 71694,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "delivered",
+        "nextRunAtMs": 1775887262204,
+        "lastDelivered": true
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      }
+    },
+    {
+      "id": "3de4efda-6a11-4f03-baeb-552a55c35796",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1484329704646512751",
+      "name": "factory-error-sensor",
+      "enabled": true,
+      "createdAtMs": 1773964715375,
+      "updatedAtMs": 1775884337175,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1773964715375
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "timeoutSeconds": 60,
+        "message": "Run the Factory Error Sensor to poll Sentry for new runtime errors and create actionable bounties in ideas.jsonl. Execute: `bash ~/.openclaw/workspace/factory/scripts/error-sensor.sh`. Report the number of new bounties created.",
+        "kind": "agentTurn",
+        "model": "gemini-flash"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1775887912900,
+        "lastRunAtMs": 1775884312900,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 24275,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "9da440b5-5461-49a1-8b37-60457d18e480",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1484329704646512751",
+      "name": "factory-github-sensor",
+      "enabled": true,
+      "createdAtMs": 1773967497903,
+      "updatedAtMs": 1775884557692,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1773967497903
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the Factory GitHub Issues Sensor to pull labeled issues into the Factory backlog. Execute: `bash ~/.openclaw/workspace/factory/scripts/github-sensor.sh`. Report the number of new bounties created. If zero, exit silently — do NOT announce.",
+        "model": "gemini-flash",
+        "timeoutSeconds": 60
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1775888134180,
+        "lastRunAtMs": 1775884534180,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 23512,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": false
+      }
+    },
+    {
+      "id": "a4236508-b84f-4de9-bcc5-bb2199177abc",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "name": "system-health-monitor",
+      "description": "Hourly check for Discord/Telegram connectivity and stale outreach.",
+      "enabled": true,
+      "createdAtMs": 1775626251340,
+      "updatedAtMs": 1775884650387,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1775626251340
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "gemini-flash",
+        "timeoutSeconds": 60,
+        "message": "Run system health checks: `bash scripts/connectivity-heartbeat.sh` and `bash scripts/outreach-nudge.sh`. If `pp-os/scout/DISCORD_HUNG` or `pp-os/scout/outreach/STALE_OUTREACH` exist, announce the status to #charles-log. Otherwise, exit silently."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479839047567409214"
+      },
+      "state": {
+        "nextRunAtMs": 1775888196586,
+        "lastRunAtMs": 1775884596586,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 53801,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "ce1df0e5-502f-4cd3-92b5-f1bb6eda7416",
+      "agentId": "cron-worker",
+      "name": "xdares-seo-goal-executor",
+      "enabled": true,
+      "createdAtMs": 1770354058744,
+      "updatedAtMs": 1775883408514,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 7200000,
+        "anchorMs": 1773749060106
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Goal executor tick. Read goals/xdares-seo-growth/state.json and execute the next GREEN task if within budget. Save state after. Use Tor for WordPress publishing. For tweets use X API.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 600
+      },
+      "state": {
+        "lastRunAtMs": 1775883383839,
+        "lastStatus": "ok",
+        "lastDurationMs": 24675,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "delivered",
+        "nextRunAtMs": 1775890583839,
+        "lastDelivered": true
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      }
+    },
+    {
+      "id": "60a9e179-3d6b-4051-8124-255b9f40cda0",
+      "name": "governance-integrity-check",
+      "enabled": true,
+      "createdAtMs": 1772484209690,
+      "updatedAtMs": 1775826045432,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the daily governance integrity check:\n\n```bash\nbash ~/.openclaw/workspace/company-os/governance/scripts/governance-check.sh\n```\n\nIf any drift or SLA breaches were found, explain what happened and what was auto-disabled.\nIf clean (no drift, no breaches), exit silently — do NOT announce.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1775912400000,
+        "lastRunAtMs": 1775826000016,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 45416,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "78ab936d-2da4-4989-a896-f5e96460218b",
+      "name": "hn-recovery-article-finder",
+      "enabled": true,
+      "createdAtMs": 1775515901488,
+      "updatedAtMs": 1775826151591,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "You are helping Rod recover his Hacker News account (rodchalski). His account was flagged for promotional and AI-generated content. The moderator said he needs to build organic participation by submitting interesting articles from obscure sources.\n\nYOUR TASK: Find ONE article to submit to HN today.\n\nRULES:\n1. Must be from an obscure, niche source — NOT YouTube, Twitter/X, Medium, Substack, or major news sites\n2. Intellectually interesting to the HN audience (developers, engineers, founders)\n3. Topics in PP orbit are ideal but not required: agent security, authorization, cryptographic provenance, distributed systems, runtime enforcement, AI safety research\n4. From a personal blog, academic paper, niche publication, or small independent site\n5. Must be real and currently accessible — verify the URL loads\n6. Zero PP mentions\n\nSearch the web for interesting niche technical content published in the last 7 days.\n\nOUTPUT FORMAT:\n📰 **HN Article for Today**\n\n**Title:** [suggested HN title]\n**URL:** [direct link]\n**Why HN will like it:** [1 sentence]\n**Suggested comment:** [2-3 sentence authentic comment Rod could post — must sound human, opinionated, specific. Short sentences. No filler. No \"great article\" or \"interesting read.\" Just say what you actually think.]",
+        "model": "gemini-flash",
+        "timeoutSeconds": 60
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479863103373185068"
+      },
+      "state": {
+        "nextRunAtMs": 1775912400000,
+        "lastRunAtMs": 1775826117285,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 34306,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "d953a651-632d-4bae-84ae-28e6617f0888",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479273618876792893",
+      "name": "pp-onboarding-smoke-test",
+      "enabled": true,
+      "createdAtMs": 1773749074998,
+      "updatedAtMs": 1775826117285,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 300,
+        "message": "# PP Onboarding Smoke Test\n\nSimulate a brand-new user installing Permission Protocol's deploy-gate. The goal: can someone go from zero to a gated PR in under 5 minutes?\n\n## Step 1: Fresh Install Test\n```bash\ncd /tmp && rm -rf pp-smoke-test && mkdir pp-smoke-test && cd pp-smoke-test\ngit init && echo 'test' > README.md && git add . && git commit -m 'init'\n```\n\n## Step 2: Check GitHub Action exists\n```bash\ncurl -sf https://raw.githubusercontent.com/permission-protocol/deploy-gate/main/action.yml | head -20\n```\nIf 404 or error → FAIL: action.yml not accessible.\n\n## Step 3: Check app.permissionprotocol.com is up\n```bash\ncurl -sf -o /dev/null -w '%{http_code}' https://app.permissionprotocol.com\n```\nExpect 200. If not → FAIL: app is down.\n\n## Step 4: Check API health\n```bash\nBASIC=$(echo -n \"$(cat ~/.openclaw/secrets/pp-tenant-id.txt):$(cat ~/.openclaw/secrets/pp-cli-api-key.txt)\" | base64)\ncurl -sf -H \"Authorization: Basic $BASIC\" -H \"X-Tenant-Id: $(cat ~/.openclaw/secrets/pp-tenant-id.txt)\" https://app.permissionprotocol.com/api/v1/receipts?limit=1 | head -c 200\n```\nExpect JSON response. If error → FAIL: API broken.\n\n## Step 5: Check marketing site\n```bash\ncurl -sf -o /dev/null -w '%{http_code}' https://permissionprotocol.com\n```\nExpect 200.\n\n## Step 6: Timing estimate\nBased on steps 2-5, estimate if a new user could complete the full flow in <5 min.\n\n## Output\nIf ALL checks pass → exit silently (do NOT announce).\nIf ANY check fails → report which step failed and why. This is a P0 issue."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273619644223499"
+      },
+      "state": {
+        "nextRunAtMs": 1775912400000,
+        "lastRunAtMs": 1775826045432,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 71853,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "1c443958-3217-4141-b1f2-1b2eb70a3c9a",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "name": "pp-onboarding-healthcheck",
+      "description": "E2E health check for PP onboarding flow. Runs smoke test to ensure GitHub App auth and status checks are functional.",
+      "enabled": true,
+      "createdAtMs": 1775539820018,
+      "updatedAtMs": 1775827838839,
+      "schedule": {
+        "tz": "America/Denver",
+        "kind": "cron",
+        "expr": "30 7 * * *"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "message": "Run the onboarding smoke test: bash scripts/pp-onboarding-smoke-test.sh. If it fails, report the error to #daily-log and tag Rod. Cleanup artifacts after with --cleanup-only.",
+        "kind": "agentTurn"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775914200000,
+        "lastRunAtMs": 1775827800016,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 38823,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "37ccde70-5e71-4805-a1c0-c40087cbda5a",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479540503534895246",
+      "name": "pp-signal-scan",
+      "enabled": true,
+      "createdAtMs": 1772898491992,
+      "updatedAtMs": 1775829718076,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1-6",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the PP signal scanner: `bash pp-os/outreach/scripts/scan-signals.sh`. Review the output. If there are signals with relevance score >= 4, post the top 5 to #scout-alerts (channel 1479273617689809097) on Discord. For each hot signal (score >= 6), also research the company and key people on LinkedIn — if you find a good outreach target, generate messages using `bash pp-os/outreach/scripts/generate-messages.sh` and post the draft to #outreach-log (channel 1479273618448846858) for review. Skip weekends.",
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273617689809097"
+      },
+      "state": {
+        "nextRunAtMs": 1775916000000,
+        "lastRunAtMs": 1775829645563,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 72513,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "b925a425-70b4-41b9-b2ee-7c33f4da7593",
+      "name": "unified-signal-scan",
+      "enabled": true,
+      "createdAtMs": 1772751494578,
+      "updatedAtMs": 1775858447532,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8,16 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "# Signal Scanner — FOCUSED: AI Coding Agent Deploys\n\nYou scan for signals about AI coding agents deploying code. NOTHING ELSE.\n\n## What You're Looking For\n- AI coding agents (Codex, Claude Code, Cursor, Windsurf, Copilot Workspace) deploying or merging code\n- Incidents where AI agents deployed bad code, unauthorized merges, broken production\n- Teams struggling with \"who approved this AI-generated PR?\"\n- New coding agent tools/frameworks that auto-deploy\n- Discussions about AI agent authorization in CI/CD\n\n## NOT looking for (ignore these)\n- General AI safety/governance\n- Non-coding AI agents (customer service, data analysis, etc.)\n- Funding rounds for unrelated AI companies\n- Broad AI regulation news\n\n## Process\n\n### Web Search (freshness=pd)\n1. \"coding agent\" deploy OR merge OR production 2026\n2. \"AI agent\" \"pull request\" OR \"code review\" unauthorized\n3. Codex OR \"Claude Code\" OR Cursor deploy incident\n4. \"AI generated code\" production incident\n\n### Hacker News\n```bash\ncurl -s 'https://hn.algolia.com/api/v1/search?query=AI+coding+agent+deploy&tags=story&hitsPerPage=10' | jq '[.hits[] | select(.points > 20)]'\ncurl -s 'https://hn.algolia.com/api/v1/search_by_date?query=cursor+codex+claude+code+deploy&tags=story&hitsPerPage=10' | jq '[.hits[]]'\n```\n\n### Reddit\nSearch r/programming, r/ExperiencedDevs, r/devops for: coding agent deploy, AI PR review, Codex deploy\n\n## Output\nAppend to `pp-os/marketing/signals/YYYY-MM-DD.jsonl`\nIf HOT signal (incident, viral thread) → write to `pp-os/marketing/HOT-SIGNAL.md`\nOtherwise exit silently.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273617689809097"
+      },
+      "state": {
+        "nextRunAtMs": 1775916000000,
+        "lastRunAtMs": 1775858400020,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 47512,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "f9d08ca6-2067-4644-ac08-323314acc834",
+      "name": "daily-log-hygiene-metrics",
+      "description": "Daily PP OS log with metrics + planning step",
+      "enabled": true,
+      "createdAtMs": 1771707813877,
+      "updatedAtMs": 1775829846757,
+      "schedule": {
+        "kind": "cron",
+        "expr": "3 8 * * *",
+        "staggerMs": 0
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "You are Charles, running the daily PP OS hygiene and metrics collection.\n\n## STEP 1: Read Context\nRead pp-os/planning-config.json, pp-os/goals.md, pp-os/market-intel.md, pp-os/master-plan.md, and yesterday's log from pp-os/master-log/.\n\n## STEP 2: Board Hygiene Sweep\nQuery ALL board items. Fix automatically:\n1. **No Status items:** Move to Backlog.\n2. **Duplicate detection:** Keep the one with more detail, move other(s) to Done with note.\n3. **Stale Done items:** Items in Done older than 7 days — note for archive review.\n4. **Completed work in wrong status:** Move to Done.\n\n## STEP 3: Create Daily Log\nCreate today's log at pp-os/master-log/YYYY-MM-DD.md\n\nPull metrics:\n- PP API receipts/requests (7d): BASIC=$(echo -n \"$(cat ~/.openclaw/secrets/pp-tenant-id.txt):$(cat ~/.openclaw/secrets/pp-cli-api-key.txt)\" | base64); curl -s -H \"Authorization: Basic $BASIC\" -H \"X-Tenant-Id: $(cat ~/.openclaw/secrets/pp-tenant-id.txt)\" \"https://app.permissionprotocol.com/api/v1/receipts?limit=100\"\n- GitHub: stars/forks for permission-protocol org repos\n- PostHog pageviews (7d): secrets/posthog-api-key.txt, project 318328\n- PP Product Board status: secrets/github-pat-projects.txt\n\n## STEP 4: Board State Snapshot (MANDATORY)\nInclude a COMPLETE board snapshot as JSON. List every issue number in every column. No approximations.\n\n## STEP 5: Attribution\nConnect recent actions to metric changes. 3-5 lines. If unknown, say \"unknown.\"\n\n## STEP 6: Save Partial Log\nWrite the log file with hygiene, metrics, snapshot, and attribution sections. Leave a \"## Planning\" section with placeholder text: \"Planning analysis follows in separate run.\"\n\nPush to Roca-Ventures/Breakout-Labs via PR or direct to main.\n\n## IMPORTANT\nDo NOT do planning or create new tasks. That happens in a separate run.\n\nFor board operations: read PP_BOARD.md in this workspace.",
+        "timeoutSeconds": 3600,
+        "model": "gemini-flash"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775916180000,
+        "lastRunAtMs": 1775829793163,
+        "lastStatus": "ok",
+        "lastDurationMs": 53594,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "delivered",
+        "lastDelivered": true
+      },
+      "agentId": "cron-worker"
+    },
+    {
+      "id": "2fc62916-13c3-4613-9101-2bb1cc8dda9c",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479281042690019358",
+      "name": "daily-log-planning",
+      "enabled": true,
+      "createdAtMs": 1773673516580,
+      "updatedAtMs": 1775830904914,
+      "schedule": {
+        "kind": "cron",
+        "expr": "20 8 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "anthropic/claude-sonnet-4-6",
+        "timeoutSeconds": 600,
+        "message": "Run the daily planning cycle using the new schema. Do NOT create new open threads. Create/update ideas in ideas.jsonl with the proper state machine properties (ACTIVE/BLOCKED/etc)."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1775917200000,
+        "lastRunAtMs": 1775830800017,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 104897,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "266425d8-ce1b-4771-8748-740684357bfd",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "name": "Token Health Check",
+      "enabled": true,
+      "createdAtMs": 1773898240980,
+      "updatedAtMs": 1775831481215,
+      "schedule": {
+        "expr": "30 8 * * *",
+        "tz": "America/Denver",
+        "kind": "cron"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "message": "Check token health for Xdares/GA4/Search Console using `scripts/check-token-health.sh`. If it fails, summarize why and alert Rod in this channel with the re-auth command: `python3 scripts/xdares-metrics-auth.py`.",
+        "thinking": "low",
+        "kind": "agentTurn",
+        "timeoutSeconds": 60
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775917800000,
+        "lastRunAtMs": 1775831467434,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 13781,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "8d5f8e98-f13a-459d-9734-c7159761d07a",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479281042690019358",
+      "name": "rod-daily-briefing",
+      "enabled": true,
+      "createdAtMs": 1772897774622,
+      "updatedAtMs": 1775831467434,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 8 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the daily briefing script: `bash ~/.openclaw/workspace/scripts/crons/daily-briefing.sh`. Post the result to Discord.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1775917800000,
+        "lastRunAtMs": 1775831400023,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 67411,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "31f3cfee-b9ae-4bf5-baf1-cf50bdd162f7",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1482065875413635122",
+      "name": "mobile-qa-daily",
+      "enabled": true,
+      "createdAtMs": 1773437345800,
+      "updatedAtMs": 1775833294287,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Daily mobile QA check. Run: bash ~/.openclaw/workspace/scripts/mobile-qa-cron.sh\n\nAfter the script finishes:\n1. Read the page-info.json and accessibility.json files from the output dirs\n2. Analyze ONLY the 01-top.png screenshot from each site using the image tool (keep costs low — just the hero screenshot)\n3. Compare accessibility numbers against yesterday's run if available (check tmp/mobile-qa-daily/ for prior dates)\n4. Post a summary to Discord #daily-log (channel 1479273618876792893) with: performance stats, accessibility delta, and any regressions\n5. If any site load time >3s or accessibility issues increased significantly, flag it as needing attention\n\nKeep analysis brief. This runs daily — don't burn tokens on extensive analysis unless something changed.",
+        "model": "gemini-flash"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775919600000,
+        "lastRunAtMs": 1775833260278,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 34009,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "cfe7e472-484e-4679-a3cf-8d7e9d94905e",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479497470026449047",
+      "name": "scout-reddit-digest",
+      "enabled": true,
+      "createdAtMs": 1772816280272,
+      "updatedAtMs": 1775833260278,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "You are Scout. Find Reddit and HN threads where people discuss AI coding agents deploying code, and draft comments for Rod.\n\n## FOCUSED TOPICS ONLY\n- Codex, Claude Code, Cursor, Windsurf, Copilot deploying/merging code\n- \"Who approved this AI-generated PR?\" moments\n- CI/CD security for AI-generated code\n- AI agent deploy incidents or close calls\n- Teams adopting coding agents and worried about control\n\n## IGNORE\n- General AI safety/governance not tied to code deploys\n- Non-coding agents\n- Theoretical discussions with no practical angle\n\n## Process\n1. Search Reddit (r/programming, r/ExperiencedDevs, r/devops, r/cursor, r/ChatGPTPro) for threads from last 24h\n2. Search HN for coding agent deploy discussions\n3. Find 2-3 threads where deploy authorization expertise adds genuine value\n4. Draft comments (builder voice, no PP mentions, contractions, casual)\n\n## Output\nSend to Discord #scout-alerts (1479273617689809097):\n\n**Coding Agent Deploy Digest — [date]**\n\n🔴 **Reddit:**\n🔗 [Thread](url) (r/subreddit)\n> Draft comment\n\n🟠 **HN:**\n🔗 [Thread](url)\n> Draft comment\n\nIf nothing found, exit silently.",
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775919600000,
+        "lastRunAtMs": 1775833233383,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 26895,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "e6325458-1c96-4293-ad1f-50cde96d4b44",
+      "name": "unified-hotline",
+      "enabled": true,
+      "createdAtMs": 1772758160872,
+      "updatedAtMs": 1775862311359,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9,13,17 * * 1-6",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the hotline engagement script: `bash ~/.openclaw/workspace/scripts/crons/unified-hotline.sh`. Follow the script instructions and report back if engagements occurred.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 1200
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618448846858"
+      },
+      "state": {
+        "nextRunAtMs": 1775919600000,
+        "lastRunAtMs": 1775862000006,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 311353,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "ed19710e-1989-4d02-84ec-f7733e0986c0",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "name": "cron-watchdog",
+      "enabled": true,
+      "createdAtMs": 1775280692503,
+      "updatedAtMs": 1775836821915,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "timeoutSeconds": 60,
+        "message": "Run the OpenClaw cron health check and alert Rod to persistent failures: `bash ~/.openclaw/workspace/scripts/cron-watchdog.sh`. If it fails, report the output. If it passes, exit silently.",
+        "model": "gemini-flash",
+        "kind": "agentTurn"
+      },
+      "delivery": {
+        "mode": "announce",
+        "to": "1479273618876792893",
+        "channel": "discord"
+      },
+      "state": {
+        "nextRunAtMs": 1775923200000,
+        "lastRunAtMs": 1775836800014,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 21901,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "5b6f94d4-ff3d-4c1c-97ef-392ab3296b4f",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479281042690019358",
+      "name": "memory-consolidation",
+      "enabled": true,
+      "createdAtMs": 1772841597862,
+      "updatedAtMs": 1775883630730,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 23 * * *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "MEMORY CONSOLIDATION RUN. Do the following:\n\n1. Read all STATUS.md files (pp-os/STATUS.md, goals/xdares-seo-growth/STATUS.md)\n2. Read today's memory/YYYY-MM-DD.md\n3. Read MEMORY.md\n4. Update MEMORY.md with any significant new learnings, decisions, or context from today\n5. Clean stale entries from STATUS.md files (remove completed items, update current state)\n6. If SESSION-STATE.md exists and is >24h old, archive key details to daily notes and clear it\n7. Report what you updated to #daily-log channel on Discord (guild 1479269120334762008, channel 1479273618876792893)\n\nKeep MEMORY.md curated — distilled wisdom, not raw logs. Remove outdated info. This is nightly maintenance.",
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1775970000000,
+        "lastRunAtMs": 1775883600017,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 30713,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "8e8f1d36-f14b-4144-977f-cb8b1f6fa97a",
+      "name": "pp-os-weekly-review",
+      "description": "Weekly master-plan.md alignment review",
+      "enabled": true,
+      "createdAtMs": 1771703595855,
+      "updatedAtMs": 1775775878941,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 0",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "You are Charles, doing the weekly PP OS master-plan review. Do the following:\n\n1. Read pp-os/master-plan.md\n2. Read pp-os/goals.md\n3. Read the last 7 daily logs from pp-os/master-log/\n4. Evaluate:\n   - Is the active objective still the right one? Are we making progress?\n   - Do any Non-Negotiables need updating?\n   - Is there strategic drift (doing things that don't serve the objective)?\n   - Are metrics trending in the right direction?\n5. Update the 'Last reviewed' date in master-plan.md\n6. Report findings: what's working, what's not, any recommended changes to goals.md or master-plan.md\n\nBe honest. If we're off track, say so.",
+        "timeoutSeconds": 1800,
+        "model": "anthropic/claude-sonnet-4-6"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479273618876792893"
+      },
+      "state": {
+        "nextRunAtMs": 1776009600000,
+        "lastRunAtMs": 1775404800052,
+        "lastStatus": "error",
+        "lastDurationMs": 120060,
+        "consecutiveErrors": 1,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "unknown",
+        "lastError": "cron: job execution timed out",
+        "lastErrorReason": "timeout"
+      }
+    },
+    {
+      "id": "c2e3d501-1186-411f-8f5a-70043cffde89",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479540503534895246",
+      "name": "pp-outreach-weekly-analysis",
+      "enabled": true,
+      "createdAtMs": 1772898500552,
+      "updatedAtMs": 1775404953538,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 0",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the PP outreach weekly analysis. SSH to the droplet: `ssh -i ~/.ssh/github_ed25519 root@64.23.210.36`. Then run: `sqlite3 /opt/pp-outreach/db/outreach.sqlite` and query the outreach_outcomes view for win rates by angle, opener, and segment. Compare acceptance rates and reply rates across variants. Post a summary to #outreach-log (channel 1479273618448846858) on Discord with: total sent, accepted, replied, meeting booked, disconnected, and top/bottom performing angles. If any angle has >30% reply rate, recommend increasing its weight in the playbook. If any has 0% after 10+ sends, recommend retiring it.",
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "1479273618448846858"
+      },
+      "state": {
+        "nextRunAtMs": 1776009600000,
+        "lastRunAtMs": 1775404920112,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 33426,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "e8e019e4-f68d-4fb3-8efc-57a05fc7bbbd",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:e41fa6e0-3fc3-42ab-a339-6f45a3883106",
+      "name": "weekly-transcript-archive",
+      "enabled": true,
+      "createdAtMs": 1774243827786,
+      "updatedAtMs": 1775454930211,
+      "schedule": {
+        "tz": "America/Denver",
+        "kind": "cron",
+        "expr": "55 23 * * 0"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Sunday night transcript archiving. Run 'bash scripts/archive-transcripts.sh' to tidy up the workspace and push to GitHub. Check disk space before/after. Report the number of transcripts archived and space recovered."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "6091356144"
+      },
+      "state": {
+        "nextRunAtMs": 1776059700000,
+        "lastRunAtMs": 1775454900018,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 30193,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "1306ecee-6b2c-4eea-8808-ed649127e069",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1479281042690019358",
+      "name": "weekly-scorecard",
+      "enabled": true,
+      "createdAtMs": 1772897791392,
+      "updatedAtMs": 1775484071857,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the weekly scorecard script: `bash ~/.openclaw/workspace/scripts/crons/weekly-scorecard.sh`. Report the output exactly.",
+        "model": "google/gemini-3-flash-preview",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1479281042690019358"
+      },
+      "state": {
+        "nextRunAtMs": 1776088800000,
+        "lastRunAtMs": 1775484039991,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 31866,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "3d556c8c-19a4-48b6-aade-d279f0757ca1",
+      "agentId": "main",
+      "sessionKey": "agent:main:discord:channel:1482047784550006896",
+      "name": "factory-build-qa",
+      "enabled": true,
+      "createdAtMs": 1773434309824,
+      "updatedAtMs": 1775862398067,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 17 * * 1-5",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the Create Factory build+qa+policy pipeline. Execute these steps IN ORDER:\n\n1. Run: `bash ~/.openclaw/workspace/factory/scripts/build.sh --auto`\n2. Check exit code:\n   - Exit 0 with PR URL in output → build succeeded, continue to step 3\n   - Exit 0 with 'Queue empty' → no ideas to build. Report 'No prd-ready ideas.' and STOP.\n   - Exit non-zero → build failed. Report the error and STOP.\n3. Run: `bash ~/.openclaw/workspace/factory/scripts/qa.sh --auto`\n4. If QA passed, run: `bash ~/.openclaw/workspace/factory/scripts/policy-gate.sh`\n5. Report the Policy Gate result (auto-merged, blocked for Rod, or CI failing).\n\n**CRITICAL RULES:**\n- Run each script EXACTLY ONCE. Do not retry or re-run.\n- build.sh auto-picks: fresh build-wip first (resume), then prd-ready. You do NOT choose the idea.\n- qa.sh --auto handles its own retries internally (up to 3x). You just run it once.\n- policy-gate.sh classifies by blast radius: LOW=auto-merge, MEDIUM=auto-merge+notify, HIGH=block for Rod.\n- Do NOT ask for input. Run commands and report results.\n- All Discord posting is handled by the scripts. Just run them and capture output.",
+        "timeoutSeconds": 0,
+        "model": "google/gemini-3-flash-preview"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "1482047785435009105"
+      },
+      "state": {
+        "nextRunAtMs": 1776121200000,
+        "lastRunAtMs": 1775862311359,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 86708,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "6d3da517-dbd3-4cc6-a9bb-ca6674252a91",
+      "agentId": "main",
+      "name": "Bootstrap Receipt Reminder",
+      "createdAtMs": 1770843660018,
+      "updatedAtMs": 1770843660018,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 9 12 2 *",
+        "tz": "America/Denver"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🔔 REMINDER for Rod: Create the bootstrap receipt for Permission Protocol.\n\nRun on Render shell:\nnpx tsx scripts/create-bootstrap-receipt.ts --commit 4f6c5e92602501af069a69f72f7d4ddb7d3b7d2d --env staging\n\nThen verify with curl (see pinned Telegram message for full command)."
+      },
+      "state": {
+        "nextRunAtMs": 1802449800000
+      },
+      "enabled": true
+    }
+  ]
+}

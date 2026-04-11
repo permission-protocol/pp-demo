@@ -1,21 +1,22 @@
-Hotline report: no actionable hotline trigger validated.
+Outreach drought: Day 50. No actionable hotline trigger validated.
 
-Hot signals:
-- None cleared score-5 criteria on the fetched state.
-- `Trent AI` is outside the strict 24-hour funding window.
-- `Sycamore` is aged out.
-- `Nava` published at `2026-04-09T04:15:46Z` but does not qualify as a clear agent-company hotline trigger.
-- `Project Glasswing` remains watch-only.
-- No fresh Permission Protocol mention is validated.
-- No named AI-agent breach inside the strict 6-hour window is validated.
-- No new `>$10M` agent-company funding round inside the strict 24-hour window is validated.
-- No HN agent-security/authorization story above 50 points is validated.
+Hot signals: none.
+Fast-track actions: none.
+Outbound action: halt. No new outreach or public engagement should be initiated from this scan.
 
-Recommended fast-track actions:
-- None. Do not fast-track outbound from this run.
+Validation:
+- No named AI-agent breach/incident validated inside the strict 6h window.
+- No AI-agent regulatory action validated inside 24h.
+- No >$10M agent-company funding round validated inside 24h.
+- No actionable @PermissionPrtcl / PP mention validated.
+- HN did not produce a fresh 50+ point agent-security trigger. The high-traction Clinejection/GitHub issue-title compromise thread is stale at ~35 days old: <https://news.ycombinator.com/item?id=47263595>
+- `docs.permission.ai` uses “Permission Protocol” as unrelated Permission.ai docs copy, not an actionable PP mention: <https://docs.permission.ai/what-is-permission>
 
-Blockers that should halt outbound action:
-- X outbound is blocked: app still lacks write permissions, so tweet replies cannot be sent.
-- HN engagement is blocked: login unavailable.
-- Rod approval is still required before any Trent AI or Sycamore outbound.
-- Environment-level fetch limits remain in effect for direct X/HN shell collection, so blocked channels should not be used for outbound action from this run.
+Blockers:
+- X API shell fetch failed on DNS for `api.x.com`; existing X write/API blocker remains.
+- HN Algolia shell fetch failed on DNS for `hn.algolia.com`; HN login remains unavailable.
+- Rod approval still blocks Sycamore/Trent outbound.
+
+State/log updated:
+- `pp-os/scout/state.json` updated to `last_hotline_run: 2026-04-11T15:00:43Z`
+- `memory/2026-04-11.md` logged the scan result.

@@ -1,0 +1,36 @@
+## log/2026-04-09
+ M ACTIVE_CONTEXT.md
+ m Xdares
+ M company-os/governance/approval-log.jsonl
+ M company-os/governance/drift-log.jsonl
+ M company-os/governance/snapshots/gov_scan_latest.json
+ M factory/.last_sentry_scan
+ M factory/ideas.jsonl
+ M logs/crons/daily-briefing.log
+ M logs/crons/unified-hotline.log
+ m mcp-guard
+ M memory/2026-04-11.md
+ M memory/heartbeat-state.json
+ M ops/decisions.md
+ M ops/threads.yaml
+ ? permission-protocol-repo
+ M pp-os/marketing/HOT-SIGNAL.md
+ M pp-os/scout/system-health.log
+ M reports/cron-runs/daily-briefing/latest.json
+ M reports/cron-runs/daily-briefing/latest.md
+ M reports/cron-runs/unified-hotline/latest.json
+ M reports/cron-runs/unified-hotline/latest.md
+?? .cron_list.json
+?? .learnings/2026-04-10.md
+?? company-os/governance/snapshots/gov_scan_20260411_1300.json
+?? issues_app.json
+?? pp-os/marketing/signals/2026-04-11.jsonl
+?? pp-os/master-log/2026-04-11.md
+?? reports/cron-runs/daily-briefing/20260410T143011Z/
+?? reports/cron-runs/daily-briefing/20260411T143012Z/
+?? reports/cron-runs/daily-briefing/20260411T143047Z/
+?? reports/cron-runs/daily-briefing/20260411T143116Z/
+?? reports/cron-runs/daily-briefing/20260411T143134Z/
+?? reports/cron-runs/unified-hotline/20260410T150011Z/
+?? reports/cron-runs/unified-hotline/20260410T190005Z/
+?? reports/cron-runs/unified-hotline/20260410T230012Z/
