@@ -1,9 +1,8 @@
-# PP Status — Last Updated: 2026-04-11 05:20 PM MDT
+# PP Status — Last Updated: 2026-04-12 05:00 AM UTC
 
 ## Active Right Now
-- **Mode:** Week 5 Sprint — Outreach & Polish V3 (Apr 9–15)
+- **Mode:** Week 5 Sprint — Outreach & Polish V4 (Apr 9–15)
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
-- **Polish V3 COMPLETE:** 12 PRs (#337-#348) merged and deployed. Typography, Gradients, Radius, and Glassmorphism tightening live. ✅
 - **Outreach Drought:** Day 50. 🔴 CRITICAL. Zero installs. Signer Decision required.
 
 ## P0 — Requires Action Today
@@ -31,17 +30,20 @@
 - **idea-086** — Paperclip port 3100 on pp-scout-sfo2 (SSH needed)
 
 ## Backlog
-- **idea-042** — Actionable error UX: every error has a fix path (M) - STALE in PRD-WIP (58.0h).
+- **idea-042** — Actionable error UX: every error has a fix path (M) - STALE in PRD-WIP (58.0h). Reset to BLOCKED.
 - **idea-080** — Fix PostHog generic event names (S)
 - **idea-084** — MCP Guard v0.2 spec (M)
 
 ## Recent Decisions
-- (Apr 11) Outreach drought hits 50 days. Daily capture performed.
-- (Apr 10) Parallel Batch Pattern: 12 PRs in 3h with 11 Codex agents + worktrees.
-- (Apr 9) Chad Bayer Signal: Safety > Crypto for engineering leaders.
-- (Apr 9) Comment quieting removed. PP always posts a comment on every PR.
-- (Apr 9) Surgical comment updates (preserve consequence brief).
-- (Apr 8) Consequence Engine SHIPPED.
+- (Apr 12) Heartbeat 1646 complete. Status: WATCH (Cron timeouts). Outreach drought Day 50.
+- (Apr 12) Heartbeat 1645 complete. Outreach drought Day 50.
+- (Apr 12) Heartbeat 1644 complete. Outreach drought Day 50. Daily capture performed.
+- (Apr 12) Sunday Heartbeat 1643: Transcript archive + Weekly Memory Curation complete.
+- (Apr 11) Daily capture performed. 50-day drought confirmed as primary administrative bottleneck.
+- (Apr 10, 1 days) Parallel Batch Pattern: 12 PRs in 3h with 11 Codex agents + worktrees.
+- (Apr 9, 2 days) Chad Bayer Signal: Safety > Crypto for engineering leaders.
+- (Apr 9, 2 days) Comment quieting removed. PP always posts a comment on every PR.
+- (Apr 8, 3 days) Consequence Engine SHIPPED.
 
 ## Recently Shipped
 - Polish V3 (Batch 1-4, PR #337-#348): DESIGN.md alignment (Typography, Gradients, Radius, Glassmorphism). ✅
