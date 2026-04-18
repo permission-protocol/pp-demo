@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+"""Post tweets to @xdares_ promoting Cinco de Mayo content."""
+
 import json
 import tweepy
 import time
 from datetime import datetime
+import os
 
 # Load credentials
 with open('/Users/moltbot/.openclaw/secrets/x-api.json', 'r') as f:
@@ -15,11 +19,13 @@ client = tweepy.Client(
     access_token_secret=creds['oauth1']['access_token_secret']
 )
 
+# 3 engaging Cinco de Mayo tweets
 tweets = [
-    "Cinco de Mayo is around the corner! 🌮🍹\n\nDon't just stick to tacos. Level up your fiesta with these 6 classic Mexican party games:\n\n1. Lotería (Mexican Bingo)\n2. Toma Todo (The spinning top game)\n3. Dudo (Liar's Dice)\n4. Piñata Dares\n\nFull guide: https://blog.xdares.com/cinco-de-mayo-party-games-2026/",
-    "Ever played Toma Todo? 🌀\n\nIt's a traditional Mexican game that's deceptively simple but high-stakes. Spin the Perinola and pray you don't hit 'Toma Todo' (unless you're ready for that communal pitcher!)\n\nRules for this & more: https://blog.xdares.com/cinco-de-mayo-party-games-2026/",
-    "Cinco de Mayo 2026: Piñata Dares 🪅\n\nPro tip: Fill your piñata with dare slips instead of just candy. \n\n'Do a 30-second Grito'\n'Blindfolded taco eating contest'\n'Teach everyone a salsa move'\n\nGet the full dare list: https://blog.xdares.com/cinco-de-mayo-party-games-2026/",
-    "Dudo (Liar's Dice) is the ultimate bluffing game for your Cinco de Mayo fiesta. 🎲\n\nAdd a 'margarita challenge' twist to keep the stakes high. \n\nCheck out the full rules: https://blog.xdares.com/cinco-de-mayo-party-games-2026/"
+    "Cinco de Mayo 2026 is around the corner! 🌮🇲🇽\n\nDon't just do the same old taco bar. Level up your fiesta with traditional Mexican games like Dudo and Toma Todo (with a drinking twist!)\n\nFull guide: https://blog.xdares.com/cinco-de-mayo-2026-the-ultimate-fiesta-games-drinking-guide/",
+    
+    "Mexican Dice (Dudo) is the high-stakes bluffing game your Cinco de Mayo party needs. 🎲🍻\n\nCall 'Dudo!' on your friends or take a shot. The ultimate test of your poker face.\n\nMore fiesta game ideas: https://blog.xdares.com/cinco-de-mayo-2026-the-ultimate-fiesta-games-drinking-guide/",
+    
+    "Lotería (Mexican Bingo) but make it a drinking game! 🎰🍹\n\nEvery time 'El Borracho' is called, everyone drinks. First to shout ¡Lotería! assigns the tequila penalties.\n\nRules here: https://blog.xdares.com/cinco-de-mayo-2026-the-ultimate-fiesta-games-drinking-guide/"
 ]
 
 posted = []
@@ -33,16 +39,17 @@ for i, tweet_text in enumerate(tweets, 1):
         print(f"✅ Tweet {i} posted: {tweet_url}")
         posted.append({
             'index': i,
-            'id': tweet_id,
+            'id': str(tweet_id),
             'url': tweet_url,
             'text': tweet_text[:50] + '...'
         })
         if i < len(tweets):
-            time.sleep(5)
+            time.sleep(10)
     except Exception as e:
         print(f"❌ Tweet {i} failed: {e}")
         errors.append({'index': i, 'error': str(e)})
 
+# Save results
 results = {
     'timestamp': datetime.now().isoformat(),
     'posted': posted,
@@ -50,7 +57,9 @@ results = {
     'total_posted': len(posted)
 }
 
-with open('/Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs/tweets-cinco-de-mayo-20260409.json', 'w') as f:
+log_dir = '/Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/logs'
+log_file = os.path.join(log_dir, 'tweets-cinco-de-mayo-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.json')
+with open(log_file, 'w') as f:
     json.dump(results, f, indent=2)
 
-print(f"SUCCESS: {len(posted)}/4 tweets posted.")
+print(f"\nResults saved to {log_file}")

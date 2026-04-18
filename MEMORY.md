@@ -14,6 +14,9 @@
 
 ## Hard Rules (Scar Tissue)
 
+### Stagnation Governance (Hard Rule)
+Every message to Rod must now start with the Outreach Drought counter (e.g., "Day 55 Outreach Drought") until the first message is sent and the drought is broken (Apr 17). This prevents the primary bottleneck from being buried in routine updates.
+
 ### Never Touch Model Config
 Model config changes are Rod's job. Period. Read `SAFETY.md` before any risky config operation. I've died twice from this.
 
@@ -96,7 +99,9 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement, YAML-based rules. Published as `@permission-protocol/mcp-guard`.
 - **Consequence Engine** (Apr 8): Predictive enforcement layer that analyzes PR diffs to determine outcomes (`cleared`, `approval_required`, `denied`) before merge.
 - **Onboarding Smoke Test** (Apr 6): `scripts/pp-onboarding-smoke-test.sh` — E2E verification for GitHub App installation and PR status check feedback loop.
-- **Onboarding Healthcheck** (Apr 7): `scripts/pp-onboarding-healthcheck.sh` — persistent monitoring script for critical onboarding flow.
+- **Ideation Schema Migration** (Apr 17): Normalized `ideas.jsonl` to a state machine (ACTIVE/BLOCKED/PARKED/DONE/ARCHIVED). Pipeline now manages 22 non-terminal ideas with clear visibility on BLOCKED and PARKED states.
+- **Outreach Readiness** (Apr 17): Personalized outreach for warm leads (idea-097), PH hunters (idea-095), and HN unban (idea-096) drafted and waiting for loom/approval.
+- **Ideation Schema Migration** (Apr 17): Normalized `ideas.jsonl` to a state machine (ACTIVE/BLOCKED/PARKED/DONE/ARCHIVED). Pipeline now manages 22 non-terminal ideas with clear visibility on BLOCKED and PARKED states.
 
 ---
 
@@ -124,10 +129,22 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **System Prompt Restructured** (Apr 6)
     - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
 
-*Updated: 2026-04-10 11:00 PM*
+*Updated: 2026-04-18 00:03 AM*
 
-### GitHub App Installation Race Conditions
-When receiving a GitHub App installation callback, querying `GET /installation/repositories` immediately can return an empty array due to GitHub's internal propagation delay. Always implement an exponential backoff (e.g., 1s, 2s, 4s) retry loop when the repo list is empty.
+### Strategic Stagnation (Outreach Drought)
+Day 56 Outreach Drought (Apr 18 UTC). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. Every message to Rod must start with this counter until broken.
+
+### Governance & Security
+- **Governance Check (Apr 17):** Ledger synchronized (PP-001 to PP-021, XD-001 to XD-004, SYS-001 to SYS-015). PAT leak remediated. Heartbeat push verified via SSH.
+
+### Outreach Readiness
+- **Drafts Ready:** Personalized outreach for warm leads (idea-097), PH hunters (idea-095), and HN unban (idea-096) are drafted and waiting for loom/approval.
+
+### Factory Pipeline Discipline
+PRDs stale for >48h (e.g., `idea-042`) are reset to BLOCKED to prevent pipeline pollution. This forces a conscious decision to resume rather than letting half-baked specs linger in the active queue.
+
+### Software Maintenance
+OpenClaw `2026.4.11` update available (manual upgrade required).
 
 ### Idempotent State Machines
 When building state machines for onboarding (like ActivationAttempts), locked steps must be idempotent and resumable so users can recover from early failures without getting permanently stuck.

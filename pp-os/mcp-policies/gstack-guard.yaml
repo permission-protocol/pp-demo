@@ -1,0 +1,19 @@
+name: GStack Core Policy
+rules:
+  - pattern: "*/review"
+    action: cleared
+  - pattern: "*/qa"
+    action: cleared
+  - pattern: "*/qa-only"
+    action: cleared
+  - pattern: "*/autoplan"
+    action: cleared
+  - pattern: "*/cso"
+    action: approval_required
+  - pattern: "*/ship"
+    action: approval_required
+  - pattern: "*/land-and-deploy"
+    action: approval_required
+  - pattern: "*/browse"
+    action: cleared
+default: approval_required

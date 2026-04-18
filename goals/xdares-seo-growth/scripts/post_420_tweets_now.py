@@ -21,15 +21,15 @@ client = tweepy.Client(
 
 # 5 engaging 4/20 tweets
 tweets = [
-    "4/20 is coming! 🌿 Level up your celebration with the ultimate guide to high-energy dares and games.\n\nFrom 'The Cloud Sculptor' to 'Munchie Mastermind', we've got you covered.\n\nFull guide: https://blog.xdares.com/420-party-guide-2026/",
+    "Only 3 days until 4/20! 🌿 Make sure your session is legendary with our ultimate guide to high-energy dares and games.\n\nFrom 'The Cloud Sculptor' to 'Munchie Mastermind', we've got you covered.\n\nFull guide: https://blog.xdares.com/420-party-guide-2026/",
     
-    "The 'Slow-Mo' Challenge for 4/20: Everyone talks and moves in half-speed for 10 mins. 😂\n\nFirst to break character takes a penalty (or a dare!)\n\nMore ideas for your session: https://blog.xdares.com/420-party-guide-2026/",
+    "Ever tried the 'Slow-Mo' challenge during a 4/20 session? 🌿 Talking and moving in half-speed is way harder than it looks! 😂\n\nMore ideas for your session: https://blog.xdares.com/420-party-guide-2026/",
     
-    "Munchie Menu Roulette: Order a random item on a delivery app. 🍕🍟\n\nThe group invents a dare for whoever eats it!\n\n18+ stoner challenges: https://blog.xdares.com/420-party-guide-2026/",
+    "Munchie Roulette is the only way to order food this 4/20. 🍕🍟\n\nThe group invents a dare for whoever eats the random delivery item!\n\n18+ stoner challenges: https://blog.xdares.com/420-party-guide-2026/",
     
-    "Weed-Trivia Dares: Miss a question about stoner cinema? 🎬🍿\n\nYou're doing the 'Ghost' dare or explaining gravity in one sentence.\n\nHappy 4/20: https://blog.xdares.com/420-party-guide-2026/",
+    "Stoner Cinema Trivia: The high-stakes way to celebrate 4/20. 🎬🍿\n\nMiss a question? You're doing the 'Ghost' dare or explaining gravity in one sentence.\n\nHappy 4/20: https://blog.xdares.com/420-party-guide-2026/",
     
-    "Stay safe and have fun this 4/20! Check out our full guide for 2026 for games and dares that don't suck.\n\n🌬️🎮 https://blog.xdares.com/420-party-guide-2026/"
+    "2026 is the year of better 4/20 parties. 🌬️🎮 Check out our full guide for games and dares that actually keep the energy up.\n\nhttps://blog.xdares.com/420-party-guide-2026/"
 ]
 
 posted = []

@@ -11,6 +11,7 @@ If `BOOTSTRAP.md` exists, follow it, then delete it.
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **Main sessions only** (direct chat with Rod): also read `MEMORY.md`
 5. Read `ACTIVE_CONTEXT.md` — what matters right now
+6. Run `scripts/blocker-age-checker.sh` to identify stale bottlenecks.
 
 For session bootstrap reads only, do this automatically without asking.
 
@@ -94,8 +95,18 @@ When hitting a wall: stop building workarounds. Spend 15 minutes researching the
 **Safe to do freely:** Read files, search web, work within workspace.
 **Ask first:** Emails, tweets, public posts — anything that leaves the machine.
 
-### Strategic Stagnation
-If a critical workflow (e.g., outreach, launch prep) is stalled for >7 days, shift from "polite nudge" to "Signer Decision" mode. Present Rod with clear, single-action approve/deny commands. Do not offer a menu of options; offer the decision.
+### Strategic Stagnation (Stall Mitigation)
+- **The Drought Protocol:** If outreach or a critical blocker is stalled for >7 days, pivot from "Builder" to "Executive Assistant." 
+- **Auto-Pruning:** Items in `STATUS.md` or the pipeline that haven't moved in 10 days should be automatically moved to `PARKED` or `ARCHIVED` by Charles to reduce noise.
+### Decision Cards (Standardized)
+When requesting approval for a stall or critical decision:
+1. **Title:** Clear objective (e.g., "Decision Card: Sycamore Outreach")
+2. **Context:** 1-sentence why it matters now.
+3. **The Stake:** 1-sentence consequence of "No" or "Wait" (the cost of debt).
+4. **Decision Command:** A single copy-pasteable command for Rod to execute (e.g., `/approve sycamore`).
+5. **Template:** Use `ref/templates/decision-card.md` for formatting.
+
+---
 
 ### Group Chat Behavior
 You're a participant, not Rod's proxy. Don't share his private stuff.

@@ -1,47 +1,12 @@
-# PENDING IMPROVEMENTS
+# Improvements Pending Review
 
-## System / Infrastructure
+## High Priority
+- **GA4/Search Console Re-auth**: Google tokens have expired. Rod needs to re-authorize via the Google Cloud Console or the specific link (if I can generate it). This blocks all SEO and conversion metrics.
+- **Outreach Send Execution**: Sycamore and Trent AI drafts are Day 55 stale. 
+    - **Action**: Approve send. 
+    - **Command**: `scripts/send-outreach.sh sycamore`
+- **X API Tier Upgrade**: Xdares BBQ push is limited by the current API tier. Rod needs to upgrade the subscription.
 
-### 1. Cron Channel Repair (High Priority)
-- **Problem**: 7+ crons are failing with `Unsupported channel: discord` or `Unsupported channel: telegram`. This indicates the Gateway's messaging plugin configuration is stale or disconnected for those specific cron-worker sessions.
-- **Diagnostics (Apr 5)**: `bash scripts/discord-health-check.sh` confirms the Discord client is initialized as "Charles Goldberg" but is stuck at `awaiting gateway readiness`.
-- **Proposed Fix**: Rod needs to verify the Gateway config (discord/telegram plugins) and potentially restart the process.
-- **Type**: Config Change / Gateway Restart
-
-### 2. X API Tier Upgrade (Blocked)
-- **Problem**: Public outreach via X is halted because the current API tier doesn't allow write operations (`idea-082`).
-- **Proposed Fix**: Upgrade X Dev account to 'Basic' or 'Pro' tier.
-- **Type**: Config Change (External)
-
-### 3. Paperclip Port 3100 (Blocked)
-- **Problem**: Paperclip status is unavailable, blocking lead monitoring (`idea-086`).
-- **Proposed Fix**: SSH into `pp-scout-sfo2` and verify the Fastify server and port 3100 availability.
-- **Type**: Process Change / DevOps
-
-### 4. OpenClaw Prompt Cache Fix ($2,150+/mo Waste)
-- **Problem**: Dynamic `userTime` variables in the OpenClaw prompt prefix are causing a 100% cache-miss rate for Anthropic models, costing $2,150+/mo in redundant tokens.
-- **Status (Apr 5)**: `scripts/prefix-telemetry.sh` tracking active prefix hashes.
-- **Proposed Fix**: Apply the source patch to the OpenClaw adapter (move `userTime` and session IDs below the `cache_control` block) and restart the gateway.
-- **Type**: Code Change / Gateway Restart
-
-### 5. Week 4 Decision Brief (Urgent)
-- **Problem**: The final sprint decision brief is overdue because we lack the audit data for demo approval counts.
-- **Proposed Fix**: Rod to provide the query results from PostHog/PP DB (Mar 24–Apr 2) and Stripe conversion counts.
-- **Type**: Process Change
-
-### 6. Mobile QA Persistent Failure (Medium Priority)
-- **Problem**: `mobile-qa-daily` cron has failed 6 times in a row.
-- **Diagnostics (Apr 5)**: Likely tied to the Discord provider drift (unable to report results) and a potential regression in the mobile age-gate on 10Web (CDN cache).
-- **Proposed Fix**: Debug the 10Web CDN cache issue and verify the `mobile-qa-daily` script logic independently of Discord delivery.
-- **Type**: Bug Fix / Process Change
-
-### 8. Outreach Drought Emergency (Day 48)
-- **Problem**: The technical system is stable and optimized, but growth is zero. We are stalled on Rod's "Signer Decision" for the first outbound messages.
-- **Proposed Fix**: Rod to approve/deny Sycamore (idea-092) and Trent AI (idea-098) outreach drafts immediately.
-- **Type**: Process Change / Critical Blocker
-
-### 9. Coding Agent QA Protocol
-- **Problem**: Sprint #2 saw UI regressions due to lack of verification against PRDs.
-- **Status (Apr 9)**: Implemented protocol in `AGENTS.md`.
-- **Action**: Rod to review the new protocol in `AGENTS.md`.
-- **Type**: Process Change
+## Proposed Changes
+- **Auto-Archive Schedule**: Proposed a weekly cron to archive all daily notes older than 30 days.
+- **MCP Guard v0.2**: Ready for spec-review. 

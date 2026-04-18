@@ -5,3 +5,35 @@ X API secret file exists.
 Checking PostHog (app.posthog.com)...
 302
 Done.
+--- Diagnostic Run: 2026-04-17 09:53:24 ---
+Checking Paperclip (100.122.174.112:3100)...
+Checking X API config presence...
+X API secret file exists.
+Checking PostHog (app.posthog.com)...
+000
+Done.
+--- Diagnostic Run: 2026-04-17 17:01:06 ---
+Checking Paperclip (100.122.174.112:3100)...
+nc: connectx to 100.122.174.112 port 3100 (tcp) failed: Operation not permitted
+Checking X API config presence...
+X API secret file exists.
+Checking PostHog (app.posthog.com)...
+000
+Done.
+--- DNS Health Check: 2026-04-17 23:31:22 ---
+[OK] DNS resolution for google.com
+[OK] DNS resolution for github.com
+[OK] DNS resolution for x.com
+[OK] DNS resolution for news.ycombinator.com
+[OK] DNS resolution for app.posthog.com
+Done.
+--- Diagnostic Run: 2026-04-18 13:01:32 ---
+Checking Paperclip (100.122.174.112:3100)...
+Checking X API config presence...
+X API secret file exists.
+Checking PostHog (app.posthog.com)...
+000
+Done.
+[2026-04-18T19:01:32Z] hotline fetch DNS fault
+nc: connectx to 100.122.174.112 port 3100 (tcp) failed: Operation not permitted
+---

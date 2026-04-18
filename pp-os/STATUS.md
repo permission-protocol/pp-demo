@@ -1,30 +1,30 @@
-# PP Status — Last Updated: 2026-04-12 05:00 AM UTC
+# PP Status — Last Updated: 2026-04-18 05:15 AM UTC
 
 ## Active Right Now
-- **Mode:** Week 5 Sprint — Outreach & Polish V4 (Apr 9–15)
+- **Mode:** Week 5 Sprint — Outreach & Polish V4 (Apr 9–15) [OVERDUE]
 - **Sprint Goal:** 10 active external installations + Product Hunt launch.
-- **Outreach Drought:** Day 50. 🔴 CRITICAL. Zero installs. Signer Decision required.
+- **Outreach Drought:** Day 56. 🔴 CRITICAL. Zero installs. Signer Decision required.
 
 ## P0 — Requires Action Today
 
 ### 🔴 ROD ACTION REQUIRED
-- **OUTREACH DROUGHT (Day 50)** — Stale drafts pending >48h:
+- **OUTREACH DROUGHT (Day 56)** — Stale drafts pending >48h:
     - `idea-092` (Sycamore/Sri Viswanath)
     - `idea-098` (Trent AI/Eno Thereska)
-- **Signer Decision** — Approve/Deny Sycamore draft (Day 50 stall).
+- **Signer Decision** — Approve/Deny Sycamore draft (Day 56 stall).
 - **Loom Recording** — Script provided in #wedges. Ready to record on `demo-repository`.
 - **Homepage Review** — Final site branch `feat/consequence-engine-site` ready for review.
 
 ### Charles (READY to execute)
 - **Site Deploy** — Push `feat/consequence-engine-site` once Rod approves.
 - **Outreach Send** — Ship Sycamore/Trent AI once Loom is done.
-- **idea-097** — Shortlist 5 warm leads + draft personalized messages.
-- **idea-095** — PH hunter identification (2-3 hunters) + draft DMs.
-- **idea-096** — Draft HN unban email to dang@.
+- **idea-097** — Shortlist 5 warm leads + drafted in `pending/warm-lead-shortlist-001.md`.
+- **idea-095** — PH hunter identification + drafted in `pending/ph-hunter-dms.md`.
+- **idea-096** — Draft HN unban email + drafted in `pending/hn-unban-dang.md`.
 
 ## BLOCKED (needs Rod)
-- **idea-092** — Sycamore/Sri Viswanath outreach (approval pending — Day 50)
-- **idea-098** — Trent AI/Eno Thereska outreach (approval pending — Day 50)
+- **idea-092** — Sycamore/Sri Viswanath outreach (approval pending — Day 56)
+- **idea-098** — Trent AI/Eno Thereska outreach (approval pending — Day 56)
 - **idea-085** — PostHog/Stripe conversion audit (GA4 token expired)
 - **idea-082** — X API write permissions (tier upgrade)
 - **idea-086** — Paperclip port 3100 on pp-scout-sfo2 (SSH needed)
@@ -35,18 +35,13 @@
 - **idea-084** — MCP Guard v0.2 spec (M)
 
 ## Recent Decisions
-- (Apr 12) Heartbeat 1646 complete. Status: WATCH (Cron timeouts). Outreach drought Day 50.
-- (Apr 12) Heartbeat 1645 complete. Outreach drought Day 50.
-- (Apr 12) Heartbeat 1644 complete. Outreach drought Day 50. Daily capture performed.
-- (Apr 12) Sunday Heartbeat 1643: Transcript archive + Weekly Memory Curation complete.
-- (Apr 11) Daily capture performed. 50-day drought confirmed as primary administrative bottleneck.
-- (Apr 10, 1 days) Parallel Batch Pattern: 12 PRs in 3h with 11 Codex agents + worktrees.
-- (Apr 9, 2 days) Chad Bayer Signal: Safety > Crypto for engineering leaders.
-- (Apr 9, 2 days) Comment quieting removed. PP always posts a comment on every PR.
-- (Apr 8, 3 days) Consequence Engine SHIPPED.
+- (Apr 18) Heartbeat 1664 complete. Status: CRITICAL STALL (Day 56 drought).
+- (Apr 17) Governance Check: Ledger synchronized, PAT leak remediated.
+- (Apr 17) Ideation Schema Migration: Normalized ideas.jsonl to state machine.
+- (Apr 17) Heartbeat 1660 complete. Status: CRITICAL STALL (Day 55 drought).
+- (Apr 9) Chad Bayer Signal: Safety > Crypto for engineering leaders.
+- (Apr 8) Consequence Engine SHIPPED.
 
 ## Recently Shipped
-- Polish V3 (Batch 1-4, PR #337-#348): DESIGN.md alignment (Typography, Gradients, Radius, Glassmorphism). ✅
-- Polish V2 (PR #322-#330): Onboarding success page, headless provisioning, surgical comments, branding. ✅
+- Polish V3 (Batch 1-4, PR #337-#348): DESIGN.md alignment. ✅
 - Consequence Engine (Engine, Router, Routing, Receipts, Design v2) ✅
-- PR #314: Launch alerts ✅

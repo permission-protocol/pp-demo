@@ -225,5 +225,3 @@ if [ "$DRY_RUN" != "--dry-run" ]; then
   echo ""
   echo "📤 Would post to #scout-alerts (use cron to enable)"
 fi
-"📤 Would post to #scout-alerts (use cron to enable)"
-fi

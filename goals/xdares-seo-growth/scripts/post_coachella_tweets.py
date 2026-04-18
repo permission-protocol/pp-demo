@@ -21,15 +21,15 @@ client = tweepy.Client(
 
 # 5 engaging Coachella/Festival tweets
 tweets = [
-    "Heading to Coachella 2026? 🌵🎡\n\nDon't just stand there between sets. Try these 15 festival games to keep the vibe high.\n\nFrom 'Outfit Bingo' to 'Silent Disco Mimic', your camp just got upgraded.\n\nFull guide: https://blog.xdares.com/coachella-festival-party-guide-2026/",
+    "Heading to Coachella 2026? 🌵🎡\n\nDon't just stand there between sets. Try these 15 festival games to keep the vibe high.\n\nFrom 'Outfit Bingo' to 'Silent Disco Mimic', your camp just got upgraded.\n\nFull guide: https://blog.xdares.com/coachella-playbook-2/",
     
-    "Couchchella 2026 is here! 🍿🛋️\n\nStreaming the desert from your living room? Here are 5 games that make a home watch party feel like a VIP tent.\n\n- The 'Drop' Drink\n- The Influencer Challenge\n- VIP Upgrade cards\n\nGet the rules: https://blog.xdares.com/coachella-festival-party-guide-2026/",
+    "Couchchella 2026 is here! 🍿🛋️\n\nStreaming the desert from your living room? Here are 5 games that make a home watch party feel like a VIP tent.\n\n- The 'Drop' Drink\n- The Influencer Challenge\n- VIP Upgrade cards\n\nGet the rules: https://blog.xdares.com/coachella-playbook-2/",
     
-    "15 Festival Dares for Coachella 🎡✨\n\n1. The 'Merch' Swap (1 hour clothing trade)\n2. The 'Front Row' Push (mime it!)\n3. Shout out a fake artist\n4. Glow up every 20 mins\n\nWhich one are you doing? 😈\n\nhttps://blog.xdares.com/coachella-festival-party-guide-2026/",
+    "15 Festival Dares for Coachella 🎡✨\n\n1. The 'Merch' Swap (1 hour clothing trade)\n2. The 'Front Row' Push (mime it!)\n3. Shout out a fake artist\n4. Glow up every 20 mins\n\nWhich one are you doing? 😈\n\nhttps://blog.xdares.com/coachella-playbook-2/",
     
-    "Coachella 2026 Outfit Bingo 🤠👗\n\nSpotted a crochet top? Take a sip.\nInfluencer in the wild? Finish your drink.\nCowboy boots in the sand? That's a point.\n\nTurn the desert into a game: https://blog.xdares.com/coachella-festival-party-guide-2026/",
+    "Coachella 2026 Outfit Bingo 🤠👗\n\nSpotted a crochet top? Take a sip.\nInfluencer in the wild? Finish your drink.\nCowboy boots in the sand? That's a point.\n\nTurn the desert into a game: https://blog.xdares.com/coachella-playbook-2/",
     
-    "Who are you most excited to see at #Coachella2026? 🎵✨\n\nMake a game of it with 'Set List Roulette'. Guess the first 3 songs or take a festival dare.\n\n15 more ideas for the desert: https://blog.xdares.com/coachella-festival-party-guide-2026/"
+    "Who are you most excited to see at #Coachella2026? 🎵✨\n\nMake a game of it with 'Set List Roulette'. Guess the first 3 songs or take a festival dare.\n\n15 more ideas for the desert: https://blog.xdares.com/coachella-playbook-2/"
 ]
 
 posted = []

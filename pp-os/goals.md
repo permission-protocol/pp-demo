@@ -15,7 +15,7 @@ PP becomes the default deploy authorization layer for AI-native startups. Word-o
 **Get first external design partner actively using Deploy Gate.**
 
 - **Success Metric:** 1 non-Rod company with required check enabled on a production repo.
-- **Deadline:** March 21, 2026
+- **Deadline:** ~~March 21, 2026~~ **MISSED. Revised: May 1, 2026** *(pending Rod action on #194)*
 - **Constraints:**
   - No paid acquisition.
   - Partner must adopt organically (not hand-held through every step).

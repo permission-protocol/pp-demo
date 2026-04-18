@@ -1,17 +1,21 @@
-# Xdares Status — Last Updated: 2026-04-11 12:02 PM MDT
+# Xdares Status — Last Updated: 2026-04-18 08:01 AM Denver
 
 ## Active Right Now
-- **Content Library**: 171 live blog posts
+- **Content Library**: 178 live blog posts
 - **Campaign**: Coachella/420 Seasonal Push (Apr 10-20)
 - **Analytics**: GA4/Search Console tokens need manual re-auth (needs Rod)
+- **Budget**: 10/10 tasks completed today.
+- **Goal Status**: Deadline (Apr 17) passed.
 
 ## Recent Decisions
+- **Coachella Push**: Published and promoted 'The Coachella Playbook' (Apr 18) to capture active festival traffic.
+- **Summer Preparation**: Published 'Backyard Beer Olympics 2026' (Apr 18) ahead of schedule to build SEO authority.
+- **Summer BBQ Launch**: Published 'Summer BBQ Drinking Games 2026' (Apr 11) to capture early seasonal interest.
 - **Father's Day Strategy**: Leveraging seasonal triggers to break stagnation. Created `post_fathers_day_tweets.py` (Apr 9).
-- **Easter Sunday Promo**: Successfully ran April 5th via X API.
 
 ## Key Numbers
-- **Blog Posts**: 162 live (Apr 5 audit)
-- **X API**: ✅ OPERATIONAL — Easter Sunday promo live
+- **Blog Posts**: 178 live (Apr 18 audit)
+- **X API**: ✅ OPERATIONAL — BBQ Promo live
 
 ## Active Blockers
 - **Mobile age-gate**: CDN caching issue on 10Web (investigating)

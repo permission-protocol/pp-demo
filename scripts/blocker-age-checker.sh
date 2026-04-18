@@ -1,38 +1,45 @@
 #!/bin/bash
-# Increments age of blockers in pp-os/STATUS.md or alerts if stagnant
+# scripts/blocker-age-checker.sh - Find and flag stale BLOCKED items in ideas.jsonl
+# Outputs a summary of items blocked for > 48 hours.
 
-STATUS_FILE="pp-os/STATUS.md"
-TMP_FILE="pp-os/STATUS.md.tmp"
+IDEAS_FILE="/Users/moltbot/.openclaw/workspace/pp-os/ideas.jsonl"
+THRESHOLD_DAYS=2
+CURRENT_DATE=$(date +%Y-%m-%d)
+THRESHOLD_EPOCH=$(date -v-${THRESHOLD_DAYS}d +%s)
 
-# Check for Day X or X days in blockers
-# This is a simple regex search to highlight stagnant items.
-# Logic: Find lines under ## BLOCKED or 🔴 ROD ACTION REQUIRED
-# If they contain a date like (Apr 8), calculate days since.
+echo "### Stale Blocker Audit ($CURRENT_DATE)"
+echo "Checking for items BLOCKED for more than $THRESHOLD_DAYS days..."
 
-today=$(date +%s)
+# Use jq to filter blocked items and check their update date
+# Note: This requires jq.
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is required but not installed."
+    exit 1
+fi
 
-while IFS= read -r line; do
-  if [[ $line =~ \(([A-Z][a-z]{2})\ ([0-9]+)\) ]]; then
-    month="${BASH_REMATCH[1]}"
-    day="${BASH_REMATCH[2]}"
-    # Convert to timestamp (assuming current year 2026)
-    blocker_date=$(date -j -f "%b %d %Y" "$month $day 2026" +%s 2>/dev/null)
-    if [[ $? -eq 0 ]]; then
-      diff=$(( (today - blocker_date) / 86400 ))
-      if [[ $diff -gt 0 ]]; then
-        # Replace or append age
-        # Example: (Apr 8) -> (Apr 8, 2 days)
-        new_line=$(echo "$line" | sed -E "s/\([A-Z][a-z]{2} [0-9]+\)/\(${month} ${day}, ${diff} days\)/")
-        echo "$new_line" >> "$TMP_FILE"
-      else
-        echo "$line" >> "$TMP_FILE"
-      fi
-    else
-      echo "$line" >> "$TMP_FILE"
+STALE_COUNT=0
+while read -r line; do
+    ID=$(echo "$line" | jq -r '.id')
+    TITLE=$(echo "$line" | jq -r '.title')
+    STATUS=$(echo "$line" | jq -r '.status')
+    UPDATED=$(echo "$line" | jq -r '.updated')
+    BLOCKED_BY=$(echo "$line" | jq -r '.blocked_by')
+    
+    if [ "$STATUS" == "BLOCKED" ]; then
+        # Check if UPDATED is older than THRESHOLD_DAYS
+        # Converting date to epoch for comparison (macOS date format)
+        UPDATED_EPOCH=$(date -j -f "%Y-%m-%d" "$UPDATED" "+%s" 2>/dev/null)
+        if [ $? -ne 0 ]; then continue; fi # Skip if date format is weird
+        
+        if [ "$UPDATED_EPOCH" -lt "$THRESHOLD_EPOCH" ]; then
+            echo "- **$ID ($TITLE)**: Blocked by \"$BLOCKED_BY\" since $UPDATED"
+            STALE_COUNT=$((STALE_COUNT + 1))
+        fi
     fi
-  else
-    echo "$line" >> "$TMP_FILE"
-  fi
-done < "$STATUS_FILE"
+done < "$IDEAS_FILE"
 
-mv "$TMP_FILE" "$STATUS_FILE"
+if [ "$STALE_COUNT" -eq 0 ]; then
+    echo "No stale blocked items found."
+else
+    echo "Total stale blockers: $STALE_COUNT"
+fi
