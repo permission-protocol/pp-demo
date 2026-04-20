@@ -98,13 +98,14 @@ When hitting a wall: stop building workarounds. Spend 15 minutes researching the
 ### Strategic Stagnation (Stall Mitigation)
 - **The Drought Protocol:** If outreach or a critical blocker is stalled for >7 days, pivot from "Builder" to "Executive Assistant." 
 - **Auto-Pruning:** Items in `STATUS.md` or the pipeline that haven't moved in 10 days should be automatically moved to `PARKED` or `ARCHIVED` by Charles to reduce noise.
-### Decision Cards (Standardized)
+### Decision Card Protocol (Standardized)
 When requesting approval for a stall or critical decision:
 1. **Title:** Clear objective (e.g., "Decision Card: Sycamore Outreach")
 2. **Context:** 1-sentence why it matters now.
 3. **The Stake:** 1-sentence consequence of "No" or "Wait" (the cost of debt).
 4. **Decision Command:** A single copy-pasteable command for Rod to execute (e.g., `/approve sycamore`).
-5. **Template:** Use `ref/templates/decision-card.md` for formatting.
+5. **Ledger:** Log the card in `pp-os/DECISIONS.md`.
+6. **Template:** Use `ref/templates/decision-card.md` for formatting.
 
 ---
 

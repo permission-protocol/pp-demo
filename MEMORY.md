@@ -129,10 +129,16 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **System Prompt Restructured** (Apr 6)
     - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
 
-*Updated: 2026-04-18 00:03 AM*
+*Updated: 2026-04-19 11:00 PM*
 
 ### Strategic Stagnation (Outreach Drought)
-Day 56 Outreach Drought (Apr 18 UTC). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. Every message to Rod must start with this counter until broken.
+Day 57 Outreach Drought (Apr 19 MDT). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. Every message to Rod must start with this counter until broken.
+
+### Tactical Pivot: The Day 14 Rule
+When a primary outreach target is unresponsive for 14 days (specifically on LinkedIn), pivot immediately to secondary contacts at the same organization. "Go wide" to break the silence rather than waiting for a single decision-maker who has ghosted. First applied: Apr 20, 2026 for the Apr 7 batch.
+
+### LinkedIn Batch Performance
+LinkedIn batches are time-sensitive. Day 0 (Initial), Day 7 (Soft Nudge), Day 14 (Pivot to Secondary). Failure to execute the Day 14 pivot results in a lead going cold.
 
 ### Governance & Security
 - **Governance Check (Apr 17):** Ledger synchronized (PP-001 to PP-021, XD-001 to XD-004, SYS-001 to SYS-015). PAT leak remediated. Heartbeat push verified via SSH.

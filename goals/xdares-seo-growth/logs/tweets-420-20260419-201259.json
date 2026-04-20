@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-04-19T20:12:59.552744",
+  "posted": [
+    {
+      "index": 1,
+      "id": "2046049328154702060",
+      "url": "https://x.com/xdares_/status/2046049328154702060",
+      "text": "Happy 4/20! \ud83c\udf3f Today is the day. Make sure your ses..."
+    },
+    {
+      "index": 2,
+      "id": "2046049371595186401",
+      "url": "https://x.com/xdares_/status/2046049371595186401",
+      "text": "It's 4/20! \ud83c\udf3f Ever tried the 'Slow-Mo' challenge? T..."
+    },
+    {
+      "index": 3,
+      "id": "2046049415018758327",
+      "url": "https://x.com/xdares_/status/2046049415018758327",
+      "text": "Munchie Roulette is the only way to order food thi..."
+    },
+    {
+      "index": 5,
+      "id": "2046049459021176930",
+      "url": "https://x.com/xdares_/status/2046049459021176930",
+      "text": "2026 is the year of better 4/20 parties. \ud83c\udf2c\ufe0f\ud83c\udfae Check..."
+    }
+  ],
+  "errors": [
+    {
+      "index": 4,
+      "error": "403 Forbidden\nYou are not allowed to create a Tweet with duplicate content."
+    }
+  ],
+  "total_posted": 4
+}

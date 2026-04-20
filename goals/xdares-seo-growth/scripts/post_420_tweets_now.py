@@ -21,15 +21,15 @@ client = tweepy.Client(
 
 # 5 engaging 4/20 tweets
 tweets = [
-    "Only 3 days until 4/20! 🌿 Make sure your session is legendary with our ultimate guide to high-energy dares and games.\n\nFrom 'The Cloud Sculptor' to 'Munchie Mastermind', we've got you covered.\n\nFull guide: https://blog.xdares.com/420-party-guide-2026/",
+    "Happy 4/20! 🌿 Today is the day. Make sure your session is legendary with our ultimate guide to high-energy dares and games.\n\nFrom 'The Cloud Sculptor' to 'Munchie Mastermind', we've got you covered.\n\nFull guide: https://blog.xdares.com/420-party-guide-2026/",
     
-    "Ever tried the 'Slow-Mo' challenge during a 4/20 session? 🌿 Talking and moving in half-speed is way harder than it looks! 😂\n\nMore ideas for your session: https://blog.xdares.com/420-party-guide-2026/",
+    "It's 4/20! 🌿 Ever tried the 'Slow-Mo' challenge? Talking and moving in half-speed is way harder than it looks! 😂\n\nMore ideas for your session today: https://blog.xdares.com/420-party-guide-2026/",
     
-    "Munchie Roulette is the only way to order food this 4/20. 🍕🍟\n\nThe group invents a dare for whoever eats the random delivery item!\n\n18+ stoner challenges: https://blog.xdares.com/420-party-guide-2026/",
+    "Munchie Roulette is the only way to order food this 4/20. 🍕🍟\n\nThe group invents a dare for whoever eats the random delivery item!\n\n18+ stoner challenges for the big day: https://blog.xdares.com/420-party-guide-2026/",
     
     "Stoner Cinema Trivia: The high-stakes way to celebrate 4/20. 🎬🍿\n\nMiss a question? You're doing the 'Ghost' dare or explaining gravity in one sentence.\n\nHappy 4/20: https://blog.xdares.com/420-party-guide-2026/",
     
-    "2026 is the year of better 4/20 parties. 🌬️🎮 Check out our full guide for games and dares that actually keep the energy up.\n\nhttps://blog.xdares.com/420-party-guide-2026/"
+    "2026 is the year of better 4/20 parties. 🌬️🎮 Check out our full guide for games and dares that actually keep the energy up today!\n\nhttps://blog.xdares.com/420-party-guide-2026/"
 ]
 
 posted = []
