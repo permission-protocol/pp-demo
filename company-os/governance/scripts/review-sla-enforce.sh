@@ -9,7 +9,7 @@ WORKSPACE="$HOME/.openclaw/workspace"
 LEDGER="$WORKSPACE/company-os/governance/AUTONOMOUS_PROCESS_LEDGER.md"
 NOW_EPOCH=$(date +%s)
 
-LEDGER_ENTRIES=$(grep '^| PP-\|^| XD-\|^| SYS-' "$LEDGER" | grep -v "^| ID" || true)
+LEDGER_ENTRIES=$(grep '^| PP-\|^| XD-\|^| SYS-\|^| GOV-' "$LEDGER" | grep -v "^| ID" || true)
 
 DISABLED_ANY=0
 

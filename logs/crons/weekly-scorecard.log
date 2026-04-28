@@ -54,3 +54,35 @@
 [2026-04-10T13:08:42Z] [invoke] Launching OpenClaw ACP session
 [2026-04-10T13:10:17Z] [write] Saved report
 [2026-04-10T13:10:17Z] [done] Completed weekly-scorecard
+[2026-04-20T14:01:16Z] [load] Initialized weekly-scorecard at /Users/moltbot/.openclaw/workspace/reports/cron-runs/weekly-scorecard/20260420T140116Z
+[2026-04-20T14:01:16Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T14:01:16Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T14:01:16Z] [validate] File: /Users/moltbot/.openclaw/workspace/MEMORY.md
+[2026-04-20T14:01:16Z] [load] /Users/moltbot/.openclaw/workspace/MEMORY.md
+[2026-04-20T14:01:16Z] [validate] File: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/STATUS.md
+[2026-04-20T14:01:16Z] [load] /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/STATUS.md
+[2026-04-20T14:01:16Z] [fetch] Previous Weekly Scorecard
+[2026-04-20T14:01:16Z] [fetch] Recent Daily Notes
+[2026-04-20T14:01:17Z] [validate] Command: codex
+[2026-04-20T14:01:17Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/marketing/metrics/weekly-scorecard-prev.json
+[2026-04-20T14:01:17Z] [validate] Non-empty payload: weekly-scorecard-prev
+[2026-04-20T14:01:17Z] [validate] JSON payload: weekly-scorecard-prev
+[2026-04-20T14:01:17Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-20T14:01:35Z] [write] Saved report
+[2026-04-20T14:01:35Z] [done] Completed weekly-scorecard
+[2026-04-28T23:12:48Z] [load] Initialized weekly-scorecard at /Users/moltbot/.openclaw/workspace/reports/cron-runs/weekly-scorecard/20260428T231248Z
+[2026-04-28T23:12:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T23:12:48Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T23:12:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/MEMORY.md
+[2026-04-28T23:12:48Z] [load] /Users/moltbot/.openclaw/workspace/MEMORY.md
+[2026-04-28T23:12:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/STATUS.md
+[2026-04-28T23:12:48Z] [load] /Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/STATUS.md
+[2026-04-28T23:12:48Z] [fetch] Previous Weekly Scorecard
+[2026-04-28T23:12:48Z] [fetch] Recent Daily Notes
+[2026-04-28T23:12:48Z] [validate] Command: codex
+[2026-04-28T23:12:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/marketing/metrics/weekly-scorecard-prev.json
+[2026-04-28T23:12:48Z] [validate] Non-empty payload: weekly-scorecard-prev
+[2026-04-28T23:12:48Z] [validate] JSON payload: weekly-scorecard-prev
+[2026-04-28T23:12:48Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-28T23:12:58Z] [write] Saved report
+[2026-04-28T23:12:58Z] [done] Completed weekly-scorecard

@@ -41,7 +41,7 @@ Sprint 5 failure probability: 95%. Listen-First sprint replaces it as the operat
 | Status | Count | Key IDs |
 |--------|-------|---------|
 | ACTIVE | 2 | idea-088 (10 installs sprint goal), idea-089 (first loop user) |
-| BLOCKED | 9 | idea-092, 098, 099, 100, 103, 095 (Rod approval); idea-082 (X API); idea-085 (GA4); idea-086 (SSH) |
+| BLOCKED | 8 | idea-092, 098, 099, 100, 103, 095 (Rod approval); idea-082 (X API); idea-085 (GA4); idea-086 (SSH) |
 | READY | 2 | idea-101 (Vercel wedge), idea-102 (Agent payments) |
 | DONE | 3 | idea-094 (PH brief), idea-096 (HN unban sent), idea-097 (warm leads) |
 | BACKLOG | 7 | idea-002, 030, 042, 080, 081, 083, 084 |

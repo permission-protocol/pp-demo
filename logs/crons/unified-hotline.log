@@ -439,3 +439,105 @@
 [2026-04-11T19:00:22Z] [invoke] Launching OpenClaw ACP session
 [2026-04-11T19:04:57Z] [write] Saved report
 [2026-04-11T19:04:57Z] [done] Completed unified-hotline
+[2026-04-20T15:00:14Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260420T150014Z
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T15:00:14Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T15:00:14Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T15:00:14Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T15:00:14Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T15:00:14Z] [fetch] Scout State
+[2026-04-20T15:00:14Z] [fetch] Recent Hotline Signals
+[2026-04-20T15:00:14Z] [validate] Command: codex
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T15:00:14Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/state.json
+[2026-04-20T15:00:14Z] [validate] Non-empty payload: scout-state
+[2026-04-20T15:00:14Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-20T15:00:27Z] [write] Saved report
+[2026-04-20T15:00:27Z] [done] Completed unified-hotline
+[2026-04-20T19:00:11Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260420T190011Z
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T19:00:11Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T19:00:11Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T19:00:11Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T19:00:11Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T19:00:11Z] [fetch] Scout State
+[2026-04-20T19:00:11Z] [fetch] Recent Hotline Signals
+[2026-04-20T19:00:11Z] [validate] Command: codex
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T19:00:11Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/state.json
+[2026-04-20T19:00:11Z] [validate] Non-empty payload: scout-state
+[2026-04-20T19:00:11Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-20T19:03:29Z] [write] Saved report
+[2026-04-20T19:03:29Z] [done] Completed unified-hotline
+[2026-04-20T23:00:12Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260420T230012Z
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T23:00:12Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T23:00:12Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T23:00:12Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-20.md
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T23:00:12Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-19.md
+[2026-04-20T23:00:12Z] [fetch] Scout State
+[2026-04-20T23:00:12Z] [fetch] Recent Hotline Signals
+[2026-04-20T23:00:12Z] [validate] Command: codex
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-20T23:00:12Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/state.json
+[2026-04-20T23:00:12Z] [validate] Non-empty payload: scout-state
+[2026-04-20T23:00:12Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-28T22:30:32Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260428T223032Z
+[2026-04-28T22:30:32Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:32Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:32Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:32Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:32Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T22:30:39Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260428T223039Z
+[2026-04-28T22:30:39Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:39Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:39Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:39Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:39Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T22:30:39Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T22:30:39Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-27.md
+[2026-04-28T22:30:42Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260428T223042Z
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:42Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:42Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T22:30:42Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-27.md
+[2026-04-28T22:30:42Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-27.md
+[2026-04-28T22:30:42Z] [fetch] Scout State
+[2026-04-28T22:30:42Z] [fetch] Recent Hotline Signals
+[2026-04-28T22:30:42Z] [validate] Command: codex
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T22:30:42Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/state.json
+[2026-04-28T22:30:42Z] [validate] Non-empty payload: scout-state
+[2026-04-28T22:30:42Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-28T22:30:52Z] [write] Saved report
+[2026-04-28T22:30:52Z] [done] Completed unified-hotline
+[2026-04-28T23:11:47Z] [load] Initialized unified-hotline at /Users/moltbot/.openclaw/workspace/reports/cron-runs/unified-hotline/20260428T231147Z
+[2026-04-28T23:11:47Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T23:11:47Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T23:11:47Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T23:11:47Z] [load] /Users/moltbot/.openclaw/workspace/pp-os/STATUS.md
+[2026-04-28T23:11:47Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T23:11:47Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-28.md
+[2026-04-28T23:11:47Z] [validate] File: /Users/moltbot/.openclaw/workspace/memory/2026-04-27.md
+[2026-04-28T23:11:47Z] [load] /Users/moltbot/.openclaw/workspace/memory/2026-04-27.md
+[2026-04-28T23:11:47Z] [fetch] Scout State
+[2026-04-28T23:11:47Z] [fetch] Recent Hotline Signals
+[2026-04-28T23:11:48Z] [validate] Command: codex
+[2026-04-28T23:11:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/scripts/hotline-scan-prompt.md
+[2026-04-28T23:11:48Z] [validate] File: /Users/moltbot/.openclaw/workspace/pp-os/scout/state.json
+[2026-04-28T23:11:48Z] [validate] Non-empty payload: scout-state
+[2026-04-28T23:11:48Z] [invoke] Launching OpenClaw ACP session (gpt-4o-mini)
+[2026-04-28T23:11:56Z] [write] Saved report
+[2026-04-28T23:11:56Z] [done] Completed unified-hotline

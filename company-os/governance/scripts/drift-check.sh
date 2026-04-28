@@ -15,7 +15,7 @@ LIVE_CRONS=$(openclaw cron list --json 2>/dev/null)
 
 # Parse ledger entries (ID | Name | Authority | Human Gate | Risk | Runs On | Schedule | Status | Last Reviewed)
 # Extract process names and their declared status from the index table
-LEDGER_ENTRIES=$(grep '^| PP-\|^| XD-\|^| SYS-' "$LEDGER" | grep -v "^| ID" || true)
+LEDGER_ENTRIES=$(grep '^| PP-\|^| XD-\|^| SYS-\|^| GOV-' "$LEDGER" | grep -v "^| ID" || true)
 
 DRIFT_FOUND=0
 FINDINGS="[]"
@@ -41,10 +41,12 @@ for j in jobs:
 " 2>/dev/null)
 
 LEDGER_NAMES=$(echo "$LEDGER_ENTRIES" | awk -F'|' '{gsub(/^[ \t]+|[ \t]+$/, "", $3); print $3}')
+LEDGER_IDS=$(echo "$LEDGER_ENTRIES" | awk -F'|' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
 
 while IFS= read -r name; do
   [ -z "$name" ] && continue
-  if ! echo "$LEDGER_NAMES" | grep -qF "$name"; then
+  # Check if name matches column 3 OR if it's the name of one of the IDs in column 2 (for self-check)
+  if ! echo "$LEDGER_NAMES" | grep -qx "$name" && ! echo "$LEDGER_IDS" | grep -qx "$name"; then
     add_finding "HIGH" "unregistered_process" "Live cron '$name' not found in ledger"
   fi
 done <<< "$LIVE_NAMES"

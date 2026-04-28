@@ -56,23 +56,47 @@
 
 | ID | Name | Authority | Human Gate | Risk | Runs On | Schedule | Status | Last Reviewed |
 |----|------|-----------|------------|------|---------|----------|--------|---------------|
-| PP-001 | pp-os-execute-ready | C | Approval for merges | High | Mac/OpenClaw | 5 9,11,13,15,17 * * * | ok | 2026-04-09 |
-| PP-002 | pp-os-daily-log-and-plan | B | None | Low | Mac/OpenClaw | 3 8 * * * | ok | 2026-04-09 |
-| PP-003 | pp-os-qa-review | B | None | Low | Mac/OpenClaw | 0 2 * * * | ok | 2026-04-09 |
-| PP-004 | pp-os-weekly-review | A | None | Low | Mac/OpenClaw | 0 10 * * 0 (Denver) | ok | 2026-04-09 |
-| PP-005 | pp-os-incident-scanner | A | None | Low | Mac/OpenClaw | 2 7 * * * | **disabled** | 2026-03-02 |
-| PP-006 | pr-prescreen-auto | B | None | Low | Mac/OpenClaw | 0 9,11,13,15,17 * * 1-6 (Denver) | ok | 2026-04-09 |
-| PP-007 | pp-daily-metrics | A | None | Low | Mac/OpenClaw | 0 9 * * * | **disabled** | 2026-03-02 |
-| PP-008 | pp-linkedin-weekly | C | Telegram approval | Med | Mac/OpenClaw | 0 8 * * 0 (Denver) | idle | 2026-04-09 |
-| XD-001 | goal-xdares-seo-daily | B | None | Low | Mac/OpenClaw | 0 18 * * * (Denver) | ok | 2026-04-09 |
-| XD-002 | goal-xdares-seo-weekly | A | None | Low | Mac/OpenClaw | 0 19 * * 0 (Denver) | ok | 2026-04-09 |
-| SYS-001 | memory-curation-r1 | B | None | Low | Mac/OpenClaw | 0 11 * * 0 (Denver) | ok | 2026-04-09 |
-| SYS-002 | qa-workload1-review | A | None | Low | Mac/OpenClaw | at 2026-03-07 10:00Z | idle | 2026-03-02 |
-| SYS-003 | Bootstrap Receipt Reminder | A | None | Low | Mac/OpenClaw | 30 9 12 2 * (Denver) | idle | 2026-03-02 |
-| GOV-001 | governance-integrity-check | A | None | Low | Mac/OpenClaw | 0 7 * * * (Denver) | ok | 2026-04-09 |
+| PP-001 | pp-os-execute-ready | C | Approval for merges | High | Mac/OpenClaw | 5 9,11,13,15,17 * * * | ok | 2026-04-21 |
+| PP-002 | pp-os-daily-log-and-plan | B | None | Low | Mac/OpenClaw | 3 8 * * * | ok | 2026-04-21 |
+| PP-003 | pp-os-qa-review | B | None | Low | Mac/OpenClaw | 0 2 * * * | ok | 2026-04-21 |
+| PP-004 | pp-os-weekly-review | A | None | Low | Mac/OpenClaw | 0 10 * * 0 | ok | 2026-04-21 |
+| PP-005 | pp-os-incident-scanner | A | None | Low | Mac/OpenClaw | 2 7 * * * | **disabled** | 2026-04-21 |
+| PP-006 | pr-prescreen-auto | B | None | Low | Mac/OpenClaw | 0 9,11,13,15,17 * * 1-6 | ok | 2026-04-21 |
+| PP-007 | pp-daily-metrics | A | None | Low | Mac/OpenClaw | 0 9 * * * | **disabled** | 2026-04-21 |
+| PP-008 | pp-linkedin-weekly | C | Telegram approval | Med | Mac/OpenClaw | 0 8 * * 0 | idle | 2026-04-21 |
+| PP-009 | pp-signal-scan | A | None | Low | Mac/OpenClaw | 0 8 * * 1-6 | ok | 2026-04-21 |
+| PP-010 | unified-signal-scan | A | None | Low | Mac/OpenClaw | 0 8,16 * * * | error | 2026-04-21 |
+| PP-011 | factory-github-sensor | B | None | Low | Mac/OpenClaw | every 1h | ok | 2026-04-21 |
+| PP-012 | rod-daily-briefing | A | None | Low | Mac/OpenClaw | 30 8 * * * | ok | 2026-04-21 |
+| PP-013 | scout-reddit-digest | A | None | Low | Mac/OpenClaw | 0 9 * * * | ok | 2026-04-21 |
+| PP-014 | unified-hotline | C | Approval for DMs | Med | Mac/OpenClaw | 0 9,13,17 * * 1-6 | ok | 2026-04-21 |
+| PP-015 | factory-build-qa | C | Policy Gate | High | Mac/OpenClaw | 0 17 * * 1-5 | ok | 2026-04-21 |
+| PP-016 | pp-onboarding-healthcheck | A | None | Low | Mac/OpenClaw | 30 7 * * * | ok | 2026-04-21 |
+| PP-017 | pp-outreach-weekly-analysis | A | None | Low | Mac/OpenClaw | 0 10 * * 0 | error | 2026-04-21 |
+| PP-018 | weekly-scorecard | A | None | Low | Mac/OpenClaw | 0 8 * * 1 | ok | 2026-04-21 |
+| PP-019 | daily-log-hygiene-metrics | B | None | Low | Mac/OpenClaw | 3 8 * * * | ok | 2026-04-21 |
+| PP-020 | daily-log-planning | B | None | Low | Mac/OpenClaw | 20 8 * * * | ok | 2026-04-21 |
+| XD-001 | goal-xdares-seo-daily | B | None | Low | Mac/OpenClaw | 0 18 * * * | ok | 2026-04-21 |
+| XD-002 | goal-xdares-seo-weekly | A | None | Low | Mac/OpenClaw | 0 19 * * 0 | ok | 2026-04-21 |
+| XD-003 | goal-xdares-seo-main | B | None | Low | Mac/OpenClaw | 0 */2 * * * | ok | 2026-04-21 |
+| XD-004 | xdares-seo-goal-executor | B | None | Low | Mac/OpenClaw | every 2h | ok | 2026-04-21 |
+| SYS-001 | memory-curation-r1 | B | None | Low | Mac/OpenClaw | 0 11 * * 0 | ok | 2026-04-21 |
+| SYS-002 | qa-workload1-review | A | None | Low | Mac/OpenClaw | at 2026-03-07 | idle | 2026-03-02 |
+| SYS-003 | Bootstrap Receipt Reminder | A | None | Low | Mac/OpenClaw | 30 9 12 2 * | idle | 2026-03-02 |
 | SYS-004 | openclaw-gateway | — | — | High | Mac/LaunchAgent | always-on | running | 2026-03-02 |
 | SYS-005 | openclaw-node | — | — | Med | Mac/LaunchAgent | always-on | running | 2026-03-02 |
 | SYS-006 | pp-prod-postgres | — | — | High | Mac/Docker | always-on | running | 2026-03-02 |
+| SYS-007 | factory-error-sensor | B | None | Low | Mac/OpenClaw | every 1h | ok | 2026-04-21 |
+| SYS-008 | system-health-monitor | A | None | Low | Mac/OpenClaw | every 1h | ok | 2026-04-21 |
+| SYS-009 | Token Health Check | A | None | Low | Mac/OpenClaw | 30 8 * * * | ok | 2026-04-21 |
+| SYS-010 | mobile-qa-daily | A | None | Low | Mac/OpenClaw | 0 9 * * * | ok | 2026-04-21 |
+| SYS-011 | cron-watchdog | A | None | Low | Mac/OpenClaw | 0 10 * * * | ok | 2026-04-21 |
+| SYS-012 | memory-consolidation | B | None | Low | Mac/OpenClaw | 0 23 * * * | ok | 2026-04-21 |
+| SYS-013 | nightly-self-improvement | B | None | Low | Mac/OpenClaw | 30 23 * * * | ok | 2026-04-21 |
+| SYS-014 | Daily Auto-Update | B | None | Low | Mac/OpenClaw | 0 4 * * * | ok | 2026-04-21 |
+| SYS-015 | hn-recovery-article-finder | B | None | Low | Mac/OpenClaw | 0 7 * * * | ok | 2026-04-21 |
+| SYS-016 | weekly-transcript-archive | B | None | Low | Mac/OpenClaw | 55 23 * * 0 | ok | 2026-04-21 |
+| GOV-001 | governance-integrity-check | A | None | Low | Mac/OpenClaw | 0 7 * * * | ok | 2026-04-21 |
 
 ---
 
