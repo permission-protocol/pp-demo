@@ -2,8 +2,8 @@
   "version": 2,
   "goal": {
     "id": "xdares-seo-growth",
-    "description": "Grow blog.xdares.com organic traffic. 179 blog posts live. 707 tasks completed.",
-    "context": "179 blog posts live on blog.xdares.com. 707 total tasks completed. Budgeting 10 tasks/day. April seasonal content push in progress.",
+    "description": "Grow blog.xdares.com organic traffic. 181 blog posts live. 745 tasks completed.",
+    "context": "181 blog posts live on blog.xdares.com. 745 total tasks completed. Budgeting 10 tasks/day. May seasonal content push in progress (Kentucky Derby, Cinco de Mayo live, Mother's Day live, Memorial Day live).",
     "success_metric": {
       "current": "~274 visitors/month",
       "target": "291 sessions/month",
@@ -32,251 +32,144 @@
   },
   "execution": {
     "status": "running",
-    "daily_tasks_completed": 11,
-    "total_tasks_completed": 711,
-    "tasks_since_replan": 456,
-    "tasks_since_metric_update": 599,
-    "last_run_at": "2026-04-20T08:11:00Z",
-    "last_run_date": "2026-04-20",
+    "daily_tasks_completed": 4,
+    "total_tasks_completed": 745,
+    "tasks_since_replan": 484,
+    "tasks_since_metric_update": 627,
+    "last_run_at": "2026-04-28T22:42:00Z",
+    "last_run_date": "2026-04-28",
     "consecutive_failures": 0,
     "last_failure_reason": null,
     "tick_log": [
       {
-        "timestamp": "2026-04-20T08:11:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 2:11 AM Denver / 8:11 AM UTC (Apr 20). Verified state. Daily budget (11/10) is exhausted. Task queue is empty. Verified all 4/20 promotions and fixes are stable. Standing by."
-      },
-      {
-        "timestamp": "2026-04-20T08:01:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 2:01 AM Denver / 8:01 AM UTC (Apr 20). Verified state. Daily budget (11/10) is exhausted for the day. Task queue is empty. Verified 4/20 Party Guide (Task 711) is live on blog.xdares.com. Standing by."
-      },
-      {
-        "timestamp": "2026-04-20T06:05:00Z",
+        "timestamp": "2026-04-28T22:42:00Z",
         "tasks_completed": 1,
-        "notes": "Tick executed at 12:05 AM Denver / 6:05 AM UTC (Apr 20). EMERGENCY FIX: Detected 404 for 4/20 Party Guide while active promos were live on X. (1) Published 'The Ultimate 4/20 Party Guide 2026' via Tor (Task 711). Verified live on site and linked from hubs. Budget override: 11/10."
+        "notes": "Tick executed at 4:42 PM Denver (Apr 28). Promoted Cinco de Mayo 2026 content on X (4-tweet thread). 1 week countdown. (Task 745). Daily budget: 4/10."
       },
       {
-        "timestamp": "2026-04-20T04:10:00Z",
+        "timestamp": "2026-04-28T22:35:00Z",
         "tasks_completed": 3,
-        "notes": "Tick executed at 10:10 PM Denver / 4:10 AM UTC (Apr 20). 4/20 Main Day (UTC) push. (1) Published 'Cinco de Mayo 2026' via Tor (Task 708). (2) Promoted Cinco de Mayo on X (Task 709). (3) Published 'Backyard Beer Olympics 2026' via Tor (Task 710). 4/20 tweet push rejected as duplicate. Daily budget reached: 10/10."
-      },
-      {
-        "timestamp": "2026-04-20T02:22:00Z",
-        "tasks_completed": 2,
-        "notes": "Tick executed at 8:22 PM Denver / 2:22 AM UTC (Apr 20). 4/20 Main Day (UTC) momentum. (1) Promoted 4/20 guide on X with 'Happy 4/20' copy (Task 706). (2) Published 'Mother's Day Party Games 2026' via Tor (Task 707). Budget: 7/10."
-      },
-      {
-        "timestamp": "2026-04-20T02:05:00Z",
-        "tasks_completed": 1,
-        "notes": "Tick executed at 8:05 PM Denver / 2:05 AM UTC (Apr 20). 4/20 Main Day (UTC) momentum. Executed Late Eve promotion on X for 4/20 Party Guide (Task 705). 5 tweets posted successfully."
-      },
-      {
-        "timestamp": "2026-04-20T00:15:00Z",
-        "tasks_completed": 4,
-        "notes": "Tick executed at 6:15 PM Denver / 12:15 AM UTC (Apr 20). 4/20 Main Event Kickoff. (1) Published 'EDM Drinking Games' via Tor (Task 701). (2) Promoted EDM content on X (Task 702). (3) Executed 4/20 Eve promotion on X with fresh copy (Task 703). (4) Updated major hubs via Tor to include new content (Task 704). All systems green for the big day."
-      },
-      {
-        "timestamp": "2026-04-19T18:11:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 12:11 PM Denver. Verified state. Daily budget (10/10) is exhausted. Task queue is empty. Goal deadline (Apr 17) has passed. Verified 4/20 Eve promotion (Task 696) and today's seasonal updates (Tasks 697-700) are complete. Standing by for 4/20 main event tomorrow."
-      },
-      {
-        "timestamp": "2026-04-19T16:11:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 10:11 AM Denver. Verified state. Daily budget (10/10) is exhausted. Task queue is empty. Goal deadline (Apr 17) has passed. Verified all seasonal content (4/20, Coachella) is live. Standing by."
-      },
-      {
-        "timestamp": "2026-04-19T16:10:00Z",
-        "tasks_completed": 0,
-        "notes": "Tick executed at 10:10 AM Denver. Daily budget (10/10) is exhausted. Task queue is empty. Goal deadline (Apr 17) has passed. Verified all seasonal content (4/20, Coachella) is live. No tasks executed."
-      },
-      {
-        "timestamp": "2026-04-19T14:15:00Z",
-        "tasks_completed": 10,
-        "notes": "Tick executed at 8:15 AM Denver. Detected date rollover (Apr 19). Reset budget. Verified overnight activity (Tasks 691-695). Executed 4/20 Eve promotion (Task 696). Published 'Summer Pool Party Games 2026' via Tor (Task 697) and promoted on X (Task 698). Updated major hubs (Adult Party Games, Drinking Games) via Tor (Task 699). Promoted Summer BBQ guide on X (Task 700). Daily budget reached: 10/10."
+        "notes": "Tick executed at 4:35 PM Denver (Apr 28) / 10:35 PM UTC (Apr 28). (1) Published 'Kentucky Derby 2026 Drinking Games & Party Guide: 40+ Race Day Activities' via Tor (Task 742) — Derby is May 2, 4 days away. (2) Promoted Kentucky Derby content on X (4 tweets) (Task 743). (3) Updated Adult Party Games and Drinking Games hubs via Tor to include links to new post (Task 744). Daily budget: 3/10."
       }
     ]
   },
   "tasks": {
-    "queue": [],
+    "queue": [
+      {
+        "id": "task-746",
+        "action": "publish",
+        "target": "pride-month-party-games-2026",
+        "priority": "medium",
+        "impact": "high",
+        "notes": "Pride Month starts June 1. Publish comprehensive LGBTQ+ inclusive party games & truth or dare guide in mid-May to build SEO authority ahead of peak searches.",
+        "due_by": "2026-05-15"
+      },
+      {
+        "id": "task-747",
+        "action": "promote",
+        "target": "pride-month-party-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "notes": "Promote Pride Month post on X after publishing.",
+        "due_by": "2026-05-16"
+      },
+      {
+        "id": "task-748",
+        "action": "publish",
+        "target": "juneteenth-party-games-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "notes": "Juneteenth is June 19. Publish celebration party games guide in late May.",
+        "due_by": "2026-05-25"
+      },
+      {
+        "id": "task-749",
+        "action": "promote",
+        "target": "memorial-day-bbq-2026",
+        "priority": "medium",
+        "impact": "medium",
+        "notes": "Memorial Day is May 25. Post 3-4 reminder tweets in late May to drive traffic to existing post.",
+        "due_by": "2026-05-23"
+      }
+    ],
     "on_hold": [],
     "completed": [
       {
-        "id": "task-711",
-        "action": "publish",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T06:03:00Z",
-        "notes": "Emergency publication of 4/20 guide to fix 404 during active campaign. Published via Tor.",
-        "result": "Live: https://blog.xdares.com/420-party-guide-2026/"
-      },
-      {
-        "id": "task-710",
-        "action": "publish",
-        "target": "backyard-beer-olympics-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T04:08:00Z",
-        "notes": "Published 'Backyard Beer Olympics 2026' via Tor.",
-        "result": "Live: https://blog.xdares.com/backyard-beer-olympics-2026/"
-      },
-      {
-        "id": "task-709",
+        "id": "task-745",
         "action": "promote",
-        "target": "cinco-de-mayo-party-games-2026",
+        "target": "cinco-de-mayo-2026",
         "priority": "high",
         "impact": "high",
         "status": "completed",
-        "completed_at": "2026-04-20T04:02:00Z",
-        "notes": "Promoted Cinco de Mayo guide on X (5 tweets).",
-        "result": "Log: logs/tweets-cinco-de-mayo-20260419-220150.json"
+        "completed_at": "2026-04-28T22:42:00Z",
+        "notes": "Promoted Cinco de Mayo 2026 content on X (4-tweet thread). 1 week countdown.",
+        "result": "Log: logs/tweets-cinco-de-mayo-20260428.json"
       },
       {
-        "id": "task-708",
+        "id": "task-744",
+        "action": "fix",
+        "target": "hubs",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "completed",
+        "completed_at": "2026-04-28T22:35:00Z",
+        "notes": "Updated Adult Party Games and Drinking Games hubs via Tor to include links to Kentucky Derby 2026.",
+        "result": "Success (Posts 4471, 2299)"
+      },
+      {
+        "id": "task-743",
+        "action": "promote",
+        "target": "kentucky-derby-2026-drinking-games",
+        "priority": "high",
+        "impact": "high",
+        "status": "completed",
+        "completed_at": "2026-04-28T22:35:00Z",
+        "notes": "Promoted Kentucky Derby 2026 content on X (4 tweets).",
+        "result": "Log: logs/tweets-kentucky-derby-20260428-163933.json"
+      },
+      {
+        "id": "task-742",
         "action": "publish",
-        "target": "cinco-de-mayo-party-games-2026",
+        "target": "kentucky-derby-2026-drinking-games",
         "priority": "high",
         "impact": "high",
         "status": "completed",
-        "completed_at": "2026-04-20T04:01:00Z",
-        "notes": "Published 'Cinco de Mayo 2026' via Tor.",
-        "result": "Live: https://blog.xdares.com/cinco-de-mayo-party-games-2026/"
+        "completed_at": "2026-04-28T22:35:00Z",
+        "notes": "Published 'Kentucky Derby 2026 Drinking Games & Party Guide: 40+ Race Day Activities' via Tor. Derby is May 2.",
+        "result": "Live: https://blog.xdares.com/kentucky-derby-2026-drinking-games/"
       },
       {
-        "id": "task-707",
+        "id": "task-741",
+        "action": "fix",
+        "target": "hubs",
+        "priority": "medium",
+        "impact": "medium",
+        "status": "completed",
+        "completed_at": "2026-04-21T14:18:00Z",
+        "notes": "Updated Adult Party Games and Drinking Games hubs via Tor to include links to Mother's Day 2026.",
+        "result": "Success (Posts 4471, 2299)"
+      },
+      {
+        "id": "task-740",
+        "action": "promote",
+        "target": "mothers-day-party-games-2026",
+        "priority": "low",
+        "impact": "medium",
+        "status": "completed",
+        "completed_at": "2026-04-21T14:17:00Z",
+        "notes": "Promoted Mother's Day content on X (5 tweets).",
+        "result": "Log: logs/tweets-mothers-day-20260421-081622.json"
+      },
+      {
+        "id": "task-739",
         "action": "publish",
         "target": "mothers-day-party-games-2026",
         "priority": "high",
         "impact": "high",
         "status": "completed",
-        "completed_at": "2026-04-20T02:20:00Z",
+        "completed_at": "2026-04-21T14:16:00Z",
         "notes": "Published 'Mother's Day Party Games 2026' via Tor.",
         "result": "Live: https://blog.xdares.com/mothers-day-party-games-2026/"
-      },
-      {
-        "id": "task-706",
-        "action": "promote",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T02:18:00Z",
-        "notes": "Promoted 4/20 guide on X (4/5 tweets) for Morning/Main Day push. One duplicate rejected.",
-        "result": "Log: logs/tweets-420-20260419-201259.json"
-      },
-      {
-        "id": "task-705",
-        "action": "promote",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T02:02:00Z",
-        "notes": "Promoted 4/20 guide on X (5 tweets) for Late Eve push.",
-        "result": "Log: logs/tweets-420-20260419-200225.json"
-      },
-      {
-        "id": "task-704",
-        "action": "fix",
-        "target": "hubs",
-        "priority": "high",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-20T00:15:00Z",
-        "notes": "Updated Adult Party Games and Drinking Games hubs via Tor to include EDM content.",
-        "result": "Success (Posts 4471, 2299)"
-      },
-      {
-        "id": "task-703",
-        "action": "promote",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T00:14:00Z",
-        "notes": "Promoted 4/20 guide on X (4 tweets) for Eve of 4/20 using fresh copy to bypass duplicate filter.",
-        "result": "Log: logs/tweets-420-20260419-181352.json"
-      },
-      {
-        "id": "task-702",
-        "action": "promote",
-        "target": "edm-drinking-games-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T00:13:00Z",
-        "notes": "Promoted new EDM Drinking Games post on X (4 tweets).",
-        "result": "Log: logs/tweets-edm-20260419-181317.json"
-      },
-      {
-        "id": "task-701",
-        "action": "publish",
-        "target": "edm-drinking-games-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-20T00:11:00Z",
-        "notes": "Published 'EDM Drinking Games: Beats, Drops & Neon Dares (2026 Guide)' via Tor.",
-        "result": "Live: https://blog.xdares.com/edm-drinking-games-2026-2/"
-      },
-      {
-        "id": "task-700",
-        "action": "promote",
-        "target": "summer-bbq-drinking-games-2026",
-        "priority": "medium",
-        "impact": "medium",
-        "status": "completed",
-        "completed_at": "2026-04-19T14:14:00Z",
-        "notes": "Promoted Summer BBQ guide on X (3 tweets).",
-        "result": "Tweets: https://x.com/xdares_/status/2045868026021781556"
-      },
-      {
-        "id": "task-699",
-        "action": "fix",
-        "target": "hubs",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-19T14:13:00Z",
-        "notes": "Updated Adult Party Games and Drinking Games hubs via Tor to include links to Pool Party and Beer Olympics content.",
-        "result": "Success (Posts 4471, 2299)"
-      },
-      {
-        "id": "task-698",
-        "action": "promote",
-        "target": "summer-pool-party-games-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-19T14:11:00Z",
-        "notes": "Promoted Summer Pool Party Games on X (5 tweets).",
-        "result": "Tweets: https://x.com/xdares_/status/2045867731841605698"
-      },
-      {
-        "id": "task-697",
-        "action": "publish",
-        "target": "summer-pool-party-games-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-19T14:10:00Z",
-        "notes": "Published 'Summer Pool Party Games 2026: 35+ Epic Water Games for Adults' via Tor.",
-        "result": "Live: https://blog.xdares.com/summer-pool-party-games-2026/"
-      },
-      {
-        "id": "task-696",
-        "action": "promote",
-        "target": "420-party-guide-2026",
-        "priority": "high",
-        "impact": "high",
-        "status": "completed",
-        "completed_at": "2026-04-19T14:10:00Z",
-        "notes": "Promoted 4/20 guide on X (5 tweets) for Eve of 4/20.",
-        "result": "Tweets: https://x.com/xdares_/status/2045867395835994276"
       }
     ],
     "failed": [],

@@ -97,7 +97,12 @@ When hitting a wall: stop building workarounds. Spend 15 minutes researching the
 
 ### Strategic Stagnation (Stall Mitigation)
 - **The Drought Protocol:** If outreach or a critical blocker is stalled for >7 days, pivot from "Builder" to "Executive Assistant." 
+- **The Blocker Heatmap:** For any blocker >10 days, calculate and display the **Cost of Delay** (e.g., "This stall has delayed Sprint 5 target by 14 days; current projected completion: June 15").
 - **Auto-Pruning:** Items in `STATUS.md` or the pipeline that haven't moved in 10 days should be automatically moved to `PARKED` or `ARCHIVED` by Charles to reduce noise.
+- **War Room Mode:** If a Sprint deadline is <72h away AND Drought >60 days, Charles enters "War Room Mode":
+    1. Consolidate ALL stale approvals into one "War Room Report".
+    2. Provide a single `/approve all` command for high-confidence batches.
+    3. Start every message with the Sprint failure probability (e.g., "Sprint 5 Failure Probability: 95%").
 ### Decision Card Protocol (Standardized)
 When requesting approval for a stall or critical decision:
 1. **Title:** Clear objective (e.g., "Decision Card: Sycamore Outreach")
@@ -165,6 +170,6 @@ When you receive a heartbeat poll, read `ref/HEARTBEAT.md` and follow it. Use he
 
 ## Model Rules
 - NEVER change model config without explicit user approval
-- Current valid models: gemini-3.1-pro-preview (primary), claude-opus-4-6, claude-opus-4-5, claude-sonnet-4
+- Current valid models: gemini-3.1-pro-preview (primary), claude-opus-4-7, claude-sonnet-4
 - If stuck on wrong model: `openclaw status` → Sessions table
 - Recovery: `kill <gateway-pid>` + `openclaw gateway start`

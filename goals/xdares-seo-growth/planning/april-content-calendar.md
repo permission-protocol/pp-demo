@@ -62,7 +62,7 @@
 - **Monday, Apr 22 (Earth Day):**
   - **Post:** Outdoor Adventure Games: Bonfires, Hiking & Nature Dares
   - **Keyword:** "outdoor party games for adults", "bonfire drinking games"
-  - **Status:** TO-WRITE
+  - **Status:** COMPLETED (Task 713)
 - **Wednesday, Apr 24:**
   - **Post:** Backyard Beer Olympics: Rules, Scoresheets & Winning Strategy
   - **Keyword:** "beer olympics rules", "backyard drinking games"

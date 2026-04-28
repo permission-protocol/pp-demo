@@ -103,6 +103,15 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **Outreach Readiness** (Apr 17): Personalized outreach for warm leads (idea-097), PH hunters (idea-095), and HN unban (idea-096) drafted and waiting for loom/approval.
 - **Ideation Schema Migration** (Apr 17): Normalized `ideas.jsonl` to a state machine (ACTIVE/BLOCKED/PARKED/DONE/ARCHIVED). Pipeline now manages 22 non-terminal ideas with clear visibility on BLOCKED and PARKED states.
 
+### Dynamic Tool Governance (Apr 20)
+Cloudflare 'Project Think' (agents self-authoring tools) creates a governance vacuum. Static capability lists are insufficient for dynamic agents. Signature-based enforcement (Permission Protocol) is the only way to gate dynamic tool actions.
+
+### Brand Collision Monitoring (Apr 20)
+Detected "Permission Protocol" launched on Base (clanker_world) using identical terminology ("signed receipts"). Strategic awareness of brand collisions is required as the space matures.
+
+### Future-Dating Audit (Apr 20)
+WordPress homepages and SEO-driven sites can "pollute" with future-dated posts if not properly audited. Requires periodic manual or automated scans to ensure seasonal relevance is maintained.
+
 ---
 
 ## Preferences
@@ -129,13 +138,13 @@ If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed
 - **System Prompt Restructured** (Apr 6)
     - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
 
-*Updated: 2026-04-19 11:00 PM*
+*Updated: 2026-04-28 4:47 PM*
 
 ### Strategic Stagnation (Outreach Drought)
-Day 57 Outreach Drought (Apr 19 MDT). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. Every message to Rod must start with this counter until broken.
+Day 66 Outreach Drought (Apr 28 MDT). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. May 1 deadline (T-3). Every message to Rod must start with this counter until broken.
 
-### Tactical Pivot: The Day 14 Rule
-When a primary outreach target is unresponsive for 14 days (specifically on LinkedIn), pivot immediately to secondary contacts at the same organization. "Go wide" to break the silence rather than waiting for a single decision-maker who has ghosted. First applied: Apr 20, 2026 for the Apr 7 batch.
+### Tactical Pivot: The Day 14 Rule (Apr 20)
+When a primary outreach target is unresponsive for 14 days (specifically on LinkedIn), pivot immediately to secondary contacts at the same organization. "Go wide" to break the silence rather than waiting for a single decision-maker who has ghosted. 
 
 ### LinkedIn Batch Performance
 LinkedIn batches are time-sensitive. Day 0 (Initial), Day 7 (Soft Nudge), Day 14 (Pivot to Secondary). Failure to execute the Day 14 pivot results in a lead going cold.

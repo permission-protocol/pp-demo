@@ -1,14 +1,14 @@
 {
-  "ts": "2026-04-11T23:00:24Z",
+  "ts": "2026-04-20T19:02:56Z",
   "source": "hotline",
-  "run": "2026-04-11 17:00 MDT",
+  "run": "2026-04-20 13:02 MDT",
   "signals_found": 0,
   "hot_signals": 0,
   "fast_tracked": [],
   "blocked": [
-    "X API shell DNS/read failure for api.x.com; existing X write permissions blocker remains",
-    "HN Algolia shell DNS failure; HN login remains unavailable",
-    "Rod approval still required for Sycamore/Trent outbound"
+    "X recent-search fetch blocked by DNS resolution failure (api.x.com)",
+    "HN Algolia fetch blocked by DNS resolution failure (hn.algolia.com)",
+    "X API write permissions remain blocked (403)"
   ],
-  "next_run": "2026-04-12T00:00:24Z"
+  "next_run": "2026-04-20T20:02:56Z"
 }

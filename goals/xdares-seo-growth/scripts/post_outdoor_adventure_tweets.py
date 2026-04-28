@@ -22,7 +22,7 @@ tweets = [
     "The 'Flashlight Tag' Evolution: Add dares to every tag! 🔦🏃‍♂️ It's not just a game, it's a gauntlet. #NightGames #OutdoorDares",
     "Hiking with the crew? Turn the trail into a competition with Scavenger Dares. First one to find a uniquely shaped rock picks the next dare! 🥾⛰️ #HikingLife #AdventureGames",
     "Bonfire Truth or Dare: There's nothing like a crackling fire to get the deepest confessions and the wildest dares. 🔥💬 #BonfireNight #TruthOrDare",
-    "Check out our full guide to Outdoor Adventure Games for 2026: https://blog.xdares.com/outdoor-adventure-games-2026/ 🌲🎮 #GameNight #Xdares"
+    "Check out our full guide to Outdoor Adventure Games for 2026: https://blog.xdares.com/outdoor-adventure-games-bonfires-hiking-nature-dares-2026-guide/ 🌲🎮 #GameNight #Xdares"
 ]
 
 posted = []

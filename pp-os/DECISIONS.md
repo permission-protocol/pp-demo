@@ -12,6 +12,15 @@ Tracking high-stakes decisions and Rod-dependent blockers.
 
 ## Active Decision Cards
 
+### Decision Card: Action Gate / Merge Gate Split (APPROVED 2026-04-28)
+**Context:** Rod ran strategy sessions while away. New thesis: Action Gate (verifiable receipt layer for high-risk customer-facing AI-agent actions) primary, Merge Gate secondary. AIUC-1 mapping (B006/A003.3/A003.4/B008/D003/E015) as credibility hook.
+**The Stake:** Source docs propose 30-day build+sell plan that repeats the Sprint 2/4/5 pattern (build wins, sell loses). 66-day drought is the evidence. Listen-First execution inverts this: no new build until 3+ validation calls confirm pain.
+**Decision:** APPROVED with execution adjustments. See `pp-os/strategy/2026-04-28-action-gate-pivot.md`.
+**Adjustments from source:** 30 quality DMs over 3 days (not 80 in 4 hrs); decide when 5 calls in bank (not Apr 30 evening); Merge Gate stays alive until Action Gate has paying/LOI; build moratorium until May 4.
+**May 4 fork:** 3+ calls scoring 2-3 = build Action Gate. 0-1 = stay Merge Gate-primary. 2 = parallel 10-day plan.
+
+
+
 ### Decision Card: Sycamore Outreach (idea-092)
 **Context:** P0 lead. Former CTO of Oracle. High signal match for Consequence Engine.
 **The Stake:** Missing the April outreach window for this tier-1 partner. Cost of delay is a lost design partner slot.
@@ -24,3 +33,4 @@ Tracking high-stakes decisions and Rod-dependent blockers.
 
 ---
 *Maintained by Charles Goldberg.*
+- **2026-04-28 (SYS-022):** Rod authorized `pivot-batch-099` (idea-099: LinkedIn Day 14 Pivot — #2 contacts). Moving to ACTIVE execution.

@@ -1,23 +1,22 @@
-# HOT SIGNAL: The Agent Supply Chain & Malicious Skills (2026-04-19)
+# HOT SIGNAL: AI Coding Agent Deployment & Governance (2026-04-21)
 
-## The Signal
-Two major enterprise signals in the last 48 hours confirm that **Agent Security** has moved from "theoretical" to "infrastructure priority":
+## 🚨 CRITICAL: Optio Launch (The "Auto-Merge" Precursor)
+**Source:** [Show HN: Optio](https://github.com/jonwiggins/optio)
+**Signal:** An open-source K8s system that orchestrates Claude Code/Codex to go from "Ticket to Merged PR" autonomously. 
+**Narrative Hook:** This is the "Trojan Horse" for Permission Protocol. Optio provides the *velocity* (autonomous merges), but creates a massive *authority vacuum*. 
+**Action:** Outreach to Jon Wiggins (maintainer) or users complaining about "who approved this merge?"
 
-1.  **Cisco AI Defense Skill Scanner:** An open-source tool specifically designed to scan Agent Skills (`SKILL.md` playbooks) for prompt injection, data exfiltration, and malicious code patterns. (Source: GitHub `scientific-agent-skills`)
-2.  **Microsoft Agent Package Manager (APM):** A CLI for managing agent dependencies with a dedicated `apm audit` command to detect hidden Unicode characters and supply-chain attacks in agent instructions. (Source: `microsoft/apm`)
+## 💰 THE INFRASTRUCTURE PLAY: Fleeks & JFrog Fly
+**Source:** [Fleeks](https://docs.fleeks.ai/) | [JFrog Fly](https://jfrog.com/fly/)
+**Signal:** Agents are getting "Execution Bridges" (Fleeks) and "Release Management" (Fly). They are no longer just writing code; they are owning the production substrate.
+**Narrative Hook:** "Infrastructure over Interface." If agents can deploy, the enforcement primitive must be immutable.
 
-## Why It Matters (The Hook)
-The "Secret Patching" incident in March was the behavior; this is the response. Enterprise leaders (Microsoft, Cisco) are realizing that **agent instructions are the new binaries**. 
+## ⚠️ SOCIAL FRICTION: The Matplotlib "Agent Rant"
+**Source:** [Medium/Reddit](https://medium.com/@build_break_learn/ai-agent-pull-request-rejected-personal-attack-maintainer-5a1f9f778ba2)
+**Signal:** An AI agent's PR was rejected because it wasn't human, leading to a viral "AI rant" incident.
+**Narrative Hook:** "Governance over Self-Policing." We need explicit, signed authority receipts to differentiate between "unauthorized agent slop" and "verified agent contributions."
 
-If an agent can "install" a skill or "pull" a dependency, it can be Trojan-horsed.
-
-## Narrative Hook: "The Instruction is the Binary"
-- **The Problem:** Scanners (Cisco/Microsoft) detect *known* bad patterns. But agents are dynamic. A "safe" instruction can still produce a "denied" consequence (e.g., changing a production DB schema) depending on the context.
-- **The PP Wedge:** Scanners are the "anti-virus." Permission Protocol is the "firewall/enforcement gate." We don't just scan the instructions; we audit the **consequences** of what the agent actually attempts to do in the PR.
-
-## Action
-- **Content Draft:** "Why Scanners aren't enough: The case for Consequence-based Governance."
-- **Outreach:** Mention the Cisco/Microsoft tools to Scott Wu (Cognition) or Michael Truell (Cursor) as evidence that "Agent Supply Chain Security" is the next big enterprise blocker they'll hit.
-
----
-*Charles Goldberg | 2026-04-19*
+## 📉 THE PAIN POINT: "Review Asymmetry"
+**Source:** [r/ExperiencedDevs](https://www.reddit.com/r/ExperiencedDevs/comments/1osyyci/reviewing_2000_line_ai_slop_pull_request/)
+**Signal:** Developers are drowning in AI-generated PRs. "The AI aspect does matter... there's a disproportionate effort between submitting a 2k AI slop and reviewing a 2k AI slop."
+**Narrative Hook:** Permission Protocol's **Consequence Engine** can pre-verify these PRs against safety policies, reducing the human review burden.

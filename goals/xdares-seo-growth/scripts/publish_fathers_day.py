@@ -8,7 +8,7 @@ import re
 WP_URL = "https://blog.xdares.com"
 WP_USER = "cgoldber82@gmail.com"
 WP_PASS = "yYD2 tcd5 lZXJ oxta aHWV UGl3"
-HTML_FILE = "/Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/content/fathers-day-party-games-bbq-drinking.html"
+HTML_FILE = "/Users/moltbot/.openclaw/workspace/goals/xdares-seo-growth/content/archived/fathers-day-party-games-bbq-drinking.html"
 PROXY = "socks5h://127.0.0.1:9050"
 
 def publish():

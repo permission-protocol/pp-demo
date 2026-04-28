@@ -1,66 +1,72 @@
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-20 04:05 AM MDT (Daily Auto-Update). Overwrite this file, don't append.*
+*Updated: 2026-04-28 5:08 PM MDT (Strategy Pivot). Overwrite this file, don't append.*
 
-## 🔴 SIGNER DECISION REQUIRED — Day 58 Outreach Drought / T-11 to May 1
-Confirmed by Monday morning sensor run. STALE_OUTREACH flag active.
+## 🟡 STRATEGY PIVOT — Action Gate / Listen-First (APPROVED 4:05 PM)
 
-**Sprint 5 Goal: 10 external installs. Current: 0/10.**
-The system is technically ready. Growth is the only bottleneck. Every day without Rod approval = a lost install.
+**New thesis:** Action Gate (verifiable receipt layer for high-risk customer-facing AI-agent actions) primary. Merge Gate stays alive as proof loop, not company thesis. Receipt is the product, not approval UI.
 
-**Decisions Waiting on Rod:**
-1. **APPROVE or DENY:** Sycamore / Sri Viswanath outreach (idea-092) — Day 12 stale
-2. **APPROVE or DENY:** Trent AI / Eno Thereska outreach (idea-098) — Day 10 stale
+**Listen-First sprint Apr 29 – May 3:**
+- 30 LinkedIn DMs over 3 days from 50-company tight list (CX/support agents, 20-200ppl, active enterprise sales)
+- Goal: 5 calls booked, 3 calls completed by May 3 evening
+- Direct outreach to AIUC-1 organizers + Schellman
+- AIUC-1 LinkedIn post drafted by Charles, approved by Rod, published this week
+- **BUILD MORATORIUM** through May 4 — only product work is honest-claim audit on permissionprotocol.com ("cryptographic/signed/immutable" → "tamper-evident audit record" until Ed25519 ships)
 
-## ⚡ MONDAY APR 20 — LinkedIn Day 14 Pivot
-If no responses from Apr 7 batch, pivot to **#2 contacts** at:
-Cognition, Cursor, crewAI, LangChain, Railway, Trigger.dev, Ramp.
-Charles to prep campaign drafts.
+**May 4 decision fork:**
+- 3+ calls scoring 2-3 → green-light Action Gate build sprint (signing + verifier + demo)
+- 0-1 calls scoring 2-3 → Merge Gate-primary, ship 10-15 paying repos by June 1
+- 2 calls in band → parallel 10-day plan, decide May 14
 
-## Pushing Now
-- **HOT SIGNAL (Apr 19):** Agent Supply Chain Security. Microsoft (APM) and Cisco (Skill Scanner) have validated "Malicious Skills" as a major enterprise threat. Perfect wedge for PP Consequence Engine.
-- **Deploy Gate:** Fully operational. Onboarding verified. E2E tested.
-- **Consequence Engine:** Stable. clearance/authorization/execution primitives verified.
-- **Polish V3:** SHIPPED Apr 10 (12 PRs).
-- **Signal Capture:** Chad Bayer feedback validates Safety > Crypto framing.
+Full strategy doc: `pp-os/strategy/2026-04-28-action-gate-pivot.md`
+Decision logged: `pp-os/DECISIONS.md`
+Outreach tracker: `pp-os/outreach/2026-04-28-action-gate-listen-list.md`
 
-## System Maintenance
-- **Weekly Planning (2026-04-19 08:20 MDT):** Day 57. Sprint 5 T-12. STALE_OUTREACH CRITICAL.
-- **Governance Check (2026-04-18):** Unregistered cron `Daily Auto-Update` added to ledger as SYS-016.
-- **System Status:** OpenClaw Core is up to date (v2026.4.15).
+## 🔴 OUTREACH DROUGHT — Day 66 / T-3 to May 1
+Sprint 5 Goal: **10 external installs. Current: 0/10.**
+Sprint 5 failure probability: 95%. Listen-First sprint replaces it as the operative goal.
 
-## Architecture (Locked)
-- **Outcomes:** cleared | approval_required | denied
-- **Receipt types:** clearance | authorization | execution
-- **Trust boundary:** LLM writes brief, deterministic rules decide gate
+**Decisions Waiting on Rod (Priority Order):**
+1. **APPROVE or DENY:** LinkedIn Day 14 Pivot — 7 companies, #2 contacts → `APPROVE pivot-batch-099`
+2. **APPROVE or DENY:** Sycamore / Sri Viswanath (idea-092) — Day 21 stale
+3. **APPROVE or DENY:** Trent AI / Eno Thereska (idea-098) — Day 19 stale
+4. **APPROVE or DENY:** Mintlify $45M outreach (Han Wang) → `APPROVE hotline-mintlify`
+5. **APPROVE or DENY:** Malicious Skills LinkedIn post + DM campaign → `APPROVE malicious-skills-103`
+6. **APPROVE or DENY:** PH Hunter DMs (Fabrice Merian, Chris Messina/KWD) → idea-095
+7. **READY (no blocker):** Vercel Breach wedge outreach → idea-101
+8. **READY (no blocker):** Agent Payment Protocols outreach → idea-102
 
-## Rod Actions Required (Priority Order)
-1. **APPROVE/DENY:** Sycamore (idea-092) and Trent AI (idea-098) outreach.
-2. **APPROVE/DENY:** LinkedIn Day 14 Pivot (pp-os/scout/outreach/pending/linkedin-pivot-batch-20260420.md)
-3. **APPROVE/DENY:** Malicious Skills Hot Signal (pp-os/scout/outreach/pending/hot-signal-malicious-skills.md)
-4. **Re-auth:** GA4/Search Console tokens expired (idea-085)
-5. **Record Loom:** 60s demo on `demo-repository`. Script in #wedges.
-6. **Review Homepage:** `feat/consequence-engine-site` — approve to deploy.
-7. **X API tier upgrade** (idea-082) — required for automated distribution.
-8. **SSH pp-scout-sfo2** (idea-086) — port 3100 conflict.
+## 📊 IDEAS STATE MACHINE (as of 4:51 PM MDT, Apr 28)
 
-## Charles Queue (Ready to execute — no Rod needed)
-1. **Monday Apr 20:** LinkedIn Day 14 pivot — DRAFTED.
-2. **idea-097:** Warm lead shortlist — DRAFTED.
-3. **idea-095:** PH hunter identification — DRAFTED.
-4. **idea-096:** HN unban email — DRAFTED.
-5. **idea-094:** PH launch brief finalize (PR #314 ready).
-6. **Deploy:** `feat/consequence-engine-site` once Rod approves homepage.
-
-## pp-os ideas.jsonl State Summary
 | Status | Count | Key IDs |
 |--------|-------|---------|
-| ACTIVE | 2 | idea-088 (10 installs), idea-089 (first loop) |
-| READY | 4 | idea-094, 095, 096, 097 |
-| BLOCKED | 5 | idea-092, 098 (Rod), 085 (GA4), 082 (X API), 086 (SSH) |
-| BACKLOG | 7 | idea-030, 002, 042, 080, 081, 083, 084 |
+| ACTIVE | 2 | idea-088 (10 installs sprint goal), idea-089 (first loop user) |
+| BLOCKED | 9 | idea-092, 098, 099, 100, 103, 095 (Rod approval); idea-082 (X API); idea-085 (GA4); idea-086 (SSH) |
+| READY | 2 | idea-101 (Vercel wedge), idea-102 (Agent payments) |
+| DONE | 3 | idea-094 (PH brief), idea-096 (HN unban sent), idea-097 (warm leads) |
+| BACKLOG | 7 | idea-002, 030, 042, 080, 081, 083, 084 |
 
-## Factory Pipeline (Active, no Rod needed)
-- **gh-deploy-gate-22** — ACTIVE: Auto-approve on branch update (high user value)
-- **gh-cli-3 / gh-cli-4** — ACTIVE: Permission gap analyzer + CLI reporter
-- **idea-080** — BACKLOG: Fix PostHog generic event names (S-size, low urgency)
+**All BLOCKED items stale since 2026-04-21 (7 days). No transitions today.**
+
+## ⚡ TODAY — Tuesday Apr 28
+- **Drought:** Day 66. T-3 to Sprint 5 deadline (Sprint 5 dead, replaced by Listen-First).
+- **Strategy pivot APPROVED.** Action Gate / Merge Gate split.
+- **Tonight (Charles):** finish 50-company tight list, draft AIUC-1 outreach to Schellman, queue Wednesday's claim-audit copy edits.
+- **Wednesday (Rod):** publish AIUC-1 LinkedIn post, send first 10 DMs from list.
+- **idea-101 + idea-102 still READY** — but Listen-First sprint takes priority through May 3.
+
+## 📊 SYSTEM HEALTH (Last Run: 16:51 MDT)
+- **Connectivity:** ✅ OK
+- **Governance:** ✅ NOMINAL
+- **Outreach:** 🔴 STALE (Day 66 Drought)
+- **Crons:** ⚠️ ATTENTION (`factory-github-sensor` errors)
+
+## Factory Status (Apr 28)
+- **Active Pipeline:** gh-deploy-gate-22, gh-cli-3, gh-cli-4.
+- **Ready queue (factory/ideas.jsonl):** 15 items ready to build.
+
+## Rod Actions Required
+1. **Decide on any outreach batch** — any single approval breaks the drought.
+2. **Record Loom Recording** for demo.
+3. **Review Homepage** `feat/consequence-engine-site`.
+4. **Re-auth GA4** tokens (unblocks idea-085).
