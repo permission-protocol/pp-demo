@@ -1386,3 +1386,43 @@ threads:
     next_action: null
     open_tasks: []
     resolution_artifact: "12 PRs (#337-#348) shipped"
+  - id: '1499130172769571017'
+    title: Image Issue
+    channel: rc-main
+    status: ARCHIVED
+    owner: rod
+    priority: medium
+    created_at: '2026-04-29'
+    updated_at: '2026-04-29'
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: null
+    resolution_artifact: 'sharp dependencies installed'
+    archived_at: '2026-04-29'
+    summary: >-
+      Resolved missing 'sharp' dependency causing image processing failures in Next.js builds and OpenClaw's internal image analysis tool.
+    open_tasks: []
+    decisions: []
+  - id: '1498818004207796244'
+    title: Revise Strategy
+    channel: rc-main
+    status: ARCHIVED
+    owner: rod
+    priority: critical
+    created_at: '2026-04-28'
+    updated_at: '2026-04-29'
+    archived_at: '2026-04-29'
+    expires_at: null
+    blocked_reason: null
+    blocked_until: null
+    next_action: null
+    resolution_artifact: '63 LI requests + 250 page invites sent'
+    summary: >-
+      Sprint 5 outreach campaign executed. Batch 1 (28 prospects) and Batch 2 (44 prospects) created and sent via LinkedIn. Competitive intel gathered on Oso (Sequoia) and Reco ($85M, Insight/Zeev). Incident tracker PRD drafted.
+    open_tasks: []
+    decisions:
+      - "Use 'I'm the founder of PP' not 'I'm building PP' for founder-to-founder outreach"
+      - "Attribute actions to company/product, not person ('Devin deploys' not 'you deploy')"
+      - "Target VCs without agent-governance bets (a16z, Benchmark, Conviction vs Sequoia/Insight/Zeev)"
+      - "Don't engage Oso directly - competitive risk"
