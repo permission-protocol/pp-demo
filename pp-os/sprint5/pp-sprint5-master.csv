@@ -1,0 +1,950 @@
+List,Tier,Priority,Name,Title,Company,LinkedIn,LI_Verified,Email,EmailSource,Twitter,Hook,LI_Original,LI_PilotHook,Email_Long,Channel_Recommended,SendDay,Status,Notes
+1,B,1,Ajay Shrihari,Co-founder & CEO,"Coral [healthcare admin, NY]","search ""Ajay Shrihari Coral""",false,,,,Coral $12.5M Series A (Lightspeed/Z47) Mar 2026; ships AI that processes prior auths and patient intakes — every step is a regulated action. Already shipped voice/text follow-ups with payers.,"Hi Ajay — congrats on the Lightspeed/Z47 round. Coral processing prior auths means every agent action is a HIPAA + payer-policy question. Permission Protocol = receipt layer (Ed25519, AIUC-1 B006/A003). 15 min listening call this week to compare procurement notes?",Hi Ajay — Coral $12.5M Series A (Lightspeed/Z47) Mar 2026; ships AI that processes prior auths and patien Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Coral [healthcare admin, NY] — gate one real action
+
+Hi Ajay Shrihari,
+
+Coral $12.5M Series A (Lightspeed/Z47) Mar 2026; ships AI that processes prior auths and patient intakes — every step is a regulated action. Already shipped voice/text follow-ups w
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,2,Aniket Mohanty,Co-founder,Coral,"search ""Aniket Mohanty Coral""",false,,,,Background in medical image processing; now responsible for healthcare-grade audit trails on agent actions.,"Hi Aniket — Coral's prior-auth + intake automation means audit-grade action trails are already core to your enterprise sale. Permission Protocol = signed-receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare what procurement is actually asking?",Hi Aniket — Background in medical image processing; now responsible for healthcare-grade audit trails on ag Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Coral — gate one real action
+
+Hi Aniket Mohanty,
+
+Background in medical image processing; now responsible for healthcare-grade audit trails on agent actions.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,3,Austin Hughes,Founder & CEO,Unify [RevOps agents],https://www.linkedin.com/in/austin-hughes,true,,,,"Unify raised $40M Series B Jul 15, 2025 (Battery, Thrive, OpenAI Startup Fund, Emergence); 8x YoY ARR; Perplexity/Together AI/Ramp as customers.","Hi Austin — congrats on the Battery/Thrive Series B. Unify shipping into Perplexity/Ramp = early procurement signal on agent action authorization. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare what's actually being asked?","Hi Austin — Unify raised $40M Series B Jul 15, 2025 (Battery, Thrive, OpenAI Startup Fund, Emergence); 8x Y Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Unify [RevOps agents] — gate one real action
+
+Hi Austin Hughes,
+
+Unify raised $40M Series B Jul 15, 2025 (Battery, Thrive, OpenAI Startup Fund, Emergence); 8x YoY ARR; Perplexity/Together AI/Ramp as customers.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,4,Bar Winkler,Co-founder & CEO,"Wonderful [CX, ~50, Tel Aviv/Amsterdam]","search ""Bar Winkler Wonderful""",false,,,,"Nov 11, 2025 — $100M Series A from Index Ventures; quoted: ""putting AI agents into production is a huge challenge. It requires marrying best-in-class technology together with flawless delivery."" Production = exactly where pre-execution auth matters.","Hi Bar — congrats on the Index Series A. Your ""into production is the huge challenge"" line in the announcement is the whole reason Permission Protocol exists — receipt layer for agent actions, AIUC-1 B006/A003 implementation. 15 min listening call this week to test whether pre-exec auth is hitting Wonderful deals?","Hi Bar — Nov 11, 2025 — $100M Series A from Index Ventures; quoted: ""putting AI agents into production i Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Wonderful [CX, ~50, Tel Aviv/Amsterdam] — gate one real action
+
+Hi Bar Winkler,
+
+Nov 11, 2025 — $100M Series A from Index Ventures; quoted: ""putting AI agents into production is a huge challenge. It requires marrying best-in-class technology together with flawl
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,5,Bret Taylor,Co-founder & CEO,"Sierra [CX, mega — including 1 of allowed 2-3]",https://www.linkedin.com/in/brett-taylor,true,,,@btaylor,"Sierra raised $350M Series C Sept 2025 at $10B; positioned around ""outcomes-based pricing"" in regulated verticals (healthcare, financial services) where pre-execution authorization is exactly the procurement question.","Hi Bret — Sierra moving outcomes-based into regulated verticals (healthcare/FS) is what made me build Permission Protocol — verifiable receipt layer for agent actions, runtime pattern for AIUC-1 B006/A003. 15 min listening call to test whether pre-execution auth is now an active blocker, not anticipatory?","Hi Bret — Sierra raised $350M Series C Sept 2025 at $10B; positioned around ""outcomes-based pricing"" in r Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Sierra [CX, mega — including 1 of allowed 2-3] — gate one real action
+
+Hi Bret Taylor,
+
+Sierra raised $350M Series C Sept 2025 at $10B; positioned around ""outcomes-based pricing"" in regulated verticals (healthcare, financial services) where pre-execution authorization
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,6,Domenic Donato,Founder,Attuned Intelligence [hospital call-center voice],"search ""Domenic Donato Attuned""",false,,,,Oct 2025 — $13M raise; ex-DeepMind; Attuned went live at Lowell Community Health Center handling every mainline call 24/7 — patient-facing voice actions are the procurement test case.,"Hi Domenic — Attuned handling every mainline call at Lowell = the highest-stakes version of ""what's the agent allowed to do"" in healthcare. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare procurement-side asks?",Hi Domenic — Oct 2025 — $13M raise; ex-DeepMind; Attuned went live at Lowell Community Health Center handlin Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Attuned Intelligence [hospital call-center voice] — gate one real action
+
+Hi Domenic Donato,
+
+Oct 2025 — $13M raise; ex-DeepMind; Attuned went live at Lowell Community Health Center handling every mainline call 24/7 — patient-facing voice actions are the procurement test ca
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,7,Flo Crivello,Founder & CEO,Lindy [agent ops/CX-adjacent],https://www.linkedin.com/in/flocrivello,true,,,@altimor,"Lindy positions as ""AI employee"" doing lead routing/scheduling/inbox; Flo is one of the most public voices on agent autonomy and posts frequently on the ceiling that ""uncontrolled agent actions"" hits.","Hi Flo — your public posts on agent autonomy are the cleanest framing I've seen of why pre-exec auth matters. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare what enterprise procurement is asking Lindy today?","Hi Flo — Lindy positions as ""AI employee"" doing lead routing/scheduling/inbox; Flo is one of the most pu Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Lindy [agent ops/CX-adjacent] — gate one real action
+
+Hi Flo Crivello,
+
+Lindy positions as ""AI employee"" doing lead routing/scheduling/inbox; Flo is one of the most public voices on agent autonomy and posts frequently on the ceiling that ""uncontrolled 
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,8,Gabe Stengel,Co-founder & CEO,Rogo [finance AI agents],https://www.linkedin.com/in/gabestengel,true,,,,"Rogo raised $75M Series C from Sequoia (early 2026); positions explicitly as ""secure AI for finance professionals"" — institutional outputs (Excel models, IC memos) where authorship/authorization is everything.","Hi Gabe — Rogo's ""auditable Excel + IC memos"" positioning = procurement-side audit trail is already your wedge. Permission Protocol = receipt layer for agent actions (AIUC-1 B006/A003 — Phil Venables flagged). 15 min listening call this week, comparing notes across ~10 agent cos?","Hi Gabe — Rogo raised $75M Series C from Sequoia (early 2026); positions explicitly as ""secure AI for fin Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Rogo [finance AI agents] — gate one real action
+
+Hi Gabe Stengel,
+
+Rogo raised $75M Series C from Sequoia (early 2026); positions explicitly as ""secure AI for finance professionals"" — institutional outputs (Excel models, IC memos) where authorship
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,9,Harrison Caruthers,Co-founder & CTO,SuperDial,"search ""Harrison Caruthers SuperDial""",false,,,,"As CTO of voice-action agent in healthcare, owns the runtime layer where action gating happens.",Hi Harrison — SuperDial CTO seat = closest to where pre-execution agent authorization actually runs. Permission Protocol = Action Gate API + signed receipts (AIUC-1 B006/A003). 15 min listening call this week to compare what enterprise procurement is asking? Not a pitch.,"Hi Harrison — As CTO of voice-action agent in healthcare, owns the runtime layer where action gating happens. Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for SuperDial — gate one real action
+
+Hi Harrison Caruthers,
+
+As CTO of voice-action agent in healthcare, owns the runtime layer where action gating happens.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,10,Hasan Sukkar,Co-founder & CEO,11x.ai [autonomous SDR],https://www.linkedin.com/in/hasansukkar,true,,,,11x is in Sarah Tavel's (Benchmark) portfolio per her bio; autonomous SDR agents emailing on behalf of the company = every send is a brand-authorization moment.,"Hi Hasan — 11x agents emailing on the customer's behalf = each send is a brand-and-compliance authorization moment. Permission Protocol = receipt layer for agent actions (Ed25519, AIUC-1 B006/A003). 15 min listening call this week to compare what enterprise procurement is asking?",Hi Hasan — 11x is in Sarah Tavel's (Benchmark) portfolio per her bio; autonomous SDR agents emailing on be Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for 11x.ai [autonomous SDR] — gate one real action
+
+Hi Hasan Sukkar,
+
+11x is in Sarah Tavel's (Benchmark) portfolio per her bio; autonomous SDR agents emailing on behalf of the company = every send is a brand-authorization moment.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,11,Ishaan Bhola,Co-founder & CEO,SuperAGI [agentic CRM/GTM],"search ""Ishaan Bhola SuperAGI""",false,,,,"$10M Series A Mar 2024 (Newlands VC); positions as ""AI employee infrastructure"" executing inside system-of-record — exactly where pre-exec auth is the procurement test.","Hi Ishaan — SuperAGI's ""AI employee in the system of record"" = procurement asking ""what's the AI employee allowed to write?"" Permission Protocol = receipt layer for those writes (AIUC-1 B006/A003.3 cryptographic agent identity). 15 min listening call this week, comparing notes?","Hi Ishaan — $10M Series A Mar 2024 (Newlands VC); positions as ""AI employee infrastructure"" executing insid Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for SuperAGI [agentic CRM/GTM] — gate one real action
+
+Hi Ishaan Bhola,
+
+$10M Series A Mar 2024 (Newlands VC); positions as ""AI employee infrastructure"" executing inside system-of-record — exactly where pre-exec auth is the procurement test.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,12,Ishan Mukherjee,Founder & CEO,Rox [agentic CRM],"search ""Ishan Mukherjee Rox""",false,,,,"Previously co-founded Pixie (acquired by New Relic); Rox positions as ""agentic CRM"" with agent swarms taking action on accounts — D003 tool-call governance is the runtime question.","Hi Ishan — Rox's agent-swarms-on-accounts model means every CRM write is a D003 tool-call governance moment. Permission Protocol = receipt layer for those actions (AIUC-1 B006/A003.3/A003.4/D003). 15 min listening call this week, comparing notes across ~10 agent cos? Not a pitch.","Hi Ishan — Previously co-founded Pixie (acquired by New Relic); Rox positions as ""agentic CRM"" with agent  Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Rox [agentic CRM] — gate one real action
+
+Hi Ishan Mukherjee,
+
+Previously co-founded Pixie (acquired by New Relic); Rox positions as ""agentic CRM"" with agent swarms taking action on accounts — D003 tool-call governance is the runtime question.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,13,Jamie Hall,Co-founder & CTO,"Lorikeet [CX, ~30]","search ""Jamie Hall Lorikeet""",false,,,,"3rd-named author on Google's LaMDA paper (2022), 4th on Meena (2020); now leading the engineering for ""high-stakes action"" gating at Lorikeet.","Hi Jamie — your LaMDA + Meena background plus Lorikeet's ""auditable execution"" stance is exactly the audience I want on this. 72hr validation sprint at Permission Protocol (receipt layer for agent actions, AIUC-1 B006/A003.3). 15 min this week to compare procurement-side notes?","Hi Jamie — 3rd-named author on Google's LaMDA paper (2022), 4th on Meena (2020); now leading the engineeri Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Lorikeet [CX, ~30] — gate one real action
+
+Hi Jamie Hall,
+
+3rd-named author on Google's LaMDA paper (2022), 4th on Meena (2020); now leading the engineering for ""high-stakes action"" gating at Lorikeet.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,14,Jesse Zhang,Co-founder & CEO,"Decagon [CX, mega — 2nd of allowed]",https://www.linkedin.com/in/jesse-zhang,true,,,@jessezhg (verify),"Decagon Jan 2026 raised $250M Series D co-led by Coatue/Index, tripled valuation in <12 months; selling into financial services where actions like ""credit card replacements, mortgage applications"" require explicit pre-execution authorization.",Hi Jesse — Decagon's push into mortgage/credit-card-replacement workflows is exactly where pre-execution authorization becomes a procurement-blocker. 72hr validation sprint at Permission Protocol (AIUC-1 B006/A003 receipt layer). 15 min listening call — comparing notes across ~10 agent cos.,"Hi Jesse — Decagon Jan 2026 raised $250M Series D co-led by Coatue/Index, tripled valuation in <12 months; Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Decagon [CX, mega — 2nd of allowed] — gate one real action
+
+Hi Jesse Zhang,
+
+Decagon Jan 2026 raised $250M Series D co-led by Coatue/Index, tripled valuation in <12 months; selling into financial services where actions like ""credit card replacements, mortga
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,15,Jonas Diezun,Co-founder & CEO,"Beam AI [CX/ops, Berlin]","search ""Jonas Diezun Beam""",false,,,,"Beam featured in Sifted's ""21 generative AI startups to watch""; Jonas previously built Razor Group ($400M+ revenue) — he has actually shipped at scale and knows what enterprise procurement asks.","Hi Jonas — given your Razor Group scale background, you've seen enterprise procurement at full force. Beam's ""human-like autonomous agents"" make the pre-exec auth question urgent. Permission Protocol = receipt layer, AIUC-1 B006/A003. 15 min listening call this week, comparing notes?","Hi Jonas — Beam featured in Sifted's ""21 generative AI startups to watch""; Jonas previously built Razor Gr Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Beam AI [CX/ops, Berlin] — gate one real action
+
+Hi Jonas Diezun,
+
+Beam featured in Sifted's ""21 generative AI startups to watch""; Jonas previously built Razor Group ($400M+ revenue) — he has actually shipped at scale and knows what enterprise pro
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,16,Malte Kosub,Co-founder & CEO,"Parloa [CX, voice, ~250 Berlin]","search ""Malte Kosub Parloa""",false,,,,Parloa raised $66M Series B in 2024 led by Altimeter; sells into European contact centers where GDPR + auditability are baseline procurement requirements.,"Hi Malte — Parloa's European enterprise base means GDPR-grade auditability is table stakes, not nice-to-have. Permission Protocol = receipt layer for agent actions (Ed25519 signed, AIUC-1 B006/A003 — Phil Venables' ""SOC 2 for agents""). 15 min listening call to compare procurement notes?",Hi Malte — Parloa raised $66M Series B in 2024 led by Altimeter; sells into European contact centers where Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Parloa [CX, voice, ~250 Berlin] — gate one real action
+
+Hi Malte Kosub,
+
+Parloa raised $66M Series B in 2024 led by Altimeter; sells into European contact centers where GDPR + auditability are baseline procurement requirements.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,17,Marie Schneegans,Co-founder & CEO,"14.ai [CX, YC]","search ""Marie Schneegans 14.ai""",false,,,,"Mar 2026 — 14.ai raised $3M YC seed (TechCrunch), backed by founders of Dropbox/Slack/Replit/Vercel; sells ""AI-native customer support agency"" model where they take over the desk — meaning **they** are the ones being asked the procurement questions.","Hi Marie — 14.ai's ""we become the support team"" model puts you in the seat fielding enterprise procurement asks directly. Permission Protocol = receipt layer for agent actions (Ed25519, AIUC-1 B006/A003). 15 min listening call this week to compare what's actually being asked? Not a pitch.","Hi Marie — Mar 2026 — 14.ai raised $3M YC seed (TechCrunch), backed by founders of Dropbox/Slack/Replit/Ve Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for 14.ai [CX, YC] — gate one real action
+
+Hi Marie Schneegans,
+
+Mar 2026 — 14.ai raised $3M YC seed (TechCrunch), backed by founders of Dropbox/Slack/Replit/Vercel; sells ""AI-native customer support agency"" model where they take over the desk —
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,18,Michael Fester,Co-founder & CTO,14.ai,"search ""Michael Fester 14.ai""",false,,,,Founded Snips (acquired by Sonos 2019); now building 14.ai's runtime where AI engineers staff the desk.,"Hi Michael — you've been on the runtime side of voice/agent systems since Snips. 14.ai's model where AI engineers staff the desk is exactly where action authorization gets concrete. Permission Protocol = receipt layer, AIUC-1 B006/A003. 15 min listening call this week to compare notes?",Hi Michael — Founded Snips (acquired by Sonos 2019); now building 14.ai's runtime where AI engineers staff t Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for 14.ai — gate one real action
+
+Hi Michael Fester,
+
+Founded Snips (acquired by Sonos 2019); now building 14.ai's runtime where AI engineers staff the desk.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,19,Michal Miernowski,Co-founder & CEO,Amperos Health [healthcare RCM],"search ""Michal Miernowski Amperos""",false,,,,"Amperos raised $16M Series A from Bessemer (early 2026); auto-claim-status agents that take action on payer portals — every action is a procurement-side ""are they allowed to do that"" question for a hospital.","Hi Michal — congrats on the Bessemer Series A. Amperos agents acting on payer portals = every hospital procurement asking ""what's the bot allowed to click?"" Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare procurement notes?",Hi Michal — Amperos raised $16M Series A from Bessemer (early 2026); auto-claim-status agents that take act Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Amperos Health [healthcare RCM] — gate one real action
+
+Hi Michal Miernowski,
+
+Amperos raised $16M Series A from Bessemer (early 2026); auto-claim-status agents that take action on payer portals — every action is a procurement-side ""are they allowed to do tha
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,20,Mike Murchison,Co-founder & CEO,"Ada [CX, larger but include]",https://www.linkedin.com/in/mikemurchison,true,,,@mikemurch (verify),"Mike publishes the ""AI Customer Service Insights"" newsletter on LinkedIn; recent issues argue companies are ""measuring AI customer service all wrong"" — the same gap Permission Protocol fills on the trust/audit side.","Hi Mike — your ""measuring AI CX all wrong"" newsletter framing is exactly the upstream of what I'm working on. 72hr validation sprint at Permission Protocol (verifiable receipt layer for agent actions, implements AIUC-1 B006/A003 Phil Venables flagged). 15 min listening call this week, not a pitch?","Hi Mike — Mike publishes the ""AI Customer Service Insights"" newsletter on LinkedIn; recent issues argue c Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Ada [CX, larger but include] — gate one real action
+
+Hi Mike Murchison,
+
+Mike publishes the ""AI Customer Service Insights"" newsletter on LinkedIn; recent issues argue companies are ""measuring AI customer service all wrong"" — the same gap Permission Prot
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,21,Nikola Mrkšić,Co-founder & CEO,"PolyAI [CX, voice]",https://www.linkedin.com/in/nikolamrksic,true,,,@nikolamrksic (verify),"Cambridge PhD, ex-Apple/VocalIQ; PolyAI sells voice agents into banks and healthcare — both verticals where pre-execution authorization is non-negotiable for procurement.","Hi Nikola — PolyAI in banking voice means your procurement decks have already answered the ""what's the agent allowed to do"" question. Running 72hr sprint at Permission Protocol (receipt layer, AIUC-1 B006/A003). 15 min listening call to test whether it's blocking or anticipatory today?","Hi Nikola — Cambridge PhD, ex-Apple/VocalIQ; PolyAI sells voice agents into banks and healthcare — both ver Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for PolyAI [CX, voice] — gate one real action
+
+Hi Nikola Mrkšić,
+
+Cambridge PhD, ex-Apple/VocalIQ; PolyAI sells voice agents into banks and healthcare — both verticals where pre-execution authorization is non-negotiable for procurement.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,22,Nitin Joshi,Co-founder & CTO,Valerie Health,"search ""Nitin Joshi Valerie""",false,,,,"Ex-Stripe engineering leader, ex-Uber Health co-founder — uniquely scarred by the ""what is this code allowed to charge/do"" question.","Hi Nitin — your Stripe + Uber Health background = literal expert on ""what is this system allowed to do on the user's behalf."" Permission Protocol takes that to AI agents (AIUC-1 B006/A003 receipt layer). 15 min listening call this week to compare procurement notes? Not a pitch.","Hi Nitin — Ex-Stripe engineering leader, ex-Uber Health co-founder — uniquely scarred by the ""what is this Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Valerie Health — gate one real action
+
+Hi Nitin Joshi,
+
+Ex-Stripe engineering leader, ex-Uber Health co-founder — uniquely scarred by the ""what is this code allowed to charge/do"" question.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,23,Peter Shalek,Co-founder & CEO,Valerie Health [healthcare front office],"search ""Peter Shalek Valerie""",false,,,,"Dec 16, 2025 — Valerie raised $30M Series A (Redpoint); building ""AI front office for independent doctors' offices"" — agents schedule, intake, follow up on behalf of practices.",Hi Peter — congrats on the Redpoint Series A. Valerie's AI front-office agents acting on behalf of practices = each call is a pre-execution auth question. Permission Protocol = receipt layer (AIUC-1 B006/A003). 15 min listening call this week to compare procurement notes? Not a pitch.,"Hi Peter — Dec 16, 2025 — Valerie raised $30M Series A (Redpoint); building ""AI front office for independe Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Valerie Health [healthcare front office] — gate one real action
+
+Hi Peter Shalek,
+
+Dec 16, 2025 — Valerie raised $30M Series A (Redpoint); building ""AI front office for independent doctors' offices"" — agents schedule, intake, follow up on behalf of practices.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,24,Roey Lalazar,Co-founder & CTO,Wonderful [CX],"search ""Roey Lalazar Wonderful""",false,,,,As CTO of a co. that just expanded to 30 countries — each with different regulatory regimes — agent action authorization across jurisdictions is in his lap.,"Hi Roey — Wonderful's 30-country footprint means you're shipping agent actions across 30 different regulatory regimes. Permission Protocol is the receipt layer (Ed25519 signed, public verifier) for agent actions per AIUC-1 B006/A003. 15 min this week to compare procurement notes?",Hi Roey — As CTO of a co. that just expanded to 30 countries — each with different regulatory regimes — a Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Wonderful [CX] — gate one real action
+
+Hi Roey Lalazar,
+
+As CTO of a co. that just expanded to 30 countries — each with different regulatory regimes — agent action authorization across jurisdictions is in his lap.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,25,Sam Schwager,Co-founder & CEO,SuperDial [healthcare voice],"search ""Sam Schwager SuperDial""",false,,,,"SuperDial $15M Series A (SignalFire) for voice agents calling payers on behalf of providers — the call **is** the action; pre-execution authorization (e.g., ""is the agent allowed to file this appeal?"") is dead-center for procurement.","Hi Sam — SuperDial's voice agents *are* the action — every payer call is a ""what's it allowed to say/file"" question. Permission Protocol = receipt layer (Ed25519, AIUC-1 B006/A003). 15 min listening call this week, comparing procurement notes across agent cos? Not a pitch.",Hi Sam — SuperDial $15M Series A (SignalFire) for voice agents calling payers on behalf of providers — t Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for SuperDial [healthcare voice] — gate one real action
+
+Hi Sam Schwager,
+
+SuperDial $15M Series A (SignalFire) for voice agents calling payers on behalf of providers — the call **is** the action; pre-execution authorization (e.g., ""is the agent allowed t
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,26,Steve Hind,Co-founder & CEO,"Lorikeet [CX, ~30, Sydney/SF]",https://www.linkedin.com/in/stevehind,true,,,@stevehind (verify),"Lorikeet's public positioning explicitly says they use ""granular permissions and dynamic gating to enforce safe, auditable execution"" rather than giving the AI open access to risky actions — exact language match for Permission Protocol's thesis.","Hi Steve — your ""granular permissions and dynamic gating"" framing on the Lorikeet site is the cleanest articulation of pre-execution authorization I've seen from an agent co. Running a 72hr validation sprint at Permission Protocol (verifiable receipt layer for agent actions, AIUC-1 B006/A003). 15 min listening call this week? Not a pitch.","Hi Steve — Lorikeet's public positioning explicitly says they use ""granular permissions and dynamic gating Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Lorikeet [CX, ~30, Sydney/SF] — gate one real action
+
+Hi Steve Hind,
+
+Lorikeet's public positioning explicitly says they use ""granular permissions and dynamic gating to enforce safe, auditable execution"" rather than giving the AI open access to risky
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,27,Tim Shi,Co-founder & CTO,Cresta [CX],https://www.linkedin.com/in/timshi,true,,,, Tim co-authored research on real-time agent guidance; the next adjacent step is real-time agent action governance.,"Hi Tim — real-time guidance for human agents → real-time governance for AI agent actions feels like a natural next layer. Permission Protocol = pre-execution authorization receipt layer, AIUC-1 B006/A003. 15 min listening call this week — pure validation, not a pitch.",Hi Tim —  Tim co-authored research on real-time agent guidance; the next adjacent step is real-time agen Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Cresta [CX] — gate one real action
+
+Hi Tim Shi,
+
+ Tim co-authored research on real-time agent guidance; the next adjacent step is real-time agent action governance.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,B,28,Zayd Enam,Co-founder & CEO,"Cresta [CX, sales/support]",https://www.linkedin.com/in/zaydenam,true,,,,"Cresta sells real-time agent coaching into Fortune 500 contact centers (Intuit, Verizon, Brinks); enterprise procurement on Cresta routinely involves SOC2 + action-trail review.","Hi Zayd — Cresta selling into Verizon/Intuit means your procurement team has already seen every version of the ""what's the agent allowed to do"" question. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week, comparing notes across ~10 agent cos?","Hi Zayd — Cresta sells real-time agent coaching into Fortune 500 contact centers (Intuit, Verizon, Brinks Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Cresta [CX, sales/support] — gate one real action
+
+Hi Zayd Enam,
+
+Cresta sells real-time agent coaching into Fortune 500 contact centers (Intuit, Verizon, Brinks); enterprise procurement on Cresta routinely involves SOC2 + action-trail review.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+2,B,29,Sarah Tavel,Partner,Benchmark,https://www.linkedin.com/in/sarahtavel,true,,,,11x (autonomous SDR — direct ICP),,Hi Sarah — 11x (autonomous SDR — direct ICP) Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Benchmark — gate one real action
+
+Hi Sarah Tavel,
+
+11x (autonomous SDR — direct ICP)
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+2,B,30,Sonya Huang,Partner,Sequoia Capital,https://www.linkedin.com/in/sonyaruihuang,true,,,@sonyatweetybird,"Glean, Harvey, Gong, **Decagon (verify)**, LangChain",,"Hi Sonya — Glean, Harvey, Gong, **Decagon (verify)**, LangChain Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Sequoia Capital — gate one real action
+
+Hi Sonya Huang,
+
+Glean, Harvey, Gong, **Decagon (verify)**, LangChain
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_Midday,,
+1,C,31,Trey Holterman,Co-founder & CEO,Tennr [healthcare admin],https://www.linkedin.com/in/treyholterman,true,,,,Tennr cited in PitchBook 2026 as one of the leading healthcare AI agent cos VCs are doubling down on; recent Series B; agents handle referrals/intake.,"Hi Trey — Tennr automating referrals/intake = every agent action is a HIPAA + payer-policy authorization question. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare what enterprise procurement is actually asking?",Hi Trey — Tennr cited in PitchBook 2026 as one of the leading healthcare AI agent cos VCs are doubling do Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Tennr [healthcare admin] — gate one real action
+
+Hi Trey Holterman,
+
+Tennr cited in PitchBook 2026 as one of the leading healthcare AI agent cos VCs are doubling down on; recent Series B; agents handle referrals/intake.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,32,Aaref Hilaly,Partner,Bain Capital Ventures,https://www.linkedin.com/in/aarefhilaly,true,,,@aaref,Voiceflow and other CX-agent cos,,Hi Aaref — Voiceflow and other CX-agent cos Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Bain Capital Ventures — gate one real action
+
+Hi Aaref Hilaly,
+
+Voiceflow and other CX-agent cos
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,33,Andrew Reed,Partner,Sequoia Capital,https://www.linkedin.com/in/andrew-reed,true,,,,overlap with Sonya's portfolio,,Hi Andrew — overlap with Sonya's portfolio Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Sequoia Capital — gate one real action
+
+Hi Andrew Reed,
+
+overlap with Sonya's portfolio
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,34,Anjney Midha,Partner,a16z,https://www.linkedin.com/in/anjneymidha,true,,,@AnjneyMidha,Multiple AI infra + agent cos,,Hi Anjney — Multiple AI infra + agent cos Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for a16z — gate one real action
+
+Hi Anjney Midha,
+
+Multiple AI infra + agent cos
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,35,Caryn Marooney,Partner,Coatue,https://www.linkedin.com/in/caryn-marooney,true,,,,**Decagon** (Coatue co-led $250M Series D Jan 2026),,Hi Caryn — **Decagon** (Coatue co-led $250M Series D Jan 2026) Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Coatue — gate one real action
+
+Hi Caryn Marooney,
+
+**Decagon** (Coatue co-led $250M Series D Jan 2026)
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,36,Lucas Swisher,Partner,Coatue,https://www.linkedin.com/in/lucasswisher,true,,,,"**Decagon** (Series D Jan 2026), other agent cos",,"Hi Lucas — **Decagon** (Series D Jan 2026), other agent cos Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Coatue — gate one real action
+
+Hi Lucas Swisher,
+
+**Decagon** (Series D Jan 2026), other agent cos
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,37,Saam Motamedi,Partner,Greylock,https://www.linkedin.com/in/saammotamedi,true,,,@saammotamedi,"**Netic** ($20M Greylock Jun 2025), Cresta, others",,"Hi Saam — **Netic** ($20M Greylock Jun 2025), Cresta, others Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Greylock — gate one real action
+
+Hi Saam Motamedi,
+
+**Netic** ($20M Greylock Jun 2025), Cresta, others
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+2,C,38,Sarah Wang,Partner,Andreessen Horowitz,https://www.linkedin.com/in/sarah-wang,true,,,,"Cresta (per public sources), other CX-agent cos",,"Hi Sarah — Cresta (per public sources), other CX-agent cos Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Andreessen Horowitz — gate one real action
+
+Hi Sarah Wang,
+
+Cresta (per public sources), other CX-agent cos
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,C,39,Deon Nicholas,Ex Co-founder & former CEO,Forethought,https://www.linkedin.com/in/deonnicholas,true,,,,He lived through enterprise procurement at Forethought during 2022-24 buildout.,"Hi [name] — saw you were at [company] from [years]. Researching how customer-facing AI agent cos answered enterprise procurement questions on pre-execution authorization (action-layer security, not classical SaaS controls). 15 min this week? Pure ground-truth, not a pitch. — Rod",Hi Deon — He lived through enterprise procurement at Forethought during 2022-24 buildout. Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Forethought — gate one real action
+
+Hi Deon Nicholas,
+
+He lived through enterprise procurement at Forethought during 2022-24 buildout.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,C,40,Jay Srinivasan,Ex-AptEdge (verify),,search,false,,,,AptEdge enterprise era,"Hi [name] — saw you were at [company] from [years]. Researching how customer-facing AI agent cos answered enterprise procurement questions on pre-execution authorization (action-layer security, not classical SaaS controls). 15 min this week? Pure ground-truth, not a pitch. — Rod",Hi Jay — AptEdge enterprise era Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi Jay Srinivasan,
+
+AptEdge enterprise era
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,C,41,Sami Ramly,Ex-Forethought (verify),,search,false,,,,Forethought security/trust era,"Hi [name] — saw you were at [company] from [years]. Researching how customer-facing AI agent cos answered enterprise procurement questions on pre-execution authorization (action-layer security, not classical SaaS controls). 15 min this week? Pure ground-truth, not a pitch. — Rod",Hi Sami — Forethought security/trust era Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi Sami Ramly,
+
+Forethought security/trust era
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,C,42,Vasco Pedro,Co-founder,Unbabel,https://www.linkedin.com/in/vascopedro,true,,,,Unbabel Fortune-500 CX customer base gives adjacent ground truth.,"Hi [name] — saw you were at [company] from [years]. Researching how customer-facing AI agent cos answered enterprise procurement questions on pre-execution authorization (action-layer security, not classical SaaS controls). 15 min this week? Pure ground-truth, not a pitch. — Rod",Hi Vasco — Unbabel Fortune-500 CX customer base gives adjacent ground truth. Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Unbabel — gate one real action
+
+Hi Vasco Pedro,
+
+Unbabel Fortune-500 CX customer base gives adjacent ground truth.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,C,43,Will Lawrence,Ex-Cresta engineering (verify dates),,search,false,,,,Cresta runtime/action era,"Hi [name] — saw you were at [company] from [years]. Researching how customer-facing AI agent cos answered enterprise procurement questions on pre-execution authorization (action-layer security, not classical SaaS controls). 15 min this week? Pure ground-truth, not a pitch. — Rod",Hi Will — Cresta runtime/action era Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi Will Lawrence,
+
+Cresta runtime/action era
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,44,Aakrit Vaish,Co-founder,"Haptik (now public, but include)","search ""Aakrit Vaish Haptik""",false,,,, Aakrit has been posting on agent governance; Haptik moved upmarket into enterprise.,"Hi Aakrit — your enterprise pivot at Haptik puts agent action governance dead-center. Permission Protocol = pre-execution authorization receipt layer (AIUC-1 B006/A003 — what Phil Venables called ""SOC 2 for agents""). 15 min listening call this week, pure validation?",Hi Aakrit —  Aakrit has been posting on agent governance; Haptik moved upmarket into enterprise. Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Haptik (now public, but include) — gate one real action
+
+Hi Aakrit Vaish,
+
+ Aakrit has been posting on agent governance; Haptik moved upmarket into enterprise.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,45,Ali Hussain,Co-founder & CTO,Tabs [AR automation],"search ""Ali Hussain Tabs""",false,,,,"Tabs runs AI on the entire AR lifecycle — invoice gen, intelligent collections, payment processing. Each is a regulated financial action.","Hi Ali — Tabs running AI on collections + payment processing = each agent action is a regulated financial transaction. Permission Protocol = receipt layer (Ed25519 signed, AIUC-1 B006/A003). 15 min listening call this week to compare what enterprise procurement is asking?","Hi Ali — Tabs runs AI on the entire AR lifecycle — invoice gen, intelligent collections, payment process Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Tabs [AR automation] — gate one real action
+
+Hi Ali Hussain,
+
+Tabs runs AI on the entire AR lifecycle — invoice gen, intelligent collections, payment processing. Each is a regulated financial action.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,46,Anand Janefalkar,Founder & CEO,UJET [CX],https://www.linkedin.com/in/janefalkar,true,,,,"UJET runs AI agents on top of CCaaS; recent product roadmap mentions ""secure action execution.""","Hi Anand — UJET layering AI agents on CCaaS means action execution boundaries are now your problem too. Permission Protocol = receipt layer for agent actions (Ed25519, public verifier, AIUC-1 B006/A003). 15 min listening call this week — comparing procurement notes across agent cos.","Hi Anand — UJET runs AI agents on top of CCaaS; recent product roadmap mentions ""secure action execution."" Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for UJET [CX] — gate one real action
+
+Hi Anand Janefalkar,
+
+UJET runs AI agents on top of CCaaS; recent product roadmap mentions ""secure action execution.""
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,47,Charles Lien,Co-founder,Polly (CX agents),search,false,,,,,Hi Charles — researching how customer-facing AI agent companies are answering enterprise procurement asks on pre-execution authorization. Permission Protocol = receipt layer (AIUC-1 B006/A003). 15 min listening call this week? Not a pitch — pure validation across ~10 agent cos.,Hi Charles —  Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Polly (CX agents) — gate one real action
+
+Hi Charles Lien,
+
+I am validating procurement requirements for customer-facing AI agents this week.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,48,Diego Oppenheimer,exec,Honey Health (verify),search,false,,,,"Honey Health emerged from stealth with $7.8M (Pelion); AI agents log into existing EHRs and complete full workflows — i.e., act as authenticated users.",Hi — Honey Health agents logging into EHRs as authenticated users is *the* procurement test case for cryptographic agent identity (AIUC-1 A003.3). Permission Protocol = receipt layer for those actions. 15 min listening call this week to compare procurement notes? Not a pitch.,Hi Diego — Honey Health emerged from stealth with $7.8M (Pelion); AI agents log into existing EHRs and com Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Honey Health (verify) — gate one real action
+
+Hi Diego Oppenheimer,
+
+Honey Health emerged from stealth with $7.8M (Pelion); AI agents log into existing EHRs and complete full workflows — i.e., act as authenticated users.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,49,Eugene Aronsky,Co-founder & CTO,"Crescendo [CX, ~200]","search ""Eugene Aronsky Crescendo""",false,,,,"Crescendo public site emphasizes SOC-2 Type II + HIPAA; sells to enterprise CX where ""owns performance once it's live"" is their wedge — exactly the audit story.","Hi Eugene — Crescendo's ""we own performance once it's live"" pitch is the strongest version of what enterprise procurement actually buys. Running 72hr validation sprint at Permission Protocol — receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week, not a pitch?","Hi Eugene — Crescendo public site emphasizes SOC-2 Type II + HIPAA; sells to enterprise CX where ""owns perf Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Crescendo [CX, ~200] — gate one real action
+
+Hi Eugene Aronsky,
+
+Crescendo public site emphasizes SOC-2 Type II + HIPAA; sells to enterprise CX where ""owns performance once it's live"" is their wedge — exactly the audit story.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,50,Eugenio Pace,Co-founder & CEO,"Maven AGI [CX, ~50]","search ""Eugenio Pace Maven AGI""",false,,,,"Maven AGI tagline ""Generative AI platform to reimagine customer experience starting with support"" — Eugenio previously built Auth0, sold to Okta. He of all founders knows the auth/identity story.","Hi Eugenio — building the auth/identity story for AI agents at Maven feels uniquely on-thesis for you given your Auth0 path. Permission Protocol is the receipt layer for agent actions (Ed25519, public verifier, AIUC-1 B006/A003). 15 min listening call this week — not a pitch, validation sprint.","Hi Eugenio — Maven AGI tagline ""Generative AI platform to reimagine customer experience starting with suppor Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Maven AGI [CX, ~50] — gate one real action
+
+Hi Eugenio Pace,
+
+Maven AGI tagline ""Generative AI platform to reimagine customer experience starting with support"" — Eugenio previously built Auth0, sold to Okta. He of all founders knows the auth/
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,51,Gadi Shamia,CEO,"Replicant [CX, voice]",https://www.linkedin.com/in/gadishamia,true,,,,"Replicant focuses on ""Thinking Machine"" voice; Gadi has spoken publicly on agent autonomy boundaries in CX.","Hi Gadi — Replicant's ""Thinking Machine"" autonomy framing puts the action-authorization question front and center for any enterprise buyer. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare procurement-side notes?","Hi Gadi — Replicant focuses on ""Thinking Machine"" voice; Gadi has spoken publicly on agent autonomy bound Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Replicant [CX, voice] — gate one real action
+
+Hi Gadi Shamia,
+
+Replicant focuses on ""Thinking Machine"" voice; Gadi has spoken publicly on agent autonomy boundaries in CX.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,52,Guillaume Luccisano,Founder,Yuma AI [Shopify CX agents],https://www.linkedin.com/in/luccisano,true,,,@luccisano,"Yuma AI = Shopify-native CX agent that takes refund/exchange actions; the canonical ""$7,500 pilot to gate one real action"" use case in Permission Protocol's pitch.","Hi Guillaume — Yuma processing refunds on Shopify = the literal ""gate one real action"" use case Permission Protocol was built for (AIUC-1 B006/A003 receipt layer, Ed25519, public verifier). 15 min listening call this week to compare what merchant procurement is actually asking?","Hi Guillaume — Yuma AI = Shopify-native CX agent that takes refund/exchange actions; the canonical ""$7,500 pil Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Yuma AI [Shopify CX agents] — gate one real action
+
+Hi Guillaume Luccisano,
+
+Yuma AI = Shopify-native CX agent that takes refund/exchange actions; the canonical ""$7,500 pilot to gate one real action"" use case in Permission Protocol's pitch.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,53,Hayes Davis,Co-founder & CEO,Gradient.io / sales-ops AI,search,false,,,,,"Hi Hayes — researching whether pre-execution authorization is an active procurement blocker for customer-facing AI agent cos. Permission Protocol = receipt layer (AIUC-1 B006/A003 — Phil Venables' ""SOC 2 for agents""). 15 min listening call this week, not a pitch?",Hi Hayes —  Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Gradient.io / sales-ops AI — gate one real action
+
+Hi Hayes Davis,
+
+I am validating procurement requirements for customer-facing AI agents this week.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,54,Kanu Gulati,Co-founder,Netic [field-service revenue agents],"search ""Kanu Gulati Netic""",false,,,,"Netic emerged from stealth Jun 2025 with $20M (Greylock, Founders Fund); agents book jobs across phone/chat/SMS for HVAC/plumbing/electric — small business but high-action-stakes (booking commits revenue).","Hi Kanu — Netic agents booking HVAC/plumbing jobs = commits actual revenue per call. That's procurement-grade authorization. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week? Not a pitch — comparing notes across ~10 agent cos.","Hi Kanu — Netic emerged from stealth Jun 2025 with $20M (Greylock, Founders Fund); agents book jobs acros Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Netic [field-service revenue agents] — gate one real action
+
+Hi Kanu Gulati,
+
+Netic emerged from stealth Jun 2025 with $20M (Greylock, Founders Fund); agents book jobs across phone/chat/SMS for HVAC/plumbing/electric — small business but high-action-stakes (
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,55,Matt Cooper,CEO,Crescendo [CX],"search ""Matt Cooper Crescendo""",false,,,,"Crescendo's ""AI + Superhumans"" hybrid model is one of the few that explicitly contracts to outcomes — making procurement-side audit demands acute.","Hi Matt — Crescendo's outcome-contract model puts the audit/proof question right on the procurement table. 72hr validation sprint at Permission Protocol (verifiable receipt layer for agent actions, AIUC-1 B006/A003). 15 min listening call to compare what enterprise security is actually asking?","Hi Matt — Crescendo's ""AI + Superhumans"" hybrid model is one of the few that explicitly contracts to outc Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Crescendo [CX] — gate one real action
+
+Hi Matt Cooper,
+
+Crescendo's ""AI + Superhumans"" hybrid model is one of the few that explicitly contracts to outcomes — making procurement-side audit demands acute.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,56,Niki Hall,CEO,"Replicant — see #18 (deduped, replace with): **Will Bosma** — VP Enterprise, AppZen","search ""Will Bosma AppZen""",false,,,,AppZen ships AI agents that auto-approve / auto-deny expense and AP transactions — pre-execution authorization is literally their product surface.,"Hi Will — AppZen's auto-approve/auto-deny on AP is the most literal version of pre-execution authorization in production today. Permission Protocol = receipt layer for that decision (Ed25519, AIUC-1 B006/A003). 15 min listening call this week to compare what enterprise procurement is asking?",Hi Niki — AppZen ships AI agents that auto-approve / auto-deny expense and AP transactions — pre-executio Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Replicant — see #18 (deduped, replace with): **Will Bosma** — VP Enterprise, AppZen — gate one real action
+
+Hi Niki Hall,
+
+AppZen ships AI agents that auto-approve / auto-deny expense and AP transactions — pre-execution authorization is literally their product surface.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,57,Pascal Weinberger,Co-founder & CEO,Bardeen,https://www.linkedin.com/in/pascalweinberger,true,,,,Bardeen's browser-agent positioning means literally every agent action is a tool-call governance problem (D003).,Hi Pascal — Bardeen's browser-agent surface means every action is a D003 tool-call governance question. Permission Protocol = receipt layer for agent actions (AIUC-1 B006/A003.3/A003.4/D003). 15 min listening call this week — comparing notes across ~10 agent cos. Not a pitch.,Hi Pascal — Bardeen's browser-agent positioning means literally every agent action is a tool-call governanc Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for Bardeen — gate one real action
+
+Hi Pascal Weinberger,
+
+Bardeen's browser-agent positioning means literally every agent action is a tool-call governance problem (D003).
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,58,Ping Wu,Co-founder & CTO,PolyAI,"search ""Ping Wu PolyAI""",false,,,,Voice CTO — closest to the action-authorization runtime.,Hi Ping — voice agents in regulated verticals are the hardest place to gate actions pre-execution. Permission Protocol = receipt layer + Action Gate API for AIUC-1 B006/A003. 15 min listening call this week to compare procurement notes across ~10 agent cos? Not a pitch.,Hi Ping — Voice CTO — closest to the action-authorization runtime. Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for PolyAI — gate one real action
+
+Hi Ping Wu,
+
+Voice CTO — closest to the action-authorization runtime.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,59,Raviteja Dodda,Founder & CEO,MoEngage / now AI agents,https://www.linkedin.com/in/ravitejadodda,true,,,,[HOOK – VERIFY recent agent product release],"Hi Raviteja — your recent push into agentic CX is exactly the segment I'm researching. Permission Protocol = receipt layer for agent actions, runtime for AIUC-1 B006/A003 (""SOC 2 for AI agents"" per Phil Venables). 15 min listening call this week, comparing procurement notes across ~10 agent cos?",Hi Raviteja — [HOOK – VERIFY recent agent product release] Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for MoEngage / now AI agents — gate one real action
+
+Hi Raviteja Dodda,
+
+[HOOK – VERIFY recent agent product release]
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,60,Sami Shalabi,Co-founder,Maven AGI [CX],"search ""Sami Shalabi Maven""",false,,,,"Ex-Google (Inbox) — built consumer-facing systems where action authorization (send, archive, schedule) was always the safety boundary.","Hi Sami — your Inbox-by-Gmail background means you've already shipped products where ""what is the agent allowed to do"" was the safety question. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to test whether procurement asks have changed?","Hi Sami — Ex-Google (Inbox) — built consumer-facing systems where action authorization (send, archive, sc Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Maven AGI [CX] — gate one real action
+
+Hi Sami Shalabi,
+
+Ex-Google (Inbox) — built consumer-facing systems where action authorization (send, archive, schedule) was always the safety boundary.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,61,Siamak Freydoonnejad,Founder,AptEdge [CX],"search ""Siamak AptEdge""",false,,,,"AptEdge sells ""Answer Engine"" into enterprise support; the natural next product is action gating.","Hi Siamak — AptEdge's Answer Engine in enterprise support is one product release away from action-taking. Permission Protocol is the receipt layer that comes with it (AIUC-1 B006/A003). 15 min listening call this week to test whether procurement is asking yet, or still ahead?","Hi Siamak — AptEdge sells ""Answer Engine"" into enterprise support; the natural next product is action gatin Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for AptEdge [CX] — gate one real action
+
+Hi Siamak Freydoonnejad,
+
+AptEdge sells ""Answer Engine"" into enterprise support; the natural next product is action gating.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,62,Sonny Aulakh,Founder & CEO,MaxIQ [RevOps],"search ""Sonny Aulakh MaxIQ""",false,,,,[HOOK – VERIFY recent product release on agent governance],"Hi Sonny — MaxIQ unifying GTM + CS data layer = every agent action crosses revenue + customer-data boundaries. Permission Protocol = receipt layer for agent actions, AIUC-1 B006/A003. 15 min listening call this week to compare procurement-side asks? Not a pitch.",Hi Sonny — [HOOK – VERIFY recent product release on agent governance] Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for MaxIQ [RevOps] — gate one real action
+
+Hi Sonny Aulakh,
+
+[HOOK – VERIFY recent product release on agent governance]
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,63,Stefan Ostwald,Co-founder & CTO,Parloa [CX],"search ""Stefan Ostwald Parloa""",false,,,,"As CTO of a voice-AI platform, his team is closest to the ""did the agent actually do what was approved"" instrumentation.","Hi Stefan — voice agents are the hardest place to prove pre-execution authorization (no UI to gate against). Permission Protocol implements AIUC-1 B006/A003 as a receipt layer — Ed25519 signed, public verifier. 15 min listening call this week to compare what enterprise procurement is asking?","Hi Stefan — As CTO of a voice-AI platform, his team is closest to the ""did the agent actually do what was a Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.","Subject: Free Sentinel pilot for Parloa [CX] — gate one real action
+
+Hi Stefan Ostwald,
+
+As CTO of a voice-AI platform, his team is closest to the ""did the agent actually do what was approved"" instrumentation.
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+1,D,64,[DROPPED PLACEHOLDER] Aaron Levie Box.ai PM lead,placeholder,Box.ai,,false,,,,"Placeholder in source-list.md marked ""skip (not target)""; retained as stub for audit completeness.",,,,linkedin,Wed_PM,,Drop before send
+2,D,65,Vanessa Larco,Partner,NEA → moved to Operator/founder per 2024 reports,https://www.linkedin.com/in/aaronjacobson,true,,,,NEA portfolio inc. various agent cos,,Hi Vanessa — NEA portfolio inc. various agent cos Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for NEA → moved to Operator/founder per 2024 reports — gate one real action
+
+Hi Vanessa Larco,
+
+NEA portfolio inc. various agent cos
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,66,[SALES_NAV: Ada Head of Customer Success],Head of Customer Success,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Ada Head of Customer Success],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,67,[SALES_NAV: Ada Trust/Compliance],Trust/Compliance,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Ada Trust/Compliance],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,68,[SALES_NAV: Crescendo Enterprise AE],Enterprise AE,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Crescendo Enterprise AE],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,69,[SALES_NAV: Cresta Trust/Security],Trust/Security,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Cresta Trust/Security],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,70,[SALES_NAV: Decagon Enterprise AE or Head of Enterprise],Enterprise AE or Head of Enterprise,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Decagon Enterprise AE or Head of Enterprise],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,71,[SALES_NAV: Decagon Trust/Security or Founding Eng],Trust/Security or Founding Eng,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Decagon Trust/Security or Founding Eng],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,72,[SALES_NAV: Gorgias AI Founding eng on AI Agent product],Founding eng on AI Agent product,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Gorgias AI Founding eng on AI Agent product],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,73,[SALES_NAV: Intercom (Fin team) Founding/early eng on Fin (left 2024-25)],Founding/early eng on Fin (left 2024-25),,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Intercom (Fin team) Founding/early eng on Fin (left 2024-25)],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,74,[SALES_NAV: Lorikeet Customer Success or Enterprise lead],Customer Success or Enterprise lead,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Lorikeet Customer Success or Enterprise lead],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,75,[SALES_NAV: Maven AGI Enterprise AE],Enterprise AE,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Maven AGI Enterprise AE],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,76,[SALES_NAV: PolyAI Trust/Compliance],Trust/Compliance,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: PolyAI Trust/Compliance],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,77,[SALES_NAV: Replicant Enterprise AE],Enterprise AE,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Replicant Enterprise AE],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,78,[SALES_NAV: Salesforce Agentforce Trust & Security PM (left 2024-25)],Trust & Security PM (left 2024-25),,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Salesforce Agentforce Trust & Security PM (left 2024-25)],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,79,[SALES_NAV: Sierra Founding Eng or Head of Product],Founding Eng or Head of Product,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Sierra Founding Eng or Head of Product],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
+3,D,80,[SALES_NAV: Sierra Trust/Security/GRC lead],Trust/Security/GRC lead,,,false,,,,Run Sales Navigator query per source-list.md,[SALES_NAV: Sierra Trust/Security/GRC lead],Hi there — Run Sales Navigator query per source-list.md Permission Protocol: free 30-day Sentinel pilot to gate one real action with a signed receipt (AIUC-1 B006/A003). 15 min to scope this week? Founder calls only.,"Subject: Free Sentinel pilot for your team — gate one real action
+
+Hi there,
+
+Run Sales Navigator query per source-list.md
+
+I'm running Permission Protocol — the verifiable receipt layer for AI agent actions, implementing AIUC-1 B006/A003. For Sprint 5 we're offering a free 30-day pilot to gate one high-stakes action with signed receipts.
+
+If useful, I can send a 5-line SDK snippet and scope one action your team already cares about. 15 min Wed/Thu to decide fit?
+
+— Rod
+Founder, Permission Protocol",linkedin,Wed_PM,,
