@@ -298,5 +298,105 @@
     "LinkedIn": "https://www.linkedin.com/in/mattbornstein/",
     "Hook": "Leads AI investing at a16z. Portfolio includes many agent companies. Wrote 'Emerging Architectures for LLM Applications.'",
     "LI_PilotHook": "Matt, reaching out because you've invested in the agent stack from foundation to application, and the governance layer is still missing infrastructure. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 31,
+    "Name": "Arvid Lunnemark",
+    "Title": "Co-founder & CTO",
+    "Company": "Anysphere (Cursor)",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/arvid-lunnemark/",
+    "Hook": "Cursor CTO. Building the runtime where AI agents write and deploy code. The PocketOS incident happened on Cursor.",
+    "LI_PilotHook": "Arvid, reaching out because Cursor agents are writing and deploying code autonomously, and the PocketOS incident showed what happens without action gates. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 32,
+    "Name": "Sualeh Asif",
+    "Title": "Co-founder & CPO",
+    "Company": "Anysphere (Cursor)",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/sualeh-asif/",
+    "Hook": "Cursor CPO. Owns the product experience where developers delegate actions to AI agents.",
+    "LI_PilotHook": "Sualeh, reaching out because Cursor's product is where developers delegate code actions to AI, and action governance is becoming a user expectation. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 33,
+    "Name": "Aman Sanger",
+    "Title": "Co-founder",
+    "Company": "Anysphere (Cursor)",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/aman-sanger-482243171/",
+    "Hook": "Cursor co-founder. Building the most popular AI code editor.",
+    "LI_PilotHook": "Aman, reaching out because Cursor agents take real actions on code, and the governance layer for those actions is missing. I'm the founder of Permission Protocol, a receipt layer that gates agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 34,
+    "Name": "Steven Hao",
+    "Title": "Co-founder",
+    "Company": "Cognition AI (Devin)",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/steven-hao-160b9638/",
+    "Hook": "Cognition AI co-founder. Building Devin, the first AI software engineer.",
+    "LI_PilotHook": "Steven, reaching out because Devin deploys code autonomously, which means every deploy is a governance moment. I'm the founder of Permission Protocol, a receipt layer that gates agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 35,
+    "Name": "Walden Yan",
+    "Title": "Co-founder",
+    "Company": "Cognition AI (Devin)",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/waldenyan/",
+    "Hook": "Cognition AI co-founder. IOI Gold Medalist. Building Devin.",
+    "LI_PilotHook": "Walden, reaching out because Devin can plan, code, and deploy autonomously. Every deploy is a governance moment. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 36,
+    "Name": "T.R. Vishwanath",
+    "Title": "CTO",
+    "Company": "Glean",
+    "Vertical": "Enterprise",
+    "LinkedIn": "https://www.linkedin.com/in/trvishwanath/",
+    "Hook": "Glean CTO. Building enterprise search that executes actions based on discovered context.",
+    "LI_PilotHook": "T.R., reaching out because Glean is moving from search to action execution. That's exactly where action governance matters. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 37,
+    "Name": "Piyush Patel",
+    "Title": "Co-founder & CTO",
+    "Company": "Glean",
+    "Vertical": "Enterprise",
+    "LinkedIn": "https://www.linkedin.com/in/piyushp/",
+    "Hook": "Glean co-founder. Ex-Google. Building the AI layer for enterprise knowledge.",
+    "LI_PilotHook": "Piyush, reaching out because Glean agents are taking actions on enterprise data, and the governance layer is missing. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 38,
+    "Name": "Kayvon Beykpour",
+    "Title": "VP Product",
+    "Company": "Replit",
+    "Vertical": "Coding/DevOps",
+    "LinkedIn": "https://www.linkedin.com/in/kayvonb/",
+    "Hook": "Replit VP Product. Ex-Twitter co-founder (Periscope). Leading AI Agent product that deploys full-stack apps.",
+    "LI_PilotHook": "Kayvon, reaching out because Replit's AI Agent deploys apps autonomously, and action governance is the missing layer. I'm the founder of Permission Protocol, a receipt layer for agent actions. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 39,
+    "Name": "Julien Chaumond",
+    "Title": "Co-founder & CTO",
+    "Company": "Hugging Face",
+    "Vertical": "Developer Tools",
+    "LinkedIn": "https://www.linkedin.com/in/julienchaumond/",
+    "Hook": "Hugging Face CTO. Building the platform that hosts models powering agents everywhere.",
+    "LI_PilotHook": "Julien, reaching out because Hugging Face models power agents across thousands of companies, and the governance layer for agent actions is missing. I'm the founder of Permission Protocol, a receipt layer for that. Do you have 15 min to chat?"
+  },
+  {
+    "Priority": 40,
+    "Name": "Ce Zhang",
+    "Title": "Co-founder & Chief Scientist",
+    "Company": "Together AI",
+    "Vertical": "Developer Tools",
+    "LinkedIn": "https://www.linkedin.com/in/ce-zhang-59612a9/",
+    "Hook": "Together AI Chief Scientist. Ex-Stanford professor. Building AI infrastructure for production agents.",
+    "LI_PilotHook": "Ce, reaching out because Together AI powers inference for production agents, and every inference that triggers an action is a governance moment. I'm the founder of Permission Protocol, a receipt layer for that. Do you have 15 min to chat?"
   }
 ]
