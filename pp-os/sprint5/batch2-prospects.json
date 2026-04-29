@@ -478,5 +478,53 @@
     "LI_PilotHook": "Ce, reaching out because Together AI powers inference for production agents, and every inference that triggers an action is a governance moment. I'm the founder of Permission Protocol, a receipt layer for that. Do you have 15 min to chat?",
     "Status": "Weekly Limit",
     "Notes": "Weekly limit reached"
+  },
+  {
+    "Priority": 41,
+    "Name": "Guillermo Rauch",
+    "Title": "Founder & CEO",
+    "Company": "Vercel",
+    "Vertical": "DevOps/Incident",
+    "LinkedIn": "https://www.linkedin.com/in/raaboreal/",
+    "Hook": "Vercel had an agent ship unverified third-party code without approval (Mar 2026). Guillermo posted about it on X.",
+    "LI_PilotHook": "Guillermo, saw your post about the Vercel agent that shipped unverified code. That's exactly why I built Permission Protocol, a gate that requires approval before agents can deploy. I'm the founder. Do you have 15 min to chat?",
+    "Status": "",
+    "Notes": "From Oso incident registry"
+  },
+  {
+    "Priority": 42,
+    "Name": "Chetan Puttagunta",
+    "Title": "General Partner",
+    "Company": "Benchmark",
+    "Vertical": "VC",
+    "LinkedIn": "https://www.linkedin.com/in/chetanputtagunta",
+    "Hook": "Benchmark GP focused on infrastructure and enterprise. Sequoia backed Oso (agent authz), Benchmark doesn't have a horse in this race yet.",
+    "LI_PilotHook": "Chetan, reaching out because you invest in infrastructure and enterprise. AI agents are taking real-world actions without governance, and the incident rate is climbing. I'm the founder of Permission Protocol, building the approval layer for agent actions. Do you have 15 min to chat?",
+    "Status": "",
+    "Notes": "Sequoia competitor - they backed Oso"
+  },
+  {
+    "Priority": 43,
+    "Name": "Sarah Guo",
+    "Title": "Founder & Managing Partner",
+    "Company": "Conviction",
+    "Vertical": "VC",
+    "LinkedIn": "https://www.linkedin.com/in/sarahguo/",
+    "Hook": "Founded Conviction to back AI-native companies. Former Greylock GP. Very active on AI safety and governance themes.",
+    "LI_PilotHook": "Sarah, reaching out because you're backing AI-native companies and talking about governance. Agents are deleting databases and shipping unverified code. I'm the founder of Permission Protocol, building the approval layer for agent actions. Do you have 15 min to chat?",
+    "Status": "",
+    "Notes": "AI-focused VC, governance thesis"
+  },
+  {
+    "Priority": 44,
+    "Name": "Martin Casado",
+    "Title": "General Partner",
+    "Company": "Andreessen Horowitz (a16z)",
+    "Vertical": "VC",
+    "LinkedIn": "https://www.linkedin.com/in/martincasado/",
+    "Hook": "a16z GP, created VMware NSX. Deep infrastructure background. Wrote about AI agent architectures.",
+    "LI_PilotHook": "Martin, reaching out because of your infrastructure background and AI work. Agents are taking real-world actions without governance infrastructure. I'm the founder of Permission Protocol, building the approval layer for agent actions. Do you have 15 min to chat?",
+    "Status": "",
+    "Notes": "Infrastructure-focused a16z GP"
   }
 ]
