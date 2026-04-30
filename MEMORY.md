@@ -138,10 +138,21 @@ WordPress homepages and SEO-driven sites can "pollute" with future-dated posts i
 - **System Prompt Restructured** (Apr 6)
     - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
 
-*Updated: 2026-04-28 4:47 PM*
+*Updated: 2026-04-28 11:00 PM*
+
+### Outreach Performance & Messaging (Apr 29)
+- **Founder vs Builder — audience-dependent (corrected Apr 30):** For VC/buyer/brand outreach, *"I'm the founder of"* performs better (authority). For first-user activation DMs at the YC "do things that don't scale" stage, *"I'm building"* performs better (learning mode, smaller ask, ~3–5x reply rate per YC research). Apply by audience, not universally. See `pp-os/marketing/VOICE.md` Mode A vs Mode B.
+- **Product vs Person:** Attribute actions to the company/product rather than the person in outreach to build brand weight early.
+- **Strategic VC Targeting:** Prioritize VCs without existing agent-governance/security bets (e.g., a16z, Benchmark, Conviction). Avoid direct engagement with direct competitors (Oso) to minimize risk.
+
+### OpenClaw Core & Dependencies
+- **Next.js/Sharp Issue:** Resolved missing `sharp` dependency in Next.js projects and OpenClaw core modules by explicit installation. (Apr 29).
 
 ### Strategic Stagnation (Outreach Drought)
-Day 66 Outreach Drought (Apr 28 MDT). Status: CRITICAL STALL. Zero installs vs Sprint 5 goal of 10. May 1 deadline (T-3). Every message to Rod must start with this counter until broken.
+Day 67 Outreach Drought (Apr 29 MDT). **DROUGHT BROKEN APR 29.** Sprint 5 campaign executed: 63 LinkedIn connections + 250 follow invites sent. 0/10 installs. Focus shifts to conversion.
+
+### Sprint 5 Enrichment Rules (Apr 28)
+When scaling outreach lists: (1) Source-csv emails are forbidden to prevent low-intent spam; (2) include ex-employee search stubs for better verification signals; (3) prioritize verification signal over list coverage to protect domain reputation.
 
 ### Tactical Pivot: The Day 14 Rule (Apr 20)
 When a primary outreach target is unresponsive for 14 days (specifically on LinkedIn), pivot immediately to secondary contacts at the same organization. "Go wide" to break the silence rather than waiting for a single decision-maker who has ghosted. 
@@ -163,3 +174,15 @@ OpenClaw `2026.4.11` update available (manual upgrade required).
 
 ### Idempotent State Machines
 When building state machines for onboarding (like ActivationAttempts), locked steps must be idempotent and resumable so users can recover from early failures without getting permanently stuck.
+
+### Activation Outreach Doctrine (Apr 30, scar tissue)
+*Source: Sam Altman Startup Playbook + PG Do Things That Don't Scale.*
+
+When recruiting first users at the activation stage, follow the YC "do things that don't scale" pattern:
+1. **Recruit one at a time.** Hand-found, hand-written. No templates. No CSV enrichment until after PMF.
+2. **Watch them use it.** Screen-share. Sit (virtually) next to them. Don't put anyone between you and the user.
+3. **Make the first ask smaller than feels comfortable.** "5 min to look and react" → reply → "15 min screen share to install" as follow-up. Don't ask for the install in cold message #1.
+4. **Use Learning voice, not Authority voice.** "I'm building" not "I'm the founder of." Drop diagnostic claims about their world. Add explicit gratitude.
+5. **The first message's job is the reply, not the install.** Optimize for that single metric.
+
+This is the **opposite** of the VC/brand outreach voice (Mode A in VOICE.md). Don't conflate them. Two audiences, two requirements.

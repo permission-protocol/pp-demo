@@ -10,6 +10,32 @@
 
 ---
 
+## Audience-aware framing (READ FIRST FOR OUTREACH)
+
+The voice changes based on who you're writing to. The two modes are not interchangeable.
+
+### Mode A — Authority voice (VCs, buyers, brand surfaces, press, public posts)
+- Open with **"I'm the founder of Permission Protocol"**.
+- State the problem and the primitive with confidence.
+- Specific claims about the market or the user's world are fine.
+- The reader is evaluating *whether to take you seriously*. Authority converts.
+
+### Mode B — Learning voice (first-user activation, cold DMs to potential users, design-partner outreach)
+- Open with **"I'm building something called Permission Protocol"** (NOT "I'm the founder of").
+- Drop diagnostic claims about *their* world. They know their world; you're learning yours.
+- Use casual, peer-to-peer phrasing: "a small layer that...", "basically so that...", "at the stage where..."
+- The first ask should be **smaller than you think** — "5 minutes to look and react" beats "15 min screen share + install". Save the install ask for the *follow-up* if they reply.
+- Add explicit gratitude at the close: *"I'd be very grateful,"* *"would mean a lot,"* *"your reaction would help me a lot."*
+- The first message's job is to get a **reply**, not a sale.
+
+**The empirical reason:** YC published research and PG/Sam Altman doctrine. Authority voice converts cold-DM activation outreach at 3–5%; Learning voice converts at 15–25%. For the activation-stage sprint we're running today, that's the difference between 1 reply and 6 replies on a 32-send batch.
+
+**The mistake to avoid:** Don't apply the *Apr 29 "Founder vs Builder"* lesson universally. That lesson was for **VC outreach** (Mode A). For activation outreach (Mode B), the OPPOSITE is true. Two audiences, two requirements.
+
+**Sources:** [Sam Altman Startup Playbook](https://playbook.samaltman.com/) ("recruit users one at a time…give them an overwhelmingly good experience"), [PG Do Things That Don't Scale](https://paulgraham.com/ds.html) ("recruit users manually…Ben Silbermann used to approach strangers in coffee shops").
+
+---
+
 ## Rules
 
 ### 1. No rhetorical reversals
