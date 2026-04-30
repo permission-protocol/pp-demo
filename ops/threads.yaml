@@ -8,9 +8,10 @@ threads:
     open_tasks: []
     decisions:
       - For high-profile peers/founders, use the Authority Voice ("I built Permission Protocol") and ask a direct, binary diagnostic question combined with "Do you have 15min to chat?".
-    status: PARKED
+    status: ARCHIVED
     updated_at: '2026-04-30'
     summary: Tracked Sprint 5 outreach execution. Delivered enrichment kits, TOP-10 Gmail drafts, and successfully sent LinkedIn Day 7 soft nudges to Jerry, Ishaan, and Malte using the corrected Authority Voice.
+    archived_at: '2026-04-30'
   - id: '1489650324879708351'
     title: Onboarding Flow QA
     channel: rc-main
