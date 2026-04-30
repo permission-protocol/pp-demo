@@ -10,6 +10,23 @@
 
 ---
 
+## Hard rule: no em dashes in external text
+
+**NEVER use `— ` (em dash + space) in anything that goes to a customer, prospect, user, or public reader.** It is the single clearest tell that text was AI-written, and recipients carry a strong bias against responding to AI-generated outreach.
+
+Applies to: emails, DMs, social posts, blog posts, landing pages, replies to threads, anything external. Internal-only files (workspace docs, code comments, our own Discord) are exempt.
+
+**Replace it with:**
+- A period and a new sentence (best default)
+- A comma
+- A semicolon
+- Parentheses
+- A line break
+
+The hyphen-space-hyphen-space pattern (` - `) is also a tell when overused. Prefer real sentence structure.
+
+---
+
 ## Audience-aware framing (READ FIRST FOR OUTREACH)
 
 The voice changes based on who you're writing to. The two modes are not interchangeable.
