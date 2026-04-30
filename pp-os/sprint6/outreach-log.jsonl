@@ -1,0 +1,36 @@
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Phil Chen","handle":"@philhchen","address":"support@filbert.ai","status":"NOT_SENT","reason":"wrong company - filbert.ai is JustGO Malaysian ALPR; recovered via X DM"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Nader Dabit","handle":"@dabit3","address":"dabit3@gmail.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Ashpreet Bedi","handle":"@ashpreetbedi","address":"hi@ashpreetbedi.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Ashpreet Bedi (alt)","handle":"@ashpreetbedi","address":"ashpreet@agno.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Owen Gretzinger","handle":"@owengretzinger","address":"owengretzinger@gmail.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Peter Steinberger","handle":"@steipete","address":"peter@steipete.me","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Simon Willison","handle":"@simonw","address":"simon@simonwillison.net","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Noel DeLisle","handle":"@noeldelisle","address":"hello@noeldelisle.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Aakash Gupta","handle":"@aakashgupta","address":"productgrowthppp@gmail.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Chandler Nguyen","handle":"@chandlernguyen","address":"contact@chandlernguyen.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Fatih Yıldız","handle":"@mfyz","address":"fatih@mfyz.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Lee Robinson","handle":"@leerob","address":"lee@leerob.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Max Krivich","handle":"@maxkrivich","address":"hello@kryvych.cc","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Dani Avila","handle":"@dani_avila7","address":"hello@judini.ai","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Dani Avila (alt)","handle":"@dani_avila7","address":"dani@judini.ai","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Shoubhit Dash","handle":"@nexxeln","address":"hey@nexxel.dev","status":"BOUNCED","reason":"address_not_found","recovery":"X DM sent"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Greg Baugues","handle":"@greggyb","address":"greg@baugues.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Olivia Moore","handle":"@omooretweets","address":"omoore@a16z.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Mervin Praison","handle":"@MervinPraison","address":"mervin@mer.vin","status":"BOUNCED","reason":"address_not_found","recovery":"X DM sent"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Indragie Karunaratne","handle":"@indragie","address":"indragie@sentry.io","status":"BOUNCED","reason":"address_not_found","recovery":"try indragie.karunaratne@sentry.io tomorrow"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Geoff Charles","handle":"@geoffintech","address":"geoff@ramp.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Bobby Healy","handle":"@realBobbyHealy","address":"bobby@manna.aero","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Lars André Møen","handle":"@larsandremoen","address":"lars@consulted.no","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Lars André Møen (alt)","handle":"@larsandremoen","address":"lars@ingressen.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T18:00-06:00","day":"sprint6-d1","channel":"email","name":"Zvi Mowshowitz","handle":"@TheZvi","address":"thezvi@gmail.com","status":"SENT","voice":"V4-learning"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Boris Cherny","handle":"@bcherny","address":"X DM","status":"SENT","voice":"V5-learning-short","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Andrej Karpathy","handle":"@karpathy","address":"X DM","status":"SENT","voice":"V5-learning-short","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Mervin Praison","handle":"@MervinPraison","address":"X DM","status":"SENT","voice":"V5-bounce-recovery","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Shoubhit Dash","handle":"@nexxeln","address":"X DM","status":"SENT","voice":"V5-bounce-recovery","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Ashley Peacock","handle":"@_ashleypeacock","address":"X DM","status":"SENT","voice":"V5-learning-short","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"André König","handle":"@ItsAndreKoenig","address":"X DM","status":"SENT","voice":"V5-learning-short","sender":"@RodChalski"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Mike Coutermarsh","handle":"@mscccc","address":"X DM","status":"BLOCKED","reason":"X premium required for non-follower DM","recovery":"followed - retry after follow-back"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Aaron Nam","handle":"@AaronNam","address":"X DM","status":"BLOCKED","reason":"X premium required","recovery":"followed - retry after follow-back"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"Petko D. Petkov","handle":"@pdp","address":"X DM","status":"BLOCKED","reason":"X premium required","recovery":"followed - retry after follow-back"}
+{"ts":"2026-04-30T19:00-06:00","day":"sprint6-d1","channel":"X DM","name":"George Nurijanian","handle":"@nurijanian","address":"X DM","status":"BLOCKED","reason":"X premium required","recovery":"followed - retry after follow-back"}
+{"ts":"2026-04-30T20:00-06:00","day":"sprint6-d1","channel":"reddit","name":"r/ClaudeCode docker -v thread (gimperion)","handle":"u/PermissionProtocol","address":"https://www.reddit.com/r/ClaudeCode/.../its_gone_and_im_the_idiot/","status":"SENT","voice":"option-A-onelinerempathy","comment":"Most expensive -v of all time."}

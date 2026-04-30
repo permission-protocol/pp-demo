@@ -1,72 +1,41 @@
+MODE: ACTIVATION_WATCH
+FAILURE_PROBABILITY: NA (drought broken)
+LAST_CHECK: Thu Apr 30 14:30:00 MDT 2026
+
 # ACTIVE_CONTEXT.md — What Matters Right Now
 
-*Updated: 2026-04-28 5:08 PM MDT (Strategy Pivot). Overwrite this file, don't append.*
+Updated: 2026-04-30 14:30 PM MDT
 
-## 🟡 STRATEGY PIVOT — Action Gate / Listen-First (APPROVED 4:05 PM)
+## Sprint 6 Day 1 — DROUGHT BROKEN ✅
+- **31 personalized touches** sent today: ~20 emails, 6 X DMs, 1 Reddit comment.
+- **Drought:** Day 68 → broken Apr 30.
+- **Goal:** 3 activated users by May 14 (full Sean Ellis test pass).
+- **Counter shifts to:** Days-to-First-Activation, starting May 1.
 
-**New thesis:** Action Gate (verifiable receipt layer for high-risk customer-facing AI-agent actions) primary. Merge Gate stays alive as proof loop, not company thesis. Receipt is the product, not approval UI.
+## Tomorrow (Fri May 1)
+- **Watch inboxes + X DMs.** 1-hour reply SLA on anything live.
+- **Check X follow-backs.** DM 4 blocked targets if they followed back: Mike Coutermarsh, Aaron Nam, Petko Petkov, George Nurijanian.
+- **Retry bounce:** Indragie via `indragie.karunaratne@sentry.io`.
+- **NO new sends.** Day-3 nudges go out Mon May 4.
 
-**Listen-First sprint Apr 29 – May 3:**
-- 30 LinkedIn DMs over 3 days from 50-company tight list (CX/support agents, 20-200ppl, active enterprise sales)
-- Goal: 5 calls booked, 3 calls completed by May 3 evening
-- Direct outreach to AIUC-1 organizers + Schellman
-- AIUC-1 LinkedIn post drafted by Charles, approved by Rod, published this week
-- **BUILD MORATORIUM** through May 4 — only product work is honest-claim audit on permissionprotocol.com ("cryptographic/signed/immutable" → "tamper-evident audit record" until Ed25519 ships)
+## Decision gates
+- **Day-5 (May 4):** if <2 replies from today's 31 touches → the message is the problem, retrospect. If ≥2 → schedule calls.
+- **Day-10 (May 10):** target 1 activated user.
+- **Day-14 (May 14):** target 3 activated users.
 
-**May 4 decision fork:**
-- 3+ calls scoring 2-3 → green-light Action Gate build sprint (signing + verifier + demo)
-- 0-1 calls scoring 2-3 → Merge Gate-primary, ship 10-15 paying repos by June 1
-- 2 calls in band → parallel 10-day plan, decide May 14
+## Files of record (log/2026-04-19 branch, pp-os/sprint6/)
+- `DAY-1-RECAP.md` — today's full recap
+- `outreach-log.jsonl` — per-send audit (36 entries)
+- `outreach-today-v4.{csv,md}` — final emails sent
+- `outreach-today-v5.{csv,md}` — final X DMs + Reddit
+- `SPRINT-6.md` — the plan (Musk Algorithm applied)
 
-Full strategy doc: `pp-os/strategy/2026-04-28-action-gate-pivot.md`
-Decision logged: `pp-os/DECISIONS.md`
-Outreach tracker: `pp-os/outreach/2026-04-28-action-gate-listen-list.md`
+## Operational notes (carry-over)
+- `factory-github-sensor` has 9 consecutive cron errors. Script runs fine manually. Likely a cron-session model/timeout issue. Not blocking activation.
+- Mobile QA (04-30) flagged blank hero sections on PP + Xdares mobile viewports. Not on activation critical path.
+- Loom demo: still not recorded. Replace with first user's screen capture once an activation lands.
 
-## 🔴 OUTREACH DROUGHT — Day 66 / T-3 to May 1
-Sprint 5 Goal: **10 external installs. Current: 0/10.**
-Sprint 5 failure probability: 95%. Listen-First sprint replaces it as the operative goal.
-
-**Decisions Waiting on Rod (Priority Order):**
-1. **APPROVE or DENY:** LinkedIn Day 14 Pivot — 7 companies, #2 contacts → `APPROVE pivot-batch-099`
-2. **APPROVE or DENY:** Sycamore / Sri Viswanath (idea-092) — Day 21 stale
-3. **APPROVE or DENY:** Trent AI / Eno Thereska (idea-098) — Day 19 stale
-4. **APPROVE or DENY:** Mintlify $45M outreach (Han Wang) → `APPROVE hotline-mintlify`
-5. **APPROVE or DENY:** Malicious Skills LinkedIn post + DM campaign → `APPROVE malicious-skills-103`
-6. **APPROVE or DENY:** PH Hunter DMs (Fabrice Merian, Chris Messina/KWD) → idea-095
-7. **READY (no blocker):** Vercel Breach wedge outreach → idea-101
-8. **READY (no blocker):** Agent Payment Protocols outreach → idea-102
-
-## 📊 IDEAS STATE MACHINE (as of 4:51 PM MDT, Apr 28)
-
-| Status | Count | Key IDs |
-|--------|-------|---------|
-| ACTIVE | 2 | idea-088 (10 installs sprint goal), idea-089 (first loop user) |
-| BLOCKED | 8 | idea-092, 098, 099, 100, 103, 095 (Rod approval); idea-082 (X API); idea-085 (GA4); idea-086 (SSH) |
-| READY | 2 | idea-101 (Vercel wedge), idea-102 (Agent payments) |
-| DONE | 3 | idea-094 (PH brief), idea-096 (HN unban sent), idea-097 (warm leads) |
-| BACKLOG | 7 | idea-002, 030, 042, 080, 081, 083, 084 |
-
-**All BLOCKED items stale since 2026-04-21 (7 days). No transitions today.**
-
-## ⚡ TODAY — Tuesday Apr 28
-- **Drought:** Day 66. T-3 to Sprint 5 deadline (Sprint 5 dead, replaced by Listen-First).
-- **Strategy pivot APPROVED.** Action Gate / Merge Gate split.
-- **Tonight (Charles):** finish 50-company tight list, draft AIUC-1 outreach to Schellman, queue Wednesday's claim-audit copy edits.
-- **Wednesday (Rod):** publish AIUC-1 LinkedIn post, send first 10 DMs from list.
-- **idea-101 + idea-102 still READY** — but Listen-First sprint takes priority through May 3.
-
-## 📊 SYSTEM HEALTH (Last Run: 16:51 MDT)
-- **Connectivity:** ✅ OK
-- **Governance:** ✅ NOMINAL
-- **Outreach:** 🔴 STALE (Day 66 Drought)
-- **Crons:** ⚠️ ATTENTION (`factory-github-sensor` errors)
-
-## Factory Status (Apr 28)
-- **Active Pipeline:** gh-deploy-gate-22, gh-cli-3, gh-cli-4.
-- **Ready queue (factory/ideas.jsonl):** 15 items ready to build.
-
-## Rod Actions Required
-1. **Decide on any outreach batch** — any single approval breaks the drought.
-2. **Record Loom Recording** for demo.
-3. **Review Homepage** `feat/consequence-engine-site`.
-4. **Re-auth GA4** tokens (unblocks idea-085).
+## Open dependencies on Rod
+- Reply within 1 hour to anything live.
+- Calendly link ready to paste in any "yes happy to chat" reply.
+- Loom OR animated demo (still optional; can wait for first real activation).
