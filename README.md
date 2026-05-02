@@ -48,10 +48,10 @@
 </p>
 
 1. Click **"Use this template"** above
-2. Add your `PP_API_KEY` secret ([get one here](https://app.permissionprotocol.com))
+2. Add your `PP_API_KEY` and `PP_REQUEST_CREATE_TOKEN` secrets ([get them here](https://app.permissionprotocol.com))
 3. Open a PR → Watch it fail → Approve → Merge
 
-**You're protected.** No setup files. No config. Just works.
+**You're protected.** The Deploy Gate workflow is already included in `.github/workflows/deploy-gate.yml`.
 
 ---
 
