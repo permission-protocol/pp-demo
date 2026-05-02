@@ -1,0 +1,25 @@
+name: Deploy Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy-gate:
+    name: Permission Protocol Deploy Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: permission-protocol/deploy-gate@v2
+        with:
+          pp-api-key: ${{ secrets.PP_API_KEY }}
+          pp-request-create-token: ${{ secrets.PP_REQUEST_CREATE_TOKEN }}
+          environment: production
+          capability: deploy:production
+          fail-mode: closed
+          protected-paths: '^(deploy/|\.github/workflows/)'
