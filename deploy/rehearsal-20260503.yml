@@ -1,0 +1,6 @@
+# Rehearsal: single-signature validation
+# Tests that one signer decision is sufficient for Deploy Gate to pass
+# after the carry-forward robustness fix (PR #395)
+version: "1.0"
+environment: production
+timestamp: 2026-05-03T17:35:00Z
