@@ -1,0 +1,11 @@
+{
+  "default_voice_id": "cjVigY5qzO86Huf0OWal",
+  "default_voice_name": "Eric - Smooth, Trustworthy (American)",
+  "default_model": "eleven_v3",
+  "voice_settings": {
+    "stability": 0.45,
+    "similarity_boost": 0.7,
+    "style": 0.2,
+    "use_speaker_boost": true
+  }
+}
