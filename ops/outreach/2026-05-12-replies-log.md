@@ -8,6 +8,7 @@
 | # | Name | Page | Track | Status | First reply | Next action |
 |---|------|------|-------|--------|-------------|-------------|
 | 7 | Brandon Looker (Kinter.ai SE) | 1 | Partner | Polite decline | 15 min after send | Closed loop politely. No further action. |
+| 31 | Christopher Harris (Blitzy CRO) | 2 | Partner | **Hostile-flavored decline** | "Our deals don't stall. I can't higher [sic] enough people. Nearly every deal closes. No thank you." | Closed with concession + congrats. No retry. Brian Elliott (Blitzy CEO) still on page 2 unsent, needs different frame. |
 | 5 | Andrew Bowd | 1 | Buyer | No reply yet | — | — |
 | 12 | Art Dunal (Kranz Consulting, Fractional CFO + ex-VP CFO Dover) | 1 | Buyer | **Booked 30-min call** | "Very interesting angle, happy to learn more, open to 15-30 mins video call" | 30-min call scheduled this week (Thu May 14 11am CDT or Fri May 15 2pm CDT, his pick). Send calendar invite within 1 hour of his confirmation. |
 | 46 | Francis Ofungwu (Efeeo) | 2 | Partner | Custom message sent | Custom DCP-referenced message | Awaiting reply |
@@ -33,7 +34,17 @@ These phrases came from a Healthcare CCO/CRO/MD/JD/LLM/MBA in private conversati
 
 ### Pattern confirmation: v2 compliance-track works
 
-Page 3 v2 rewrite hypothesis was: one clean diagnostic + vertical-specific actions + soft observation ("I'm finding most firms can't"). Sunil + Steven both responded substantively. That's 2-for-2 on the rewritten compliance track.
+Page 3 v2 rewrite hypothesis was: one clean diagnostic + vertical-specific actions + soft observation ("I'm finding most firms can't"). Sunil + Steven + Martin (after rephrase) all responded substantively. 3-for-3 on the rewritten compliance/exec track.
+
+### Failure pattern: don't assert pain that contradicts public success
+
+Christopher Harris (Blitzy CRO) responded with a hostile brushoff. Root cause: the page 2 message said "deals stall at the signoff line" 1 week after Blitzy announced a $200M unicorn round and the CRO had been posting "third best quarter in a row."
+
+Lesson: for unicorn-stage / hot-company partner-track contacts, **don't pitch present-tense pain**. Their ego is invested in winning. Pitch **future-tense risk**: "as you scale into regulated enterprise (banks, gov, healthcare), the buyer's compliance team is the next gate. PP plugs in so it isn't your problem 6-12 months from now."
+
+Brian Elliott (Blitzy CEO, page 2, unsent) needs this reframed message before sending. Don't reuse the page 2 message as-written for him.
+
+Apply the same lesson to other hot-company founders on the list (Replit, Sourcegraph, Tabnine, poolside): future-tense, scale-forward, not present-pain.
 
 ## Pattern lessons applied to remaining sends
 
