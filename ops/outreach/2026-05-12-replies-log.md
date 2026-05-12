@@ -12,15 +12,20 @@
 | 5 | Andrew Bowd | 1 | Buyer | No reply yet | — | — |
 | 12 | Art Dunal (Kranz Consulting, Fractional CFO + ex-VP CFO Dover) | 1 | Buyer | **Booked 30-min call** | "Very interesting angle, happy to learn more, open to 15-30 mins video call" | 30-min call scheduled this week (Thu May 14 11am CDT or Fri May 15 2pm CDT, his pick). Send calendar invite within 1 hour of his confirmation. |
 | 46 | Francis Ofungwu (Efeeo) | 2 | Partner | Custom message sent | Custom DCP-referenced message | Awaiting reply |
-| 48 | Steven Cervantes (Virtue Capital, FINRA, AI Ethicist) | 2 | Buyer (RIA CCO) | **Soft positive, neutral.** Engaged across 3 exchanges. | Initial: "can you rephrase the question?" Final: "any firm that uses AI must have policies and procedures, testing, and audit to ensure the activities engaged by that firm. these books and records are maintained by the firm." | Reflect his regulatory point back (Rule 204-2 books and records), reframe the gap from policy to evidence (agent action vs human approval timestamp), ask one binary follow-up. |
+| 48 | Steven Cervantes (Virtue Capital, FINRA, AI Ethicist) | 2 | Buyer (RIA CCO) | **Engaged, 4-exchange thread.** Building toward substantive expert dialogue. | Latest (after reflect-and-reframe reply): "sounds like you are referring to HITL and HOTL. short answer is, it always matters in governance of opacity audit and control." | Demonstrate you know HITL/HOTL, position PP between strict HITL and pure HOTL (calibrated middle), then ask him the calibration decision-rights question (which actions warrant HITL vs HOTL vs full automation, given AI vendor often controls defaults). |
 | 51 | Sunil Aggarwal MD, JD, LL.M., MBA (Healthcare CCO/CRO) | 3 | Buyer (healthcare CCO/CRO) | **STRONG YES.** He wrote PP's positioning back at us. | "Critical auditability gap where traditional logging fails to provide indisputable proof of human oversight. Permission Protocol closes this vulnerability by specific automated action to an explicitly authorized human approval." | Book 30-min call this week. Quote his framing back. Propose 2 slots. |
+| 14 | Dean Curtin, CPA (Fractional CFO, ex-Oracle/IBM/OneStream/PwC EPM expert) | 3 | Buyer | **YES, quiet but huge.** Cross-platform expert confirmation. | "Short answer is YES. Platform-level authorization capabilities are only one small component of the overall governance model." | Reflect the validation, then ask which design partner he'd pick (EPM vendor wanting native vs Fortune 500 CFO wanting cross-platform). Invites him to be the expert and potentially refer the right contact. |
+| 53 | Chithra Ramachandran, CAMS (Zolve fintech CCO) | 3 | Buyer (fintech CCO) | **Polite "not yet" with intelligence inside.** Manual review handles volume today. | "All agentic AI actions are still reviewed by our team members. Not sure if we are ready for this solution." | Close gracefully but plant the trigger: "teams hit a wall when agent volume crosses manual review capacity, usually BSA/AML triage first." Save lesson: fintech CCOs trigger when volume exceeds review capacity. |
 
-## What's working (May 12 2:30pm MDT snapshot)
+## What's working (May 12 3:30pm MDT snapshot)
 
-- **Art Dunal yes (page 1)** confirmed the CFO + AI agent combo wedge. The "rare combo" personalization landed. Founder-to-founder voice landed.
+- **Art Dunal yes (page 1)** confirmed the CFO + AI agent combo wedge. "Rare combo" personalization landed. Founder-to-founder voice landed.
 - **Francis Ofungwu** is a partnership opportunity (AI governance for CCOs/CFOs at Efeeo). DCP framework reference is exactly the kind of personalization that works.
-- **Steven Cervantes** asked for a rephrase, then engaged in a 3-message exchange. Page 3 v2 rewrite (one diagnostic, vertical-specific actions named) worked: he replied substantively the second time. Final response confirmed the regulatory principle (Rule 204-2) but didn't surface a gap at Virtue Capital. Soft positive, conversation still open.
-- **Sunil Aggarwal (page 3, healthcare CCO/CRO) strong YES** on the rewritten v2 diagnostic. He responded with his own articulation of PP's positioning, almost verbatim. "Critical auditability gap where traditional logging fails to provide indisputable proof of human oversight" is the cleanest version of the problem statement we've heard from a CCO. **Save this language for marketing.**
+- **Steven Cervantes (RIA CCO, ex-FINRA Senior Regulator)** is now in a 4-exchange thread. He's testing PP's framework against his expertise (HITL/HOTL terminology). Engaged but careful. Worth the careful chess back.
+- **Sunil Aggarwal (page 3, healthcare CCO/CRO) STRONG YES.** He responded with his own articulation of PP's positioning, almost verbatim. "Critical auditability gap where traditional logging fails to provide indisputable proof of human oversight" is the cleanest version of the problem statement we've heard from a CCO.
+- **Dean Curtin (page 3, EPM/ERP expert)** quiet but huge YES. "Platform-level authorization capabilities are only one small component of the overall governance model." Cross-platform expert validation. Now woven into Page 4 v2 partner-track messaging.
+- **Martin Collyer (page 1)** engaged after a rephrase. v2 diagnostic pattern worked the second time.
+- **Chithra Ramachandran (page 3, fintech CCO)** polite "not yet" with intelligence inside: Zolve does manual review for all agentic actions, not ready for automation. Lesson: **fintech CCO buyer trigger is "agent action volume exceeds manual review capacity."** Save this qualifying question.
 
 ### CCO/Healthcare language gold (from Sunil reply)
 
@@ -34,7 +39,15 @@ These phrases came from a Healthcare CCO/CRO/MD/JD/LLM/MBA in private conversati
 
 ### Pattern confirmation: v2 compliance-track works
 
-Page 3 v2 rewrite hypothesis was: one clean diagnostic + vertical-specific actions + soft observation ("I'm finding most firms can't"). Sunil + Steven + Martin (after rephrase) all responded substantively. 3-for-3 on the rewritten compliance/exec track.
+Page 3 v2 rewrite hypothesis was: one clean diagnostic + vertical-specific actions + soft observation ("I'm finding most firms can't"). Sunil + Steven + Martin (after rephrase) + Dean + Chithra all responded substantively. **5-for-5 on the rewritten compliance/exec track.** Even Chithra's polite no came with substantive intel about her firm's current state.
+
+### Qualifying question to add: "what's your review capacity threshold?"
+
+Chithra revealed the fintech CCO buyer trigger: scale crosses manual review capacity. Add this qualifying question to follow-up conversations:
+
+> Are agent actions in your stack still reviewed by a human team today? If yes, how many agent actions per week is that team handling, and at what volume would you expect to hit a wall?
+
+This gives you the **timing intel** for when a fintech CCO becomes a real buyer. CCOs who say "100% manual review" today become buyers when volume scales past their team's capacity, typically 100-1000 actions/week per reviewer.
 
 ### Failure pattern: don't assert pain that contradicts public success
 
