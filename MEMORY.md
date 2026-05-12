@@ -118,6 +118,32 @@ PP's natural pricing-model advantage Blitzy cannot easily steal: deterministic a
 
 Full lessons and action items: `ops/strategy/blitzy-lessons.md`.
 
+## Blitzy Job Board Signals (May 12 PM)
+
+Blitzy has 27 open roles. Most important takeaways:
+
+1. **"Operational Deployment" is a top-level department** with Forward Deployed Engineers in 4 locations plus a Managing Director, Digital Transformation. McKinsey-style delivery structure.
+2. **Field CTO sits in Sales** (not Engineering). They sell to other CTOs with technical pre-sales, not BDR scripts.
+3. **"Head of Channel, Cloud & PE Partnerships"** is a real role. They're going to market through PE firms' operating partners as a distribution channel.
+4. **No Compliance Officer, no GC, no Head of Trust.** Blitzy sells INTO regulated industries but hasn't built their own compliance brand. That gap is PP's natural complementary play.
+
+### Strategic reframe
+
+PP is not competing with Blitzy. PP is the **complementary authorization layer** for Blitzy's regulated customers. "Blitzy plus PP equals the regulated enterprise's complete agentic stack." A CCO buying Blitzy at $250K/month is already PP's buyer; PP sits next to Blitzy in the procurement cycle.
+
+### New PP outreach segment: PE Operating Partners
+
+Fifth segment added beyond CFO/CCO/Agent Founders/Compliance Vendors. Target archetypes: Operating Partner Technology (Vista), Portfolio Operations AI (Thoma Bravo), Operating Partner Digital (Insight), Head of Portfolio Technology (KKR), Operating Partner Tech (Bain Capital Tech Opportunities). Pitch logic: a PE OP managing 20-40 portfolio companies has fiduciary interest in answering "can our portfolio safely deploy AI agents?" PP is the answer they hand to portfolio CFOs/CCOs. Pricing implication: master agreement with PE firm, $500K-2M/year per firm.
+
+### PP hiring order after first 3-5 paying pilots
+
+1. Founding Field CTO / Solutions Architect (technical, compliance-savvy, sits across from CCO)
+2. Founding Forward Deployed Engineer (deploys PP at customer in 2 weeks)
+3. Operating Partner Network Manager (PE firm relationships)
+4. (Optional) Offshore SRE for support tier
+
+**Do not hire** SDR, AE, or Customer Success Manager in first 5-10 hires.
+
 ## Recent Lessons
 - Activation Flow: returning-user install recovery verified.
 - Frictionless Experiment: Rod approved email-lead signup for interest-signal testing.

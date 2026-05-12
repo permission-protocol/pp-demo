@@ -128,6 +128,88 @@ Blitzy's "80% AI, 20% human" framing works for code generation but does not work
 
 The "thousands of agents thinking for hours" framing is impressive but technical. The CCO/CFO buyer set doesn't care how many agents run in parallel. They care about audit trail and approval evidence. PP's positioning should not chase the "more agents" narrative; that's a coding-platform metric, not an authorization-layer metric.
 
+## Job board signals (added May 12 PM, post-job-board review)
+
+Reviewed Blitzy's 27 open roles. Six high-signal observations about their org design and GTM motion.
+
+### Signal 1: Operational Deployment is a top-level department
+
+Not a sub-function of Sales or Engineering. Six roles including Managing Director, Digital Transformation, Engineering Manager Client Solutions, Forward Deployed Designer, Forward Deployed Software Engineer (3 locations). This is McKinsey/Accenture delivery structure mapped to enterprise software. Confirms they're selling white-glove engagements, not SaaS deployments.
+
+**PP implication:** Plan for an Operational Deployment function from day one. Rodrigo runs it himself for first 6-12 months. The buyer paying $50-500K/year expects a named partner, not a Zendesk ticket.
+
+### Signal 2: Forward Deployed Engineer is 4-location, 4-headcount
+
+Three Boston metro locations (Cambridge, Burlington, Quincy) plus Bengaluru. Palantir model: cluster FDEs near customer, offshore support tier.
+
+**PP implication:** First post-MVP hire is the founding FDE, not an AE. Someone who can sit with a CCO for 3 days and architect their PP deployment. Makes more revenue than 3 BDRs.
+
+### Signal 3: Field CTO is a Sales role
+
+Field CTO is listed under Sales, not Engineering. Sales department also has: AI Solutions Consultant (x2), Senior AI Solutions Consultant, Enterprise Account Executive, Engagement Manager, Head of Channel/Cloud/PE Partnerships, Enterprise AI Consultant Program. Zero traditional SDR/BDR titles.
+
+**PP implication:** Don't hire SDRs. Don't build outbound demand-gen. Hire first revenue person as Field CTO equivalent: deep compliance/security background, can sit across from Fortune 500 CCO and run discovery without a BDR script.
+
+### Signal 4: Head of Channel, Cloud & PE Partnerships
+
+They're building channel partnerships with hyperscalers (AWS, Azure, GCP) AND with Private Equity firms. PE firms own the portfolio companies that buy enterprise software; the CFO of a PE-backed company answers to the PE operating partner.
+
+**PP implication:** This is a massive leverage point. Add PE Operating Partners as a fifth outreach segment. Specifically people titled "Operating Partner, Technology" or "Portfolio Operations, AI" at Vista, Thoma Bravo, Insight, KKR, Bain Capital portfolio operations. Landing one PE operating partner can mean landing dozens of portfolio companies.
+
+### Signal 5: Engagement Manager + AI Solutions Consultant are consulting titles
+
+Not SaaS titles. Job titles are deliberately positioned to look like McKinsey/Accenture to the buyer.
+
+**PP implication:** Use consulting-grade titles when PP hires:
+- Engagement Manager (not Customer Success Manager)
+- Field CTO / Solutions Architect (not Sales Engineer)
+- Forward Deployed Engineer (not Implementation Specialist)
+- Director, Compliance Engagement (not Account Manager)
+
+### Signal 6: India hiring tells the unit economics story
+
+Five of 27 roles in Pune or Bengaluru (~19% offshore), all engineering or operational delivery. At $250K/month pilots, COGS is forward-deployed time. Offshoring the support engineering tier keeps margins enterprise-grade.
+
+**PP implication:** Plan offshore engineering support tier from day one or year one. India or LatAm. Not the FDE quality tier, the underlying operations and SRE work that supports the FDE in the field. This is how PP gets to 70%+ gross margins on $50-500K/year enterprise contracts.
+
+### The most important thing they're NOT hiring
+
+No Compliance Officer. No General Counsel. No Director of Risk. No Head of Trust. Blitzy sells INTO regulated industries but hasn't yet built their own internal compliance brand. **That's the gap PP fills.**
+
+This is the single most important strategic insight from the job board: PP is not competing with Blitzy, PP is the **complementary authorization layer** for Blitzy's regulated customers. A CCO buying Blitzy at $250K/month is already the buyer for PP. PP isn't taking budget from Blitzy; PP sits next to Blitzy in the same procurement cycle.
+
+The reframe: "Blitzy plus PP equals the regulated enterprise's complete agentic stack." Blitzy builds the velocity, PP gates the action.
+
+### Hiring sequence implied by Blitzy job board
+
+After first 3-5 paying pilots, PP's hiring order should be:
+
+1. Founding Field CTO / Solutions Architect (technical + compliance-savvy)
+2. Founding Forward Deployed Engineer (can deploy PP in 2 weeks)
+3. Operating Partner Network Manager (PE firm relationships)
+4. (Optional) Offshore SRE / DevOps engineer for support tier
+
+**Do not hire:** SDR, AE, Customer Success Manager. Not yet. Not in the first 5-10 hires.
+
+## New outreach segment: PE Operating Partners
+
+Action item added based on Signal 4 above.
+
+**Target archetypes:**
+- Operating Partner, Technology (Vista Equity Partners)
+- Portfolio Operations, AI (Thoma Bravo)
+- Operating Partner, Digital (Insight Partners)
+- Head of Portfolio Technology (KKR)
+- Operating Partner, Tech (Bain Capital Tech Opportunities)
+- Operating Partner, Software Portfolio (Francisco Partners)
+- Head of Value Creation, Tech (Veritas Capital)
+
+**Pitch logic:** A PE operating partner who manages tech adoption across 20-40 portfolio companies has a fiduciary interest in answering "can our portfolio companies safely deploy AI agents into customer-facing or regulated workflows?" PP is the answer they hand to the portfolio CFOs and CCOs.
+
+**Pricing implication:** Master agreement with the PE firm, deployed across portfolio companies. This is enterprise license deal structure, not per-seat. Could be $500K-$2M per year per PE firm depending on portfolio size.
+
+**Voice for this segment:** Different from CFO or CCO outreach. PE operating partners think in portfolio economics. The diagnostic: "As your portfolio companies adopt AI agents in finance, ops, and customer workflows, can each CFO produce an audit trail of explicit approvals when their auditor or board asks?" Frame PP as a portfolio-wide policy, not a single-company tool.
+
 ## Single biggest takeaway
 
 Blitzy is showing what a $1.4B valuation in 2 years looks like in adjacent infrastructure. They picked one number ("6 months to 6 days"), one buyer narrative ("regulated industries"), one technical positioning ("OS"), and one go-to-market motion ("forward deployed engineers").
