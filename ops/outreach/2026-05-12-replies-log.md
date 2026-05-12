@@ -11,7 +11,7 @@
 | 31 | Christopher Harris (Blitzy CRO) | 2 | Partner | **Hostile-flavored decline** | "Our deals don't stall. I can't higher [sic] enough people. Nearly every deal closes. No thank you." | Closed with concession + congrats. No retry. Brian Elliott (Blitzy CEO) still on page 2 unsent, needs different frame. |
 | 5 | Andrew Bowd | 1 | Buyer | No reply yet | — | — |
 | 12 | Art Dunal (Kranz Consulting, Fractional CFO + ex-VP CFO Dover) | 1 | Buyer | **Booked 30-min call** | "Very interesting angle, happy to learn more, open to 15-30 mins video call" | 30-min call scheduled this week (Thu May 14 11am CDT or Fri May 15 2pm CDT, his pick). Send calendar invite within 1 hour of his confirmation. |
-| 46 | Francis Ofungwu (Efeeo) | 2 | Partner | Custom message sent | Custom DCP-referenced message | Awaiting reply |
+| 46 | Francis Ofungwu (Efeeo) | 2 | Partner | **STRONG YES, call booked.** Wed or Thu next week. | "I'm glad it resonated. It would be great to connect. Let's plan for Wednesday or Thursday." | Lock 30-min slot (Wed May 13 11am PT or Thu May 14 8am PT). Treat as partnership conversation, not sales: explore Efeeo + PP integration where PP is the Constrain + Prove runtime under his DCP framework. Top secondary goal: warm intros to 3-5 CCOs in his network. |
 | 48 | Steven Cervantes (Virtue Capital, FINRA, AI Ethicist) | 2 | Buyer (RIA CCO) | **Engaged, 4-exchange thread.** Building toward substantive expert dialogue. | Latest (after reflect-and-reframe reply): "sounds like you are referring to HITL and HOTL. short answer is, it always matters in governance of opacity audit and control." | Demonstrate you know HITL/HOTL, position PP between strict HITL and pure HOTL (calibrated middle), then ask him the calibration decision-rights question (which actions warrant HITL vs HOTL vs full automation, given AI vendor often controls defaults). |
 | 51 | Sunil Aggarwal MD, JD, LL.M., MBA (Healthcare CCO/CRO) | 3 | Buyer (healthcare CCO/CRO) | **STRONG YES.** He wrote PP's positioning back at us. | "Critical auditability gap where traditional logging fails to provide indisputable proof of human oversight. Permission Protocol closes this vulnerability by specific automated action to an explicitly authorized human approval." | Book 30-min call this week. Quote his framing back. Propose 2 slots. |
 | 14 | Dean Curtin, CPA (Fractional CFO, ex-Oracle/IBM/OneStream/PwC EPM expert) | 3 | Buyer | **YES, quiet but huge.** Cross-platform expert confirmation. | "Short answer is YES. Platform-level authorization capabilities are only one small component of the overall governance model." | Reflect the validation, then ask which design partner he'd pick (EPM vendor wanting native vs Fortune 500 CFO wanting cross-platform). Invites him to be the expert and potentially refer the right contact. |
@@ -94,9 +94,21 @@ Apply the same lesson to other hot-company founders on the list (Replit, Sourceg
 
 ## Conversion rates (running)
 
-- Page 1: 25 sent, 2 engaged (Art = booked, Brandon = closed-no), 0 silent-no, 23 pending. 8% engagement so far, 4% booking. Very early.
-- Page 2: 25 sent, 1 engaged so far (Francis). Awaiting.
-- Page 3: drafted, sending.
+### May 12 4pm MDT snapshot
+
+| Page | Sent | Engaged | Strong YES / call | Polite no | Notes |
+|------|------|---------|-------------------|-----------|-------|
+| Page 1 | 25 | 3 | 1 (Art) | 1 (Brandon) | Martin in active rephrase |
+| Page 2 | 25 | 2 | 1 (Francis) | 1 (Christopher) | Page 2 v2 voice ("we keep running into") working |
+| Page 3 | 25 | 5 | 1 (Sunil) | 0 | Page 3 v2 compliance pattern 5-for-5; Chithra polite no with intel |
+| Page 4 | 22 | 0 | 0 | 0 | Just sent, replies pending |
+| Custom | 2 | 1 | 1 (Francis custom) | 0 | DCP-framework personalization landed |
+
+**Totals:** 97 contacts mapped, 99 messages sent (95 + 2 custom + Manoj InMail + Francis custom), 11 substantive engagements, **3 calls booked or asked** (Art booked, Sunil awaiting slot pick, Francis confirmed for Wed/Thu).
+
+Engagement rate: ~11% on first DM. Call-booking rate: ~3% of total sent in first 6 hours. Both are above benchmark for cold LinkedIn outreach.
+
+The **highest-ROI pattern**: page 3 v2 compliance/CCO/expert messages with one clean diagnostic + vertical-specific actions + soft observation. 5-for-5 substantive engagement on that pattern. Apply across all future regulated/compliance outreach.
 
 ## Voice for the call with Art
 
