@@ -151,6 +151,16 @@ Fifth segment added beyond CFO/CCO/Agent Founders/Compliance Vendors. Target arc
 - Site Funnel: CTAs shifted to `Start free` to prioritize developer funnel vs developer pricing/install-first paths.
 - Signer Authority: Public receipts `/r/:receiptId` fixed and middleware-authenticated.
 
+## 2026-05-12 Day 1 Outreach (3 calls booked, 11 substantive engagements)
+
+- 97 LinkedIn contacts mapped across 4 pages, personalized messages sent. Page 3 v2 compliance pattern 5-for-5 substantive engagement (Sunil, Steven, Dean, Martin, Chithra).
+- 3 calls booked: Art Dunal (Kranz Fractional CFO, Thu/Fri), Sunil Aggarwal (Healthcare CCO/CRO, awaiting slot), Francis Ofungwu (Efeeo partnership, Wed/Thu).
+- Voice rules carry forward: no em dashes, no "thanks for connecting," no "saw your post" hooks. Founder-to-founder opener. One clean diagnostic with vertical-specific actions. "I'm finding most firms can't" soft observation. "I'm the founder of" not "I'm building." Partner-track closer "Open to a 15 next week if the framing lands."
+- Don't pitch present-tense pain to hot-company founders (Christopher Harris/Blitzy lesson). Use future-tense regulated-enterprise scale risk.
+- Engineers/SEs at agent companies are bad targets (Brandon Looker/Kinter lesson). CEOs/CTOs/Co-founders only.
+- Site PR #340 merged: CCO homepage section live with "Pioneering the agentic authority layer" badge + "Talk to a compliance engineer" CTA. CTA standardization codex prompt deployed.
+- Full outreach detail: `ops/outreach/2026-05-12-*.md` (4 pages + replies log). Daily note: `memory/2026-05-12.md`. Strategic intel: `ops/strategy/blitzy-lessons.md`.
+
 ---
 
 *Archived milestones: `memory/archive/2026-05-historical.md`*

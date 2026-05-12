@@ -1,1098 +1,2140 @@
 threads:
-  - id: '1499164041363587092'
-    title: Sales
-    channel: sales
-    owner: rod
-    priority: high
-    created_at: '2026-04-30'
-    open_tasks: []
-    decisions:
-      - For high-profile peers/founders, use the Authority Voice ("I built Permission Protocol") and ask a direct, binary diagnostic question combined with "Do you have 15min to chat?".
-    status: ARCHIVED
-    updated_at: '2026-04-30'
-    summary: Tracked Sprint 5 outreach execution. Delivered enrichment kits, TOP-10 Gmail drafts, and successfully sent LinkedIn Day 7 soft nudges to Jerry, Ishaan, and Malte using the corrected Authority Voice.
-    archived_at: '2026-04-30'
-  - id: '1489650324879708351'
-    title: Onboarding Flow QA
-    channel: rc-main
-    owner: rod
-    priority: high
-    status: ARCHIVED
-    created_at: '2026-04-03'
-    updated_at: '2026-04-08'
-    archived_at: '2026-04-08'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    open_tasks: []
-    decisions:
-      - Activation = blocked action -> signer decision -> receipt (not just App installation).
-      - State machine locked steps must be resumable to self-heal.
-      - GitHub App installation callbacks require exponential backoff when querying repos due to internal propagation delays.
-      - Legacy auto-setup requiring administration:write is permanently deprecated in favor of scoped contents:write and workflows:write.
-    summary: Overhauled the Permission Protocol onboarding flow into a deterministic, server-orchestrated "Hello World" loop. Squashed race conditions and built the Control Room UI with PostHog telemetry.
-    resolution_artifact: 'PRs #288–#308 merged'
-  - id: '1490719864762142963'
-    title: QA
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-04-06'
-    updated_at: '2026-04-08'
-    archived_at: '2026-04-08'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: 'E2E test run on pp-demo PR #38'
-    summary: E2E zero-to-merge test executed on pp-demo. Reached blocked PR state successfully. UI automation for approval step requires refinement.
-    open_tasks:
-      - Refine UI automation for the approval step (selectors or session handling for /approve/:id)
-    decisions:
-      - Use installed Google Chrome + disable-blink-features to bypass bot detection
-      - Persist Playwright state to .auth/chrome_profile
-      - Target permission-protocol/pp-demo for E2E tests
-  - id: '1487549275658518769'
-    title: See Try Pay
-    channel: rc-main
-    status: ARCHIVED
-    owner: Charles
-    priority: critical
-    created_at: '2026-03-29'
-    updated_at: '2026-03-29'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: 'PRs #270-277 (app), #239 (site)'
-    archived_at: '2026-03-29'
-    summary: |
-      Built complete See-Try-Pay activation framework. Auto-create test PR, approval UX with signer identity, post-approval conversion block, personal ownership copy, $300/mo pricing. Key insight: copy + urgency > features. KPI: approval → second repo installed.
-    open_tasks: []
-    decisions:
-      - Activation before monetization
-      - Force the "oh shit" moment — blocked action must happen in <2min
-      - Stripe/pricing work is paused until SEE+TRY proven
-  - id: '1485660866098630686'
-    title: Full Flow
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-26'
-    updated_at: '2026-03-28'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Thread closed via /close-review
-    archived_at: null
-    summary: |
-      Completed all 4 Auditor 2 tasks from Mar 24 closure review: (1) PR #243 anonymous demo mode merged, (2) full loop validated on production, (3) GitHub bot Unicode fix merged (PR #265 — stable HTML comment marker for encoding resilience), (4) README updates merged for deploy-gate#37 and pp-demo#36. Demo PR #35 is the new blocked target.
-    open_tasks: []
-    decisions:
-      - Bot comment detection uses hidden HTML marker (`<!-- pp-status-comment -->`) for encoding resilience
-      - Demo PR
-      - Full anonymous demo flow verified end-to-end
-  - id: '1486453781821395135'
-    title: Launch Prep
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-25'
-    updated_at: '2026-03-28'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: |
-      Pivoted HN launch from cold Thursday post (restricted account) to "Break It" private beta with 15 BlackLocus alumni. Researched all BL alumni on LinkedIn, drafted 15 personalized SMS across 3 tiers, stress tested demo PR #32 (fixed expired deploy request, pushed production DB migration for scarier review). Created copy-paste SMS doc and beta tester guide. Handled first tester objection with universal enforcement primitive pivot.
-    open_tasks: []
-    decisions:
-      - '"Break It" wedge > cold HN post — engineers respond to challenges, not pitches'
-      - 15 SMS across 3 tiers — AI/Agent relevance, hardcore engineers, eng leadership
-      - 2nd-degree BL alumni — let 1st-degree recruit them, not cold DMs
-      - Demo PR needs periodic refresh (24h TTL) — close/reopen workaround
-      - PP is a universal enforcement primitive, not just a GitHub wrapper
-  - id: '1486168290484293652'
-    title: Airtanle xpromo
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: low
-    created_at: '2026-03-26'
-    updated_at: '2026-03-28'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Clean archive — no durable decisions or tasks.
-    archived_at: null
-    summary: Exploratory cross-promotion thread. No actionable decisions or open tasks.
-    open_tasks: []
-    decisions: []
-  - id: '1486772566382346380'
-    title: Linkedin Posts
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-26'
-    updated_at: '2026-03-26'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: LinkedIn outreach strategy for HN launch. Transitioned to targeting local CISOs with an async architecture teardown pitch.
-    open_tasks: []
-    decisions:
-      - Target active CISOs/VP Engs for architecture teardowns, not retired executives.
-      - Use an asynchronous CTA instead of asking for a 15-minute call.
-      - Prioritize 1st-degree connections and local Boulder/Denver targets.
-      - Send governance-framework GitHub repo to technical targets.
-  - id: '1486087599486668984'
-    title: Quick bugs
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-24'
-    updated_at: '2026-03-25'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Rapid-fire bug fix sprint during HN launch prep. Fixed 5 PRs across 3 repos — auto-select company on review page, receipt mobile overflow, deploy-gate README badge, marketing site mobile hero + PWA removal, and full launch polish (nav rename, demo link, fake metrics, badges, hero line breaks). Also resolved Vercel team access for cgoldber82.
-    open_tasks: []
-    decisions:
-      - Auto-select company via CustomEvent dispatch pattern (not page reload)
-      - PWA install belongs on app.permissionprotocol.com only, not the marketing site
-      - Hero headline should use explicit <br /> for the Three Questions format
-      - Fake metrics replaced with provable facts (Ed25519, MIT)
-      - Request Access renamed to Contact across all surfaces
-  - id: '1485658452675006494'
-    title: Demo Gif
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-23'
-    updated_at: '2026-03-24'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Built reproducible demo recording environment for PP HN launch. Created reset-demo.sh for pp-demo repo, diagnosed and fixed dual bot comment bug (emoji encoding broke update-in-place), shipped fix in app PR
-    open_tasks: []
-    decisions:
-      - pp-demo is the canonical demo repo — no duplicates
-      - reset-demo.sh produces a clean single-PR recording state
-      - Bot comment search uses 'Permission Protocol' without emoji for encoding resilience
-      - Two browser profiles recommended for recording (GitHub + PP Dashboard)
-  - id: '1484266387579994314'
-    title: '404'
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: low
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Fixed unbranded Next.js 404 page by implementing a custom client-side `not-found.tsx` matching the PP design system.
-    open_tasks: []
-    decisions:
-      - '`not-found.tsx` should use client-side navigation (`onClick={() => router.push("/")}`) to avoid type conflicts with PP`s custom `<Button>` component.'
-  - id: '1483894208656969850'
-    title: Back to PR Button
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: low
-    created_at: '2026-03-18'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Fixed "Back to PR" button opening in a chromeless popup window instead of a new tab. Diagnosed popup context inheritance (approval page opened from Slack/email) and implemented a programmatic anchor click fix in PR #199.'
-    open_tasks: []
-    decisions:
-      - When an app is opened in a chromeless popup window, target="_blank" links inherit the popup style instead of opening a proper tab.
-      - The escape hatch is to programmatically create a detached <a> element, append it, click it, and remove it.
-  - id: '1483129687344680960'
-    title: 1st Competitor
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-16'
-    updated_at: '2026-03-17'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Full competitive response to Guard0/g0. Built Three Questions positioning, VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage refreshed with Three Questions hero, blog post published (scanning-isnt-control). Discovery to deployment in one session.
-    open_tasks: []
-    decisions:
-      - 'PP positioning: Assessment identifies problems, governance prevents them'
-      - 'Three Questions: Who approved it? What stops it? Can you prove it?'
-      - CLI in new repo (permission-protocol/cli), not monorepo
-      - 'Voice rule: be clear, not clever — codified in VOICE.md + SOUL.md'
-      - Guard0 = complementary (low overlap), Onyx = real threat (medium-high)
-      - One-liner PLG (pp-scan .) is highest-leverage dev tool to build
-  - id: '1483155946623733853'
-    title: Marketing Vs App [UNIFY]
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-16'
-    updated_at: '2026-03-16'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Full URL consolidation of Permission Protocol review surfaces. Audited both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to app (dashboard + detail page + mobile), then killed marketing review/auth/API proxy layer (-6,116 lines). All redirects verified live.
-    open_tasks: []
-    decisions:
-      - All authenticated review/approve workflows consolidated to app.permissionprotocol.com
-      - Marketing site = selling only (landing, pricing, docs, blog, public receipts)
-      - Receipt page (/r/[id]) stays on marketing site (public, unauthenticated)
-      - GitHub CI status check URLs now point to app, not marketing
-      - next-auth removed from marketing site
-      - 5 permanent redirects added (review, review/:id, login, approve/:id, replay/:id)
-  - id: '1483138256613937213'
-    title: Obsidian
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: low
-    created_at: '2026-03-16'
-    updated_at: '2026-03-16'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull) and Rod's MacBook Air (same setup via Homebrew + gh auth). Both machines auto-sync every 5 minutes.
-    open_tasks: []
-    decisions:
-      - Workspace backup repo (charles-workspace-backup) used as Obsidian sync source
-      - Obsidian Git plugin for auto-pull every 5 min (no push from Rod's machines)
-      - Removed files with Windows-incompatible long filenames from repo
-      - Rod has a new MacBook Air with Tailscale + Homebrew + gh CLI configured
-  - id: '1483125897161605121'
-    title: OpenClaw Update
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-16'
-    updated_at: '2026-03-16'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Updated OpenClaw from 2026.3.2 — 2026.3.13. Backed up workspace + config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup. Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver).
-    open_tasks: []
-    decisions:
-      - OpenClaw updated to 2026.3.13 from 2026.3.2
-      - Config backup at ~/.openclaw/openclaw.json.backup-pre-update-2026-03-16
-      - openclaw doctor --fix added to maintenance toolkit
-      - Mobile QA pipeline unaffected by update — USB + WebDriver is the right approach
-      - macOS DMG available on GitHub releases; iOS app in internal preview
-  - id: '1483844724191264778'
-    title: bugs (PP merge loop)
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-18'
-    updated_at: '2026-03-18'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate PR #23), backend carry-forward fix (app PR #197), and 3 issues tracked on board (#21, #22, #196).'
-    open_tasks: []
-    decisions:
-      - Authorization checks (PP) should never use strict mode
-      - Two-ruleset pattern is recommended setup for all PP users
-      - Carry-forward should auto-issue new signed receipts, not reuse old ones
-      - 'Product-level fix: docs must guide users away from strict footgun'
-  - id: '1482835612909306130'
-    title: /drploy-date
-    channel: control-room-2
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-15'
-    updated_at: '2026-03-15'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run bypass, #19 review URL) — both already fixed by v2 rewrite and PR #20. Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license) and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes license).'
-    open_tasks: []
-    decisions:
-      - 'deploy-gate issues #12 and #19 confirmed fixed by v2 rewrite — closed'
-      - v1 tag bumped to HEAD of main (includes MIT license)
-      - 10 stale branches deleted from deploy-gate repo
-  - id: '1482065875413635122'
-    title: iPhone Mirroring
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-13'
-    updated_at: '2026-03-16'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Explored iPhone Mirroring for mobile QA — discovered synthetic clicks are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash. Found real bugs on PP and Xdares. Also ran successful e2e deploy-gate demo (PR #18).'
-    open_tasks: []
-    decisions:
-      - Safari WebDriver via USB > iPhone Mirroring for automation
-      - Research before hack — 15 min rule
-      - Gemini Flash for cron QA tasks (~$0.01/run)
-      - 'Physical device checklist: data cable, Trust, Web Inspector, Remote Automation, Guided Access'
-      - iPhone 14 Pro preferred over SE for testing
-      - One-script-per-session for stateful drivers like safaridriver
-  - id: '1483189017750016082'
-    title: GarryTan
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-16'
-    updated_at: '2026-03-16'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Analyzed Garry Tan''s gstack repo (10 Claude Code skills for role-based agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality gates into the factory pipeline: CEO review, engineering review, paranoid code review, ship script. Added QA health scoring (0-100), versioned review checklist, structured QA report template. Full steal plan documented in factory/GSTACK-STEAL-PLAN.md.'
-    open_tasks: []
-    decisions:
-      - Don't install gstack — steal ideas, build agent-agnostic versions
-  - id: '1483163293664415994'
-    title: User Requirements
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-16'
-    updated_at: '2026-03-17'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Deep Marco persona requirements sprint. Wrote 29-requirement spec across 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon: enrichment pipeline (origin context, verification steps, confidence warnings), detail page information hierarchy, receipt enrichment snapshots (M6), merge queue polish with configurable method + auto-merge fix (M7), structured rejection with PR comment (M17), arrival notifications, dashboard improvements, approved-but-unmerged visibility, duplicate deploy request dedup, admin reconcile endpoint, demo UX polish (iframe fallback, numbered verification steps, mobile post-approval bar, overview approve gate, author display). Screenshot audit against Marco requirements — detail page demo-ready.'
-    open_tasks:
-      - 'Merge PR #178 (demo UX polish) + deploy + run reconcile'
-      - Record demo video with staged PRs
-      - Phase 3-5 Marco requirements (M10-M23)
-      - Sarah user requirements spec
-    decisions:
-      - 'Phase 2 complete: happy path first, recovery (undo/revert) later'
-      - Auto-merge LOW risk deferred — needs more thought
-      - 'Preview iframe: fallback to open-in-new-tab when embed blocked'
-      - 'Verification steps: numbered circles, not checkboxes'
-      - 'Production requests: Review only on dashboard, no quick-approve'
-      - GitHub auto-merge won't fire if checks already passed — fall through to direct merge
-      - 15 PRs in one afternoon, 12–19 Marco requirements covered
-  - id: '1483556834756530306'
-    title: Claude Dependency
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-17'
-    updated_at: '2026-03-17'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Anthropic outage killed all three fallback models (all Anthropic, one auth profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview as cross-provider fallback. Config patched and restarted successfully.
-    open_tasks: []
-    decisions:
-      - Cross-provider fallback required — all-Anthropic fallback chain is fake redundancy
-      - 'Fallback chain: opus-4-6 — opus-4-5 — sonnet-4-6 — gemini-3-flash-preview'
-      - Keep Opus as primary — outages are rare, quality matters
-      - Gemini Flash as emergency fallback is better than a dead agent
-  - id: '1483547333382897764'
-    title: Big Daddy
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-17'
-    updated_at: '2026-03-18'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug, fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193). Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on force-pushed PRs (PR #195). Added 3 AGENTS.md rules: debugging circuit breaker (5-msg limit), no thinking out loud, git hygiene (no git add -A).'
-    open_tasks: []
-    decisions:
-      - Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking out loud)
-      - 'Force-push stale checks: set PP status on old SHA + re-request check suites'
-      - git add -A banned in shared worktrees — always add specific files
-      - git diff --stat before pushing — verify file count matches intent
-  - id: '1483223048499892425'
-    title: Push to main
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-16'
-    updated_at: '2026-03-17'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed with PR #174: detect merge/squash commits, extract PR info, pass to verify action for scope matching. Also discussed video recording options for app testing (⌘+Shift+5 vs DevTools Recorder).'
-    open_tasks: []
-    decisions:
-      - PR merges reuse existing PR receipt via PR_HEAD scope passthrough
-      - Direct pushes to main still create new deploy requests (safety net)
-      - verify/action.yml gained pr_number + pr_head_sha inputs for explicit PR scope override
-      - Both merge commit and squash merge patterns handled
-      - Skip retros, doc-release, Greptile, Conductor, cookie import
-      - 'New pipeline: ideate — organize — CEO review — eng review — spec — build — ship — paranoid review — QA — done'
-      - ~$0.05 added cost per factory item on Gemini Flash is acceptable
-      - Rod's process unchanged — new gates run automatically
-      - Future work (browser QA, bisectable commits) deferred, documented in GSTACK-STEAL-PLAN.md
-  - id: '1484231245125648606'
-    title: MARIA
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Updated Maria''s OpenClaw container to 2026.3.13-1, fixed missing memory-lancedb plugin via on-demand install. Enabled diffs and acpx plugins for Charles locally. Established boundary: Maria handles headless external operations, Charles handles local browser and auth-gated tasks using 1Password, avoiding the need for Chrome Extension Relay.'
-    open_tasks: []
-    decisions:
-      - Maria stays the headless external operator (Telegram, APIs).
-      - Charles handles local browser, auth-gated dashboards using 1Password. No Chrome Extension Relay needed.
-      - OpenClaw 2026.3.13+ requires explicit plugin installs for memory-lancedb and diffs.
-  - id: '1484220042735517869'
-    title: Where's Risk
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Root-caused the missing risk analysis to an inverted catch block in the webhook route which caused a permanent ''Analyzing...'' placeholder on failure. Fixed the logic flow in PR #202 on permission-protocol/app.'
-    open_tasks: []
-    decisions:
-      - Placeholder comment must be posted immediately before enrichment, then updated with results or explicit failure state.
-  - id: '1484219107816509440'
-    title: KOL
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: low
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Confirmed lead routing protocol. Permission Protocol uses Discord webhooks for /contact leads, routing them to the
-    open_tasks: []
-    decisions:
-      - Permission Protocol uses Discord webhooks for /contact leads, routing them to the
-  - id: '1483851224431460474'
-    title: JAKE
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-18'
-    updated_at: '2026-03-23'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Optimized Jake persona PR review surface. Verdict-first format implemented (answer "safe to merge?" first), graduated friction added for overrides, and AI enrichment fixed for CoT tokens. All authenticated workflows consolidated to app.
-    open_tasks: []
-    decisions:
-      - Verdict-first format for solo founder efficiency.
-      - 'Graduated friction: one-click for safe, checkbox for block.'
-      - Bump Gemini tokens to 8192+ to handle CoT overhead.
-      - Authorization receipt page is the "Signer of Record" surface; review page is functional only.
-  - id: '1484260983416291428'
-    title: Orgs
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Overhauled the onboarding flow for Permission Protocol. Identified a critical vulnerability where Access Denied errors exposed archived company IDs, and fixed a GitHub App stateless installation race condition. Ripped out 7,000+ lines of dead legacy settings/setup code and replaced the empty dashboard with a linear Progressive Onboarding Wizard (Connect GitHub -> Generate Key -> Open PR).
-    open_tasks: []
-    decisions:
-      - Empty state must be a strict progressive state machine, not passive docs.
-      - The legacy autonomous OS settings/setup pages are permanently deleted to avoid user confusion.
-      - Stateless GitHub App installation callbacks require a forced 3-second auto-poll delay to handle GitHub's internal API propagation.
-  - id: '1484429153552830626'
-    title: Opus - onboarding error
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Fixed 8 bugs in deploy-gate onboarding wizard across 6 PRs (#220, #221, #224, #225, #230, #232). Root causes: missing GitHub API permissions, free-plan limitations blocking rulesets+branch protection, stale API keys from deleted companies, wrong callback redirect, dead-end Access Denied page, and status persistence on refresh.'
-    open_tasks: []
-    decisions:
-      - Free-plan private repos cannot enforce required checks — gate runs but can't block merges
-      - Company archive must cascade-clean API keys and GitHub App installations
-      - ensureSecret must verify key ownership not just existence
-      - Repos endpoint must not overwrite DB status when GitHub API returns 403
-      - permission-protocol/app is the canonical repo (never use Roca-Ventures/Breakout-Labs)
-  - id: '1484436184393322506'
-    title: Opus - org 3
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-20'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Multi-company data isolation bug: deploy queue showed wrong company data after switching. Root-caused to cookie race condition (Set-Cookie not applied before window.location.reload). Fixed with client-side cookie set (PR #223), navigate to /c on switch (PR #226), and archived company handling (PR #231). Also re-triggered PullMatch deploy requests after repo rebrand from Tinder4PRs.'
-    open_tasks: []
-    decisions:
-      - Company switch must set cookie client-side before navigation (belt-and-suspenders with server Set-Cookie)
-      - Switch navigates to /c root, not reload current URL (avoids cross-company resource access)
-      - Deploy requests from archived companies show "Archived Company" state, not "Switch to"
-      - Detail page isolation check works correctly — leak was read-only at list level only
-      - Render deploy status "success" on GitHub doesn't guarantee actual rebuild — verify via CSS/JS hash
-  - id: '1484330892015960286'
-    title: PP Msg Broken
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-19'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Root-caused and fixed a critical bug in the AI enrichment pipeline where Gemini's `<think>` tags (chain-of-thought) were breaking JSON extraction. Implemented a pre-extraction regex to strip tags and bumped `maxOutputTokens` to 8192 to prevent payload truncation (PR 213).
-    open_tasks: []
-    decisions:
-      - Gemini chain-of-thought (`<think>` blocks) breaks naive JSON parsing (`indexOf('{')`); explicitly strip tags before parsing.
-      - Increase Gemini `maxOutputTokens` to 8192 to prevent payload + reasoning truncation.
-  - id: '1484577755994525896'
-    title: MCP Guard
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-20'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Built and shipped MCP Guard v0 and v0.1. A stdio proxy for MCP that enforces YAML policies (allow/block/hold) and emits audit receipts. Includes a real-time approval web UI and before/after demo assets.
-    open_tasks:
-      - Receipt viewer integration on app.permissionprotocol.com
-      - Verify end-to-end with real MCP client
-      - Finalize HN submission timing
-    decisions:
-      - PP wedge is enforcement (locks) > audit (cameras).
-      - Proxy mode is correct architecture for universal compatibility.
-      - Decision engine must be future-safe by accepting toolArgs now.
-      - Before/after contrast in demo GIFs is the conversion driver.
-  - id: '1483323537057120370'
-    title: Tinder for PR
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-18'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Built demo PRs for Permission Protocol, fixed a UI bug where archived companies leaked access, switched default model to Gemini 3.1 Pro Preview, rebranded the 'Tinder for PR' project to 'PullMatch' across the codebase, and generated a new logo.
-    open_tasks: []
-    decisions:
-      - Rebranded 'Tinder for PR' to 'PullMatch' and tinderforpr.com to pullmatch.com.
-      - Set default primary model to google/gemini-3.1-pro-preview.
-      - API key validation and deploy request GET route now explicitly filter out archived companies.
-  - id: '1484644007521812662'
-    title: PullMatch
-    channel: pullmatch
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-20'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Gathered all historical context for PullMatch (formerly Tinder for PRs) and created a dedicated workspace folder with CONTEXT.md and STATUS.md.
-    open_tasks: []
-    decisions:
-      - Transitioning PullMatch from a Permission Protocol demo environment to a standalone product.
-  - id: '1484406326183596124'
-    title: Opus GH PR Page
-    channel: opus-gh-pr-page
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Fixed duplicate PR comments (webhook vs action race condition) and stuck "Analyzing..." placeholder (missing error handler). Reduced Gemini maxOutputTokens to sensible sizes (1024/512) and fixed Next.js query parameter redirect loop.
-    open_tasks: []
-    decisions:
-      - GitHub App webhook handler must own PR comments if active; GitHub Action post-comment must be disabled (false) to prevent race conditions and duplicate comments.
-      - useSearchParams() does not react to native window.history.replaceState(). Must use router.replace() to clear query parameters and correctly update React state.
-      - Gemini maxOutputTokens should be sized appropriately to the expected JSON payload (e.g., 1024 or 512) rather than maxed out (8192), to avoid wasting token buffers and latency.
-  - id: '1484339439819034865'
-    title: Orgs 2
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-19'
-    updated_at: '2026-03-20'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: 'Fixed multi-workspace GitHub App installation flow. Root-caused stateless callback ignoring activeCompanyId cookie (linking to wrong workspace) and throwing 409 when installation already belonged to another workspace the user owns. Fixed GitHub App Setup URL pointing to deleted /c/setup page. Built one-click auto-setup for Step 3 (workflow + secret + ruleset via existing setup-repo endpoint). Deployed PRs #216 and #217.'
-    open_tasks: []
-    decisions:
-      - Stateless GitHub App link route must read activeCompanyId cookie to target the correct workspace.
-      - Allow installation transfer when user is a member of both old and new workspace (not a hard 409).
-      - GitHub App Setup URL must point to /api/github-app/callback, not /c/setup (deleted page).
-      - console.error in callback state-parse should be console.warn to avoid Next.js dev error overlay.
-      - Step 3 should offer one-click auto-setup via setup-repo API, with manual fallback.
-      - PP deploy gate correctly flagged dirty PR
-      - Always use git add <specific files>, never git add . in shared worktrees.
-  - id: '1485343398255792198'
-    title: Demo Videos
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-22'
-    updated_at: '2026-03-23'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Created and refined a 60-second GIF demo of NemoClaw gating a GitHub Actions deployment via multi-sig. Pivoted narrative to deploy authority. Prepared HN launch drafts and updated README. Held launch for Tuesday morning PST.
-    open_tasks: []
-    decisions:
-      - Shift demo narrative to "deploy authority" to highlight value over scanning.
-      - 'Use Option A for HN Title: "Show HN: AI agents can''t deploy to production without a human signer"'
-      - Delay HN launch to Tuesday 7:30–9:00am PST for optimal visibility.
-  - id: '1485322840319197369'
-    title: Atomic Loop
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-22'
-    updated_at: '2026-03-23'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Built the full v1 Atomic Loop enforcement primitive for Permission Protocol. Includes MCP Guard verifier, backend signer, UI wire-up, durable Redis replay cache, audit receipts, YAML policy layer (multi-sig, roles, conditions), and GitHub Actions dispatch executor. Logic extracted to mcp-guard and launch execution moved to Opus - Launch thread.
-    open_tasks: []
-    decisions:
-      - Enforcement is the wedge, not just audit/receipts.
-      - Execution must depend only on a cryptographically verified token, never DB approval state.
-      - Replay protection implemented via atomic Redis set with auto-TTL matching token expiry.
-      - Policy layer enforces required signers, roles, multi-sig, conditions, and max TTL.
-      - First real-world execution integration is GitHub Workflow dispatch (deploy_code).
-  - id: '1486830254256427171'
-    title: Linkedin Outreach
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-26'
-    updated_at: '2026-03-28'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Thread closed via /close-review
-    archived_at: null
-    summary: Drafted and sent personalized follow-up messages to 5 BlackLocus contacts (Justin Arthur, Dave Jenkins, Dave Ruback, Anthony McClosky, Brenda) who responded to LinkedIn outreach. Established deploy-gate repo as the primary outreach link. Proposed Monday 10AM coffee with Brenda (AI Governance PhD) at Boxcar Boulder.
-    open_tasks: []
-    decisions:
-      - Lead with deploy-gate repo, not governance-framework (product > spec)
-      - Demo link first, spec second (30 seconds > 30 minutes)
-      - One link per LinkedIn reply; save marketing site for follow-ups and non-technical contacts
-      - No calls for dev contacts; async CTA only
-      - Brenda coffee exception (strategic — AI governance PhD, local Boulder)
-      - Email format can include both links (longer medium)
-  - id: '1485726442888233136'
-    title: GIF VIDEO - OPUS
-    channel: heartbeat
-    status: ACTIVE
-    owner: Rod
-    priority: high
-    created_at: '2026-03-23'
-    updated_at: '2026-03-26'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: Finalize video with Rod's iPhone screenshot of end card
-    resolution_artifact: null
-    archived_at: null
-    summary: Recording and editing the final Permission Protocol demo video. Narrative shifted to enforcement/authority. Pacing edits implemented (setup sped up, approval slowed down). Branded end card created at /demo-endcard on marketing site.
-    open_tasks:
-      - Finalize video with Rod's iPhone screenshot of end card
-      - Ship to HN/Twitter
-    decisions:
-      - 'Video pacing: speed up setup, slow down sign/payoff.'
-      - 'End card: dedicated full-screen page at /demo-endcard for high-res mobile capture.'
-  - id: '1485630165047316521'
-    title: Opus - Launch
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-23'
-    updated_at: '2026-03-24'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Full pre-launch sprint for Permission Protocol Show HN. Stress tested signing layer, aligned narrative, added tamper detection, dogfooded merge through own gate, rewrote deploy-gate README for HN, captured hero screenshot, simplified onboarding to one secret, drafted HN comment + objection handlers, verified cold install funnel.
-    open_tasks: []
-    decisions:
-      - Launch URL is github.com/permission-protocol/deploy-gate (public repo).
-      - One secret (PP_API_KEY) is sufficient for setup.
-      - verify() re-canonicalizes fields to detect post-signing tampering.
-      - Dogfooding proof used PP to approve and merge the launch PRs.
-      - 'PRs shipped: app #239, #240, #241; deploy-gate #24, #25, #26.'
-  - id: '1485631505345548318'
-    title: Polish Items
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-23'
-    updated_at: '2026-03-23'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Full UX/UI polish sweep on the marketing site. Fixed "Developers" dropdown hover continuity, increased mobile menu breakpoint to 1024px to stop nav clipping, replaced dead href="#" links across the site, swapped mailto form for a CTA, and added legal links to footer. All pushed in PR
-    open_tasks: []
-    decisions:
-      - Hover menus need continuous pointer zones (padding vs margin) to stay open during mouse travel.
-      - 'No mailto: links for support; route all through /contact for PostHog tracking and Discord alerting.'
-  - id: '1484937309068726422'
-    title: Internal processes
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-21'
-    updated_at: '2026-03-24T21:22:52Z'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Thread closed via /close-review
-    archived_at: null
-    summary: Internal processes discussion and orchestration refactor
-    open_tasks: []
-    decisions: []
-  - id: '1485646490864062546'
-    title: Scrolling
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-23'
-    updated_at: '2026-03-24'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Resolved "scroll twice to move" lag on marketing website by removing the bouncing anchor chevron, disabling global smooth scrolling, and converting Framer Motion triggers to margin-based.
-    open_tasks: []
-    decisions:
-      - Smooth scrolling and anchor links can intercept first wheel events and cause scroll lag; avoid them on full-height hero sections.
-      - Margin-based viewport detection is more reliable than percentage (`amount`) for Framer Motion entrance animations.
-  - id: '1485660982197092484'
-    title: Full Flow 2 - Opus
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-23'
-    updated_at: '2026-03-24'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Full HN launch funnel audit. Identified and fixed 4 critical conversion leaks (demo ambiguity, auth redirect, hidden site content, missing receipt). Created perpetual demo PR (pp-demo#23). Shipped deploy-gate PR
-    open_tasks: []
-    decisions:
-      - Time-to-first-approval is the core conversion metric, not install count.
-      - Demo PR should always stay open as a live playground.
-      - Animations must enhance, not gate visibility (opacity 0 to 0.85).
-      - '?action=approve should auto-open the confirmation modal.'
-      - Post-approval screen must show the receipt (that's the moat).
-  - id: '1486045603954950215'
-    title: Competitors
-    channel: rc-main
-    status: ARCHIVED
-    owner: Rod
-    priority: medium
-    created_at: '2026-03-26'
-    updated_at: '2026-03-26'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: null
-    archived_at: null
-    summary: Thread empty or no tasks tracked. Archived per user request.
-    open_tasks: []
-    decisions: []
-  - id: '1487053538378121298'
-    title: Irina
-    channel: hn-launch
-    status: ARCHIVED
-    owner: Rod
-    priority: high
-    created_at: '2026-03-27'
-    updated_at: '2026-03-28'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Thread closed via /close-review
-    archived_at: null
-    summary: Polished and sent a $15k pilot proposal to Irina (ultra-rich tax firm). Rewrote copy using PP Voice Guide, generated branded dark-mode PDF with extracted logo, reviewed email drafts, caught name typo (Irene→Irina), and approved final send.
-    open_tasks: []
-    decisions:
-      - Use "named human signer" (not just "approval") to anchor to the Authority Receipt primitive.
-      - Lean into Liability Shift for high-net-worth tax vertical.
-      - browser tool blocks file:// protocol; use local HTTP server for PDF generation.
-      - Extract logo from SVG brand guidelines by cropping viewBox and removing background rect.
-  - id: '1487838731741433966'
-    title: PR Conflics
-    channel: rc-main
-    status: ARCHIVED
-    owner: Charles
-    priority: medium
-    created_at: '2026-03-29'
-    updated_at: '2026-03-29'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: Thread closed via /close-review
-    archived_at: null
-    summary: Fixed merge conflicts in pp-demo repo. PR
-    open_tasks: []
-    decisions:
-      - PR
-  - id: '1491226981730353324'
-    title: Wedges (Consequence Engine Sprint)
-    channel: rc-main
-    owner: rod
-    priority: critical
-    status: ARCHIVED
-    created_at: '2026-04-07'
-    updated_at: '2026-04-08'
-    archived_at: '2026-04-08'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: 'Consequence Engine v1 shipped (PRs #310–325)'
-    summary: Refactored Permission Protocol from a 'reviewer' to an 'enforcement engine'. Implemented clearance/authorization/execution receipt loop and deterministic gating.
-    open_tasks: []
-    decisions:
-      - PP = consequence brief + policy decision + human authorization event. Not a reviewer.
-      - 'Three outcomes: cleared | approval_required | denied.'
-      - 'Three receipt types: clearance | authorization | execution.'
-      - LLM writes brief, deterministic rules decide gate. LLM never blocks a merge.
-      - Denied = hard stop. No authorize CTA. Fix code, push again.
-      - Per-repo comment quieting (first 5 cleared PRs, then silent).
-      - Block merge from day one, but only on consequential PRs.
-      - 'Single entry point for onboarding: one install link.'
-      - 'Comment design v2: blockquotes, tables, details sections, authority language.'
-  - id: '1492294890024079390'
-    title: Polish V3
-    channel: '#rc-main'
-    status: ARCHIVED
-    owner: rod
-    priority: high
-    created_at: '2026-04-10'
-    updated_at: '2026-04-10'
-    archived_at: '2026-04-10'
-    summary: Full DESIGN.md alignment sprint. 12 PRs (#337-#348) shipped across 4 batches.
-    decisions:
-      - DESIGN.md is enforced, not aspirational
-      - Parallel Codex + git worktrees is the validated batch pattern
-      - Force-push rebases cause superseded deploy requests — escape route added
-      - accent-blue renamed to accent-primary globally
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    open_tasks: []
-    resolution_artifact: 12 PRs (#337-#348) shipped
-  - id: '1499130172769571017'
-    title: Image Issue
-    channel: rc-main
-    status: ARCHIVED
-    owner: rod
-    priority: medium
-    created_at: '2026-04-29'
-    updated_at: '2026-04-29'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: sharp dependencies installed
-    archived_at: '2026-04-29'
-    summary: Resolved missing 'sharp' dependency causing image processing failures in Next.js builds and OpenClaw's internal image analysis tool.
-    open_tasks: []
-    decisions: []
-  - id: '1498818004207796244'
-    title: Revise Strategy
-    channel: rc-main
-    status: ARCHIVED
-    owner: rod
-    priority: critical
-    created_at: '2026-04-28'
-    updated_at: '2026-04-29'
-    archived_at: '2026-04-29'
-    expires_at: null
-    blocked_reason: null
-    blocked_until: null
-    next_action: null
-    resolution_artifact: 63 LI requests + 250 page invites sent
-    summary: Sprint 5 outreach campaign executed. Batch 1 (28 prospects) and Batch 2 (44 prospects) created and sent via LinkedIn. Competitive intel gathered on Oso (Sequoia) and Reco ($85M, Insight/Zeev). Incident tracker PRD drafted.
-    open_tasks: []
-    decisions:
-      - Use 'I'm the founder of PP' not 'I'm building PP' for founder-to-founder outreach
-      - Attribute actions to company/product, not person ('Devin deploys' not 'you deploy')
-      - Target VCs without agent-governance bets (a16z, Benchmark, Conviction vs Sequoia/Insight/Zeev)
-      - Don't engage Oso directly - competitive risk
+- id: '1503081948824993862'
+  title: Gstack — Day 1 LinkedIn outreach + CFO/CCO wedge + Blitzy strategic intel
+  channel: gstack
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-10'
+  updated_at: '2026-05-12'
+  archived_at: '2026-05-12'
+  next_action: null
+  resolution_artifact: Day 1 outreach complete (97 contacts mapped across 4 pages), 3 calls booked, Blitzy intel captured, site PR #340 merged, CTA standardization spec deployed. All learnings codified to MEMORY.md, ops/decisions.md, ops/strategy/blitzy-lessons.md, ops/strategy/2026-05-12-cta-audit.md, ops/outreach/2026-05-12-*.md, today's daily note, and long-term memory_store.
+  summary: >
+    Marathon day 1 of structured LinkedIn outreach. Started as office-hours diagnostic, evolved into
+    97-contact personalized outreach campaign across 4 pages. Voice iterated through 4 versions. Page 3 v2
+    compliance pattern locked (5-for-5 substantive engagement: Sunil, Steven, Dean, Martin, Chithra). 3 calls
+    booked (Art Dunal CFO, Sunil Aggarwal healthcare CCO, Francis Ofungwu partnership). Blitzy investigation
+    reshaped PP's GTM (complementary not competitive; consulting-replacement pricing; Operational Deployment
+    function; PE Operating Partner segment added; hiring sequence locked; category claim locked).
+    Site PR #340 merged adding CCO homepage section. CTA standardization codex prompt deployed.
+  open_tasks_carried_forward:
+  - Confirm Sunil Aggarwal Thu/Fri call slot
+  - Confirm Francis Ofungwu Wed May 13 11am PT or Thu May 14 8am PT slot
+  - Send Steven Cervantes HITL/HOTL chess reply (drafted)
+  - Track Martin Collyer simpler-diagnostic reply
+  - Send Dean Curtin design-partner question follow-up (drafted)
+  - Prep Art Dunal CFO+manufacturing wedge call (Thu or Fri)
+  - Page 4 sent today, watch for replies (Eiso, Vasek, Dan, Jeremiah, Amjad, Manoj InMail)
+  - Reach out to Rob Taylor (Silverton OP, warm contact, was COO of Rod's former company)
+  - Begin Phase 2 site rewrite after Thu/Fri calls produce real customer language
+  - Begin operator advisor recruitment (former FINRA examiner / Big 4 audit partner / F500 CCO)
+  decisions:
+  - Final outreach voice (v4): no em dashes, no "thanks for connecting", no "saw your post" fake hooks. Founder-to-founder or role-seat opener. One clean diagnostic with vertical-specific actions. "I'm finding most firms can't" soft observation. "I'm the founder of" not "I'm building." One binary closing question.
+  - Page 3 v2 compliance pattern locked (5-for-5)
+  - Don't pitch present-tense pain to hot-company founders (Christopher Harris lesson). Use future-tense regulated-enterprise scale risk.
+  - Engineers/SEs at agent companies are bad outreach targets (Brandon Looker lesson). CEOs/CTOs/Co-founders only.
+  - Blitzy reframe: PP complementary not competitive. Same procurement cycle, different layer.
+  - PP pricing: consulting-replacement, not SaaS. Pilot $25-50K, enterprise $50-500K/year, F500 strategic $500K-$2M/year.
+  - Category claim: "Pioneering the Agentic Authority Layer"
+  - PP hiring order: 1) Field CTO/Solutions Architect, 2) Forward Deployed Engineer, 3) PE OP Network Manager. NOT SDR/AE/CSM. Consulting titles.
+  - Add PE Operating Partners as 5th outreach segment. $500K-$2M/year per firm distributed across portfolio.
+  - Site PR #340 merged: CCO homepage section live with new category badge and "Talk to a compliance engineer" CTA.
+  - CTA standardization spec deployed via codex.
+  - Fintech CCO buyer trigger: agent action volume exceeds manual review capacity (Chithra intel).
+  - Healthcare CCO language gold: "critical auditability gap where traditional logging fails to provide indisputable proof of human oversight" (Sunil).
+  references:
+  - ops/outreach/2026-05-12-linkedin-page1.md
+  - ops/outreach/2026-05-12-linkedin-page2.md
+  - ops/outreach/2026-05-12-linkedin-page3.md
+  - ops/outreach/2026-05-12-linkedin-page4.md
+  - ops/outreach/2026-05-12-replies-log.md
+  - ops/strategy/blitzy-lessons.md
+  - ops/strategy/2026-05-12-cta-audit.md
+  - memory/2026-05-12.md
+  - https://github.com/permission-protocol/site/pull/340
+
+- id: '1502365028353970277'
+  title: OpenClaw
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: low
+  created_at: '2026-05-08'
+  updated_at: '2026-05-08'
+  archived_at: '2026-05-08'
+  resolution_artifact: Meta thread on Discord UX + OpenClaw thread lifecycle clarified
+  summary: >
+    Discord UI review (thread naming, rc-main clutter). Diagnosed model override
+    reset behavior between sessions (runtime-only, not persisted). Clarified
+    triage vs extract distinction. Confirmed /archive handles full context
+    persistence; /extract is the right pre-sleep command for active threads.
+  open_tasks: []
+  decisions:
+  - Model overrides are runtime-only; reset to default on session restart
+  - /extract before leaving active threads is the continuity pattern
+  - /triage = pulse check (no disk writes); /extract = structured harvest (persists to disk)
+  - Thread naming convention (e.g. [type] topic) would improve rc-main navigation
+
+- id: '1502383985878237214'
+  title: Scout Alerts — Signal Scanner
+  channel: scout-alers
+  status: ACTIVE
+  owner: charles-bot
+  priority: high
+  created_at: '2026-04-01'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Add cron failure escalation; consolidate duplicate scanners; decide on Reddit/HN comment posting workflow
+  resolution_artifact: null
+  archived_at: null
+  summary: >
+    Automated daily signal scanner for Permission Protocol. Runs 1-3x daily (5:06am + 8am
+    MDT crons), scanning HN/Reddit for AI agent deployment incidents, governance gaps, and
+    competitor launches. Posts scored signals to #scout-alerts (threshold ≥4/8) and drafts
+    outreach for hot signals (≥6/8). Has identified 30+ production incidents, 15+ competitor
+    launches, and 10+ narrative hooks. Key recurring signals: Optio, Blitzy, APM, G0,
+    Claude Code source leak. Two separate scanners (unified-signal-scan cron + scan-signals.sh)
+    sometimes overlap. Cron has failed silently at least twice with no escalation. Generated
+    Reddit/HN draft comments not known to be posted. Strong pattern of "gas pedal, no brakes"
+    industry narrative consistently validated.
+  open_tasks:
+  - Add cron failure escalation (scanner failed silently Apr 20 + Apr 30)
+  - Fix Brave API rate limit (429) hits that lose web search coverage
+  - Consolidate duplicate scanners (unified-signal-scan vs scan-signals.sh)
+  - Decide if Reddit/HN draft comments should actually be posted — workflow missing
+  - Consider weekend coverage (Sat/Sun skip = 28% downtime)
+  - Create signal-to-action pipeline for high-value targets (Blitzy, Optio creator, Cursor team)
+  decisions:
+  - Signal scan runs 1-3x daily, weekends skipped
+  - Relevance threshold: 4/8 for channel posting, 6/8 for automated outreach drafts
+  - Signals logged to pp-os/marketing/signals/YYYY-MM-DD.jsonl + HOT-SIGNAL.md
+  - Bot drafts Reddit/HN comments in builder voice — no posting workflow confirmed
+  - Scanner focus: AI coding agent deploys, agent security, agent governance, MCP ecosystem
+  - Two scanner implementations exist (cron + shell script), sometimes produce overlapping results
+- id: '1501984997949571112'
+  title: Debug 4 — Landing Page Audit & GTM Wedge
+  channel: debug-4
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-07'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 3x live site audits; page at 8.5/10 GTM-ready; 4 minor copy edits deferred
+  archived_at: '2026-05-08'
+  summary: >
+    GTM wedge decision locked: Deploy Gate leads, SQL is first proof, Finance/authority
+    is expansion. permissionprotocol.com audited 3x live. Page converged to 8.5/10.
+    Hero copy improved ("No AI ships without permission"), SQL reframed from wedge to
+    proof, Finance expansion narrative added. 4 remaining copy edits identified but
+    deferred at Rod's direction: hero "intercepts" → "blocks before merge", demo caption
+    "SQL injection" → "destructive migration", chip "Cryptographic receipts" → "Signed
+    receipts", hero line crypto claim softened.
+  open_tasks:
+  - (deferred) Hero still says "intercepts AI-written changes before execution" — should say "blocks before merge"
+  - (deferred) Demo caption still says "SQL injection" — should say "destructive migration"
+  - (deferred) Chip "Cryptographic receipts" → "Signed receipts"
+  - (deferred) Hero line "proves it cryptographically" → "produces a signed receipt proving who authorized the exact action"
+  decisions:
+  - Deploy Gate leads the landing page narrative; SQL is first proof, not first wedge
+  - Finance/authority expansion narrative — "Today it's production code. Next it's spend."
+  - Hero should claim "blocks before merge" not "intercepts before execution" (overclaims runtime)
+  - "Cryptographic receipts" belongs below the fold — hero chips should say "Signed receipts"
+  - Demo caption should say "destructive migration" not "SQL injection" (SQL injection = AppSec, not deploy authority)
+  - Page is GTM-ready at 8.5/10; remaining 4 copy edits are non-blocking for first outreach
+
+- id: '1501350332846964878'
+  title: Wedge Opus 4.7
+  channel: wedge-opus-4-7
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: LinkedIn invites sent May 8 (Ashwin/Mercury, Trevor/Gusto, Jim/Datavant). Cold email drafts ready. Follow-up cron May 12.
+  archived_at: '2026-05-08'
+  summary: >
+    Strategic sprint on SQL wedge positioning. Decision: SQL wedge as first mover,
+    deploy gate as engine, merge-path as expansion (Stripe playbook). Site reviewed
+    live. 3 critical fixes flagged. Outreach list segmented into Tier 1-4 from
+    LinkedIn Sales Navigator export. 3 personalized cold email drafts produced
+    (Mercury/Ashwin, Gusto/Trevor, Datavant/Jim). LinkedIn connection invites sent
+    to all 3 on May 8. Plan: email next week if no acceptance.
+  open_tasks:
+  - Confirm 3 site fixes shipped (empty SHA-256 on /r/demo, SQL receipt mismatch, founder CTA /contact?src=receipt-demo)
+  - Monitor LinkedIn acceptance — email Ashwin/Trevor/Jim ~May 12-15 if no acceptance
+  - De-dupe AppSec Primary (26) and Platform Primary (32) lists (overlaps on Jeevan Singh, Branden Wagner, Lee Laslo)
+  outreach_log:
+  - date: '2026-05-08'
+    action: LinkedIn connection invite sent
+    targets:
+    - name: Ashwin Baskaran
+      company: Mercury
+      title: VP Engineering
+    - name: Trevor Snow
+      company: Gusto
+      title: Head of IT & Security TPM
+    - name: Jim Oberholz
+      company: Datavant
+      title: VP Eng Delivery & Ops
+    next_step: Email if not accepted by ~May 12-15
+  decisions:
+  - SQL wedge as first mover, deploy gate as engine, merge-path as expansion (not the other way)
+  - Product category stays constant (authority layer for agentic software delivery); wedge demo rotates
+  - Wave-based send — 3 first, score replies, then 7 more (don't blast all at once)
+  - Personalized openers per company (Mercury Haskell/SQL blog, Gusto AI eng hiring, Datavant HIPAA tokenization)
+  - Loom > calendar link as primary CTA (lower friction)
+  - Follow-up rule — Day 4-7 if no reply: "Did this get buried? Loom is 90 seconds, still curious."
+  - Scoring: 2+ substantive replies = scale; 0 replies after follow-up = rewrite before scaling
+  - De-dupe AppSec Primary + Platform Primary lists before Wave 2
+
+- id: '1501461772622762064'
+  title: Twitter
+  channel: twitter
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-05-06'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Daily Founder Notes cron live; cron silent-failure bug diagnosed and fixed
+  archived_at: '2026-05-08'
+  summary: >
+    Designed daily social content workflow. Daily Founder Notes cron runs at 8:30 PM
+    Denver, posts Twitter pick + LinkedIn version to #founder-notes (channel 1501468743656538273),
+    model gpt55. Format: plain-text messages (no code blocks) for mobile copy-paste.
+    Style options: Elon-short, Sam-reflection, founder diary, wildcard, recommended pick.
+    Cron silent-failure diagnosed: isolated agentTurn job + legacy sessionKey binding = 6ms
+    no-op; fixed by clearing sessionKey + adding announce delivery mode.
+    GitHub Merge Queue implementation discussed (step-by-step provided) but not implemented.
+  open_tasks: []
+  decisions:
+  - Daily Founder Notes cron at 8:30 PM Denver to #founder-notes; model gpt55 for voice quality
+  - Post format is plain-text (no code blocks) for clean mobile copy-paste
+  - Style options per post: Elon-short, Sam-reflection, founder diary, wildcard, recommended pick
+  - Isolated agentTurn cron with legacy sessionKey binding silently no-ops (6ms) — fix by clearing sessionKey and adding announce delivery
+  - GitHub Merge Queue discussed as upgrade path for PP; detailed steps in thread archive; not yet implemented
+- id: '1501350493857779873'
+  title: Wedge GPT 5.5 (SQL Migration Positioning)
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: PRs #288 (site), #467, #469 (app) merged and deployed
+  archived_at: '2026-05-08'
+  summary: >
+    SQL migration wedge positioning sprint. Shifted PP homepage to "No AI ships without permission"
+    framing. Demo flow updated to production SQL migration story (cursor-agent, prod-sql-migration-v1,
+    users.email FROM PROD). Deploy Gate positioned as platform; SQL migration is first beachhead.
+    All 3 PRs merged and verified live end-to-end. Minor copy note: homepage mini-receipt card
+    still says POLICY prod-deploy-v2 (non-breaking, deferred).
+  open_tasks:
+  - (minor) Homepage mini-receipt card still says POLICY prod-deploy-v2 — flagged as non-breaking, deferred
+  decisions:
+  - Deploy Gate is the platform; production SQL migrations are the first beachhead wedge
+  - SQL wedge framing — migration file → PR → required check → signer → receipt (not scanning PRs for SQL)
+  - No AI ships without permission is the category homepage H1; subhead does precision work
+  - SQL only blocks GitHub-path migrations; direct agent DB access is separate control surface (MCP/tool-call layer)
+  - Hero visual must show evidence (SQL receipt) not workflow (green checkmark)
+  - Framing is No signature. No production migration. not We scan PRs for SQL
+
+- id: '1501281073336680630'
+  title: New Lead Flow
+  channel: new-lead-flow
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: PRs #452, #459, #461, #462, #464, #465 (app) + #286, #287 (site) merged
+  archived_at: '2026-05-08'
+  summary: Frictionless signup experiment shipped end-to-end. Email-first low-friction signup (no verification), Google signup wired conditionally, /signup routing fixed (public/bare), site CTAs shifted to Start free, quickstart rewritten Deploy Gate-first, onboarding resumable with server-side persistence, Discord signup notifications live, PP policy fixed (scan added diff lines only). Durable goal cron stopped.
+  open_tasks: []
+  decisions:
+  - Email-first frictionless signup — no verification, straight to /onboarding (curiosity signal experiment)
+  - Google signup is env-conditional — activates only when GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET present
+  - /signup must be public in middleware + bare render; authenticated users redirect to /onboarding
+  - Site CTAs shifted from install-first to Start free → /signup
+  - PP secret detection scans added diff lines only — removing old API key examples no longer hard-denies
+  - Signup notifications via DISCORD_ALERT_WEBHOOK_URL (email, provider, user id, workspace id)
+- id: '1500236856078504166'
+  title: PP External Activation Goal
+  channel: goals
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-02'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Enforcement primitive hardened (PRs #393-#407 merged, pp-demo PR #47 smoke green). Goal paused pre-outreach by Rod on May 5.
+  archived_at: '2026-05-08'
+  summary: >
+    7-day goal to achieve one real external PP activation. Hardened enforcement primitive
+    (single-signature loop, GitHub App token scope fix, synchronous status posting, duplicate
+    request dedupe, expired approval self-service recovery, install redirect origin fix).
+    pp-demo PR #47 smoke: Deploy Gate blocked → one signature → receipt rcpt_dg_cmoq5qlx3000pd8j6cet7zlll → gate cleared.
+    Outreach candidates identified (Kasper Junge/Ralphify, Boris Cherny, Andrej Karpathy,
+    Mervin Praison, Faruk/mfyz) and activation package prepared. Rod paused goal on May 5
+    before any outreach was sent. No external activation occurred.
+  open_tasks: []
+  decisions:
+  - GitHub App token must use statuses:write only — broader token causes silent post-approval failure
+  - Post-approval GitHub status posting must be synchronous, not deferred to background worker
+  - Scope identity key (canonicalizeScope + buildScopeIdentityKey) must be used consistently
+    across webhook helper and verify endpoint to prevent duplicate deploy requests
+  - Carry-forward approval is a separate non-fatal path from commit status post (PR #396)
+  - PP deploy primitive is host-agnostic — Render/Vercel/Fly are optional adapters, not core requirements
+  - Expired approval self-service recovery shipped (PR #400)
+  - Install redirect must use NEXT_PUBLIC_APP_URL / PP_APP_BASE_URL then x-forwarded-host, not request.url or NEXTAUTH_URL
+  - External activation goal paused pre-outreach; activation package preserved for future use
+
+- id: '1499923559877971988'
+  title: CiCD
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-02'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: PRs #392 (app), #283 (site), #414 (carry-forward) merged and deployed
+  archived_at: '2026-05-08'
+  summary: Pivoted Deploy Gate to policy-gated auto-merge for AI PRs. PP stays in its lane (authority check); GitHub owns the merge. Carry-forward approval shipped for merge-base-only updates. All error paths fail-closed.
+  open_tasks:
+  - 'Passive monitoring: watch Render logs for [carry-forward] lines on next real branch update'
+  decisions:
+  - GitHub native auto-merge — PP sets authority check, GitHub owns the merge (no direct REST merge fallback)
+  - Fail-closed for production-sensitive paths — PP API error = fresh review required, no silent bypass
+  - Approval carry-forward on merge-base updates only (all new commits must be merge commits with 2+ parents)
+  - Any single-parent commit after approval resets the PP check to pending
+  - checkIsBaseOnlyUpdate fails closed — every error path logs FAIL-CLOSED at ERROR level and returns false
+  - Deploy Gate narrative = CI proves it works; PP proves it's authorized
+- id: '1499829176646111302'
+  title: PP Approval Brief Quality
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-02'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: PRs #440, #441, #442 merged; goal cron stopped
+  archived_at: '2026-05-08'
+  summary: 'Goal to drive PP approval-brief quality from ~7.5/10 to 9+/10 via iterative
+    live PRs. Shipped groundedBrief pipeline, double-punctuation fix (PR #440),
+    enrichment fallback crash fix (PR #442). Goal cron stopped by Rod on May 5
+    after engineering work reached stable state. Brief quality rubric codified.'
+  open_tasks: []
+  decisions:
+  - groundedBrief as canonical narrative — store affectedFlow+expectedImpact+evidence
+    refs directly, not compressed into legacy ConsequenceBrief fields
+  - Brief quality rubric: named flow, signer-grade consequence, concrete yes/no verification,
+    no "appears intended" for mapped flows, GitHub comment and PP page must align
+  - Enrichment fallback: deterministic bullets on Gemini failure, never crash to raw error comment
+  - formatBecauseClause() prevents double-punctuation artifacts
+  - PRs #440 #441 #442 all merged; pipeline stable
+- id: '1499848263459672225'
+  title: New User Flow
+  channel: new-user-flow
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-04'
+  updated_at: '2026-05-05'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 'Goal closed; cron stopped; pp-demo PR #47 activation smoke green with receipt rcpt_dg_cmoq5qlx3000pd8j6cet7zlll'
+  archived_at: '2026-05-05'
+  summary: 'Permission Protocol new-user flow goal completed. Returning-user install recovery passed; post-install guidance shipped and protected by tests; public receipt pages fixed and verified without auth; controlled pp-demo PR #47 activation smoke is fully green with Deploy Gate SUCCESS, PP status SUCCESS, and receipt-backed evidence. Optional fresh-new-PR smoke deferred as separate QA/healthcheck, not a closure blocker.'
+  open_tasks: []
+  decisions:
+  - 'Close the Permission Protocol new-user-flow goal after controlled pp-demo PR #47 smoke passed.'
+  - 'Stop the recurring goal cron for New User Flow.'
+  - 'Treat a fresh brand-new PR smoke as optional QA/healthcheck, not a blocker for this goal.'
+- id: '1498815098376950001'
+  title: Doctor2
+  channel: doctor2
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-04-28'
+  updated_at: '2026-05-01'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: "Config fixed, 8 crons purged (26\u219218)"
+  archived_at: '2026-05-01'
+  summary: "OpenClaw config crisis resolved (invalid channels block in agents.list).\
+    \ Updated 2026.4.15\u21922026.4.26. Full cron audit conducted \u2014 8 fluff jobs\
+    \ purged, roster slimmed from 26\u219218. Xdares crons killed (Maria has operational\
+    \ control). Core value stack identified: E2E health checks, Factory pipeline,\
+    \ daily brief, nightly memory."
+  open_tasks: []
+  decisions:
+  - "Xdares crons (goal-xdares-seo-main, xdares-seo-goal-executor) killed \u2014 Maria\
+    \ owns Xdares ops"
+  - 'Core valuable crons: pp-onboarding-healthcheck, governance-integrity-check, Token
+    Health Check, factory pipeline, rod-daily-briefing, memory consolidations'
+  - "8 fluff crons purged \u2014 AI busywork LARPing as a company"
+  - Prompt caching at 64% on Opus is working correctly (cost/latency savings)
+- id: '1499929325141753887'
+  title: Agent Marketplace
+  channel: agent-marketplace
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-02'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 14 research artifacts; both goal-executor crons stopped May 5
+  archived_at: '2026-05-08'
+  summary: |
+    Two parallel goal-executor loops ran May 2-5. Agent-marketplace thesis
+    invalidated by Microsoft AGT v3.3.0 eating runtime-SDK, OWASP, plugin-signing,
+    and CI gate wedges. PP regulated-receipts loop produced compliance brief,
+    competitive teardown, 25-target list, receipt schema (Ed25519+canonical JSON),
+    buyer interview script, regulatory crosswalk, and advisor shortlist.
+    Strategic pivot: consequence-bearing action receipts (escrow/rollback/refund)
+    as PP wedge, not neutral agent signer. Advisors: Mazzini + Holtzman GO,
+    Raheja/Staheli DROP (still sitting gov), Sharma buyer-interview track.
+    No external outreach was sent. Both crons stopped by Rod on May 5.
+  open_tasks: []
+  decisions:
+  - Agent marketplace thesis killed — too broad, commoditized, no defensible primitive
+  - Microsoft AGT v3.3.0 killed PP-as-runtime-SDK, OWASP mapping, plugin signing, CI gate wedge
+  - PP post-AGT positioning — independent signer on top of Microsoft/AWS/Google governance layers
+  - Surviving wedge — consequence-bearing receipts (escrow/rollback/refund), regulated verticals, cross-stack portability
+  - Pre-AAIF outreach drafts superseded by pivot — do not send without full rewrite
+  - Advisor GO list — Mazzini (EU AI Act lead, post-Commission Jul 2024) and Holtzman (HHS OCR, semi-retired Dec 2023)
+  - Sharma reclassified as buyer-interview track (SVP MRM Citigroup — dual-role risk)
+  - Raheja (OCC) and Staheli (White House OSTP) dropped — sitting federal roles
+- id: '1501301479703576766'
+  title: Opus
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 18 → 14 active crons; daily stack 5:00–5:21am MDT; 3 removed, 4 cadence-reduced
+  archived_at: '2026-05-08'
+  summary: >
+    Cron infrastructure audit and optimization sprint (May 5). Removed 3 dead crons
+    (mobile-qa-daily, cron-watchdog, pp-outreach-weekly-analysis). Reduced cadence
+    on 4 (factory sensors daily 9am, system-health-monitor 3x/day, unified-signal-scan
+    once/day). Rescheduled all daily crons to 5:00–5:21am MDT in 3-minute intervals.
+    Fixed weekly-transcript-archive model to gemini-lite (closed Opus fallback exposure).
+    Roster slimmed from 18 → 14 active, scheduled runs cut ~40%.
+  open_tasks: []
+  decisions:
+    - Cron roster trimmed 18 → 14 active; ~40% reduction in scheduled runs
+    - Daily stack MDT 5am block — governance(5:00), healthcheck(5:03), signal-scan(5:06), token-health(5:09), daily-briefing(5:12), factory-error-sensor(5:15), factory-github-sensor(5:18), system-health-monitor(5:21)
+    - Removed mobile-qa-daily (broken, mobile not in active dev), cron-watchdog (watchdog itself broken), pp-outreach-weekly-analysis (campaign paused)
+    - Factory sensors (error+github) reduced to daily 9am (was hourly)
+    - system-health-monitor reduced to 3x/day 8am/12pm/6pm (was hourly)
+    - unified-signal-scan reduced to once/day 8am (was 2x/day)
+    - weekly-transcript-archive model set to gemini-lite (closed Opus fallback exposure)
+
+- id: '1501338796002644138'
+  title: Openclaw Update (5.4)
+  channel: openclaw-update
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: OpenClaw upgraded 2026.4.29 → 2026.5.4; owner access configured; gateway verified
+  archived_at: '2026-05-08'
+  summary: >
+    Rod initiated upgrade check. Identified latest stable as 2026.5.4.
+    Reviewed breaking changes (Discord plugin externalized, exec/fs tool profile security change,
+    threadBindings migration). Upgraded via npm, ran doctor --fix. 11 plugins loaded, 0 errors.
+    Set commands.ownerAllowFrom for Rod's Discord ID. Gateway restarted — startup noticeably faster
+    (deferred sidecars, bundled plugin metadata fast-path). Memory-lancedb "not registered" warning
+    was a timing artifact, not a real issue.
+  open_tasks: []
+  decisions:
+  - Upgraded OpenClaw from 2026.4.29 to 2026.5.4 (go straight to 5.4, not 5.3 — 5.3 had Discord token silent failure bug)
+  - Discord plugin is now external npm package — reinstall required after upgrade
+  - Security change (5.2+): tools.exec and tools.fs no longer implicitly widen restrictive tool profiles
+  - threadBindings config migration — legacy toggles replaced by threadBindings.spawnSessions
+  - commands.ownerAllowFrom set to discord:715570578555273288 (Rod's Discord ID)
+  - Memory-lancedb "not registered" doctor warning is a timing artifact during restart, not a real failure
+  - Gateway startup faster in 5.4 via deferred non-readiness sidecars and fast-path bundled plugin metadata
+
+- id: '1501266352462368889'
+  title: Queue UX
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-05'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  archived_at: '2026-05-08'
+  resolution_artifact: PRs #449, #460, #463, #466, #468 merged
+  archived_at: null
+  summary: >
+    Full mobile UX redesign of the Deploy Queue and Approval pages. Reframed Queue
+    around signed authorization state (not generic metrics). Shipped Needs Signature /
+    Awaiting Merge tabs, state-specific card CTAs, signing surface pass on approval
+    page, dashboard posture state machine, and newest-first ordering across all lists.
+    PR #451 rejected (Ready to Merge semantics wrong); replaced by #460. Final PR
+    #468 (newest-first follow-up) confirmed merged by Rod.
+  open_tasks: []
+  decisions:
+  - Queue page reframed around signed authorization validity, not queue metrics
+  - Two operational buckets — Needs Signature (signer decision required) and Awaiting Merge (PP-approved, not merged)
+  - Card state model — approval valid/stale, checks passing/pending/failing/unknown, signer identity when available
+  - State-specific CTA — Open PR / View Checks / View Failure / Re-review / Review & Sign
+  - Approval page redesigned as Signing Summary — risk/env/capability/repo/requester/commit/expiry first
+  - Decision Brief above evidence/debug; Verify Before Signing before action bar
+  - Dashboard top block is a posture state machine (setup incomplete to healthy to degraded)
+  - Newest-first ordering aligns with GitHub convention; Changed Files intentionally excluded
+  - Mobile repo filter collapsed to single All repos dropdown (not chip rail)
+  - Do not fake check state or signer identity — show Checks unknown / Signed by unknown if data unavailable
+
+- id: '1501990957145391185'
+  title: DeepSeek Test 22
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-07'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 'PRs #470-475 (app) + #291, #292, #295 (site) merged'
+  archived_at: '2026-05-08'
+  summary: >
+    GTM wedge strategy finalized (SQL demo, Deploy Gate narrative, Finance deferred).
+    Full marketing site audit and fixes shipped (PRs #291, #292). Demo flow redesigned:
+    iPhone phone frame on all 5 demo pages, consistent DROP TABLE email_archive CASCADE SQL,
+    responsive (frame on desktop, clean card on mobile). CTAs changed from
+    Install GitHub App to Sign up free to app.permissionprotocol.com/signup (PR #474 app,
+    PR #295 site). Deploy Gate removed from nav/copy. cryptographic receipt changed to signed receipt.
+  open_tasks: []
+  decisions:
+  - SQL leads the demo. Deploy Gate/signer-of-record leads the narrative. Finance waits for 5+ design partners.
+  - Demo CTAs shifted from install-first to signup-first (Sign up free -> /signup)
+  - All 5 demo pages use iPhone phone frame on desktop; clean card on mobile (no phone-in-a-phone)
+  - DROP TABLE email_archive CASCADE is the canonical SQL example across all demo pages
+  - Deploy Gate removed from nav and body copy; cryptographic receipt -> signed receipt
+  - Design Partner page restored at /design-partner; Demo page restored at /demo
+
+- id: '1502048487184011324'
+  title: Opus Wedge
+  channel: opus-wedge
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-08'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: >
+    CFO and SQL wedge outreach reply session (May 8). Handled 6 inbound replies:
+    Joel Trammell (checking with CFOs, nudge question provided), Jared Toren (redrafted
+    to unlock-framing for cautious non-adopters), HJ Wassenaar (connector ask, story hook),
+    Krystle Spinazzola Cook (low-odds signal check flip), Eugene Diachenko (2aT peer conversation),
+    David Asseoff (skipped, wrong fit). Key strategic insight: two market segments — active deployers
+    need governance, cautious non-adopters need PP as the unlock. 5-day nudge cron set for May 12.
+  open_tasks: []
+  decisions:
+  - Two market segments for CFO wedge: active deployers (governance needed) vs cautious non-adopters (PP as adoption unlock)
+  - For cautious non-adopters, ask what governance would be required to deploy agents, not whether they have agents
+  - Joel Trammell is checking with accounting firm CFOs; nudge question: do they know what employees' AI agents are authorized to spend and can they prove it
+  - Jared Toren reply shifted to unlock framing — what would make you comfortable letting an agent touch finance
+  - HJ Wassenaar: connector ask, story about company replacing engineers with AI as wedge hook
+  - David Asseoff skipped — capital advisor, wrong wedge entirely
+  - 5-day nudge cron set for May 12 3pm MDT (CFO Wedge Outreach cron ID 02df0c0b)
+
+- id: '1501683515908034670'
+  title: GPT Demo Video
+  channel: gpt-demo-video
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-06'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Video live on permissionprotocol.com + posted on social media (v12b, Eric voice, 70s)
+  archived_at: '2026-05-08'
+  summary: >
+    Full production demo video built for Permission Protocol — Permission Protocol
+    governing AI-generated SQL before it touches production data. Iterated v1-v12b:
+    script, storyboard, Space Grotesk brand font, clean UI panels, TTS voices,
+    thumbnail, 30s social teaser, social copy pack. Final cut v12b (Eric ElevenLabs
+    voice, 70.23s) merged via PR #294. Landing page deployed. Video posted on social
+    media by Rod. Both crons stopped on completion.
+  open_tasks: []
+  decisions:
+  - v12b is the final cut (Eric ElevenLabs voice, 70.23s, Space Grotesk brand font, proper end card)
+  - 30s social teaser (v10) approved for Twitter/LinkedIn
+  - Social copy pack approved for public posting
+  - Video deployed to permissionprotocol.com via PR #294 (after conflict resolution from #293)
+  - Both crons disabled on task completion
+
+- id: '1499540433632624730'
+  title: External Analysis
+  channel: rc-main
+  status: ACTIVE
+  owner: rod
+  priority: high
+  created_at: '2026-04-30'
+  updated_at: '2026-05-02'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Rod submits GitHub Verified Creator support ticket + confirms PR
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Responded to external investor analyst''s 4/10 diligence report on Permission
+    Protocol.
+
+    Addressed 8 of 9 objections in one afternoon: fail-closed defaults, GitHub Environments
+    comparison,
+
+    /trust page (SOC 2 Q3 2026), public /stats, status.permissionprotocol.com, README
+    repositioning,
+
+    Marketplace v2.1.0, pp-cli + receipt-spec open-sourced. Remaining: Verified Creator
+    support ticket
+
+    (Rod''s manual action) and Design Partners PR #278.
+
+    '
+  open_tasks:
+  - Submit GitHub Verified Creator support ticket and log case number
+  - Merge PR
+  decisions:
+  - 8/9 analyst objections addressed in one afternoon via code/tooling (not slides)
+  - '"Safety > Crypto" framing used in README repositioning (Chad Bayer signal)'
+  - pp-receipt-v1 open spec + pp-cli shipped as open source to address "no SaaS lock-in"
+    objection
+  - Domain permissionprotocol.com was already verified at GitHub org level (TXT record
+    existed)
+  - Verified Creator badge requires separate GitHub support ticket submission
+  - Design Partners section gracefully renders with 0/1/2/4+ logos (ready for first
+    logo)
+- id: '1499164041363587092'
+  title: Sales
+  channel: sales
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-04-30'
+  updated_at: '2026-04-30'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: '2026-04-30'
+  summary: Tracked Sprint 5 outreach execution. Delivered enrichment kits, TOP-10
+    Gmail drafts, and successfully sent LinkedIn Day 7 soft nudges to Jerry, Ishaan,
+    and Malte using the corrected Authority Voice.
+  open_tasks: []
+  decisions:
+  - For high-profile peers/founders, use the Authority Voice ("I built Permission
+    Protocol") and ask a direct, binary diagnostic question combined with "Do you
+    have 15min to chat?".
+- id: '1489650324879708351'
+  title: Onboarding Flow QA
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-04-03'
+  updated_at: '2026-04-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: "PRs #288\u2013#308 merged"
+  archived_at: '2026-04-08'
+  summary: Overhauled the Permission Protocol onboarding flow into a deterministic,
+    server-orchestrated "Hello World" loop. Squashed race conditions and built the
+    Control Room UI with PostHog telemetry.
+  open_tasks: []
+  decisions:
+  - Activation = blocked action -> signer decision -> receipt (not just App installation).
+  - State machine locked steps must be resumable to self-heal.
+  - GitHub App installation callbacks require exponential backoff when querying repos
+    due to internal propagation delays.
+  - Legacy auto-setup requiring administration:write is permanently deprecated in
+    favor of scoped contents:write and workflows:write.
+- id: '1490719864762142963'
+  title: QA
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-04-06'
+  updated_at: '2026-04-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 'E2E test run on pp-demo PR #38'
+  archived_at: '2026-04-08'
+  summary: E2E zero-to-merge test executed on pp-demo. Reached blocked PR state successfully.
+    UI automation for approval step requires refinement.
+  open_tasks:
+  - Refine UI automation for the approval step (selectors or session handling for
+    /approve/:id)
+  decisions:
+  - Use installed Google Chrome + disable-blink-features to bypass bot detection
+  - Persist Playwright state to .auth/chrome_profile
+  - Target permission-protocol/pp-demo for E2E tests
+- id: '1487549275658518769'
+  title: See Try Pay
+  channel: rc-main
+  status: ARCHIVED
+  owner: Charles
+  priority: critical
+  created_at: '2026-03-29'
+  updated_at: '2026-03-29'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 'PRs #270-277 (app), #239 (site)'
+  archived_at: '2026-03-29'
+  summary: "Built complete See-Try-Pay activation framework. Auto-create test PR,\
+    \ approval UX with signer identity, post-approval conversion block, personal ownership\
+    \ copy, $300/mo pricing. Key insight: copy + urgency > features. KPI: approval\
+    \ \u2192 second repo installed.\n"
+  open_tasks: []
+  decisions:
+  - Activation before monetization
+  - "Force the \"oh shit\" moment \u2014 blocked action must happen in <2min"
+  - Stripe/pricing work is paused until SEE+TRY proven
+- id: '1485660866098630686'
+  title: Full Flow
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-26'
+  updated_at: '2026-03-28'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  archived_at: null
+  summary: "Completed all 4 Auditor 2 tasks from Mar 24 closure review: (1) PR #243\
+    \ anonymous demo mode merged, (2) full loop validated on production, (3) GitHub\
+    \ bot Unicode fix merged (PR #265 \u2014 stable HTML comment marker for encoding\
+    \ resilience), (4) README updates merged for deploy-gate#37 and pp-demo#36. Demo\
+    \ PR #35 is the new blocked target.\n"
+  open_tasks: []
+  decisions:
+  - Bot comment detection uses hidden HTML marker (`<!-- pp-status-comment -->`) for
+    encoding resilience
+  - Demo PR
+  - Full anonymous demo flow verified end-to-end
+- id: '1486453781821395135'
+  title: Launch Prep
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-25'
+  updated_at: '2026-03-28'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Pivoted HN launch from cold Thursday post (restricted account) to "Break
+    It" private beta with 15 BlackLocus alumni. Researched all BL alumni on LinkedIn,
+    drafted 15 personalized SMS across 3 tiers, stress tested demo PR #32 (fixed expired
+    deploy request, pushed production DB migration for scarier review). Created copy-paste
+    SMS doc and beta tester guide. Handled first tester objection with universal enforcement
+    primitive pivot.
+
+    '
+  open_tasks: []
+  decisions:
+  - "\"Break It\" wedge > cold HN post \u2014 engineers respond to challenges, not\
+    \ pitches"
+  - "15 SMS across 3 tiers \u2014 AI/Agent relevance, hardcore engineers, eng leadership"
+  - "2nd-degree BL alumni \u2014 let 1st-degree recruit them, not cold DMs"
+  - "Demo PR needs periodic refresh (24h TTL) \u2014 close/reopen workaround"
+  - PP is a universal enforcement primitive, not just a GitHub wrapper
+- id: '1486168290484293652'
+  title: Airtanle xpromo
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created_at: '2026-03-26'
+  updated_at: '2026-03-28'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: "Clean archive \u2014 no durable decisions or tasks."
+  archived_at: null
+  summary: Exploratory cross-promotion thread. No actionable decisions or open tasks.
+  open_tasks: []
+  decisions: []
+- id: '1486772566382346380'
+  title: Linkedin Posts
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-26'
+  updated_at: '2026-03-26'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: LinkedIn outreach strategy for HN launch. Transitioned to targeting local
+    CISOs with an async architecture teardown pitch.
+  open_tasks: []
+  decisions:
+  - Target active CISOs/VP Engs for architecture teardowns, not retired executives.
+  - Use an asynchronous CTA instead of asking for a 15-minute call.
+  - Prioritize 1st-degree connections and local Boulder/Denver targets.
+  - Send governance-framework GitHub repo to technical targets.
+- id: '1486087599486668984'
+  title: Quick bugs
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-24'
+  updated_at: '2026-03-25'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Rapid-fire bug fix sprint during HN launch prep. Fixed 5 PRs across 3\
+    \ repos \u2014 auto-select company on review page, receipt mobile overflow, deploy-gate\
+    \ README badge, marketing site mobile hero + PWA removal, and full launch polish\
+    \ (nav rename, demo link, fake metrics, badges, hero line breaks). Also resolved\
+    \ Vercel team access for cgoldber82."
+  open_tasks: []
+  decisions:
+  - Auto-select company via CustomEvent dispatch pattern (not page reload)
+  - PWA install belongs on app.permissionprotocol.com only, not the marketing site
+  - Hero headline should use explicit <br /> for the Three Questions format
+  - Fake metrics replaced with provable facts (Ed25519, MIT)
+  - Request Access renamed to Contact across all surfaces
+- id: '1485658452675006494'
+  title: Demo Gif
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-23'
+  updated_at: '2026-03-24'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Built reproducible demo recording environment for PP HN launch. Created
+    reset-demo.sh for pp-demo repo, diagnosed and fixed dual bot comment bug (emoji
+    encoding broke update-in-place), shipped fix in app PR
+  open_tasks: []
+  decisions:
+  - "pp-demo is the canonical demo repo \u2014 no duplicates"
+  - reset-demo.sh produces a clean single-PR recording state
+  - Bot comment search uses 'Permission Protocol' without emoji for encoding resilience
+  - Two browser profiles recommended for recording (GitHub + PP Dashboard)
+- id: '1484266387579994314'
+  title: '404'
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Fixed unbranded Next.js 404 page by implementing a custom client-side `not-found.tsx`
+    matching the PP design system.
+  open_tasks: []
+  decisions:
+  - '`not-found.tsx` should use client-side navigation (`onClick={() => router.push("/")}`)
+    to avoid type conflicts with PP`s custom `<Button>` component.'
+- id: '1483894208656969850'
+  title: Back to PR Button
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created_at: '2026-03-18'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Fixed "Back to PR" button opening in a chromeless popup window instead
+    of a new tab. Diagnosed popup context inheritance (approval page opened from Slack/email)
+    and implemented a programmatic anchor click fix in PR #199.'
+  open_tasks: []
+  decisions:
+  - When an app is opened in a chromeless popup window, target="_blank" links inherit
+    the popup style instead of opening a proper tab.
+  - The escape hatch is to programmatically create a detached <a> element, append
+    it, click it, and remove it.
+- id: '1483129687344680960'
+  title: 1st Competitor
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Full competitive response to Guard0/g0. Built Three Questions positioning,
+    VOICE.md, 3 marketing docs + PDFs, permission-protocol/cli repo (5 issues), CLI
+    scaffold PR merged, partners page live (permissionprotocol.com/partners), homepage
+    refreshed with Three Questions hero, blog post published (scanning-isnt-control).
+    Discovery to deployment in one session.
+  open_tasks: []
+  decisions:
+  - 'PP positioning: Assessment identifies problems, governance prevents them'
+  - 'Three Questions: Who approved it? What stops it? Can you prove it?'
+  - CLI in new repo (permission-protocol/cli), not monorepo
+  - "Voice rule: be clear, not clever \u2014 codified in VOICE.md + SOUL.md"
+  - Guard0 = complementary (low overlap), Onyx = real threat (medium-high)
+  - One-liner PLG (pp-scan .) is highest-leverage dev tool to build
+- id: '1483155946623733853'
+  title: Marketing Vs App [UNIFY]
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Full URL consolidation of Permission Protocol review surfaces. Audited
+    both codebases, wrote spec, built 7 PRs across 2 repos. Ported marketing UX to
+    app (dashboard + detail page + mobile), then killed marketing review/auth/API
+    proxy layer (-6,116 lines). All redirects verified live.
+  open_tasks: []
+  decisions:
+  - All authenticated review/approve workflows consolidated to app.permissionprotocol.com
+  - Marketing site = selling only (landing, pricing, docs, blog, public receipts)
+  - Receipt page (/r/[id]) stays on marketing site (public, unauthenticated)
+  - GitHub CI status check URLs now point to app, not marketing
+  - next-auth removed from marketing site
+  - 5 permanent redirects added (review, review/:id, login, approve/:id, replay/:id)
+- id: '1483138256613937213'
+  title: Obsidian
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Set up Obsidian as a browsable UI for Charles's workspace. Pre-configured
+    .obsidian/ vault with bookmarks, daily notes, dark theme. Fixed Windows long-filename
+    issue. Deployed to both Rod's Windows PC (git clone + Obsidian Git auto-pull)
+    and Rod's MacBook Air (same setup via Homebrew + gh auth). Both machines auto-sync
+    every 5 minutes.
+  open_tasks: []
+  decisions:
+  - Workspace backup repo (charles-workspace-backup) used as Obsidian sync source
+  - Obsidian Git plugin for auto-pull every 5 min (no push from Rod's machines)
+  - Removed files with Windows-incompatible long filenames from repo
+  - Rod has a new MacBook Air with Tailscale + Homebrew + gh CLI configured
+- id: '1483125897161605121'
+  title: OpenClaw Update
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Updated OpenClaw from 2026.3.2 \u2014 2026.3.13. Backed up workspace +\
+    \ config pre-update. Ran doctor --fix. Reviewed all changes relevant to our setup.\
+    \ Explored macOS/iOS/Android apps. Assessed mobile QA impact (none for wired WebDriver)."
+  open_tasks: []
+  decisions:
+  - OpenClaw updated to 2026.3.13 from 2026.3.2
+  - Config backup at ~/.openclaw/openclaw.json.backup-pre-update-2026-03-16
+  - openclaw doctor --fix added to maintenance toolkit
+  - "Mobile QA pipeline unaffected by update \u2014 USB + WebDriver is the right approach"
+  - macOS DMG available on GitHub releases; iOS app in internal preview
+- id: '1483844724191264778'
+  title: bugs (PP merge loop)
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-18'
+  updated_at: '2026-03-18'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Root-caused and fixed PP merge blocker: strict mode on rulesets invalidated
+    approvals when main advanced, and SHA-bound receipts broke carry-forward. Fixed
+    with two-ruleset pattern (PP strict OFF, Build strict ON), docs update (deploy-gate
+    PR #23), backend carry-forward fix (app PR #197), and 3 issues tracked on board
+    (#21, #22, #196).'
+  open_tasks: []
+  decisions:
+  - Authorization checks (PP) should never use strict mode
+  - Two-ruleset pattern is recommended setup for all PP users
+  - Carry-forward should auto-issue new signed receipts, not reuse old ones
+  - 'Product-level fix: docs must guide users away from strict footgun'
+- id: '1482835612909306130'
+  title: /drploy-date
+  channel: control-room-2
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-15'
+  updated_at: '2026-03-15'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Deploy-gate repo cleanup sprint. Investigated 2 open issues (#12 re-run\
+    \ bypass, #19 review URL) \u2014 both already fixed by v2 rewrite and PR #20.\
+    \ Closed both. Deleted 10 stale branches from merged PRs. Merged PR #18 (MIT license)\
+    \ and PR #140 (app pr-gate env fix). Bumped v1 tag to HEAD twice (final: includes\
+    \ license)."
+  open_tasks: []
+  decisions:
+  - "deploy-gate issues #12 and #19 confirmed fixed by v2 rewrite \u2014 closed"
+  - v1 tag bumped to HEAD of main (includes MIT license)
+  - 10 stale branches deleted from deploy-gate repo
+- id: '1482065875413635122'
+  title: iPhone Mirroring
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-13'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Explored iPhone Mirroring for mobile QA \u2014 discovered synthetic clicks\
+    \ are blocked by Apple. Pivoted to Safari WebDriver via USB (the right abstraction\
+    \ layer). Built full mobile QA pipeline: iphone-qa.sh + daily cron on Gemini Flash.\
+    \ Found real bugs on PP and Xdares. Also ran successful e2e deploy-gate demo (PR\
+    \ #18)."
+  open_tasks: []
+  decisions:
+  - Safari WebDriver via USB > iPhone Mirroring for automation
+  - "Research before hack \u2014 15 min rule"
+  - Gemini Flash for cron QA tasks (~$0.01/run)
+  - 'Physical device checklist: data cable, Trust, Web Inspector, Remote Automation,
+    Guided Access'
+  - iPhone 14 Pro preferred over SE for testing
+  - One-script-per-session for stateful drivers like safaridriver
+- id: '1483189017750016082'
+  title: GarryTan
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-16'
+  updated_at: '2026-03-16'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Analyzed Garry Tan''s gstack repo (10 Claude Code skills for role-based
+    agent workflows). Identified 6 stealable patterns, built and deployed 4 new quality
+    gates into the factory pipeline: CEO review, engineering review, paranoid code
+    review, ship script. Added QA health scoring (0-100), versioned review checklist,
+    structured QA report template. Full steal plan documented in factory/GSTACK-STEAL-PLAN.md.'
+  open_tasks: []
+  decisions:
+  - "Don't install gstack \u2014 steal ideas, build agent-agnostic versions"
+- id: '1483163293664415994'
+  title: User Requirements
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Deep Marco persona requirements sprint. Wrote 29-requirement spec across\
+    \ 5 sprints. Gap analysis against codebase. Built and deployed 15 PRs in one afternoon:\
+    \ enrichment pipeline (origin context, verification steps, confidence warnings),\
+    \ detail page information hierarchy, receipt enrichment snapshots (M6), merge\
+    \ queue polish with configurable method + auto-merge fix (M7), structured rejection\
+    \ with PR comment (M17), arrival notifications, dashboard improvements, approved-but-unmerged\
+    \ visibility, duplicate deploy request dedup, admin reconcile endpoint, demo UX\
+    \ polish (iframe fallback, numbered verification steps, mobile post-approval bar,\
+    \ overview approve gate, author display). Screenshot audit against Marco requirements\
+    \ \u2014 detail page demo-ready."
+  open_tasks:
+  - 'Merge PR #178 (demo UX polish) + deploy + run reconcile'
+  - Record demo video with staged PRs
+  - Phase 3-5 Marco requirements (M10-M23)
+  - Sarah user requirements spec
+  decisions:
+  - 'Phase 2 complete: happy path first, recovery (undo/revert) later'
+  - "Auto-merge LOW risk deferred \u2014 needs more thought"
+  - 'Preview iframe: fallback to open-in-new-tab when embed blocked'
+  - 'Verification steps: numbered circles, not checkboxes'
+  - 'Production requests: Review only on dashboard, no quick-approve'
+  - "GitHub auto-merge won't fire if checks already passed \u2014 fall through to\
+    \ direct merge"
+  - "15 PRs in one afternoon, 12\u201319 Marco requirements covered"
+- id: '1483556834756530306'
+  title: Claude Dependency
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-17'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Anthropic outage killed all three fallback models (all Anthropic, one auth
+    profile). Diagnosed single-provider concentration risk. Added google/gemini-3-flash-preview
+    as cross-provider fallback. Config patched and restarted successfully.
+  open_tasks: []
+  decisions:
+  - "Cross-provider fallback required \u2014 all-Anthropic fallback chain is fake\
+    \ redundancy"
+  - "Fallback chain: opus-4-6 \u2014 opus-4-5 \u2014 sonnet-4-6 \u2014 gemini-3-flash-preview"
+  - "Keep Opus as primary \u2014 outages are rare, quality matters"
+  - Gemini Flash as emergency fallback is better than a dead agent
+- id: '1483547333382897764'
+  title: Big Daddy
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-17'
+  updated_at: '2026-03-18'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Multi-bug sprint. Diagnosed Sonnet spinning on decisionSummaryText bug,
+    fixed on Opus. Built auto-rerun for failed checks after PP approval (PR #193).
+    Fixed mobile header avatar/hamburger overlap (PR #194). Fixed stale checks on
+    force-pushed PRs (PR #195). Added 3 AGENTS.md rules: debugging circuit breaker
+    (5-msg limit), no thinking out loud, git hygiene (no git add -A).'
+  open_tasks: []
+  decisions:
+  - Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking
+    out loud)
+  - 'Force-push stale checks: set PP status on old SHA + re-request check suites'
+  - "git add -A banned in shared worktrees \u2014 always add specific files"
+  - "git diff --stat before pushing \u2014 verify file count matches intent"
+- id: '1483223048499892425'
+  title: Push to main
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-16'
+  updated_at: '2026-03-17'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: "Diagnosed duplicate deploy requests on PR merge. Root cause: production-deploy.yml\
+    \ (push trigger) used GIT_REF_COMMIT scope while PR gate used PR_HEAD scope. Fixed\
+    \ with PR #174: detect merge/squash commits, extract PR info, pass to verify action\
+    \ for scope matching. Also discussed video recording options for app testing (\u2318\
+    +Shift+5 vs DevTools Recorder)."
+  open_tasks: []
+  decisions:
+  - PR merges reuse existing PR receipt via PR_HEAD scope passthrough
+  - Direct pushes to main still create new deploy requests (safety net)
+  - verify/action.yml gained pr_number + pr_head_sha inputs for explicit PR scope
+    override
+  - Both merge commit and squash merge patterns handled
+  - Skip retros, doc-release, Greptile, Conductor, cookie import
+  - "New pipeline: ideate \u2014 organize \u2014 CEO review \u2014 eng review \u2014\
+    \ spec \u2014 build \u2014 ship \u2014 paranoid review \u2014 QA \u2014 done"
+  - ~$0.05 added cost per factory item on Gemini Flash is acceptable
+  - "Rod's process unchanged \u2014 new gates run automatically"
+  - Future work (browser QA, bisectable commits) deferred, documented in GSTACK-STEAL-PLAN.md
+- id: '1484231245125648606'
+  title: MARIA
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Updated Maria''s OpenClaw container to 2026.3.13-1, fixed missing memory-lancedb
+    plugin via on-demand install. Enabled diffs and acpx plugins for Charles locally.
+    Established boundary: Maria handles headless external operations, Charles handles
+    local browser and auth-gated tasks using 1Password, avoiding the need for Chrome
+    Extension Relay.'
+  open_tasks: []
+  decisions:
+  - Maria stays the headless external operator (Telegram, APIs).
+  - Charles handles local browser, auth-gated dashboards using 1Password. No Chrome
+    Extension Relay needed.
+  - OpenClaw 2026.3.13+ requires explicit plugin installs for memory-lancedb and diffs.
+- id: '1484220042735517869'
+  title: Where's Risk
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Root-caused the missing risk analysis to an inverted catch block in the
+    webhook route which caused a permanent ''Analyzing...'' placeholder on failure.
+    Fixed the logic flow in PR #202 on permission-protocol/app.'
+  open_tasks: []
+  decisions:
+  - Placeholder comment must be posted immediately before enrichment, then updated
+    with results or explicit failure state.
+- id: '1484219107816509440'
+  title: KOL
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: low
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Confirmed lead routing protocol. Permission Protocol uses Discord webhooks
+    for /contact leads, routing them to the
+  open_tasks: []
+  decisions:
+  - Permission Protocol uses Discord webhooks for /contact leads, routing them to
+    the
+- id: '1483851224431460474'
+  title: JAKE
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-18'
+  updated_at: '2026-03-23'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Optimized Jake persona PR review surface. Verdict-first format implemented
+    (answer "safe to merge?" first), graduated friction added for overrides, and AI
+    enrichment fixed for CoT tokens. All authenticated workflows consolidated to app.
+  open_tasks: []
+  decisions:
+  - Verdict-first format for solo founder efficiency.
+  - 'Graduated friction: one-click for safe, checkbox for block.'
+  - Bump Gemini tokens to 8192+ to handle CoT overhead.
+  - Authorization receipt page is the "Signer of Record" surface; review page is functional
+    only.
+- id: '1484260983416291428'
+  title: Orgs
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Overhauled the onboarding flow for Permission Protocol. Identified a critical
+    vulnerability where Access Denied errors exposed archived company IDs, and fixed
+    a GitHub App stateless installation race condition. Ripped out 7,000+ lines of
+    dead legacy settings/setup code and replaced the empty dashboard with a linear
+    Progressive Onboarding Wizard (Connect GitHub -> Generate Key -> Open PR).
+  open_tasks: []
+  decisions:
+  - Empty state must be a strict progressive state machine, not passive docs.
+  - The legacy autonomous OS settings/setup pages are permanently deleted to avoid
+    user confusion.
+  - Stateless GitHub App installation callbacks require a forced 3-second auto-poll
+    delay to handle GitHub's internal API propagation.
+- id: '1484429153552830626'
+  title: Opus - onboarding error
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Fixed 8 bugs in deploy-gate onboarding wizard across 6 PRs (#220, #221,
+    #224, #225, #230, #232). Root causes: missing GitHub API permissions, free-plan
+    limitations blocking rulesets+branch protection, stale API keys from deleted companies,
+    wrong callback redirect, dead-end Access Denied page, and status persistence on
+    refresh.'
+  open_tasks: []
+  decisions:
+  - "Free-plan private repos cannot enforce required checks \u2014 gate runs but can't\
+    \ block merges"
+  - Company archive must cascade-clean API keys and GitHub App installations
+  - ensureSecret must verify key ownership not just existence
+  - Repos endpoint must not overwrite DB status when GitHub API returns 403
+  - permission-protocol/app is the canonical repo (never use Roca-Ventures/Breakout-Labs)
+- id: '1484436184393322506'
+  title: Opus - org 3
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Multi-company data isolation bug: deploy queue showed wrong company data
+    after switching. Root-caused to cookie race condition (Set-Cookie not applied
+    before window.location.reload). Fixed with client-side cookie set (PR #223), navigate
+    to /c on switch (PR #226), and archived company handling (PR #231). Also re-triggered
+    PullMatch deploy requests after repo rebrand from Tinder4PRs.'
+  open_tasks: []
+  decisions:
+  - Company switch must set cookie client-side before navigation (belt-and-suspenders
+    with server Set-Cookie)
+  - Switch navigates to /c root, not reload current URL (avoids cross-company resource
+    access)
+  - Deploy requests from archived companies show "Archived Company" state, not "Switch
+    to"
+  - "Detail page isolation check works correctly \u2014 leak was read-only at list\
+    \ level only"
+  - "Render deploy status \"success\" on GitHub doesn't guarantee actual rebuild \u2014\
+    \ verify via CSS/JS hash"
+- id: '1484330892015960286'
+  title: PP Msg Broken
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-19'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Root-caused and fixed a critical bug in the AI enrichment pipeline where
+    Gemini's `<think>` tags (chain-of-thought) were breaking JSON extraction. Implemented
+    a pre-extraction regex to strip tags and bumped `maxOutputTokens` to 8192 to prevent
+    payload truncation (PR 213).
+  open_tasks: []
+  decisions:
+  - Gemini chain-of-thought (`<think>` blocks) breaks naive JSON parsing (`indexOf('{')`);
+    explicitly strip tags before parsing.
+  - Increase Gemini `maxOutputTokens` to 8192 to prevent payload + reasoning truncation.
+- id: '1484577755994525896'
+  title: MCP Guard
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Built and shipped MCP Guard v0 and v0.1. A stdio proxy for MCP that enforces
+    YAML policies (allow/block/hold) and emits audit receipts. Includes a real-time
+    approval web UI and before/after demo assets.
+  open_tasks:
+  - Receipt viewer integration on app.permissionprotocol.com
+  - Verify end-to-end with real MCP client
+  - Finalize HN submission timing
+  decisions:
+  - PP wedge is enforcement (locks) > audit (cameras).
+  - Proxy mode is correct architecture for universal compatibility.
+  - Decision engine must be future-safe by accepting toolArgs now.
+  - Before/after contrast in demo GIFs is the conversion driver.
+- id: '1483323537057120370'
+  title: Tinder for PR
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-18'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Built demo PRs for Permission Protocol, fixed a UI bug where archived companies
+    leaked access, switched default model to Gemini 3.1 Pro Preview, rebranded the
+    'Tinder for PR' project to 'PullMatch' across the codebase, and generated a new
+    logo.
+  open_tasks: []
+  decisions:
+  - Rebranded 'Tinder for PR' to 'PullMatch' and tinderforpr.com to pullmatch.com.
+  - Set default primary model to google/gemini-3.1-pro-preview.
+  - API key validation and deploy request GET route now explicitly filter out archived
+    companies.
+- id: '1484644007521812662'
+  title: PullMatch
+  channel: pullmatch
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-20'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Gathered all historical context for PullMatch (formerly Tinder for PRs)
+    and created a dedicated workspace folder with CONTEXT.md and STATUS.md.
+  open_tasks: []
+  decisions:
+  - Transitioning PullMatch from a Permission Protocol demo environment to a standalone
+    product.
+- id: '1484406326183596124'
+  title: Opus GH PR Page
+  channel: opus-gh-pr-page
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Fixed duplicate PR comments (webhook vs action race condition) and stuck
+    "Analyzing..." placeholder (missing error handler). Reduced Gemini maxOutputTokens
+    to sensible sizes (1024/512) and fixed Next.js query parameter redirect loop.
+  open_tasks: []
+  decisions:
+  - GitHub App webhook handler must own PR comments if active; GitHub Action post-comment
+    must be disabled (false) to prevent race conditions and duplicate comments.
+  - useSearchParams() does not react to native window.history.replaceState(). Must
+    use router.replace() to clear query parameters and correctly update React state.
+  - Gemini maxOutputTokens should be sized appropriately to the expected JSON payload
+    (e.g., 1024 or 512) rather than maxed out (8192), to avoid wasting token buffers
+    and latency.
+- id: '1484339439819034865'
+  title: Orgs 2
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-19'
+  updated_at: '2026-03-20'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: 'Fixed multi-workspace GitHub App installation flow. Root-caused stateless
+    callback ignoring activeCompanyId cookie (linking to wrong workspace) and throwing
+    409 when installation already belonged to another workspace the user owns. Fixed
+    GitHub App Setup URL pointing to deleted /c/setup page. Built one-click auto-setup
+    for Step 3 (workflow + secret + ruleset via existing setup-repo endpoint). Deployed
+    PRs #216 and #217.'
+  open_tasks: []
+  decisions:
+  - Stateless GitHub App link route must read activeCompanyId cookie to target the
+    correct workspace.
+  - Allow installation transfer when user is a member of both old and new workspace
+    (not a hard 409).
+  - GitHub App Setup URL must point to /api/github-app/callback, not /c/setup (deleted
+    page).
+  - console.error in callback state-parse should be console.warn to avoid Next.js
+    dev error overlay.
+  - Step 3 should offer one-click auto-setup via setup-repo API, with manual fallback.
+  - PP deploy gate correctly flagged dirty PR
+  - Always use git add <specific files>, never git add . in shared worktrees.
+- id: '1485343398255792198'
+  title: Demo Videos
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-22'
+  updated_at: '2026-03-23'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Created and refined a 60-second GIF demo of NemoClaw gating a GitHub Actions
+    deployment via multi-sig. Pivoted narrative to deploy authority. Prepared HN launch
+    drafts and updated README. Held launch for Tuesday morning PST.
+  open_tasks: []
+  decisions:
+  - Shift demo narrative to "deploy authority" to highlight value over scanning.
+  - 'Use Option A for HN Title: "Show HN: AI agents can''t deploy to production without
+    a human signer"'
+  - "Delay HN launch to Tuesday 7:30\u20139:00am PST for optimal visibility."
+- id: '1485322840319197369'
+  title: Atomic Loop
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-22'
+  updated_at: '2026-03-23'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Built the full v1 Atomic Loop enforcement primitive for Permission Protocol.
+    Includes MCP Guard verifier, backend signer, UI wire-up, durable Redis replay
+    cache, audit receipts, YAML policy layer (multi-sig, roles, conditions), and GitHub
+    Actions dispatch executor. Logic extracted to mcp-guard and launch execution moved
+    to Opus - Launch thread.
+  open_tasks: []
+  decisions:
+  - Enforcement is the wedge, not just audit/receipts.
+  - Execution must depend only on a cryptographically verified token, never DB approval
+    state.
+  - Replay protection implemented via atomic Redis set with auto-TTL matching token
+    expiry.
+  - Policy layer enforces required signers, roles, multi-sig, conditions, and max
+    TTL.
+  - First real-world execution integration is GitHub Workflow dispatch (deploy_code).
+- id: '1486830254256427171'
+  title: Linkedin Outreach
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-26'
+  updated_at: '2026-03-28'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  archived_at: null
+  summary: Drafted and sent personalized follow-up messages to 5 BlackLocus contacts
+    (Justin Arthur, Dave Jenkins, Dave Ruback, Anthony McClosky, Brenda) who responded
+    to LinkedIn outreach. Established deploy-gate repo as the primary outreach link.
+    Proposed Monday 10AM coffee with Brenda (AI Governance PhD) at Boxcar Boulder.
+  open_tasks: []
+  decisions:
+  - Lead with deploy-gate repo, not governance-framework (product > spec)
+  - Demo link first, spec second (30 seconds > 30 minutes)
+  - One link per LinkedIn reply; save marketing site for follow-ups and non-technical
+    contacts
+  - No calls for dev contacts; async CTA only
+  - "Brenda coffee exception (strategic \u2014 AI governance PhD, local Boulder)"
+  - Email format can include both links (longer medium)
+- id: '1485726442888233136'
+  title: GIF VIDEO - OPUS
+  channel: heartbeat
+  status: ACTIVE
+  owner: Rod
+  priority: high
+  created_at: '2026-03-23'
+  updated_at: '2026-03-26'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Finalize video with Rod's iPhone screenshot of end card
+  resolution_artifact: null
+  archived_at: null
+  summary: Recording and editing the final Permission Protocol demo video. Narrative
+    shifted to enforcement/authority. Pacing edits implemented (setup sped up, approval
+    slowed down). Branded end card created at /demo-endcard on marketing site.
+  open_tasks:
+  - Finalize video with Rod's iPhone screenshot of end card
+  - Ship to HN/Twitter
+  decisions:
+  - 'Video pacing: speed up setup, slow down sign/payoff.'
+  - 'End card: dedicated full-screen page at /demo-endcard for high-res mobile capture.'
+- id: '1485630165047316521'
+  title: Opus - Launch
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-23'
+  updated_at: '2026-03-24'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Full pre-launch sprint for Permission Protocol Show HN. Stress tested signing
+    layer, aligned narrative, added tamper detection, dogfooded merge through own
+    gate, rewrote deploy-gate README for HN, captured hero screenshot, simplified
+    onboarding to one secret, drafted HN comment + objection handlers, verified cold
+    install funnel.
+  open_tasks: []
+  decisions:
+  - Launch URL is github.com/permission-protocol/deploy-gate (public repo).
+  - One secret (PP_API_KEY) is sufficient for setup.
+  - verify() re-canonicalizes fields to detect post-signing tampering.
+  - Dogfooding proof used PP to approve and merge the launch PRs.
+  - 'PRs shipped: app #239, #240, #241; deploy-gate #24, #25, #26.'
+- id: '1485631505345548318'
+  title: Polish Items
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-23'
+  updated_at: '2026-03-23'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Full UX/UI polish sweep on the marketing site. Fixed "Developers" dropdown
+    hover continuity, increased mobile menu breakpoint to 1024px to stop nav clipping,
+    replaced dead href="#" links across the site, swapped mailto form for a CTA, and
+    added legal links to footer. All pushed in PR
+  open_tasks: []
+  decisions:
+  - Hover menus need continuous pointer zones (padding vs margin) to stay open during
+    mouse travel.
+  - 'No mailto: links for support; route all through /contact for PostHog tracking
+    and Discord alerting.'
+- id: '1484937309068726422'
+  title: Internal processes
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-21'
+  updated_at: '2026-03-24T21:22:52Z'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  archived_at: null
+  summary: Internal processes discussion and orchestration refactor
+  open_tasks: []
+  decisions: []
+- id: '1485646490864062546'
+  title: Scrolling
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-23'
+  updated_at: '2026-03-24'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Resolved "scroll twice to move" lag on marketing website by removing the
+    bouncing anchor chevron, disabling global smooth scrolling, and converting Framer
+    Motion triggers to margin-based.
+  open_tasks: []
+  decisions:
+  - Smooth scrolling and anchor links can intercept first wheel events and cause scroll
+    lag; avoid them on full-height hero sections.
+  - Margin-based viewport detection is more reliable than percentage (`amount`) for
+    Framer Motion entrance animations.
+- id: '1485660982197092484'
+  title: Full Flow 2 - Opus
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-23'
+  updated_at: '2026-03-24'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Full HN launch funnel audit. Identified and fixed 4 critical conversion
+    leaks (demo ambiguity, auth redirect, hidden site content, missing receipt). Created
+    perpetual demo PR (pp-demo#23). Shipped deploy-gate PR
+  open_tasks: []
+  decisions:
+  - Time-to-first-approval is the core conversion metric, not install count.
+  - Demo PR should always stay open as a live playground.
+  - Animations must enhance, not gate visibility (opacity 0 to 0.85).
+  - ?action=approve should auto-open the confirmation modal.
+  - Post-approval screen must show the receipt (that's the moat).
+- id: '1486045603954950215'
+  title: Competitors
+  channel: rc-main
+  status: ARCHIVED
+  owner: Rod
+  priority: medium
+  created_at: '2026-03-26'
+  updated_at: '2026-03-26'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: null
+  archived_at: null
+  summary: Thread empty or no tasks tracked. Archived per user request.
+  open_tasks: []
+  decisions: []
+- id: '1487053538378121298'
+  title: Irina
+  channel: hn-launch
+  status: ARCHIVED
+  owner: Rod
+  priority: high
+  created_at: '2026-03-27'
+  updated_at: '2026-03-28'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  archived_at: null
+  summary: "Polished and sent a $15k pilot proposal to Irina (ultra-rich tax firm).\
+    \ Rewrote copy using PP Voice Guide, generated branded dark-mode PDF with extracted\
+    \ logo, reviewed email drafts, caught name typo (Irene\u2192Irina), and approved\
+    \ final send."
+  open_tasks: []
+  decisions:
+  - Use "named human signer" (not just "approval") to anchor to the Authority Receipt
+    primitive.
+  - Lean into Liability Shift for high-net-worth tax vertical.
+  - browser tool blocks file:// protocol; use local HTTP server for PDF generation.
+  - Extract logo from SVG brand guidelines by cropping viewBox and removing background
+    rect.
+- id: '1487838731741433966'
+  title: PR Conflics
+  channel: rc-main
+  status: ARCHIVED
+  owner: Charles
+  priority: medium
+  created_at: '2026-03-29'
+  updated_at: '2026-03-29'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Thread closed via /close-review
+  archived_at: null
+  summary: Fixed merge conflicts in pp-demo repo. PR
+  open_tasks: []
+  decisions:
+  - PR
+- id: '1491226981730353324'
+  title: Wedges (Consequence Engine Sprint)
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: critical
+  created_at: '2026-04-07'
+  updated_at: '2026-04-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: "Consequence Engine v1 shipped (PRs #310\u2013325)"
+  archived_at: '2026-04-08'
+  summary: Refactored Permission Protocol from a 'reviewer' to an 'enforcement engine'.
+    Implemented clearance/authorization/execution receipt loop and deterministic gating.
+  open_tasks: []
+  decisions:
+  - PP = consequence brief + policy decision + human authorization event. Not a reviewer.
+  - 'Three outcomes: cleared | approval_required | denied.'
+  - 'Three receipt types: clearance | authorization | execution.'
+  - LLM writes brief, deterministic rules decide gate. LLM never blocks a merge.
+  - Denied = hard stop. No authorize CTA. Fix code, push again.
+  - Per-repo comment quieting (first 5 cleared PRs, then silent).
+  - Block merge from day one, but only on consequential PRs.
+  - 'Single entry point for onboarding: one install link.'
+  - 'Comment design v2: blockquotes, tables, details sections, authority language.'
+- id: '1492294890024079390'
+  title: Polish V3
+  channel: '#rc-main'
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-04-10'
+  updated_at: '2026-04-10'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 12 PRs (#337-#348) shipped
+  archived_at: '2026-04-10'
+  summary: Full DESIGN.md alignment sprint. 12 PRs (#337-#348) shipped across 4 batches.
+  open_tasks: []
+  decisions:
+  - DESIGN.md is enforced, not aspirational
+  - Parallel Codex + git worktrees is the validated batch pattern
+  - "Force-push rebases cause superseded deploy requests \u2014 escape route added"
+  - accent-blue renamed to accent-primary globally
+- id: '1499130172769571017'
+  title: Image Issue
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-04-29'
+  updated_at: '2026-04-29'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: sharp dependencies installed
+  archived_at: '2026-04-29'
+  summary: Resolved missing 'sharp' dependency causing image processing failures in
+    Next.js builds and OpenClaw's internal image analysis tool.
+  open_tasks: []
+  decisions: []
+- id: '1498818004207796244'
+  title: Revise Strategy
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: critical
+  created_at: '2026-04-28'
+  updated_at: '2026-04-29'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 63 LI requests + 250 page invites sent
+  archived_at: '2026-04-29'
+  summary: Sprint 5 outreach campaign executed. Batch 1 (28 prospects) and Batch 2
+    (44 prospects) created and sent via LinkedIn. Competitive intel gathered on Oso
+    (Sequoia) and Reco ($85M, Insight/Zeev). Incident tracker PRD drafted.
+  open_tasks: []
+  decisions:
+  - Use 'I'm the founder of PP' not 'I'm building PP' for founder-to-founder outreach
+  - Attribute actions to company/product, not person ('Devin deploys' not 'you deploy')
+  - Target VCs without agent-governance bets (a16z, Benchmark, Conviction vs Sequoia/Insight/Zeev)
+  - Don't engage Oso directly - competitive risk
+- id: '1499435030206742549'
+  title: Musk
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: critical
+  created_at: '2026-04-30'
+  updated_at: '2026-05-01'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: 31 touches sent (15 email + 8 X DM + 2 Reddit + bounce recoveries)
+  archived_at: '2026-05-01'
+  summary: Sprint 6 outreach execution. Broke 68-day drought with 31 personalized
+    touches across email, X DM, and Reddit. Codified voice modes (Authority vs Learning),
+    em-dash hard rule, signature format, and activation outreach doctrine.
+  open_tasks: []
+  decisions:
+  - Em-dash banned in external marketing copy and outbound messages
+  - Voice Mode A (Authority) for VC/brand, Mode B (Learning) for activation
+  - '"I''m building" > "I''m the founder" for first-user activation outreach'
+  - Minimal signature (name + link only) for activation DMs
+  - Personal X account for DMs (lands in Primary, not Requests)
+  - First message's job is the reply, not the install
+- id: '1500920758455632002'
+  title: Charles Logs
+  channel: charles-logs
+  status: PARKED
+  owner: rod
+  priority: medium
+  created_at: '2026-05-04'
+  updated_at: '2026-05-04'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: Rod confirms archive if desired; run /archive only after explicit final
+    confirmation.
+  resolution_artifact: OpenClaw log cleanup completed; Telegram disabled; Discord
+    verified working.
+  archived_at: null
+  summary: 'Investigated OpenClaw log noise and temporary offline behavior. Cleared
+    task pressure,
+
+    disabled unsafe self-update automation, reduced cron pressure, removed a noisy
+    skipped
+
+    skills symlink, restarted/verified gateway health, and disabled Telegram after
+    polling stalls
+
+    contributed to event-loop starvation. Discord remains the control path and send
+    path is verified.
+
+    '
+  open_tasks:
+  - 'Deferred cleanup: investigate bundled dependency drift warnings for discord-api-types/v10
+    and grammy.'
+  - 'Deferred cleanup: configure command owner/security owner explicitly if Rod approves.'
+  - 'Deferred cleanup: archive orphan transcript files via supported doctor path if
+    Rod approves.'
+  - 'Deferred cleanup: update pp-approval plugin startup activation away from deprecated
+    implicit startup loading.'
+  - 'Deferred cleanup: resolve memory-lancedb doctor/runtime mismatch.'
+  - 'Deferred cleanup: configure Chrome existing-session attach if signed-in browser
+    automation is needed.'
+  decisions:
+  - Thread model set to openai-codex/gpt-5.5 / gpt55.
+  - OpenClaw self-updates require explicit Rod approval; Daily Auto-Update cron disabled.
+  - Do not hand-edit durable task DB blindly; use supported maintenance/restart/upstream
+    fix paths.
+  - Removed only OpenClaw gstack symlink; preserved original ~/.claude/skills/gstack.
+  - Telegram disabled after polling stalls contributed to gateway event-loop starvation;
+    Discord remains the control path.
+  - 'Hybrid cloud architecture recommended: cloud control plane plus privileged Mac
+    node for local actions.'
+
+- id: '1501769489858035772'
+  title: DeepSeek Test
+  channel: deepseek-test
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-07'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: PP website shipped overnight; 20-target outreach list validated and saved to GitHub
+  archived_at: '2026-05-08'
+  summary: >
+    Strategy and build sprint. Overnight autonomous build produced full PP website
+    (pp-website/ — 3 files, 1697 lines, zero dependencies). Competitive kill-chain
+    produced. SQL vs Finance wedge decided: SQL wins (demo-ready in 5 min vs months
+    for Finance). GTM framing confirmed: SQL demos, Deploy Gate narrative sells.
+    30-day falsification criteria defined. 20-target outreach list researched,
+    emails validated (8 confirmed, 10 high-confidence, 2 best-guess), corrections
+    applied (3 emails fixed, 1 upgraded). Saved to github.com/permission-protocol/outreach.
+  open_tasks: []
+  decisions:
+  - SQL wedge over Finance wedge — demo-ready now, Finance requires months of integration work
+  - Wedge/narrative separation — SQL demos the gate, Deploy Gate is the platform narrative
+  - 30-day falsification criteria — 3+ "just PR review" responses + zero installs = pivot to IaC
+  - Outreach target emails saved to github.com/permission-protocol/outreach (private repo)
+  - Scott Kennedy email corrected to scott@replit.com (was scott.kennedy@repl.it)
+  - James Cowling email corrected to james@convex.dev (was james@convexlabs.io)
+  - Pete Hunt email corrected to pete@elementl.com (was pete@dagster.io)
+  - JD Trask may have moved to Autohive — verify before outreach
+- id: '1503136501439922196'
+  title: Self Improvement
+  channel: rc-main
+  status: ARCHIVED
+  owner: rod
+  priority: medium
+  created_at: '2026-05-10'
+  updated_at: '2026-05-11'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Crons fixed, gateway updated, PP reference doc built and polished
+  archived_at: '2026-05-11'
+  summary: >
+    Self-improvement sprint. Fixed 6 dead cron jobs (Gemini model stalls, patched with
+    timeouts). Gateway updated to 2026.5.7 (Rod ran sudo). Node service restarted —
+    Playwright/browser/screenshots verified. sharp installed. PP reference doc built
+    (ref/pp-reference.md) with architecture, full API signatures, repo topology, error
+    patterns. AGENTS.md wired to auto-load PP reference. PP reference polished with
+    ExecuteRequest types, state machine, risk tiers, 5 error patterns.
+  open_tasks: []
+  decisions:
+  - Node service is a separate process from gateway; both need restart after npm update
+  - PP sub-agents load ref/pp-reference.md on bootstrap — eliminates cold-start context gap
+  - EXECUTE_API_KEY (not CLI_API_KEY) required for /api/v1/execute
+  - 6 cron jobs need explicit timeoutSeconds to avoid Gemini model stall hangs
+
+- id: '1502338421224505444'
+  title: Onboarding GPT — Mobile Signup Polish
+  channel: onboarding-gpt
+  status: ARCHIVED
+  owner: rod
+  priority: high
+  created_at: '2026-05-08'
+  updated_at: '2026-05-08'
+  expires_at: null
+  blocked_reason: null
+  blocked_until: null
+  next_action: null
+  resolution_artifact: Site PR #296 and app PR #475 merged/deployed; prod mobile E2E passed
+  archived_at: '2026-05-08'
+  summary: >
+    Mobile signup/onboarding polish durable goal executed end-to-end. Prompt converted into
+    durable state at goals/mobile-signup-polish/state.json with scheduled executor. Public
+    site and app mobile flows were audited from the user perspective, fixed, PR'd, reviewed,
+    merged, deployed, and production-retested. Final prod E2E covered public site CTA →
+    app signup → email signup → onboarding workspace → protect-first → skip/manual host
+    setup → repo/path → activation finish → deploy-requests dashboard on iPhone viewport
+    with 0px horizontal overflow on every tested screen.
+  open_tasks:
+  - (deferred polish) Onboarding header still says "Skip to GitHub install" throughout wizard; consider softening so it does not compete with guided flow
+  decisions:
+  - Mobile signup polish quality bar requires actual E2E execution, implementation, screenshots, and verification — not just an audit
+  - Public site signup CTA should support a first-time mobile path into app signup/onboarding
+  - Email-first signup can proceed directly to onboarding during the signup experiment
+  - Onboarding should support a skip/manual code-host path and still land in a useful activation finish state
+  - Done criteria for this flow include reaching a working account dashboard and proving 0px horizontal overflow on iPhone-sized viewport
+  references:
+  - https://github.com/permission-protocol/site/pull/296
+  - https://github.com/permission-protocol/app/pull/475
+  - goals/mobile-signup-polish/state.json
+  - goals/mobile-signup-polish/artifacts/prod-e2e-2026-05-08T17-43-57-610Z

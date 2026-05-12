@@ -3,6 +3,55 @@
 Extracted from Discord threads by `/extract` and `/close-review` commands.
 Linked to source threads for traceability.
 
+## 2026-05-08 — OpenClaw Meta: Thread Lifecycle & Context (#openclaw)
+- Model overrides in OpenClaw are runtime-only — not persisted when a session ends or restarts; reverting to default on next session is expected behavior
+- `/extract` is the correct command before leaving an active thread overnight — writes state to ops/threads.yaml and ops/decisions.md; `/triage` is pulse-check only and does not persist anything
+- `/archive` handles full context persistence for closed threads (MEMORY.md, daily notes, memory_store, decisions.md)
+- Thread naming in Discord is inconsistent — a convention like `[type] topic` would improve navigation of rc-main sidebar
+- rc-main is a thread graveyard; per-domain channels would reduce clutter
+- Per-thread model preferences are not yet a native OpenClaw feature; workaround is to re-apply model override at session start
+
+## 2026-05-08 — Scout Alerts Signal Scanner (#scout-alers)
+- Signal scan runs 1-3x daily (5:06am + 8am MDT crons), weekends skipped
+- Relevance thresholds: ≥4/8 posts to #scout-alerts, ≥6/8 triggers automated outreach draft generation
+- Signals logged to pp-os/marketing/signals/YYYY-MM-DD.jsonl daily; hot signals to pp-os/marketing/HOT-SIGNAL.md
+- Bot drafts Reddit/HN comments in "builder" voice for Rod — no evidence any have been posted to HN/Reddit
+- Scanner focus keywords: AI coding agent deploys, agent security, agent governance, MCP
+- Two separate scanner implementations exist (unified-signal-scan cron + scan-signals.sh shell script) — occasionally produce overlapping/conflicting results same day
+- Cron has failed silently at least twice (Apr 20 edit failure, Apr 30 agent failure) with no escalation mechanism
+- Brave API rate limits (429) are a recurring issue, losing web search coverage on ~30% of scans
+- Scanner correctly identifies high-value narrative hooks and outreach targets (Blitzy, Optio, G0, Cursor incidents) but no signal-to-action pipeline exists
+- Weekend skip = ~28% of days have zero signal coverage
+
+## 2026-05-08 — DeepSeek Test: Strategy Sprint + Overnight Build (#deepseek-test)
+- SQL wedge over Finance wedge — demo-ready now vs months of integration work for Finance
+- Wedge/narrative separation: SQL demos the gate; Deploy Gate is the platform story
+- 30-day falsification criteria: 3+ "just PR review" objections + zero installs = pivot to IaC
+- 20-target outreach list researched, validated, and saved to github.com/permission-protocol/outreach (private)
+- Email corrections: Scott Kennedy → scott@replit.com; James Cowling → james@convex.dev; Pete Hunt → pete@elementl.com
+- JD Trask may have moved to Autohive — verify before outreach
+
+## 2026-05-08 — Debug 4: Landing Page Audit & GTM Wedge (#debug-4)
+- Deploy Gate leads the landing page narrative; SQL is the first proof, not the first wedge
+- Finance/authority expansion narrative: "Today it's production code. Next it's spend."
+- Hero should claim "blocks before merge" not "intercepts before execution" (overclaims runtime interception)
+- "Cryptographic receipts" belongs below the fold — hero chips should say "Signed receipts"
+- Demo caption: "destructive migration → blocked → signed → receipt" not "SQL injection" (SQL injection is AppSec framing)
+- Page is GTM-ready at 8.5/10; 4 minor copy edits deferred as non-blocking for first outreach
+
+## 2026-05-08 — Wedge Opus 4.7 (#wedge-opus-4-7)
+- SQL wedge as first mover, deploy gate as engine, merge-path as expansion story (Stripe "7 lines of code" playbook)
+- Product category stays constant (authority layer for agentic software delivery); only the wedge demo rotates
+- Wave-based outreach: 3 first, score replies Day 5-7, then 7 more — never blast all at once
+- LinkedIn first, email if no acceptance in ~1 week
+- Personalized opener per company (Mercury: Haskell/SQL blog; Gusto: AI eng hiring now; Datavant: HIPAA tokenization)
+- Loom > calendar link as primary cold CTA (lower friction, self-serve before committing time)
+- Follow-up rule — Day 4-7 if no reply: "Did this get buried? Loom is 90 seconds, still curious."
+- Scoring: 2+ substantive replies = scale; 0 replies after follow-up = rewrite before scaling
+- De-dupe AppSec Primary (26) + Platform Primary (32) lists before Wave 2 (overlaps: Jeevan Singh, Branden Wagner, Lee Laslo)
+- LinkedIn invites sent May 8: Ashwin Baskaran/Mercury, Trevor Snow/Gusto, Jim Oberholz/Datavant
+- 3 site fixes deferred/unconfirmed: empty SHA-256 on /r/demo, SQL receipt mismatch on /r/demo, founder CTA (/contact?src=receipt-demo)
+
 ## 2026-03-18 — Big Daddy (rc-main)
 - Sonnet stays on control-room-2 with guardrails (circuit breaker + no thinking out loud)
 - Force-push stale checks: set PP status on old SHA + re-request check suites (PR #195)
@@ -350,3 +399,98 @@ Linked to source threads for traceability.
 - **Force-push rebases cause superseded deploy requests.** Added escape route (PR #348) — "Open newer request" + "Go to Dashboard" links.
 - **Surface tokens aligned:** Background #131313 (obsidian), cards #1C1B1B, elevated #353534. accent-blue renamed to accent-primary globally.
 - **Sign-in UX:** Grid overlay, Space Grotesk, glassmorphism card. Error states handled for AccessDenied, CallbackRouteError, Configuration. Auth error page has "Try again" + "Back to home" links. NextAuth's built-in open redirect protection is in place (no custom redirect callback).
+
+## 2026-04-30 — Musk (Sprint 6 Outreach Execution) (Thread: #rc-main › Musk)
+- **Em-dash hard rule:** Never use em dashes (—) in external marketing copy or outbound messages. Use commas, periods, or colons instead.
+- **Voice Mode A vs Mode B:** Authority voice ("I'm the founder of") for VC/brand outreach; Learning voice ("I'm building") for first-user activation DMs.
+- **"I'm building" > "I'm the founder" for activation outreach:** Smaller ask, learning mode framing, ~3-5x higher reply rate per YC research.
+- **Signature format:** Minimal (name + link only) for activation outreach. Strip "Founder | Company" taglines.
+- **Personal X account for DMs:** Messages land in Primary inbox, not Requests. Higher visibility.
+- **X bio must match outreach context:** Update bio before sending X DMs — recipients click the profile.
+- **Email bounce recovery:** Retry bounced emails as X DMs when the target is X-native.
+- **First message's job is the reply, not the install:** Optimize for response rate, not conversion in cold message #1.
+
+## 2026-05-04 — Charles Logs (#rc-main › Charles Logs)
+- Thread model set to `openai-codex/gpt-5.5` / `gpt55` for the log-cleanup investigation.
+- OpenClaw self-updates require explicit Rod approval; `Daily Auto-Update` cron was disabled.
+- Do not hand-edit durable task DB blindly; use supported maintenance/restart paths or upstream fixes for stale task records.
+- Removed only the OpenClaw `gstack` symlink from the skills scan path; original `~/.claude/skills/gstack` preserved.
+- Telegram was disabled as a reliability measure after polling stalls contributed to gateway event-loop starvation: `channels.telegram.enabled=false`, `plugins.entries.telegram.enabled=false`; Discord remains the control path.
+- Cloud migration recommendation: hybrid architecture — cloud control plane for uptime/ingress/scheduling, Mac node retained for privileged local actions.
+
+## 2026-05-12 — Gstack Day 1: LinkedIn outreach + Blitzy strategic reframe (#gstack, thread 1503081948824993862)
+
+**Outreach voice v4 locked:** no em dashes, no "thanks for connecting," no "saw your post" fake hooks. Founder-to-founder or role-seat opener. One clean diagnostic with vertical-specific actions. "I'm finding most firms can't" soft observation. "I'm the founder of" not "I'm building." One binary closing question. Partner-track closer "Open to a 15 next week if the framing lands."
+
+**Page 3 v2 compliance pattern locked, 5-for-5 substantive engagement** (Sunil, Steven, Dean, Martin after rephrase, Chithra). Pattern: `{First}, [optional role-seat]: when an AI agent at {their company type} takes action across {vertical-specific actions}, can {their function} prove who explicitly approved that exact action when {their regulator} asks? I'm finding most firms can't. Permission Protocol is the layer that captures and proves that approval. Curious whether this gap is on your radar at {their company} yet.`
+
+**Don't pitch present-tense pain to hot-company founders** (Christopher Harris/Blitzy CRO lesson). Use future-tense regulated-enterprise scale risk: "As you scale into regulated enterprise (banks, gov, healthcare), the next gate is..."
+
+**Engineers/SEs at agent companies are bad outreach targets** (Brandon Looker/Kinter SE lesson). Send only to CEOs/CTOs/Co-founders for partner-track.
+
+**Blitzy strategic reframe:** PP is NOT competing with Blitzy. PP is the complementary authorization layer. Same procurement cycle, different layer. "Blitzy plus PP equals the regulated enterprise's complete agentic stack."
+
+**PP pricing recalibration:** consulting-replacement, not SaaS. Pilot $25-50K, enterprise annual $50-500K, F500 strategic $500K-$2M/year. Blitzy proves the market ($50-250K/month pilots, $500K-$10M/year enterprise).
+
+**PP category claim:** "Pioneering the Agentic Authority Layer" (Blitzy-style positioning).
+
+**PP hiring sequence:** 1) Field CTO/Solutions Architect, 2) Forward Deployed Engineer, 3) PE Operating Partner Network Manager. NOT SDR/AE/CSM in first 5-10 hires. Use consulting titles (Engagement Manager, Field CTO, not CSM or Sales Engineer).
+
+**New outreach segment 5: PE Operating Partners.** Master agreement $500K-$2M/year per firm distributed across 20-40 portfolio companies. Targets: Vista, Thoma Bravo, Insight, KKR, Bain Capital Tech Opportunities, Francisco Partners, Veritas Capital.
+
+**Day 1 results:** 95 LinkedIn messages + 2 custom + 1 InMail (Box VP Manoj). 11 substantive engagements (~11%). 3 calls booked (Art Dunal CFO, Sunil Aggarwal healthcare CCO, Francis Ofungwu partnership). 5-for-5 on v2 compliance pattern. Polite decline template, strong-yes template, rephrase template, regulatory-reflect template, and HITL/HOTL chess move all codified.
+
+**CCO language gold from Sunil Aggarwal** (healthcare CCO/CRO): "Critical auditability gap where traditional logging fails to provide indisputable proof of human oversight. Permission Protocol closes this vulnerability by specific automated action to an explicitly authorized human approval." Marketing-grade language. Ask permission to quote on site after Friday call.
+
+**Fintech CCO buyer trigger** (Chithra Ramachandran/Zolve): agent action volume exceeds manual review capacity. Qualifying question for future fintech outreach.
+
+**Site PR #340 merged:** CCO homepage section live. Badge "Pioneering the agentic authority layer." H2 "When the regulator asks who authorized the action, can the firm answer?" Three pillars (Explicit approval / Tamper-evident receipts / Calibrated by risk tier). CTAs "Talk to a compliance engineer" + "See the receipt model."
+
+**CTA standardization spec deployed via codex.** Fixes broken `?audience=cco` query param from #340, standardizes button text site-wide, reduces header CTAs 4-to-2, adds CCO plan config to ContactPageClient, adds audience inference on receipt page.
+
+## 2026-05-10 — Gstack: PP Startup Diagnostic & CFO Outreach (#gstack, thread 1503081948824993862)
+- **Scope Reduction mandate** — one workflow, one signer, one receipt. CFO/finance is the first wedge, not Deploy Gate / SQL.
+- **Wedge language locked:** "Agent assumes the same authority as the employee who gave it access." Validated by Joel Trammell; resonates with engineering leaders and compliance teams alike.
+- **Two CFO market segments:** (1) Active deployers with agents in finance/ops — ask "do you know what your agents are authorized to do?"; (2) Cautious non-adopters avoiding agents due to compliance fear — PP is the unlock.
+- **Primary outreach opener:** "Do you know what your agents are authorized to do?" — plants the authority gap before pitching.
+- **CTA for busy/senior people:** "I'd value your reaction to the approach" outperforms calendar link as first ask.
+- **Jared Toren:** confirmed the two-segment pattern; suggested routing to CCO for compliance-heavy orgs, not CFO.
+- **Joel Trammell:** confirmed the "agent inherits employee authority" framing; checking with accounting firm CFOs for intros (nudge due ~May 12).
+- **Priority LinkedIn targets:** Vanessa Galarneau (co-founder/COO+CFO, AI agents for strategic finance, a16z Speedrun) — top target; Francis Ofungwu (AI governance for CCOs/CFOs); Matt Rhodes ("Building Agents to Replace Me"); Anand Ramachandran (AI agents for finance ops).
+- **Warm intro path for Vanessa:** via Kelly Bianucci if easy, otherwise direct connect.
+- **LinkedIn search terms for CFO/CCO pipeline:** `"AI agents" CFO`, `"AI agents" "finance operations"`, `"AI governance" CFO`, `"AI governance" "Chief Compliance Officer"`, `"delegation of authority" AI`, `"AI agents" "internal controls"`, `"AI agents" "audit trail"`.
+- **Connection note voice:** Reference their specific work + connect to PP as the authority/audit layer. "I'd value your reaction to the approach" as CTA.
+
+## 2026-05-08 — Agent Marketplace + PP Regulated Receipts (Thread: #agent-marketplace › 1499929325141753887)
+- **Agent marketplace thesis killed.** Too broad, commoditized, no defensible primitive. Microsoft AGT v3.3.0 ate the runtime-SDK, OWASP mapping, plugin-signing, and CI gate wedge candidates.
+- **PP post-AGT positioning:** Independent signer on top of Microsoft/AWS/Google governance layers — not a runtime-SDK competitor. "AP2 for payments. PP for actions."
+- **Surviving wedge:** Consequence-bearing action receipts (escrow/rollback/refund), regulated verticals where Microsoft is unwelcome, cross-stack portability.
+- **Pre-AAIF outreach drafts superseded** by strategic pivot. Do not send the Sardine.ai/Unit21/Hippocratic/hyperexponential/Zenity/Credal batch without a full rewrite for post-AGT framing.
+- **Advisor GO list:** Gabriele Mazzini (EU AI Act lead, post-Commission Jul 2024) and David Holtzman (HHS OCR, semi-retired Dec 2023). DoD archetype unfilled.
+- **Sharma reclassified:** SVP MRM at Citigroup — dual-role risk; treat as buyer-interview target, not advisor.
+- **Raheja (OCC) and Staheli (White House OSTP) dropped** — both still in sitting federal roles.
+- **Receipt schema v1 defined:** Ed25519 + canonical JSON, 16 required fields covering receipt identity, agent/action, approval evidence hash, scope/constraints, context hash, issuer/signature.
+- **Both crons stopped by Rod May 5:** `agent-marketplace-goal-executor` and `pp-regulated-receipts-goal-executor` disabled.
+- **No external contacts made.** All outreach remains gated on Rod approval.
+
+## 2026-05-08 — PP Approval Brief Quality (#rc-main › #555)
+Source thread: 1499829176646111302
+- `groundedBrief` is the canonical narrative for PP approval comments: store `affectedFlow + expectedImpact + evidence refs` directly instead of compressing back into legacy `ConsequenceBrief` fields — compression is the root cause of recurring wording/layout regressions.
+- Brief quality rubric (8.5+/10 bar): names the actual affected flow, consequence is signer-grade, verification is concrete yes/no, no "appears intended" for a mapped flow, GitHub comment and PP review page must align.
+- Enrichment fallback behavior: when structured Gemini review fails, enrichment stays alive with deterministic fallback bullets (never crashes to raw "Automated enrichment failed" comment). Fixed in PR #442.
+- Double-punctuation fix: `formatBecauseClause()` ensures approval summaries end with exactly one period (guards against `component..` artifacts). Fixed in PR #440.
+- Goal cron pattern: brief-quality iterative improvement goals should auto-stop after N consecutive 9+/10 live validations; Rod may stop earlier via explicit command.
+- PR #440, #441, #442 all merged; brief quality pipeline is stable.
+
+## 2026-05-05 — New User Flow (#rc-main › New User Flow)
+- Closed the Permission Protocol new-user-flow durable goal after returning-user install recovery passed, post-install guidance shipped/protected, public receipt pages were verified, and pp-demo PR #47 showed receipt-backed green activation smoke.
+- Stopped the recurring goal cron for this thread (`Goal: Permission Protocol new-user flow`, former cron id `da96f359-9b33-4d80-8f45-dfeb4ac9e504`).
+- Fresh brand-new PR smoke is optional QA/healthcheck, not a blocker for this goal.
+
+## 2026-05-08 — Onboarding GPT: Mobile Signup Polish (#onboarding-gpt)
+- Mobile signup polish must be executed as a user-perspective E2E flow, not just audited: public site → signup → onboarding → working dashboard.
+- Acceptance bar: iPhone-sized viewport, no broken layouts, clear CTAs, usable forms, useful post-signup state, screenshots/artifacts, lint/build/test verification.
+- Email-first signup can go straight to onboarding during the signup experiment.
+- Onboarding needs a skip/manual code-host path that still reaches a useful activation finish state.
+- Site PR #296 and app PR #475 merged/deployed; production E2E passed with 0px horizontal overflow on all tested screens.
+- Deferred polish: soften/remove persistent “Skip to GitHub install” header during guided onboarding so it does not compete with the flow.
