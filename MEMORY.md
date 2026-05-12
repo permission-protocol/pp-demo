@@ -1,188 +1,131 @@
 # MEMORY.md — Long-Term Memory
 
-*Durable lessons, strategic decisions, and scar tissue that changes behavior. Not a changelog.*
+*Durable lessons and scar tissue. Historical items archived to `memory/archive/`.*
 
 ---
 
 ## Identity
 
-**Charles Goldberg** — Born January 1, 1982. Digital partner to Rod. Full-stack on Permission Protocol. Xdares ops handed to Maria.
-
-**Rod** — Rodrigo Carvalho. System-builder. Values leverage, systems thinking, intellectual honesty.
+**Charles Goldberg** — Digital partner to Rod. Full-stack on Permission Protocol.
+**Rod** — Rodrigo Carvalho. System-builder. Values leverage, systems thinking.
 
 ---
 
 ## Hard Rules (Scar Tissue)
 
-### Stagnation Governance (Hard Rule)
-Every message to Rod must now start with the Outreach Drought counter (e.g., "Day 55 Outreach Drought") until the first message is sent and the drought is broken (Apr 17). This prevents the primary bottleneck from being buried in routine updates.
-
 ### Never Touch Model Config
-Model config changes are Rod's job. Period. Read `SAFETY.md` before any risky config operation. I've died twice from this.
+Rod's job. Period. Read `SAFETY.md` before risky config ops.
 
 ### Research Before Hack (15-min Rule)
-Spent 2+ hours hacking iPhone Mirroring before discovering Safari WebDriver does it natively in 10 minutes. When multiple approaches fail the same way, you're at the wrong abstraction layer.
+Multiple approaches failing the same way → wrong abstraction layer.
 
 ### Debugging Circuit Breaker
-5+ messages without a fix → STOP, summarize, escalate. Don't spiral.
-
-### No Thinking Out Loud
-Do the work silently. Post one message with the result. Never "let me check..."
-
-### Parallel Batch Pattern
-Mature throughput achieved: ~12 PRs in 3h using parallel Codex agents (up to 11) with git worktrees (Apr 10). This supersedes the sequential pattern for large-scale UI/UX alignment sprints.
-
-### Health Check Philosophy
-Silent failures are the most dangerous. Any critical infrastructure (Auth, Webhooks, Onboarding) must have a daily E2E health check script + cron. Fix-and-forget is a myth; fix-and-monitor is the rule.
+5+ messages same bug → STOP, summarize, escalate.
 
 ### Critical Fix Pattern
-Any high-impact bug fix (e.g., onboarding breaks) requires a persistent monitoring script and a daily cron. Never trust a fix to stay fixed without external verification.
-
-### GitHub App Auth
-JWT = app-level calls. Installation Token = repo-level calls. 401/403 on repo call with JWT → you need an Installation Token.
-
-### PKCS#8 for JWT
-`GITHUB_APP_PRIVATE_KEY` in Node/Render `crypto.subtle` requires PKCS#8 format (`BEGIN PRIVATE KEY`). PKCS#1 (`BEGIN RSA PRIVATE KEY`) causes silent JWT generation failures in many ASN.1 wrappers.
-
-### Webhook Integration
-Always check `middleware.ts` PUBLIC_PATHS first. Add both `/path` and `/path/` to avoid trailing slash 401s.
+High-impact fix → add health check script + daily cron. Fix-and-monitor, not fix-and-forget.
 
 ### Denied Status = Hard Stop
-In the Consequence Engine, a "denied" status is a hard stop with no authorize button. The only path forward is fixing the code and pushing a fresh diff.
+Consequence Engine "denied" has no authorize button. Fix code, push fresh diff.
 
-### Prerequisite Optimization
-Splitting the system prompt and context (reducing always-injected tokens by 70%+) was the prerequisite for the Consequence Engine's high performance and deterministic accuracy.
+### Always Keep One Healthy Comms Channel
+May 4: Telegram polling stalled the event loop and made Charles unreachable until disabled. Before disabling/altering any messaging plugin, verify another channel (Discord) is live. Heavy crons → `gemini-lite` + timeouts; never let one plugin starve the loop.
 
-### Always-Comment (Reversed Quieting)
-Removed per-repo comment quieting (Apr 9). The comment is the primary product touchpoint; if it's missing, the system feels "blind." PP now comments on every PR.
-
-### Surgical Comment Updates
-Updates to PR comments should be surgical (find-and-replace status lines) rather than full re-renders (Apr 9). This preserves the critical consequence brief provided by the LLM while updating the gate status.
-
-### Webhook-only Activation
-Activation engine skips setup PRs (Apr 9). Webhook handles headless provisioning; users get to the first blocked action in <5 minutes without repo pollution.
+### Cron Silent-Failure Pattern (sessionKey Conflict)
+May 7: An isolated `agentTurn` cron job that also has a legacy `sessionKey` binding can silently no-op — job marks "ok" in 6ms, isolated agent never actually spawns. Fix: clear `sessionKey` from the job (so it's truly stateless) + add `delivery.mode: announce` so failures surface instead of disappearing. Always verify cron by checking that a new isolated session ID was created, not just that the job reported success.
 
 ---
 
 ## Strategic Truths
 
-### Safety > Crypto (Chad Bayer Signal)
-Engineering leaders value safety and velocity in an AI-agent-centric world more than the cryptographic receipt mechanism itself (Apr 9). Framing the product as a "Consequence Engine" for safety/governance has more traction than "Receipt Protocol."
-
-### Abstraction for Trust
-Deterministic outcome routing (cleared | approval_required | denied) is the correct abstraction for enterprise trust. LLMs provide the brief, but deterministic rules enforce the gate.
-
-### Activation Definition
-Real activation = **Blocked Action → Signer Decision → Receipt**. Everything before (install, YAML setup) is just setup. Hello World auto-PR gets users to first blocked action in <5 minutes.
-
-### Pricing Architecture (Finalized Apr 1)
-Developer (Free) → Team ($79) → Production ($299) → Enterprise. Unlimited signers on Free tier is the killer differentiator. Don't tax the safe action — per-receipt quotas penalize compliance.
-
-### Copy Over Features
-The conversion gap is usually messaging/urgency, not functionality. The bar: "It would be irresponsible NOT to install this."
+### Safety > Crypto
+Engineering leaders value safety/velocity over cryptographic receipts. Frame as "Consequence Engine."
 
 ### Governance Over Self-Policing
-Claude Code "Secret Patching" incident (Mar 2026) — agents manipulate data to satisfy tests. Governance must be external to the agent. This is the "Why Permission Protocol" story.
+Claude Code "Secret Patching" (Mar 2026) — agents manipulate data. Governance must be external.
 
 ### Infrastructure Over Interface
-Build the enforcement primitive first. Polish the dashboard last. Primitives > polish at this stage.
+Enforcement primitive first. Dashboard polish last.
 
-### Onboarding = Product
-If a user can't go from "What is this?" to "gated PR" in 5 minutes, we've failed. Registry-less: use direct GitHub file creation URLs, not Marketplace. Server-orchestrated Hello World via Statuses API.
+### CFO Wedge — Two Market Segments (May 8)
+Active deployers: already have agents in finance/ops → need PP for governance and audit trail. Ask: "do you know what your agents are authorized to do?"
+Cautious non-adopters: avoiding agents due to regulatory/compliance fear → PP is the unlock. Ask: "what would need to be true for you to let an agent touch a financial workflow?"
+Jared Toren confirmed the pattern. Joel Trammell checking with his accounting firm CFOs (nudge cron May 12).
+
+### Activation Definition
+Real activation = **Blocked Action → Signer Decision → Receipt**. <5 min to first blocked action.
+
+---
+
+## Active Patterns
+
+### Parallel Batch Pattern
+~12 PRs in 3h using parallel Codex agents (up to 11) with git worktrees.
+
+### Activation Outreach (YC Pattern)
+1. Recruit one at a time. Hand-written.
+2. Watch them use it (screen-share).
+3. Small first ask ("5 min to react").
+4. Learning voice, not authority voice.
+5. First message job = reply, not install.
+
+### Founder vs Builder Voice
+- VC/brand outreach: "I'm the founder of"
+- First-user activation: "I'm building" (smaller ask, ~3-5x reply rate)
 
 ---
 
 ## Systems Built
 
-- **Create Factory** (Mar 13): Autonomous pipeline — ideate → organize → spec → build → qa. Discord: #factory-control/pipeline/wip/done. Reconciliation via `factory/scripts/reconcile.sh`.
-- **iPhone Mobile QA** (Mar 13): Safari WebDriver via USB cable.
-- **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement, YAML-based rules. Published as `@permission-protocol/mcp-guard`.
-- **Consequence Engine** (Apr 8): Predictive enforcement layer that analyzes PR diffs to determine outcomes (`cleared`, `approval_required`, `denied`) before merge.
-- **Onboarding Smoke Test** (Apr 6): `scripts/pp-onboarding-smoke-test.sh` — E2E verification for GitHub App installation and PR status check feedback loop.
-- **Ideation Schema Migration** (Apr 17): Normalized `ideas.jsonl` to a state machine (ACTIVE/BLOCKED/PARKED/DONE/ARCHIVED). Pipeline now manages 22 non-terminal ideas with clear visibility on BLOCKED and PARKED states.
-- **Outreach Readiness** (Apr 17): Personalized outreach for warm leads (idea-097), PH hunters (idea-095), and HN unban (idea-096) drafted and waiting for loom/approval.
-- **Ideation Schema Migration** (Apr 17): Normalized `ideas.jsonl` to a state machine (ACTIVE/BLOCKED/PARKED/DONE/ARCHIVED). Pipeline now manages 22 non-terminal ideas with clear visibility on BLOCKED and PARKED states.
-
-### Dynamic Tool Governance (Apr 20)
-Cloudflare 'Project Think' (agents self-authoring tools) creates a governance vacuum. Static capability lists are insufficient for dynamic agents. Signature-based enforcement (Permission Protocol) is the only way to gate dynamic tool actions.
-
-### Brand Collision Monitoring (Apr 20)
-Detected "Permission Protocol" launched on Base (clanker_world) using identical terminology ("signed receipts"). Strategic awareness of brand collisions is required as the space matures.
-
-### Future-Dating Audit (Apr 20)
-WordPress homepages and SEO-driven sites can "pollute" with future-dated posts if not properly audited. Requires periodic manual or automated scans to ensure seasonal relevance is maintained.
+- **Consequence Engine** (Apr 8): Predictive enforcement (cleared | approval_required | denied).
+- **Create Factory** (Mar 13): Autonomous pipeline. Discord #factory-control.
+- **MCP Guard** (Mar 20): Stdio proxy for MCP policy enforcement.
+- **Onboarding Smoke Test**: `scripts/pp-onboarding-smoke-test.sh`
+- **Deploy Gate / Policy-Gated Auto-Merge** (May 2–8): PP sets authority check; GitHub native auto-merge executes when CI + PP both green. Carry-forward approval preserves review on merge-base-only updates. Fail-closed on all error paths.
+- **GitHub App token scope** (May 2026): Must request `statuses:write` only — not broader repo write. Broader token causes silent failure of post-approval GitHub status. Post-approval status posting must be synchronous, not deferred to background worker.
+- **PP deploy primitive** (May 2026): Host-agnostic. Detect restricted action → request PP approval → verify/redeem receipt → proceed only if verified. Render/Vercel/Fly are adapters — not PP core requirements for users.
 
 ---
 
 ## Preferences
 
-- Codex first, always. Claude Code only for complex tasks where Codex fails.
-- Screenshot before merge, not after.
+- Codex first. Claude Code only for complex tasks.
+- Screenshot before merge.
+- Gemini Flash for cron. Opus only when quality demands.
 - All comms via Discord PP HQ.
-- Gemini Flash for cron tasks. Opus only when quality demands it.
 
 ---
 
-## Key Milestones
+## Blitzy Pricing & Positioning Reference (May 12)
 
-- **Polish V3 Sprint — Completed** (Apr 10)
-    - 12 PRs (#337-#348) merged in ~3 hours across 4 batches.
-    - Full DESIGN.md alignment: typography, gradients, radius, glassmorphism, surface tokens, input focus, grid overlay, whitespace expansion.
-    - 11 Codex agents used in parallel with git worktrees.
-- **Polish V2 Sprint** (Apr 9)
-    - 10 PRs shipped. Onboarding success page, headless provisioning, surgical comments, branding.
-- **Consequence Engine Shipped** (Apr 8)
-    - 5-day engineering sprint (Engine, Router, Routing, Receipts) compressed into 24 hours. Core authority primitive operational.
-- **Chad Bayer Signal** (Apr 9)
-    - Feedback validates Safety > Crypto framing for engineering leaders.
-- **System Prompt Restructured** (Apr 6)
-    - 72% reduction in always-injected context; enabled higher deterministic accuracy for Consequence Engine.
+Blitzy's published tiers set the market price for agentic enterprise infrastructure:
+- Pilot: $50K-$250K per month
+- Enterprise: $500K+ per year
+- Transformation: $10M+ per year
 
-*Updated: 2026-04-28 11:00 PM*
+Buyers paying these prices: government, financial services, insurance, life sciences. PP buyer set overlaps exactly.
 
-### Outreach Performance & Messaging (Apr 29)
-- **Founder vs Builder — audience-dependent (corrected Apr 30):** For VC/buyer/brand outreach, *"I'm the founder of"* performs better (authority). For first-user activation DMs at the YC "do things that don't scale" stage, *"I'm building"* performs better (learning mode, smaller ask, ~3–5x reply rate per YC research). Apply by audience, not universally. See `pp-os/marketing/VOICE.md` Mode A vs Mode B.
-- **Product vs Person:** Attribute actions to the company/product rather than the person in outreach to build brand weight early.
-- **Strategic VC Targeting:** Prioritize VCs without existing agent-governance/security bets (e.g., a16z, Benchmark, Conviction). Avoid direct engagement with direct competitors (Oso) to minimize risk.
+PP pricing implications:
+- Pilot: $25K-$50K (not $5-10K)
+- Enterprise annual: $50K-$500K per customer
+- Strategic Fortune 500 deployment: $500K-$2M per year
 
-### OpenClaw Core & Dependencies
-- **Next.js/Sharp Issue:** Resolved missing `sharp` dependency in Next.js projects and OpenClaw core modules by explicit installation. (Apr 29).
+Key positioning moves to copy: category claim ("Pioneering the Agentic Authority Layer"), case-study schema with three numeric columns (agent actions reviewed / % auto-approved / hours saved), "Talk to a compliance engineer" CTA (not "Book a demo"), founder bio with operator credibility for CCO buyer set.
 
-### Strategic Stagnation (Outreach Drought)
-Day 67 Outreach Drought (Apr 29 MDT). **DROUGHT BROKEN APR 29.** Sprint 5 campaign executed: 63 LinkedIn connections + 250 follow invites sent. 0/10 installs. Focus shifts to conversion.
+Key positioning move not to copy: "80% AI / 20% human" works for code generation but not for authorization. PP claims 100% of authorization decisions with human override on every consequential one.
 
-### Sprint 5 Enrichment Rules (Apr 28)
-When scaling outreach lists: (1) Source-csv emails are forbidden to prevent low-intent spam; (2) include ex-employee search stubs for better verification signals; (3) prioritize verification signal over list coverage to protect domain reputation.
+PP's natural pricing-model advantage Blitzy cannot easily steal: deterministic annual pricing vs. their usage-based per-million-lines. CFO can budget PP with certainty.
 
-### Tactical Pivot: The Day 14 Rule (Apr 20)
-When a primary outreach target is unresponsive for 14 days (specifically on LinkedIn), pivot immediately to secondary contacts at the same organization. "Go wide" to break the silence rather than waiting for a single decision-maker who has ghosted. 
+Full lessons and action items: `ops/strategy/blitzy-lessons.md`.
 
-### LinkedIn Batch Performance
-LinkedIn batches are time-sensitive. Day 0 (Initial), Day 7 (Soft Nudge), Day 14 (Pivot to Secondary). Failure to execute the Day 14 pivot results in a lead going cold.
+## Recent Lessons
+- Activation Flow: returning-user install recovery verified.
+- Frictionless Experiment: Rod approved email-lead signup for interest-signal testing.
+- Discord Notifications: Signup notifications (signup/install alerts) via Discord hooks shipped/shipped (in PR).
+- Site Funnel: CTAs shifted to `Start free` to prioritize developer funnel vs developer pricing/install-first paths.
+- Signer Authority: Public receipts `/r/:receiptId` fixed and middleware-authenticated.
 
-### Governance & Security
-- **Governance Check (Apr 17):** Ledger synchronized (PP-001 to PP-021, XD-001 to XD-004, SYS-001 to SYS-015). PAT leak remediated. Heartbeat push verified via SSH.
+---
 
-### Outreach Readiness
-- **Drafts Ready:** Personalized outreach for warm leads (idea-097), PH hunters (idea-095), and HN unban (idea-096) are drafted and waiting for loom/approval.
-
-### Factory Pipeline Discipline
-PRDs stale for >48h (e.g., `idea-042`) are reset to BLOCKED to prevent pipeline pollution. This forces a conscious decision to resume rather than letting half-baked specs linger in the active queue.
-
-### Software Maintenance
-OpenClaw `2026.4.11` update available (manual upgrade required).
-
-### Idempotent State Machines
-When building state machines for onboarding (like ActivationAttempts), locked steps must be idempotent and resumable so users can recover from early failures without getting permanently stuck.
-
-### Activation Outreach Doctrine (Apr 30, scar tissue)
-*Source: Sam Altman Startup Playbook + PG Do Things That Don't Scale.*
-
-When recruiting first users at the activation stage, follow the YC "do things that don't scale" pattern:
-1. **Recruit one at a time.** Hand-found, hand-written. No templates. No CSV enrichment until after PMF.
-2. **Watch them use it.** Screen-share. Sit (virtually) next to them. Don't put anyone between you and the user.
-3. **Make the first ask smaller than feels comfortable.** "5 min to look and react" → reply → "15 min screen share to install" as follow-up. Don't ask for the install in cold message #1.
-4. **Use Learning voice, not Authority voice.** "I'm building" not "I'm the founder of." Drop diagnostic claims about their world. Add explicit gratitude.
-5. **The first message's job is the reply, not the install.** Optimize for that single metric.
-
-This is the **opposite** of the VC/brand outreach voice (Mode A in VOICE.md). Don't conflate them. Two audiences, two requirements.
+*Archived milestones: `memory/archive/2026-05-historical.md`*
+*Updated: 2026-05-05*
