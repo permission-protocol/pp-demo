@@ -274,15 +274,17 @@ The following 20 contacts on this list **were already messaged yesterday**. Skip
 
 ---
 
-### 16. Abhi Maheshwari — CEO | Agentic AI
+### 16. Abhi Maheshwari — CEO Aisera (acquired by Automation Anywhere Nov 2025) | Agentic AI for ITSM / HR / CS
 
-**Track:** Partner (Agent platform CEO). [NEED FULL PROFILE — light personalization, no company named in headline]
+**Track:** Partner (Aisera + Automation Anywhere = massive ITSM/HR/Finance/CS agent footprint). **HIGH-PRIORITY DISTRIBUTION PLAY.**
 
-**Title:** Agentic AI + the audit objection
+**Tone note:** Just exited successfully (Goldman + Thoma Bravo Series D, then AA acquisition). **Apply Christopher Harris lesson — no present-tense pain.** Future-tense regulated-enterprise framing only.
 
-> Abhi, founder to founder on agentic AI platforms: as your agents start taking real action for enterprise customers, the audit objection lands the moment a CFO, CISO, or compliance lead enters the room.
+**Title:** Aisera + AA scale + authorization layer
+
+> Abhi, founder to founder, congrats on the AA chapter. As the combined Aisera + Automation Anywhere footprint scales into regulated enterprises (banks, gov, healthcare), the next gate after the agent itself is going to be the buyer's compliance team asking who explicitly authorized each consequential agent action across ITSM, HR, and finance workflows.
 >
-> I'm the founder of Permission Protocol, the authorization layer for AI agents at the action boundary. You build the gas, we help compliance-sensitive buyers close faster.
+> I'm the founder of Permission Protocol, the authorization layer for AI agents at the action boundary. We plug in next to the agent, so your enterprise customers can prove the human-signoff trail to their auditor without slowing the platform down.
 >
 > Open to a 15 next week if the framing lands.
 
@@ -330,17 +332,17 @@ The following 20 contacts on this list **were already messaged yesterday**. Skip
 
 ---
 
-### 20. Kunal Yajnik — Strategic AI Specialist | Democratizing Agentic AI
+### 20. Kunal Yajnik — Strategic AI Specialist @ Zendesk (Chicago, pre-sales lead for Zendesk AI agents)
 
-**Track:** Partner / Network (AI specialist, generalist headline). [NEED FULL PROFILE for sharper landing]
+**Track:** Partner / Network (Zendesk pre-sales seat for AI agents). The customers Kunal sells to are the exact mid-market and enterprise CS orgs that will hit the authorization question first.
 
-**Title:** Agentic AI + the authorization layer
+**Title:** Zendesk AI agents + customer authorization
 
-> Kunal, the agentic AI focus is where this question lands. As more enterprises let agents take real action across their stacks, does the authorization layer sit inside each agent or as a separate control plane?
+> Kunal, the Zendesk pre-sales seat for agentic AI is exactly where this question lands first. As Zendesk's customers move their AI agents from drafting replies to actually taking action (refunds, account changes, order updates, escalations), their compliance and CX leads are going to ask who explicitly authorized each consequential action.
 >
-> I'm the founder of Permission Protocol, betting external. We're the authorization layer for AI agents at the action boundary.
+> I'm the founder of Permission Protocol, the authorization layer for AI agents at the action boundary. The way I see it, Zendesk builds the gas, we're the brakes that help your buyers say yes faster on regulated workflows.
 >
-> Curious how this is landing with the orgs you work with.
+> Curious whether this is already showing up in your customer conversations, or still too early.
 
 ---
 
@@ -536,14 +538,12 @@ Reuse what worked Day 1:
 
 For 23 of the 25 net-new sends, headline alone is enough — the v2 voice rules (one diagnostic + vertical action + soft observation) don't depend on recent posts or detailed bio.
 
-Two contacts flagged `[NEED FULL PROFILE]` where the headline doesn't reveal the company or core context:
+Two contacts originally flagged `[NEED FULL PROFILE]` have been updated with full profile data (May 13 12:10 MDT):
 
-- **#16 Abhi Maheshwari (CEO Agentic AI)** — no company named, generic CEO headline
-- **#20 Kunal Yajnik (Strategic AI Specialist)** — generic, no company or vertical
+- **#16 Abhi Maheshwari** → CEO of Aisera (just exited to Automation Anywhere Nov 2025). High-priority distribution play. Christopher Harris lesson applied: future-tense regulated-enterprise framing only, no present-tense pain.
+- **#20 Kunal Yajnik** → Strategic AI Specialist (pre-sales) at Zendesk, Chicago. Partner-track: Zendesk customers are the buyers who'll need PP first when their CX agents start taking real action.
 
-For these two, full LinkedIn profile would let me sharpen the vertical action and the personalization. Optional, not required to send.
-
-For everyone else, send as drafted.
+All 25 net-new sends now have personalization. Send as drafted.
 
 ---
 
