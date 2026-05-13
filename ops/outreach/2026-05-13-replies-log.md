@@ -48,7 +48,61 @@ Plus 2 continuations (not fresh DMs):
 | # | Name | Day 2 # | Track | Status | First reply | Next action |
 |---|------|---------|-------|--------|-------------|-------------|
 | 2 | Andy Pray (Joyful Agents) | 2 | Partner | **YES, soft call ask for next week. At Interrupt this week.** | "Interested in learning more. Am travelling this week (at Interrupt), would next week be convenient?" | Sent 2 slots for next week. Rod replied 12:30 MDT. |
+| 2 | John Meekison (Sabre Solutions, fractional CFO + NACD.DC board director) | 2 | Buyer / Network | **STRONG YES, audit-committee confirmation.** "It's hitting the boardroom. Accountability is critical as we start giving more autonomy to models to generate outcomes." | Reference his April 2026 AI governance framework post by content. Book 30-min call with 2 slots next week. **High-priority — working public-company director (Agriforce Compensation Chair) + Operators Guild member + sells AI governance services to clients.** |
 | 25 | Chris Quish (PE Operating, ex-Clearlake/Elliott) | 25 | Network | **Engaged, intelligence + soft self-pitch.** Built Orchestrai8 with governance/traceability. | Detailed reply with PE org-chart context (Strategic Resource Group archetype at TA Associates) + soft pitch for his own product Orchestrai8. "I doubt portfolio AI governance is on their operating roadmap. Congrats to you for tackling it." | **Reply within 1 hour.** Acknowledge the PE-internal-function intel as gold (it is). Look up Orchestrai8 and reference it. Position PP as upstream of orchestration, not competitive. Ask the one question that probes whether he's the inside man at his portcos or genuinely retired from the operating seat. |
+
+---
+
+## John Meekison reply (May 13 15:28 MDT) — STRONG YES, audit-committee confirmation
+
+**John's full reply:**
+
+> It's hitting the boardroom. Accountability is critical as we need oversight over what AI is doing, particularly as start giving more autonomy to models to generate outcomes.
+
+**Signal analysis:**
+
+This is a 29-word reply that does three things:
+1. **"It's hitting the boardroom"** — confirms PP's wedge at the audit-committee level. From a working public-company director (Agriforce Growing Systems, NASDAQ:AGRI, Compensation Committee Chair), this is regulator-grade validation.
+2. **"Accountability is critical, need oversight over what AI is doing"** — he's using *accountability* and *oversight* (his own framework vocabulary from his April post). Match this language back.
+3. **"as we start giving more autonomy to models to generate outcomes"** — he names the timing trigger. PP's wedge sharpens exactly as agent autonomy increases. Lift this framing.
+
+**Profile context that changes the play:**
+
+- **NACD.DC + CPA + CMA + sitting public-company board director.** Working audit-committee context, not theoretical.
+- **Founder of Sabre Solutions (fractional CFO consultancy).** Sells "AI assessment, governance and implementation" services. PP is a tool he could prescribe to clients, not just react to. Channel partner archetype.
+- **Member of Operators Guild + angel investor.** High-trust founder/operator distribution network.
+- **April 2026 LinkedIn post: 4-part AI governance framework** (Oversight Structure → Risk Mapping → Documentation & Controls → Capital Alignment). PP slots cleanly into Oversight Structure ("governance must have a name attached to it") and Documentation & Controls.
+- **April post's closing question:** "If your board requested a full AI risk briefing next quarter, would your framework be presentation-ready?" This is the exact gap PP turns into a tool. Lift this phrase into the call agenda.
+- **Background:** 15 yr investment banking, 11 yr CFO biotech (iCo Therapeutics), 6+ yr CFO Exro Technologies (TSX, scaled 10→200, $100M+ raised, ERP + internal controls). Serious builder, not LinkedIn influencer.
+
+**Strategic frame:** John is both a **buyer** (his Sabre clients are PP's mid-market buyers) AND a **channel/network partner** (he prescribes PP into client engagements + brings Operators Guild network). Treat both layers in the reply.
+
+**Reply draft (V1, sending immediately within 1-hour SLA):**
+
+> John, that confirms what we're hearing from CCOs and audit-committee chairs across financial services and healthcare: the board has stopped accepting "we have logs" as an answer.
+>
+> Your April framework piece on AI governance maps cleanly to where Permission Protocol slots in. Specifically the Oversight Structure step ("governance must have a name attached to it") and the Documentation & Controls step. PP captures the explicit human approval at the action boundary, names the signer, and emits a tamper-evident receipt the audit committee can hand to the regulator without translation.
+>
+> Worth a 30 next week to compare maps? Two slots if either works:
+> - Tuesday May 19, 11am MDT (1pm ET)
+> - Thursday May 21, 10am MDT (12pm ET)
+>
+> Either way, the conversation I'd want to spend most of the time on is where your Sabre clients hit the "presentation-ready governance" gap first.
+
+**Voice rules applied:**
+- No "great point" / "love this" filler
+- No em dashes
+- Names his actual framework (April post) and lifts two exact phrases ("governance must have a name attached to it" + "presentation-ready")
+- Lifts his closing question and turns it into the call agenda
+- Two specific slots, 30 min, Art Dunal pattern
+- Founder-to-founder respect, peer language
+- Call agenda makes saying yes about *his* business (Sabre clients)
+
+**Tier-1 outcome targets for the call:**
+1. Sabre Solutions becomes a PP channel-partner / referrer (his fractional CFO clients = PP mid-market ICP)
+2. Operators Guild warm intros (his distribution network of founders/operators)
+3. Direct buyer at Agriforce (NASDAQ-listed) for board-level audit committee use case
+4. Validation language for upcoming CFO/CCO outreach (he writes PP's positioning back at us in his own framework vocabulary)
 
 ---
 
