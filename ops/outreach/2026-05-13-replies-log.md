@@ -53,6 +53,55 @@ Plus 2 continuations (not fresh DMs):
 
 ---
 
+## Sunil Aggarwal follow-up (May 13 4:15 PM MDT) — "What is this meeting about?" qualifier
+
+**Sunil's message (after Rod's 2-slot call offer):**
+
+> Thanks for your message. Can you please be more specific what this meeting is related to? Any company, job, or consultancy eventually? Thank you, Sunil
+
+**Signal analysis — this is NOT skepticism:**
+
+Sunil is a senior healthcare CCO at a regulated org. He's been in compliance 15 years. He has 1 mutual connection (Philip Templeton, M.D., FACR — cardiologist, author of CYBERBOLT), 353 connections total, and zero LinkedIn activity in 90 days. He doesn't do LinkedIn theater.
+
+He's asking the question for three legitimate reasons:
+
+1. **Nothing in our thread has told him what PP actually is.** Every prior message was about the *problem*. He doesn't know if PP is a product, an idea, a research project, or a service.
+2. **As a CCO at a healthcare org, he is personally regulated.** Random "compare notes" calls with vendors must be routed through procurement. Job offers are different. Research interviews are different. He's asking which lane to put us in.
+3. **He's protecting his time.** He's not LinkedIn-active, took the first call request seriously enough to engage substantively, and now wants to know what he's signing up for.
+
+This is a **trust-building moment, not a sales objection.** Senior compliance officers respect directness. The failure mode is dressing up the answer.
+
+**Profile detail that matters:**
+
+- Just completed "Artificial Intelligence and Law Certificate" (per profile). That's why he speaks this fluently. He's studying our exact domain right now.
+- 15 yr healthcare compliance, current CCO role since Mar 2025 (~14 mo in seat).
+- 1 mutual: Philip Templeton, M.D., FACR — worth a warm-intro ask if Sunil goes cold after this reply.
+
+**Reply draft (V1, sending immediately):**
+
+> Sunil, fair question. To be direct:
+>
+> Permission Protocol is a venture-backed company I founded. We're building an authorization layer (an SDK + a signing service + an audit-trail receipt) that AI agent vendors and enterprise buyers integrate to capture explicit human approval for consequential agent actions. The receipts are tamper-evident and designed to be regulator-grade.
+>
+> The call I'm proposing is product feedback, not sales. I'm looking for design-partner conversations with healthcare CCOs who'd push back on where the framework breaks. No procurement, no commercial ask. If we ever became commercially relevant to your organization later, that would be a separate, formal conversation through proper channels.
+>
+> 30 min, anytime that works for you. The two earlier slots are still open, or send me something next week.
+
+**Voice rules applied:**
+- No em dashes
+- No "great question" / "I appreciate your asking"
+- Direct, structural; names the lanes (job / consultancy / sales / design-partner research) and picks the right one
+- Three concrete product components (SDK + signing service + receipts), not a sales pitch
+- "Regulator-grade" is his exact vocabulary domain
+- Proactive disclosure of any later commercial path going through proper channels — senior compliance officer will appreciate this
+- Re-offers the meeting without pressuring
+
+**Backup plan if no reply by Friday EOD:**
+
+Warm intro request to Philip Templeton, M.D., FACR (Sunil's only mutual). Templeton's CYBERBOLT book is about cyber resilience — he likely understands the auditability/integrity argument. Short message asking for an intro, with explicit "only if it makes sense to you."
+
+---
+
 ## John Meekison reply (May 13 15:28 MDT) — STRONG YES, audit-committee confirmation
 
 **John's full reply:**
