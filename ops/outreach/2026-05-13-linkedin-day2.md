@@ -32,37 +32,36 @@
 
 ---
 
-## Duplicate check vs Day 1
+## Duplicate check vs Day 1 (all 4 pages cross-referenced)
 
-The following 20 contacts on this list **were already messaged yesterday**. Skip first DM. Watch their reply threads instead.
+**20 of 47 contacts on today's list were already messaged yesterday across Day 1 pages 1–4.** Skip first DM. Watch their reply threads instead.
 
 | # | Name | Day 1 page | Day 1 status | Action today |
 |---|------|------------|--------------|--------------|
-| 1 | Krishan Rajaratnam | new today | Already replied in this thread (May 13 first reply) | Continue thread, do not send fresh DM |
-| 21 | Marie Batz Martin | — | — | NEW SEND |
-| 32 | Art Dunal | page 1 #12 | **Call booked** (Thu or Fri) | Skip. Send calendar invite per replies log. |
-| 30 | Dean Curtin, CPA | page 1 #14 | Strong YES, cross-platform expert | Skip. Move to follow-up: "which design partner would you pick" question |
-| 38 | Brandon Looker | page 1 #7 | Polite decline (Kinter SE) | Skip. Loop closed. |
-| 40 | Andrew Bowd | page 1 #5 | No reply yet | Skip. Wait. |
-| 41 | Martin Collyer | page 1 #3 | Engaged after v2 rephrase | Skip. Continue thread. |
-| 9 | Juan Llanos | — | — | NEW SEND |
-| 31 | Jalal Vardag | page 1 #13 | No reply yet | Skip. Wait. |
-| 36 | Mohit Chaudhary | page 1 #9 | No reply yet | Skip. Wait. |
+| 10 | Anand Ramachandran | **page 1 #1** | No reply yet | **SKIP — DUPE confirmed by Rod.** |
+| 29 | Espen Sverdrup Tandberg | page 1 #16 | No reply yet | Skip. Wait. |
+| 30 | Shantanu Sewarkar | page 1 #15 | No reply yet | Skip. Wait. |
+| 31 | Dean Curtin, CPA | page 1 #14 | Strong YES, cross-platform expert | Skip. Move to follow-up: "which design partner would you pick" question |
+| 32 | Jalal Vardag | page 1 #13 | No reply yet | Skip. Wait. |
+| 33 | Art Dunal | page 1 #12 | **Call booked** (Thu or Fri) | Skip. Send calendar invite per replies log. |
+| 34 | David Zhi LuoZhang | page 1 #11 | No reply yet | Skip. Wait. |
 | 35 | Ron Hofmeister | page 1 #10 | No reply yet | Skip. Wait. |
-| 33 | David Zhi LuoZhang | page 1 #11 | No reply yet | Skip. Wait. |
-| 29 | Shantanu Sewarkar | page 1 #15 | No reply yet | Skip. Wait. |
-| 28 | Espen Sverdrup Tandberg | page 1 #16 | No reply yet | Skip. Wait. |
+| 36 | Mohit Chaudhary | page 1 #9 | No reply yet | Skip. Wait. |
 | 37 | Daniel Jones | page 1 #8 | No reply yet | Skip. Wait. |
-| 38 | Sofia Esteves Carvalho | page 1 #6 | No reply yet | Skip. Wait. |
-| 39 | Sean Jepsen | page 1 #4 | No reply yet | Skip. Wait. |
-| 43 | George S. Georgiades, Esq. | page 3 | No reply yet | Skip. Wait. |
+| 38 | Brandon Looker | page 1 #7 | Polite decline (Kinter SE) | Skip. Loop closed. |
+| 39 | Sofia Esteves Carvalho | page 1 #6 | No reply yet | Skip. Wait. |
+| 40 | Andrew Bowd | page 1 #5 | No reply yet | Skip. Wait. |
+| 41 | Sean Jepsen | page 1 #4 | No reply yet | Skip. Wait. |
+| 42 | Martin Collyer | page 1 #3 | Engaged after v2 rephrase | Skip. Continue thread. |
+| 43 | Erica Rao | page 3 | No reply yet | Skip. Wait. |
+| 44 | George S. Georgiades, Esq. | page 3 | No reply yet | Skip. Wait. |
 | 45 | Mario Martins Jr | page 3 | No reply yet | Skip. Wait. |
 | 46 | Chris Chaffin | page 3 | No reply yet | Skip. Wait. |
 | 47 | Dave Lavinsky | page 3 | No reply yet | Skip. Wait. |
-| 42 | Erica Rao | page 3 | No reply yet | Skip. Wait. |
-| 10 | Anand Ramachandran | page 1 #1 (Wipro)? | TBD | **POSSIBLE DUPE.** Today's headline says "AI Strategy/Transformation, AI Risks/Mitigation, Governance". Could be same person (Wipro is consulting + governance). Verify against profile URL before sending. If different person → NEW SEND. |
 
-**Net new sends after dedup: ~25 of 47**
+Krishan Rajaratnam (#1 today, new connection) is **not** a Day 1 dupe but is already in an active reply thread — do not send a fresh DM, continue the existing thread.
+
+**Net new first DMs after dedup: 26 of 47** (27 minus Krishan continuation)
 
 ---
 
@@ -186,19 +185,9 @@ The following 20 contacts on this list **were already messaged yesterday**. Skip
 
 ---
 
-### 10. Anand Ramachandran — AI Strategy/Transformation, AI Risks/Mitigation, Governance | GAI/GSI Research
+### 10. Anand Ramachandran — SKIP (DUPE of Day 1 page 1 #1)
 
-**Status:** Possible duplicate of Day 1 page 1 #1 (Wipro). Verify profile URL before sending. If same person → skip.
-
-**If new person, Track:** Buyer (AI governance / risk consulting). High-value referrer.
-
-**Title:** AI risk lens + agent authorization
-
-> Anand, the AI strategy + risk + governance lens is exactly where this question lives. When enterprises let agents take real action across operations, who owns the authorization layer and where does the auditable proof of human signoff sit?
->
-> I'm finding most firms can't answer that in a regulator-grade way. I'm the founder of Permission Protocol, the external authorization layer for AI agents at the action boundary.
->
-> Curious whether this matches what you're seeing inside enterprise transformation programs.
+Already messaged yesterday on Day 1 page 1 with the "Authorization layer for enterprise agents" diagnostic. No reply yet. Wait.
 
 ---
 
@@ -484,41 +473,40 @@ The following 20 contacts on this list **were already messaged yesterday**. Skip
 
 ## Priority send order today (top to bottom)
 
-Top 6 highest-signal sends (compliance/legal/CCO + CFO+governance + PE Operating):
+Top 6 highest-signal sends (compliance/legal/CCO + CFO+governance + PE Operating + agent-platform distribution):
 
 1. **Natalia Taft** — CCO + financial crime + ACAMS, exact target
 2. **Marie Batz Martin** — combined GC/CCO/Corporate Secretary
 3. **John Meekison** — Fractional CFO + AI Governance + Board
 4. **Matt Landis** — Healthcare GC + AI Governance
 5. **Mike Runquist** — Healthcare Compliance + Privacy + AI Governance
-6. **Chris Quish** — PE Operating Partner archetype (Clearlake / Elliott)
+6. **Abhi Maheshwari** — CEO Aisera (acquired by Automation Anywhere), massive ITSM/HR/CS distribution
 
 Next 6:
 
-7. **Juan Llanos** — FinTech / Crypto / Compliance
-8. **Michael Higgins** — UnitedHealth Group AI Product
-9. **Tyler Lynch** — IBM Field CTO (distribution play)
-10. **Vik Scoggins** — Coinbase Product
-11. **Tiffany Xu** — BizOps + Finance ex-Slack/Atlassian/Asana
-12. **Sonam Jha** — AI PM + Finance + McKinsey
+7. **Chris Quish** — PE Operating Partner archetype (Clearlake / Elliott)
+8. **Juan Llanos** — FinTech / Crypto / Compliance
+9. **Michael Higgins** — UnitedHealth Group AI Product
+10. **Tyler Lynch** — IBM Field CTO (distribution play)
+11. **Vik Scoggins** — Coinbase Product
+12. **Tiffany Xu** — BizOps + Finance ex-Slack/Atlassian/Asana
 
-Remaining 13 in source order, ~8 per hour pace as before:
+Remaining 14 in source order, ~8 per hour pace as before:
 
-13. John Meekison (already in top 6)
+13. Sonam Jha
 14. Andy Pray
 15. Stephen Farrell
 16. Monish Sharma
 17. Max Apodaca
-18. Anand Ramachandran (verify dup first)
-19. Rocky Motwani
-20. Rahul Jain
-21. Raman Gilotra
-22. Kunal Yajnik
-23. Fernando Barroso Gallegos
-24. Kelly Mahncke
-25. Shyam Desigan
-26. Katherine Dextraze
-27. Vivek Raj Anand
+18. Rocky Motwani
+19. Rahul Jain
+20. Raman Gilotra
+21. Kunal Yajnik
+22. Fernando Barroso Gallegos
+23. Kelly Mahncke
+24. Shyam Desigan
+25. Katherine Dextraze
+26. Vivek Raj Anand
 
 ---
 
