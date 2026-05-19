@@ -12,7 +12,7 @@
 
 Dispatch is a simple daily cockpit for founder-led public engagement.
 
-Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For platforms with safe APIs, Dispatch can publish directly after approval. For HN and LinkedIn, Dispatch prepares Rod's real logged-in browser, fills the form, then stops before final submit. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
+Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For platforms with safe APIs, Dispatch can publish directly after approval. For HN and LinkedIn, Dispatch helps Rod post from whatever computer/browser he is currently using: V1 opens the target page and copies/prepares the draft locally, while Rod stays responsible for paste/review/final submit. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
 
 The product exists to solve a specific recurring failure: we post/comment in bursts, then go quiet for weeks because the work is scattered across Discord, HN, LinkedIn, X, Reddit, docs, and memory. Discord notifications are not enough; they mix with everything else and get dropped. Dispatch gives the work a single-purpose home.
 
@@ -125,7 +125,7 @@ Discord is only the doorbell:
 
 - "Today's Dispatch is ready."
 - "Breaking HN opportunity expires in 42 minutes."
-- "Chrome tab prepared — hit Submit."
+- "Posting action ready — review in your browser and submit."
 
 The actual queue, drafts, states, and history live in the Dispatch UI.
 
@@ -133,16 +133,16 @@ The actual queue, drafts, states, and history live in the Dispatch UI.
 
 For HN and LinkedIn personal in V1:
 
-- Dispatch/Charles opens Rod's real browser profile.
-- Navigates to the correct composer/thread.
-- Fills the draft.
-- Shows a cropped screenshot of the filled composer.
-- Stops before submit.
-- Rod clicks the final platform button.
+- Dispatch runs generation and scoring server-side.
+- Posting assist runs in the browser/device Rod is currently using.
+- Dispatch opens the target composer/thread in that current browser where possible.
+- Dispatch copies the approved draft to the local clipboard or presents a one-click copy button.
+- Rod pastes/reviews/submits from his own logged-in session.
+- Dispatch never clicks final submit on restricted platforms.
 
-Reddit and Blog/Medium can be surfaced as draft suggestions, but V1 should not invest in full browser-prep execution for them until HN + LinkedIn prove the daily ritual.
+Reddit and Blog/Medium can be surfaced as draft suggestions, but V1 should not invest in full local posting-assist execution for them until HN + LinkedIn prove the daily ritual.
 
-This preserves account safety and avoids non-human login patterns.
+This preserves account safety, lets Rod use Dispatch from any computer where he is logged into the relevant platform, and avoids non-human login patterns.
 
 ### 7.4 Small capped batches
 
@@ -164,6 +164,15 @@ If there is no high-quality HN opportunity, Dispatch should say:
 
 This avoids forced thought leadership.
 
+### 7.6 Two-runtime architecture
+
+Dispatch has two separate runtimes:
+
+1. **Server/AI runtime** — collects signals, reads approved sources, scores opportunities, drafts content, tracks states, and sends doorbell alerts. This may run in OpenClaw, Firebase Functions, or another backend. It may be offline temporarily, but generation requires it to be available.
+2. **Posting/browser runtime** — runs in Rod's current browser session on whatever computer he is using. This is where HN, LinkedIn, Reddit, Medium, or other logged-in sessions live. Public posting happens from Rod's trusted browser, not from a remote server.
+
+V1 should default to local browser assistance: copy/open/checklist. A future browser extension can fill forms locally, but still must not submit. OpenClaw remote browser control is an optional internal fallback, not the default product architecture.
+
 ---
 
 ## 8. V1 Scope
@@ -175,9 +184,9 @@ This avoids forced thought leadership.
 3. Background signal collection.
 4. Platform grouping: HN, X, LinkedIn, plus suggestion lanes for Reddit and Blog/Medium.
 5. Draft review: approve, edit, skip, kill.
-6. Browser prep flow for HN and LinkedIn manual-submit actions.
+6. Local posting assist for HN and LinkedIn manual-submit actions: copy draft, open target URL, show checklist.
 7. X API auto-posting where safe.
-8. State tracking: draft, approved, prepared, prepared_unconfirmed, submitted, verified, expired, skipped, killed, error.
+8. State tracking: draft, approved, ready_to_post, prepared_unconfirmed, submitted, verified, expired, skipped, killed, error.
 9. Staleness/expiry handling.
 10. Platform safety rules and cooldowns.
 11. Basic outcome logging.
@@ -192,6 +201,8 @@ This avoids forced thought leadership.
 - Automated posting to LinkedIn personal / HN / Reddit.
 - First-class Reddit execution workflow.
 - First-class Blog/Medium publishing workflow.
+- Remote server-side posting from Rod's personal accounts.
+- Browser extension form-fill automation in V1A.
 - Multi-user roles.
 - Team approval flow.
 - Long-form editor for blog posts beyond draft suggestion + copy/open.
@@ -219,10 +230,10 @@ This avoids forced thought leadership.
 7. For X:
    - Dispatch can schedule/post via API after approval.
 8. For HN/LinkedIn:
-   - Rod clicks **Prepare in Chrome**.
-   - Charles fills Rod's real browser.
-   - Dispatch shows screenshot/status.
-   - Rod clicks final submit on the platform.
+   - Rod clicks **Prepare locally**.
+   - Dispatch copies the draft or presents a one-click copy button.
+   - Dispatch opens the target URL in Rod's current browser.
+   - Rod pastes/reviews/submits from his own logged-in platform session.
 9. Dispatch verifies the submit where possible, or asks Rod to confirm.
 10. Reddit and Blog/Medium suggestions remain copy/open only in V1.
 11. End screen shows:
@@ -505,15 +516,47 @@ For every action, user can:
 - Skip.
 - Kill.
 - Regenerate.
-- Prepare in Chrome where supported.
+- Prepare locally where supported.
 
-### 15.3 Browser Prep
+### 15.2.1 Generation Failure and Fallback
 
-System can prepare a post/comment using Rod's logged-in browser profile for supported platforms.
+Batch generation must degrade gracefully. Dispatch should never show a silent empty board when an upstream source fails.
 
-Browser prep must return a visible state:
+Required fallback behavior:
 
-- `ready_to_submit`
+- If HN API fails: generate from available non-HN sources and show `HN unavailable`.
+- If Discord source read fails: generate from HN/manual/workspace sources and show `Discord source unavailable`.
+- If workspace scan fails: generate from HN/manual/platform history and show `Workspace source unavailable`.
+- If model generation fails: preserve scored signals and show `Draft generation failed — retry`.
+- If only weak signals exist: show explicit platform skips, not filler drafts.
+
+Fallback message format:
+
+> Generated from available sources only. HN unavailable. 3 actions found, 2 platforms skipped due to weak signal.
+
+### 15.2.2 Manual Capture Fast Path
+
+Rod can bypass the daily batch flow when he finds an opportunity himself.
+
+Flow:
+
+1. Rod pastes a URL or note into Dispatch.
+2. Dispatch fetches available context.
+3. Dispatch classifies source permissions.
+4. Dispatch scores the opportunity.
+5. If above threshold, Dispatch drafts an action.
+6. Rod approves/edits/skips.
+7. Dispatch prepares locally using copy/open/checklist.
+
+Manual capture should work for HN threads, LinkedIn posts, X posts, Reddit threads, articles, and raw notes.
+
+### 15.3 Local Posting Assist
+
+System can assist posting from Rod's current browser/device on supported platforms. In V1A, this means copy/open/checklist, not remote browser control or automated form fill. In V1.5, a browser extension may fill forms locally, but must still stop before final submit.
+
+Posting assist must return a visible state:
+
+- `ready_to_post`
 - `login_required`
 - `challenge_required`
 - `platform_changed`
@@ -523,11 +566,11 @@ Browser prep must return a visible state:
 - `forbidden_surface`
 - `unknown_error`
 
-Each state should include a cropped screenshot when possible.
+Each state must include clear user-facing instructions. Screenshots are optional and should be avoided in V1A unless strictly needed for debugging.
 
 ### 15.4 Manual Submit Verification
 
-Dispatch must not treat browser preparation as completion.
+Dispatch must not treat local posting preparation as completion.
 
 After Rod manually submits, Dispatch attempts verification in this order:
 
@@ -537,9 +580,9 @@ After Rod manually submits, Dispatch attempts verification in this order:
 4. If an item remains prepared for 10 minutes without confirmation, state becomes `prepared_unconfirmed`.
 5. `prepared_unconfirmed` items receive one reminder, then expire or return to draft based on platform timing.
 
-### 15.5 Browser Prep Safety Model
+### 15.5 Posting Assist Safety Model
 
-Browser prep is an authority boundary. The automation may prepare text, but it must not take final public action on restricted platforms.
+Posting assist is an authority boundary. The automation may prepare text and open the target surface, but it must not take final public action on restricted platforms.
 
 Rules:
 
@@ -547,8 +590,8 @@ Rules:
 - Never enter credentials or handle 2FA.
 - Never interact with DMs, inboxes, account settings, payments, ad managers, or security pages.
 - Stop immediately on login walls, identity challenges, CAPTCHA, permission prompts, or unexpected modals.
-- Screenshot only the active composer area when possible; avoid capturing unrelated tabs or personal content.
-- Log platform, target URL, action ID, final state, timestamp, and screenshot hash for every browser-prep attempt.
+- V1A should avoid screenshots by default; if screenshots are later used, capture/crop only the active composer area and avoid unrelated tabs or personal content.
+- Log platform, target URL, action ID, final state, and timestamp for every posting-assist attempt. If screenshots are used in V1.5+, log only screenshot hashes and enforce screenshot retention limits.
 - If the page is not the expected compose/reply surface, return `forbidden_surface` or `platform_changed` instead of improvising.
 
 ### 15.6 Completion Tracking
@@ -559,7 +602,7 @@ Actions have explicit lifecycle states:
 - `draft`
 - `approved`
 - `scheduled`
-- `prepared`
+- `ready_to_post`
 - `prepared_unconfirmed`
 - `submitted`
 - `verified`
@@ -568,9 +611,37 @@ Actions have explicit lifecycle states:
 - `killed`
 - `error`
 
-A prepared item is not done. It is done only when submitted/verified or manually confirmed.
+A ready-to-post item is not done. It is done only when submitted/verified or manually confirmed.
 
-### 15.7 Safety Rules
+### 15.7 Quality Gate Before Posting Assist
+
+Dispatch must block **Prepare locally** unless the current draft passes all gates:
+
+- Rod approved the current draft version.
+- Character limits pass.
+- Source permissions pass.
+- Platform content quality contract passes.
+- Duplicate/near-duplicate check passes.
+- Account cooldown check passes.
+- Target URL is still reachable where applicable.
+- Platform action cap is not exceeded.
+- Topic/angle repetition check passes.
+
+If any gate fails, Dispatch shows a named blocker and recommended fix. Posting assist should not be the place where obvious errors surface.
+
+### 15.8 Portfolio Mix Rules
+
+Batch assembly must prevent account-training into a single-topic campaign.
+
+Rules:
+
+- Max 60% of a batch may be direct PP / agent-authorization content.
+- If batch has 4+ actions, include at least one adjacent/non-PP action or explicitly explain why none cleared threshold.
+- No more than 2 actions may use the same core phrase, metaphor, or argument angle.
+- HN should bias toward adjacent technical comments when account health is in cooldown or comments-only mode.
+- Dispatch should show a visible warning when a batch is too thematically narrow.
+
+### 15.9 Safety Rules
 
 System enforces:
 
@@ -583,15 +654,15 @@ System enforces:
 - Source-permission restrictions.
 - No auto-posting to HN/LinkedIn personal/Reddit.
 
-### 15.8 Doorbell Alerts
+### 15.10 Doorbell Alerts
 
 Discord alerts are allowed only for:
 
 - Today's batch ready reminder.
 - High-confidence breaking opportunity.
-- Prepared browser ready to submit.
+- Local posting assist ready for Rod to submit.
 - Expiring high-value action.
-- Browser/login blocker.
+- Posting/login blocker.
 
 No full draft dumps into Discord by default.
 
@@ -647,7 +718,7 @@ type DispatchAction = {
     | 'draft'
     | 'approved'
     | 'scheduled'
-    | 'prepared'
+    | 'ready_to_post'
     | 'prepared_unconfirmed'
     | 'submitted'
     | 'verified'
@@ -659,6 +730,10 @@ type DispatchAction = {
   expiresAt?: string;
   cooldownUntil?: string;
   safetyWarnings: string[];
+  qualityGate: {
+    passed: boolean;
+    blockers: string[];
+  };
   createdAt: string;
   updatedAt: string;
 };
@@ -697,11 +772,29 @@ type AccountHealth = {
 
 ---
 
-## 17. Account Health Triggers
+## 17. Privacy, Retention, and Deletion
+
+Dispatch stores internal source material, drafts, posting states, and possibly screenshots in future versions. Default posture should be minimal retention.
+
+Requirements:
+
+- Store minimal source snippets, not full Discord threads, unless explicitly needed.
+- Do not store `private_sensitive` raw excerpts by default.
+- Screenshot retention: default 7 days, then delete. V1A should avoid screenshots entirely unless debugging requires them.
+- Draft/action retention: keep by default for weekly review and learning, but allow manual deletion.
+- Signals can be deleted individually.
+- Raw source excerpts can be redacted without deleting the derived action history.
+- No public indexing. Private auth required.
+- Never store platform passwords, session cookies, 2FA codes, or browser profiles.
+- Export/delete should be possible for all Dispatch data tied to Rod.
+
+---
+
+## 18. Account Health Triggers
 
 Account health rules must be concrete enough for implementation. Vague "be careful" warnings are not sufficient.
 
-### 17.1 Hacker News
+### 18.1 Hacker News
 
 - Any flagged HN comment → 7-day cooldown on PP-adjacent comments.
 - Any flagged HN submission → 14-day comments-only mode; no submissions.
@@ -709,27 +802,27 @@ Account health rules must be concrete enough for implementation. Vague "be caref
 - Three consecutive HN comments with no upvotes/replies → recommend adjacent/non-PP topics for the next 3 HN actions.
 - Account karma decrease over a week → reduce HN cap to 1 action/day until trend stabilizes.
 
-### 17.2 LinkedIn
+### 18.2 LinkedIn
 
 - Identity challenge, suspicious-login prompt, or CAPTCHA → LinkedIn mode becomes `paused` until Rod manually clears it.
 - Three consecutive low-engagement posts → reduce LinkedIn cadence to 1 post/week and prioritize comments/replies.
 - Any post that Rod marks "too AI" → apply stricter LinkedIn content quality checks for 14 days.
 
-### 17.3 X
+### 18.3 X
 
 - API failure due to auth/rate limit → disable auto-posting and fall back to browser/manual mode.
 - Burst risk: never publish more than 2 X actions within 60 minutes unless Rod explicitly overrides.
 
-### 17.4 Reddit
+### 18.4 Reddit
 
 - Removed post/comment or subreddit warning → 30-day cooldown for that subreddit.
 - Any moderator warning → Reddit mode becomes suggestion-only for all subreddits until reviewed.
 
 ---
 
-## 18. UX Requirements
+## 19. UX Requirements
 
-### 18.1 Home Screen
+### 19.1 Home Screen
 
 Home screen must answer:
 
@@ -745,7 +838,7 @@ Required elements:
 - Clear "skip" states.
 - No infinite feed.
 
-### 18.2 Action Card
+### 19.2 Action Card
 
 Each card shows:
 
@@ -756,9 +849,9 @@ Each card shows:
 - Why now.
 - Expiry/cooldown.
 - Safety warnings.
-- Buttons: Approve, Edit, Skip, Kill, Prepare in Chrome.
+- Buttons: Approve, Edit, Skip, Kill, Prepare locally.
 
-### 18.3 End Screen
+### 19.3 End Screen
 
 After batch completion:
 
@@ -770,15 +863,17 @@ After batch completion:
 
 ---
 
-## 19. Technical Architecture
+## 20. Technical Architecture
 
 Recommended V1 stack:
 
 - **Frontend:** Next.js or Vite React.
 - **Auth:** Google SSO restricted to Rod.
 - **Database:** Firebase Firestore.
-- **Functions:** Firebase Cloud Functions or OpenClaw cron-backed API endpoints.
-- **Browser prep:** OpenClaw browser tool with `profile="user"` where safe.
+- **Functions:** Firebase Cloud Functions or OpenClaw cron-backed API endpoints for generation and signal collection.
+- **Posting assist V1A:** client-side copy/open/checklist in Rod's current browser. Works from any authenticated computer where Rod is logged into the target platform.
+- **Posting assist V1.5:** optional Chrome extension for local form-fill only. Extension never clicks final submit.
+- **OpenClaw browser control:** optional internal fallback for Rod's Mac, not the default product architecture.
 - **Signal collection:** scheduled background jobs writing signals, not drafts.
 - **Discord doorbell:** existing OpenClaw message integration.
 
@@ -787,23 +882,25 @@ Recommended V1 stack:
 - `dispatch.permissionprotocol.com`.
 - Private/internal auth gate.
 - No public indexing.
+- UI must work from any computer/browser after Rod authenticates.
+- If the local browser is not logged into the target social platform, Dispatch shows `login_required` and falls back to copy/open instructions.
 
 ---
 
-## 20. Edge Cases and Required Handling
+## 21. Edge Cases and Required Handling
 
-### 20.1 Browser / Platform Edge Cases
+### 21.1 Browser / Platform Edge Cases
 
-- Login expired → show `login_required` with screenshot.
-- 2FA or identity challenge → stop and ask Rod to complete manually.
+- Local platform session missing/expired → show `login_required` with target URL and copy button.
+- 2FA or identity challenge → stop and ask Rod to complete manually in that local browser.
 - Platform UI changed → show `platform_changed`; do not retry blindly.
 - Target thread deleted → mark `target_missing` and expire action.
 - Content too long → block prepare until edited.
-- Platform reformats content → screenshot post-fill before submit.
-- Rod closes tab mid-fill → mark `error`, allow retry.
+- Platform reformats content → Rod reviews final rendered text before submit; V1A does not assume pasted text equals posted text.
+- Rod closes target tab or does not confirm → mark `prepared_unconfirmed`, allow retry.
 - Duplicate draft → warn/block.
 
-### 20.2 Behavioral Edge Cases
+### 21.2 Behavioral Edge Cases
 
 - Rod ignores Dispatch for 3 days → no pile of old drafts; generate fresh next time.
 - Batch too large → hard cap to 7 actions.
@@ -813,7 +910,7 @@ Recommended V1 stack:
 
 ---
 
-## 21. Success Metrics
+## 22. Success Metrics
 
 ### Activation
 
@@ -829,7 +926,7 @@ Recommended V1 stack:
 
 ### Operational
 
-- Less than 10% browser-prep attempts fail silently. Target: 0 silent failures.
+- Less than 10% posting-assist attempts fail silently. Target: 0 silent failures.
 - Every action has explicit final state.
 - No stale drafts older than expiry in active queue.
 
@@ -840,15 +937,15 @@ Recommended V1 stack:
 
 ---
 
-## 22. Customer Test Gate
+## 23. Customer Test Gate
 
 Before calling V1 successful, Rod should complete this test:
 
 1. Open Dispatch once in the morning.
 2. Generate a batch.
 3. Complete at least 3 actions across at least 2 platforms.
-4. Use Prepare in Chrome for at least 1 HN or LinkedIn action.
-5. Submit manually.
+4. Use Prepare locally for at least 1 HN or LinkedIn action from the computer Rod is currently using.
+5. Submit manually from Rod's logged-in platform session.
 6. Verify Dispatch logs the result.
 7. Return the next day and generate a fresh batch without stale backlog guilt.
 
@@ -858,7 +955,7 @@ Pass condition:
 
 ---
 
-## 23. Phased Roadmap
+## 24. Phased Roadmap
 
 ### V0 — PRD and Manual Prototype
 
@@ -866,15 +963,25 @@ Pass condition:
 - Manually generate one batch in chat.
 - Validate action caps and platform grouping.
 
-### V1 — Internal Daily Dispatch
+### V1A — First Shippable Slice
 
-- Web UI.
-- On-demand batch generation.
-- Signal storage.
-- Manual-submit browser prep.
-- X API posting if keys are confirmed.
-- Discord doorbell.
-- Completion states.
+- Web UI with Google auth.
+- On-demand batch generation from manual capture, HN signals, and approved workspace/source docs.
+- HN/X/LinkedIn only as core lanes.
+- Review/edit/skip/kill.
+- HN local posting assist: copy/open/checklist, no remote form fill.
+- Completion states: draft, approved, ready_to_post, submitted, verified, skipped, expired, error.
+- Quality gate before posting assist.
+- No weekly review yet.
+
+### V1B — Full Internal Daily Dispatch
+
+- LinkedIn local posting assist.
+- Discord source ingestion.
+- Doorbell alerts.
+- X API posting if keys/account posture are confirmed.
+- Weekly summary.
+- Privacy/retention controls.
 
 ### V1.5 — Learning Loop
 
@@ -892,18 +999,18 @@ Pass condition:
 
 ---
 
-## 24. Open Questions
+## 25. Open Questions
 
 1. Should X posting use Rod's personal account, PP company account, or both?
 2. Should Dispatch live inside the PP app repo or as a standalone internal app?
 3. Which Discord channels are approved signal sources beyond `#hackernews` and `#1479273617689809097`?
 4. Should `dispatch.permissionprotocol.com` be private behind Google auth or Tailscale-only?
-5. Should browser prep be initiated from the server via OpenClaw only, or via a small local Chrome companion later?
+5. Should V1.5 local form-fill use a Chrome extension, bookmarklet, or native browser share target?
 6. What is the daily ritual time? Morning default seems best.
 
 ---
 
-## 25. Recommendation
+## 26. Recommendation
 
 Build V1 as a **simple daily action cockpit**, not a social CMS.
 
@@ -912,7 +1019,7 @@ The strongest version is:
 - On-demand generation.
 - Background signal collection.
 - 3-7 capped daily actions.
-- Human final-submit via prepared browser.
+- Human final-submit via Rod's current local browser session.
 - Explicit states and cooldowns.
 - Discord only for doorbell alerts.
 
@@ -920,7 +1027,7 @@ This directly addresses the recurring failure pattern without creating a content
 
 ---
 
-## 26. Implementation Acceptance Criteria
+## 27. Implementation Acceptance Criteria
 
 V1 implementation is complete when:
 
@@ -928,8 +1035,8 @@ V1 implementation is complete when:
 - Rod can click **Generate Today's Batch**.
 - Dispatch returns capped grouped actions with source attribution.
 - Rod can approve/edit/skip/kill each action.
-- Rod can prepare at least one HN/LinkedIn action in Chrome.
-- Browser prep stops before submit and returns screenshot/state.
+- Rod can prepare at least one HN action locally from the current browser/device.
+- Posting assist stops before submit and returns a clear state/checklist.
 - Dispatch tracks submitted/verified/skipped/expired states.
 - Background collector writes signals but not finished drafts.
 - Discord sends only doorbell alerts.
