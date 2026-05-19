@@ -12,7 +12,7 @@
 
 Dispatch is a simple daily cockpit for founder-led public engagement.
 
-Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For platforms with safe APIs, Dispatch can publish directly after approval. For HN, LinkedIn, Reddit, and Medium, Dispatch prepares Rod's real logged-in browser, fills the form, then stops before final submit.
+Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For platforms with safe APIs, Dispatch can publish directly after approval. For HN and LinkedIn, Dispatch prepares Rod's real logged-in browser, fills the form, then stops before final submit. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
 
 The product exists to solve a specific recurring failure: we post/comment in bursts, then go quiet for weeks because the work is scattered across Discord, HN, LinkedIn, X, Reddit, docs, and memory. Discord notifications are not enough; they mix with everything else and get dropped. Dispatch gives the work a single-purpose home.
 
@@ -131,14 +131,16 @@ The actual queue, drafts, states, and history live in the Dispatch UI.
 
 ### 7.3 Human final-submit for risky platforms
 
-For HN, LinkedIn personal, Reddit, and Medium:
+For HN and LinkedIn personal in V1:
 
 - Dispatch/Charles opens Rod's real browser profile.
 - Navigates to the correct composer/thread.
 - Fills the draft.
-- Shows a screenshot.
+- Shows a cropped screenshot of the filled composer.
 - Stops before submit.
 - Rod clicks the final platform button.
+
+Reddit and Blog/Medium can be surfaced as draft suggestions, but V1 should not invest in full browser-prep execution for them until HN + LinkedIn prove the daily ritual.
 
 This preserves account safety and avoids non-human login patterns.
 
@@ -151,8 +153,8 @@ Suggested caps:
 - HN: 0-2 actions/day
 - X: 1-2 actions/day
 - LinkedIn: 0-1 action/day, 2-3x/week max
-- Reddit: 0-1 action/day only when genuinely native
-- Blog/Medium: 0-1 draft/week, usually derived from a winning prior idea
+- Reddit: suggestion-only in V1; execute manually outside Dispatch if genuinely native
+- Blog/Medium: suggestion-only in V1; usually derived from a winning prior idea
 
 ### 7.5 Skipping is a first-class outcome
 
@@ -171,24 +173,28 @@ This avoids forced thought leadership.
 1. Web UI: Today's Dispatch batch view.
 2. On-demand **Generate Today's Batch** action.
 3. Background signal collection.
-4. Platform grouping: HN, X, LinkedIn, Reddit, Blog/Medium.
+4. Platform grouping: HN, X, LinkedIn, plus suggestion lanes for Reddit and Blog/Medium.
 5. Draft review: approve, edit, skip, kill.
-6. Browser prep flow for manual-submit platforms.
+6. Browser prep flow for HN and LinkedIn manual-submit actions.
 7. X API auto-posting where safe.
-8. State tracking: draft, approved, prepared, submitted, verified, expired, skipped, killed, error.
+8. State tracking: draft, approved, prepared, prepared_unconfirmed, submitted, verified, expired, skipped, killed, error.
 9. Staleness/expiry handling.
 10. Platform safety rules and cooldowns.
 11. Basic outcome logging.
 12. Discord doorbell alerts for urgent/breaking items only.
+13. Content quality contract and platform-specific style checks.
+14. Source classification for Discord/workspace-derived material.
 
 ### Excluded from V1
 
 - Full analytics dashboard.
 - Full calendar view.
 - Automated posting to LinkedIn personal / HN / Reddit.
+- First-class Reddit execution workflow.
+- First-class Blog/Medium publishing workflow.
 - Multi-user roles.
 - Team approval flow.
-- Long-form editor for blog posts beyond draft generation + copy/open.
+- Long-form editor for blog posts beyond draft suggestion + copy/open.
 - AI voice scoring beyond simple warnings.
 - CRM/outreach integration.
 
@@ -212,13 +218,14 @@ This avoids forced thought leadership.
    - Approve if good.
 7. For X:
    - Dispatch can schedule/post via API after approval.
-8. For HN/LinkedIn/Reddit/Medium:
+8. For HN/LinkedIn:
    - Rod clicks **Prepare in Chrome**.
    - Charles fills Rod's real browser.
    - Dispatch shows screenshot/status.
    - Rod clicks final submit on the platform.
-9. Dispatch verifies or asks Rod to confirm.
-10. End screen shows:
+9. Dispatch verifies the submit where possible, or asks Rod to confirm.
+10. Reddit and Blog/Medium suggestions remain copy/open only in V1.
+11. End screen shows:
    - Posted/commented.
    - Skipped.
    - Expired/missed.
@@ -298,26 +305,98 @@ This avoids forced thought leadership.
 
 **Goal:** Only participate where native and useful.
 
+**V1 posture:** suggestion-only, not a first-class execution path.
+
 **Rules:**
 
 - Default skip.
 - Avoid obvious promotional behavior.
 - No automation.
 - Only comment when thread is highly relevant and the comment would stand alone without PP context.
+- If a Reddit suggestion is accepted, Dispatch provides copy + target URL; Rod handles execution manually.
 
 ### 10.5 Blog / Medium
 
 **Goal:** Expand winning ideas, not daily publishing.
 
+**V1 posture:** suggestion-only, not a first-class execution path.
+
 **Rules:**
 
 - Not part of daily volume target.
 - Trigger from proven signal: HN comment performed, X post resonated, repeated customer question.
-- Draft only in V1; publishing remains manual.
+- Draft ideas only in V1; publishing remains manual.
+- Blog suggestions should not block the daily batch. They go to a separate "Expansion Ideas" lane.
 
 ---
 
-## 11. Signal Sources
+## 11. Content Quality Contract
+
+Dispatch must not produce generic AI thought leadership. Every generated action must satisfy a platform-specific contract before it can appear in the batch.
+
+### 11.1 Global Rules
+
+- One clear point per action.
+- No product pitch unless the platform context explicitly asks for it.
+- No repeated angle more than twice in a rolling 14-day window.
+- Source-grounded: every draft must cite its internal source signal.
+- Human-editable: keep drafts short enough that Rod can understand and improve them in under 60 seconds.
+- Avoid AI-slop markers: inflated abstractions, grand conclusions, empty trios, excessive em dashes, and "the real question is"-style punditry.
+
+### 11.2 Hacker News Contract
+
+HN drafts should be:
+
+- Shorter than Rod's previous long-form comments by default.
+- Specific and technical.
+- Grounded in one concrete implementation or failure mode.
+- Written like a peer in the thread, not a whitepaper.
+- Often ending with one real question.
+
+HN drafts should avoid:
+
+- Founder/product positioning.
+- Repeating "authorization layer" language in every comment.
+- Abstract enterprise framing unless the thread is already enterprise-focused.
+- Manifesto comments on hot threads from a cold account.
+
+### 11.3 X Contract
+
+X drafts should be:
+
+- One sharp observation.
+- Self-contained.
+- Under 240 characters unless a thread is explicitly approved.
+- Scheduled/paced rather than burst-posted.
+
+### 11.4 LinkedIn Contract
+
+LinkedIn drafts should be:
+
+- Founder/operator voice.
+- Specific business consequence or market observation.
+- Grounded in something Rod actually built, saw, or decided.
+- No corporate "AI governance is important" sludge.
+
+### 11.5 Reddit Contract
+
+Reddit suggestions should be:
+
+- Conversational and subreddit-native.
+- Useful without mentioning PP.
+- Default-skipped unless the thread has unusually strong fit.
+
+### 11.6 Blog / Medium Contract
+
+Blog suggestions should be:
+
+- Expansions of proven ideas, not fresh daily inventions.
+- Based on repeated signal: replies, customer questions, high-performing short posts, or strategic decisions.
+- Separated from the daily execution batch so long-form work does not derail the daily ritual.
+
+---
+
+## 12. Signal Sources
 
 Dispatch should collect and index signals from:
 
@@ -345,23 +424,79 @@ Signals should store source attribution so drafts do not feel generic.
 
 ---
 
-## 12. Functional Requirements
+## 13. Source Permissions and Classification
 
-### 12.1 Generate Today's Batch
+Dispatch will ingest internal material. That creates leakage risk. Every signal must be classified before it can influence public content.
+
+### 13.1 Source Classes
+
+- **Public-safe** — already public or intentionally publishable. Drafts may quote or directly reference it.
+- **Internal strategic** — useful as inspiration, but must not be quoted directly. Examples: PP strategy channels, internal positioning notes, product debate.
+- **Private/sensitive** — never use in external content. Examples: credentials, financial details, private family/personal content, legal details, internal incidents not intended for publication.
+- **Customer/prospect** — anonymize by default. Never name a person/company unless Rod explicitly marks it public-safe.
+
+### 13.2 Required Behavior
+
+- Every signal stores `sourceClass`.
+- Draft generation may only quote `public-safe` sources.
+- Draft generation may summarize `internal strategic` sources only after removing private names, sensitive operational details, and unreleased specifics.
+- `private/sensitive` signals are excluded from generation.
+- `customer/prospect` signals require anonymization and should default to general lessons, not anecdotes.
+- If source classification is unknown, treat it as `internal strategic` and do not quote it.
+
+---
+
+## 14. Signal Scoring Model
+
+Dispatch should not generate actions just because content exists. It should generate actions only when the opportunity clears a threshold.
+
+Each candidate signal receives a score:
+
+- **Topic relevance:** 0-5
+- **Freshness:** 0-5
+- **Audience value:** 0-5
+- **Novelty vs recent posts:** 0-5
+- **Estimated response quality:** 0-5
+- **Account safety risk:** -5 to 0
+
+Default threshold:
+
+- `breaking`: total score >= 18 and freshness >= 4
+- `today`: total score >= 15
+- `suggestion-only`: total score >= 11
+- below 11: ignore unless manually selected by Rod
+
+Account safety risk should reduce score when:
+
+- The account recently had a flagged/removed post.
+- The draft repeats the same PP-adjacent angle too often.
+- The platform/subreddit is hostile to promotion.
+- The thread is politically charged or likely to become a flamewar.
+
+If no candidate clears the threshold, Dispatch should explicitly recommend skipping that platform for the day.
+
+---
+
+## 15. Functional Requirements
+
+### 15.1 Generate Today's Batch
 
 - User can click **Generate Today's Batch**.
 - System scans signals and fresh platform state.
+- System scores candidate signals before drafting.
 - System returns a capped list of actions grouped by platform.
 - Each action includes:
   - Platform.
   - Draft content.
   - Source attribution.
+  - Source classification.
+  - Signal score and reason it cleared threshold.
   - Why this action matters.
   - Expiry/cooldown info.
   - Estimated time.
   - Safety warnings if applicable.
 
-### 12.2 Action Review
+### 15.2 Action Review
 
 For every action, user can:
 
@@ -370,25 +505,53 @@ For every action, user can:
 - Skip.
 - Kill.
 - Regenerate.
-- Prepare in Chrome.
+- Prepare in Chrome where supported.
 
-### 12.3 Browser Prep
+### 15.3 Browser Prep
 
-System can prepare a post/comment using Rod's logged-in browser profile.
+System can prepare a post/comment using Rod's logged-in browser profile for supported platforms.
 
 Browser prep must return a visible state:
 
 - `ready_to_submit`
 - `login_required`
+- `challenge_required`
 - `platform_changed`
 - `target_missing`
 - `content_too_long`
 - `rate_limited`
+- `forbidden_surface`
 - `unknown_error`
 
 Each state should include a cropped screenshot when possible.
 
-### 12.4 Completion Tracking
+### 15.4 Manual Submit Verification
+
+Dispatch must not treat browser preparation as completion.
+
+After Rod manually submits, Dispatch attempts verification in this order:
+
+1. Browser detects a success state: URL change, new comment/post permalink, or platform success message.
+2. Dispatch checks visible page/profile/recent activity where feasible.
+3. If no automatic verification is possible, Rod can click **I posted it**.
+4. If an item remains prepared for 10 minutes without confirmation, state becomes `prepared_unconfirmed`.
+5. `prepared_unconfirmed` items receive one reminder, then expire or return to draft based on platform timing.
+
+### 15.5 Browser Prep Safety Model
+
+Browser prep is an authority boundary. The automation may prepare text, but it must not take final public action on restricted platforms.
+
+Rules:
+
+- Never click final submit/post/reply on HN, LinkedIn personal, Reddit, or Medium.
+- Never enter credentials or handle 2FA.
+- Never interact with DMs, inboxes, account settings, payments, ad managers, or security pages.
+- Stop immediately on login walls, identity challenges, CAPTCHA, permission prompts, or unexpected modals.
+- Screenshot only the active composer area when possible; avoid capturing unrelated tabs or personal content.
+- Log platform, target URL, action ID, final state, timestamp, and screenshot hash for every browser-prep attempt.
+- If the page is not the expected compose/reply surface, return `forbidden_surface` or `platform_changed` instead of improvising.
+
+### 15.6 Completion Tracking
 
 Actions have explicit lifecycle states:
 
@@ -397,6 +560,7 @@ Actions have explicit lifecycle states:
 - `approved`
 - `scheduled`
 - `prepared`
+- `prepared_unconfirmed`
 - `submitted`
 - `verified`
 - `skipped`
@@ -404,21 +568,22 @@ Actions have explicit lifecycle states:
 - `killed`
 - `error`
 
-A prepared item is not done. It is done only when submitted/verified.
+A prepared item is not done. It is done only when submitted/verified or manually confirmed.
 
-### 12.5 Safety Rules
+### 15.7 Safety Rules
 
 System enforces:
 
 - Per-platform daily caps.
-- Cooldowns after flags or suspicious activity.
+- Platform-specific cooldown triggers.
 - Duplicate content detection.
 - Topic repetition warnings.
 - Character limits.
 - Expiry windows.
+- Source-permission restrictions.
 - No auto-posting to HN/LinkedIn personal/Reddit.
 
-### 12.6 Doorbell Alerts
+### 15.8 Doorbell Alerts
 
 Discord alerts are allowed only for:
 
@@ -432,14 +597,15 @@ No full draft dumps into Discord by default.
 
 ---
 
-## 13. Data Model
+## 16. Data Model
 
-### 13.1 Signal
+### 16.1 Signal
 
 ```ts
 type Signal = {
   id: string;
   source: 'hn' | 'discord' | 'workspace' | 'manual' | 'platform_history';
+  sourceClass: 'public_safe' | 'internal_strategic' | 'private_sensitive' | 'customer_prospect';
   sourceUrl?: string;
   sourceChannelId?: string;
   sourceMessageId?: string;
@@ -450,12 +616,20 @@ type Signal = {
   expiresAt?: string;
   tags: string[];
   relevanceScore: number;
+  scoreBreakdown: {
+    topicRelevance: number;
+    freshness: number;
+    audienceValue: number;
+    novelty: number;
+    estimatedResponseQuality: number;
+    accountSafetyRisk: number;
+  };
   urgency: 'breaking' | 'normal' | 'evergreen';
   status: 'new' | 'used' | 'ignored' | 'expired';
 };
 ```
 
-### 13.2 Dispatch Action
+### 16.2 Dispatch Action
 
 ```ts
 type DispatchAction = {
@@ -474,6 +648,7 @@ type DispatchAction = {
     | 'approved'
     | 'scheduled'
     | 'prepared'
+    | 'prepared_unconfirmed'
     | 'submitted'
     | 'verified'
     | 'skipped'
@@ -489,7 +664,7 @@ type DispatchAction = {
 };
 ```
 
-### 13.3 Batch
+### 16.3 Batch
 
 ```ts
 type DispatchBatch = {
@@ -505,7 +680,7 @@ type DispatchBatch = {
 };
 ```
 
-### 13.4 Account Health
+### 16.4 Account Health
 
 ```ts
 type AccountHealth = {
@@ -515,15 +690,46 @@ type AccountHealth = {
   weeklyActionCount: number;
   flagsOrWarnings: number;
   cooldownUntil?: string;
+  mode: 'normal' | 'cooldown' | 'comments_only' | 'manual_only' | 'paused';
   notes: string[];
 };
 ```
 
 ---
 
-## 14. UX Requirements
+## 17. Account Health Triggers
 
-### 14.1 Home Screen
+Account health rules must be concrete enough for implementation. Vague "be careful" warnings are not sufficient.
+
+### 17.1 Hacker News
+
+- Any flagged HN comment → 7-day cooldown on PP-adjacent comments.
+- Any flagged HN submission → 14-day comments-only mode; no submissions.
+- Two flagged HN actions in 30 days → HN mode becomes `manual_only`; Dispatch may suggest but not prepare browser actions.
+- Three consecutive HN comments with no upvotes/replies → recommend adjacent/non-PP topics for the next 3 HN actions.
+- Account karma decrease over a week → reduce HN cap to 1 action/day until trend stabilizes.
+
+### 17.2 LinkedIn
+
+- Identity challenge, suspicious-login prompt, or CAPTCHA → LinkedIn mode becomes `paused` until Rod manually clears it.
+- Three consecutive low-engagement posts → reduce LinkedIn cadence to 1 post/week and prioritize comments/replies.
+- Any post that Rod marks "too AI" → apply stricter LinkedIn content quality checks for 14 days.
+
+### 17.3 X
+
+- API failure due to auth/rate limit → disable auto-posting and fall back to browser/manual mode.
+- Burst risk: never publish more than 2 X actions within 60 minutes unless Rod explicitly overrides.
+
+### 17.4 Reddit
+
+- Removed post/comment or subreddit warning → 30-day cooldown for that subreddit.
+- Any moderator warning → Reddit mode becomes suggestion-only for all subreddits until reviewed.
+
+---
+
+## 18. UX Requirements
+
+### 18.1 Home Screen
 
 Home screen must answer:
 
@@ -539,7 +745,7 @@ Required elements:
 - Clear "skip" states.
 - No infinite feed.
 
-### 14.2 Action Card
+### 18.2 Action Card
 
 Each card shows:
 
@@ -552,7 +758,7 @@ Each card shows:
 - Safety warnings.
 - Buttons: Approve, Edit, Skip, Kill, Prepare in Chrome.
 
-### 14.3 End Screen
+### 18.3 End Screen
 
 After batch completion:
 
@@ -564,7 +770,7 @@ After batch completion:
 
 ---
 
-## 15. Technical Architecture
+## 19. Technical Architecture
 
 Recommended V1 stack:
 
@@ -584,9 +790,9 @@ Recommended V1 stack:
 
 ---
 
-## 16. Edge Cases and Required Handling
+## 20. Edge Cases and Required Handling
 
-### Browser / Platform Edge Cases
+### 20.1 Browser / Platform Edge Cases
 
 - Login expired → show `login_required` with screenshot.
 - 2FA or identity challenge → stop and ask Rod to complete manually.
@@ -597,7 +803,7 @@ Recommended V1 stack:
 - Rod closes tab mid-fill → mark `error`, allow retry.
 - Duplicate draft → warn/block.
 
-### Behavioral Edge Cases
+### 20.2 Behavioral Edge Cases
 
 - Rod ignores Dispatch for 3 days → no pile of old drafts; generate fresh next time.
 - Batch too large → hard cap to 7 actions.
@@ -607,7 +813,7 @@ Recommended V1 stack:
 
 ---
 
-## 17. Success Metrics
+## 21. Success Metrics
 
 ### Activation
 
@@ -634,7 +840,7 @@ Recommended V1 stack:
 
 ---
 
-## 18. Customer Test Gate
+## 22. Customer Test Gate
 
 Before calling V1 successful, Rod should complete this test:
 
@@ -652,7 +858,7 @@ Pass condition:
 
 ---
 
-## 19. Phased Roadmap
+## 23. Phased Roadmap
 
 ### V0 — PRD and Manual Prototype
 
@@ -686,7 +892,7 @@ Pass condition:
 
 ---
 
-## 20. Open Questions
+## 24. Open Questions
 
 1. Should X posting use Rod's personal account, PP company account, or both?
 2. Should Dispatch live inside the PP app repo or as a standalone internal app?
@@ -697,7 +903,7 @@ Pass condition:
 
 ---
 
-## 21. Recommendation
+## 25. Recommendation
 
 Build V1 as a **simple daily action cockpit**, not a social CMS.
 
@@ -714,7 +920,7 @@ This directly addresses the recurring failure pattern without creating a content
 
 ---
 
-## 22. Implementation Acceptance Criteria
+## 26. Implementation Acceptance Criteria
 
 V1 implementation is complete when:
 
