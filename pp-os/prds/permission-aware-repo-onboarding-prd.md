@@ -2,7 +2,7 @@
 
 Generated: 2026-05-19
 Status: Revised Draft
-Revision: 2026-05-19 — v3 hardened after external authority-model review
+Revision: 2026-05-19 — v4 scope-cut for shippable onboarding repair
 Owner: Product / Engineering
 Product area: Permission Protocol activation, GitHub App install, repo protection
 
@@ -12,9 +12,9 @@ Product area: Permission Protocol activation, GitHub App install, repo protectio
 
 Permission Protocol onboarding currently treats GitHub repository setup as a mostly invisible backend concern. When a repo is missing from an installation, a workspace has a stale primary repo, or the GitHub App lacks permissions for an optional test-PR action, users can hit generic failures like `GitHub API request failed` with no useful path forward.
 
-This is unacceptable for the product category PP is trying to own. PP sells trust, authority, and deterministic control over consequential agent actions. The onboarding experience must embody that trust from the first minute.
+PP sells trust, authority, and deterministic control over consequential agent actions. The onboarding experience must embody that trust from the first minute.
 
-The correct long-term fix is to redesign repo onboarding around a permission-aware state machine and a hard protection verifier contract:
+The shippable fix is to redesign repo onboarding around a permission-aware state machine and a hard protection verifier contract:
 
 1. Separate core repo protection from optional demo/test PR creation.
 2. Require only low-trust permissions for the core product.
@@ -26,9 +26,9 @@ The correct long-term fix is to redesign repo onboarding around a permission-awa
    - Repo protection activation: user's own repo is actually protected by a required PP-authored check.
 7. Verify repo protection with evidence, not configuration assumptions.
 8. Treat admin handoff, stale-install repair, webhook idempotency, and cross-tenant safety as first-class requirements.
-9. Define the receipt, signer authority, outage, replay, and merge semantics that make repo protection auditable.
+9. Do not preclude the broader authority model, but keep receipt/quorum/break-glass policy design out of this onboarding repair.
 
-The goal is not merely to fix one `dispatch` onboarding issue. The goal is to make PP onboarding deterministic, trust-building, and enterprise-ready.
+The goal is not merely to fix one `dispatch` onboarding issue. The goal is to make PP onboarding deterministic and trust-building without bloating the first implementation pass.
 
 ---
 
@@ -147,188 +147,27 @@ Controls App installation and permissions. May not be the same person using PP. 
 ---
 
 
-## 6A. Core Authority Model
+## 6A. Authority Model Boundary
 
-Repo onboarding is not just a GitHub setup problem. It is the first concrete encounter a user has with PP's authority primitive. The PRD must therefore define the artifacts and actors involved in a protected action.
+Repo onboarding is the first concrete encounter a user has with PP's authority primitive, but this PRD should not specify the full authority model.
 
-### 6A.1 Receipt contract
+Out of scope for this onboarding repair:
 
-A receipt is the durable proof that PP evaluated an action, routed it through the applicable policy, captured the authorized human/system decision, and emitted a verifiable result.
+- Receipt JSON schema / RFC details.
+- Signer rosters and M-of-N quorum.
+- Break-glass policy.
+- Bot PR policy.
+- Receipt retention/export/deletion policy.
+- GDPR redaction model.
+- Long-term replay, force-push, and merge semantics beyond what the verifier needs to avoid false activation claims.
 
-V1 receipt shape should be versioned and boring:
+This PRD must only ensure onboarding does not preclude those future models. The implementation should reference the existing receipt/approval primitives where needed, but the detailed authority model belongs in a separate `Authority Model v1` PRD/RFC.
 
-```json
-{
-  "version": "pp.receipt.v1",
-  "receiptId": "rcpt_...",
-  "issuedAt": "2026-05-19T17:52:00Z",
-  "workspace": {
-    "id": "...",
-    "name": "..."
-  },
-  "action": {
-    "kind": "github_pr_merge_gate",
-    "repoId": 1243788998,
-    "repoFullName": "permission-protocol/dispatch",
-    "pullRequest": 12,
-    "headSha": "abc123",
-    "baseBranch": "main",
-    "diffHash": "sha256:..."
-  },
-  "policy": {
-    "policyId": "pol_...",
-    "policyVersion": "2026-05-19",
-    "decisionRequired": "human_approval",
-    "policyHash": "sha256:..."
-  },
-  "decision": {
-    "outcome": "approved",
-    "signerId": "usr_...",
-    "signerRole": "workspace_owner",
-    "decisionAt": "2026-05-19T17:53:00Z",
-    "channel": "pp_dashboard",
-    "reason": "Approved release to main"
-  },
-  "proof": {
-    "signatureKind": "jws_ed25519",
-    "keyId": "pp_live_2026_05",
-    "signature": "...",
-    "publicKeyUrl": "https://permissionprotocol.com/.well-known/pp-keys.json"
-  }
-}
-```
+V1 onboarding requirement:
 
-Required properties:
-
-- Receipt binds to exact action context, including repo ID and PR head SHA.
-- Receipt embeds or references the evaluated policy version/hash.
-- Receipt names the signer and their authority basis at decision time.
-- Receipt is independently verifiable through published PP public keys.
-- Receipt remains verifiable if PP's app is unavailable later.
-- Receipt is immutable after issue; corrections require superseding receipts, not mutation.
-
-V1 can start with PP-hosted verification and CLI/export support, but the data model must not depend on PP being online forever to prove a historical receipt.
-
-### 6A.2 Receipt retention, export, and deletion
-
-Enterprise buyers will ask how long receipts live and who controls them.
-
-Requirements:
-
-- Workspace-level retention policy, defaulting to long-lived audit retention.
-- Export API for receipts by repo, PR, signer, date range, and policy.
-- Public receipt URLs may be disabled or access-controlled per workspace.
-- Deletion must preserve audit integrity where legally allowed; prefer tombstone/supersession over silent deletion.
-- GDPR deletion requests must be handled by separating personal data redaction from cryptographic audit facts where possible.
-- Customer-owned storage/export is a future enterprise path and should not be blocked by v1 schema choices.
-
-### 6A.3 Signer identity and authority
-
-The signer is the person or system authorized to approve a protected action for a workspace under a policy.
-
-V1 requirements:
-
-- Workspace has explicit signer roster.
-- Signer authority is scoped by workspace, repo, environment/branch, and action category where possible.
-- Every approval records signer ID, auth method, role, and authority source.
-- Revoked signers cannot approve new actions.
-- Historical receipts preserve signer authority at decision time.
-- If no signer is available, action remains pending until expiry or break-glass.
-
-Self-approval policy must be explicit:
-
-- Default recommendation for protected production branches: PR author cannot be sole approver.
-- V1 may allow self-approval for single-user/dev workspaces, but the receipt must flag `selfApproval: true`.
-- Policy should allow later enforcement of no-self-approval without schema rewrite.
-
-### 6A.4 Policy and quorum extensibility
-
-V1 can ship single-signer approval, but the data model must not bake in single-approver as the permanent primitive.
-
-Policy model must leave room for:
-
-- M-of-N approvals.
-- Role-restricted approvers.
-- Path-scoped approvers.
-- Environment-scoped approvers.
-- Bot-specific policies.
-- Risk-tier-specific policies.
-- Founder/admin veto.
-
-V1 schema should represent approval requirements as an array or policy object, not a single nullable `approvedBy` field.
-
-### 6A.5 Notification model for signers
-
-Activation metrics depend on signers knowing action is pending.
-
-V1 notification requirements:
-
-- Dashboard pending queue.
-- Email notification for signer requests.
-- Webhook/Slack/Discord notification as an optional workspace integration.
-- Notification includes repo, PR, risk summary, requested action, expiry, and signing URL.
-- Notification state is tracked: sent, delivered where available, opened where available, expired.
-
-Do not rely on GitHub PR comments as the only notification path.
-
-### 6A.6 Outage and break-glass model
-
-Fail-closed is correct for safety, but enterprise buyers need a documented emergency path.
-
-Requirements:
-
-- Define PP service status states: healthy, degraded, unavailable.
-- Protected repo behavior during PP outage is explicit: default fail-closed.
-- Break-glass can be enabled per workspace by admin policy.
-- Break-glass invocation requires elevated workspace role and strong confirmation.
-- Break-glass emits a receipt or emergency audit record.
-- Break-glass has expiry and scope: repo, branch/environment, time window, reason.
-- Break-glass does not silently mark PP approval; it records emergency bypass.
-- Dashboard and export must show break-glass events prominently.
-
-Open business question: enterprise SLA and support response time are out of scope for v1 implementation, but the product surface must not pretend outages do not exist.
-
-### 6A.7 SHA, replay, force-push, and merge semantics
-
-Approval must be bound to the exact code state reviewed.
-
-Requirements:
-
-- Approval binds to exact PR head SHA and relevant diff/policy hash.
-- Any PR synchronize event with a new head SHA supersedes prior pending/approved signer requests unless an explicit carry-forward rule proves the diff is unchanged or only merge-base changed.
-- Force-push after approval requires new approval unless carry-forward rule passes.
-- Approval has expiry; expired approval cannot green a required signal.
-- Receipts are one-time or scope-bound where verification/redeem semantics apply.
-- Status/check posting must target exact SHA, never branch name alone.
-- If squash/rebase merge produces a different merge commit SHA, the receipt remains bound to the approved PR head SHA plus merge metadata. The merge record should link approved head SHA → resulting merge commit SHA.
-- If GitHub reports mergeability inconsistently or delayed, verifier state is `unknown`/`pending`, not `active`.
-
-### 6A.8 Bot PR policy
-
-Bot PRs are common and high-volume. Onboarding must not surprise users when Dependabot/Renovate/internal bot PRs appear.
-
-V1 requirements:
-
-- Identify bot actor in action context and receipt.
-- Default bot PRs follow same gate as human PRs unless policy says otherwise.
-- Policy model leaves room for auto-clear rules for low-risk dependency patch bumps, lockfile-only updates, or internal trusted bots.
-- Auto-clear must still emit receipt/audit evidence.
-
-### 6A.9 Grandfathering open PRs at install time
-
-Turning on PP for a repo with existing open PRs needs an explicit migration policy.
-
-V1 recommendation:
-
-- Existing open PRs are discovered during protection setup.
-- User chooses one of:
-  - apply PP gate to all open PRs,
-  - apply only to new PRs after activation timestamp,
-  - manually select PRs to gate.
-- The choice is recorded in workspace audit history.
-- Default for production protection should be conservative: new PRs after activation, with visible warning about existing PRs.
-
----
+- Do not claim repo protection is active unless the verifier has evidence for the selected repo/branch/SHA path.
+- Do not design data structures that make future signer roster/quorum/receipt schema upgrades impossible.
+- Keep first-pass onboarding focused on named errors, explicit target selection, preflight, and verifier levels.
 
 ## 7. Activation Milestones
 
@@ -504,12 +343,12 @@ Capability examples:
 |---|---|---|
 | `canReadRepo` | Installation contains repo | Fetch repo metadata by repo ID |
 | `canReadPullRequests` | Pull requests permission | List PRs for selected repo |
-| `canPostRequiredSignal` | Statuses/checks write | Post/update a harmless status/check on a known test SHA or controlled verification target |
+| `canPostRequiredSignal` | Statuses/checks write | Read-only inference by default; optional status/check write probe only after explicit user/admin consent on a controlled SHA |
 | `canInspectRisk` | Contents read | Fetch changed files/diff metadata for a PR |
 | `canCreateTestPr` | Contents write + PR write | Confirm branch/file/PR mutation path is available before attempting full test PR creation |
 | `canAutoConfigureProtection` | Administration write | Verify ruleset/branch-protection read/write APIs are available for selected branch |
 
-Preflight responses must expose both layers when they differ.
+Preflight responses must expose both layers when they differ. Static/read-only preflight may infer declared capability, but any status/check write probe is a `reversible_write` and requires explicit consent under §11.4.
 
 ### 9.3 Permission copy
 
@@ -586,6 +425,8 @@ Workspace
 
 The user's current onboarding session should store this tuple. It must not infer repo context from stale `Company.primaryRepoFullName` unless no explicit target exists.
 
+V1 scope is one repository plus one protected branch, defaulting to `main`. Multiple branches, branch patterns such as `release/*`, and environment-specific protection are deferred until after the incident-fix path is stable.
+
 ### 10.2 Core states
 
 ```text
@@ -595,7 +436,12 @@ START
   → REPO_SELECTED
   → PREFLIGHT_RUNNING
   → PREFLIGHT_FAILED_REPAIRABLE
+      → user repairs / clicks retry
+      → PREFLIGHT_RUNNING
+  → PREFLIGHT_FAILED_FATAL
+      → support/manual intervention or choose different target
   → PREFLIGHT_PASSED
+  → READY_TO_INSTALL | READY_TO_VERIFY
   → PROTECTION_CONFIGURING | MANUAL_SETUP_REQUIRED
   → PROTECTION_VERIFYING
   → REPO_PROTECTION_ACTIVE
@@ -836,7 +682,7 @@ Effective capability checks must not accidentally mutate customer repos. Every p
 | `visible_write` | Creates visible repo artifacts | Only in assisted/manual test PR lane | branch, commit, PR, comment |
 | `destructive_or_policy_write` | Changes durable policy/enforcement | Only after admin confirmation | branch protection/ruleset writes |
 
-Default customer repo preflight must use read-only probes. Write probes require user/admin consent and must be idempotent with cleanup or clear persistence semantics.
+Default customer repo preflight must use read-only probes. Write probes require user/admin consent and must be idempotent with cleanup or clear persistence semantics. Therefore `signal_provenance_verified` can use read-only evidence where available, but a live status/check write probe must be consent-gated; `merge_block_verified` requires a real PR or accepted manual enterprise evidence.
 
 ---
 
@@ -992,6 +838,48 @@ Good:
 PP can protect this repo, but cannot create a test PR yet.
 GitHub has not granted Contents write to the PP App on permission-protocol/dispatch.
 Use manual PR commands or grant optional Contents write.
+```
+
+### 12.3.1 Minimal wireframes
+
+Install target header:
+
+```text
+┌──────────────────────────────────────────────┐
+│ Workspace: Rodrigo's Workspace               │
+│ GitHub: permission-protocol org              │
+│ Repo: permission-protocol/dispatch  [Change] │
+│ Branch: main                       [Change]  │
+│ Mode: Protect repo                           │
+└──────────────────────────────────────────────┘
+```
+
+Setup checklist:
+
+```text
+Protect permission-protocol/dispatch on main
+
+[✓] Repository access        PP can read this repo
+[✓] Required signal          Permission Protocol status configured
+[!] Test PR automation       Optional Contents write missing
+    Use manual PR commands or grant optional permission
+    [Use manual PR] [Request permission]
+[ ] Verify merge block       Waiting for test PR
+```
+
+Error banner:
+
+```text
+┌──────────────────────────────────────────────┐
+│ PP can protect this repo, but cannot create  │
+│ a test PR automatically.                     │
+│                                              │
+│ Missing: Contents write on dispatch          │
+│ Impact: optional test PR automation only     │
+│                                              │
+│ [Use manual PR commands] [Grant optional]    │
+│ Details: GitHub returned ...                 │
+└──────────────────────────────────────────────┘
 ```
 
 ### 12.4 Manual test PR path
@@ -1495,7 +1383,6 @@ The PRD is intentionally comprehensive. Implementation must be staged to avoid a
 - Manual PR fallback commands.
 - Basic admin handoff package.
 - Source-of-truth precedence enforced in onboarding.
-- PRD compliance checklist in implementation PR.
 
 ### V1.5: next
 
@@ -1607,14 +1494,14 @@ Outcome:
 3. Should `primaryRepoFullName` remain a company-level dashboard default long-term, or move to workspace repo settings?
 4. What permissions are absolutely required for risk classification across private repos?
 5. Should automatic ruleset creation be offered in v1 or deferred behind manual setup?
-6. What is the safest way to verify pre-approval unmergeability without requiring PP to create a PR?
-7. What should happen when a repo is renamed or transferred between GitHub orgs after protection is active?
+6. What should happen when a repo is renamed or transferred between GitHub orgs after protection is active?
 
 Resolved for v1:
 
 - Required signal: commit statuses now, with `RequiredSignal` abstraction for future checks support.
 - Admin handoff: must-have for real repo protection.
 - Demo receipt and real repo protection are separate milestones.
+- Pre-approval unmergeability cannot be fully verified without a PR or accepted manual enterprise evidence; this is why `merge_block_verified` requires a PR.
 
 ---
 
@@ -1642,7 +1529,7 @@ Mitigation: add repo sync and permission repair flows. Avoid forced migration un
 
 ### Risk: Authority model remains implicit
 
-Mitigation: receipt, signer, policy, quorum, break-glass, and replay semantics are now explicit PRD sections. Implementation cannot claim enterprise readiness without satisfying the v1 portions.
+Mitigation: this onboarding PRD names the boundary and links to a separate Authority Model v1 PRD/RFC. Onboarding must not claim enterprise authority-model completeness.
 
 ### Risk: GitHub mechanism ambiguity creates false protection
 
@@ -1681,44 +1568,26 @@ The product should make least-privilege protection the default, demo receipt act
 ---
 
 
-## 23A. PRD Compliance Ship Gate
-
-Every implementation PR for this PRD must include a checklist in the PR description or review notes:
-
-- [ ] No generic GitHub error is shown for known setup/permission/access cases.
-- [ ] No GitHub mutation occurs before preflight and explicit user/admin consent where required.
-- [ ] Onboarding uses explicit target selection, not stale `primaryRepoFullName`.
-- [ ] Tenant checks validate workspace membership plus installation ID plus repo ID.
-- [ ] Missing Contents write does not block core repo protection.
-- [ ] Manual fallback exists for test PR creation.
-- [ ] `Protection active` is shown only at the appropriate verifier level.
-- [ ] Required signal context matches canonical v1 naming.
-- [ ] Webhook/idempotency behavior is covered for changed files.
-- [ ] Regression coverage includes the `site` vs `dispatch` incident.
-
-Reviewer must compare the implementation diff against this PRD before merge. This is a trust-critical onboarding path; no rubber-stamp shipping.
-
----
-
 ## 24. Immediate Next Action
 
-Create an engineering implementation plan for Phase 1, Phase 1.5, and Phase 2:
+Create an engineering implementation plan for the shippable incident-fix path: Phase 1, Phase 1.5, and Phase 2:
 
 1. Named error mapping for known GitHub setup failures.
 2. Test PR preflight before mutation.
-3. Receipt and signer authority v1 schema alignment.
-4. ProtectionVerifier foundation with `RequiredSignal` v1 status support.
-5. Explicit selected repo target in onboarding.
-6. Repo sync repair action for existing installations.
-7. UI copy cleanup to remove stale/current repo confusion.
-8. Admin handoff requirements for real repo protection.
-9. SHA/replay/break-glass policy decisions for v1.
+3. ProtectionVerifier foundation with `RequiredSignal` v1 status support.
+4. Explicit selected repo target in onboarding.
+5. Repo sync repair action for existing installations.
+6. UI copy cleanup to remove stale/current repo confusion.
+7. Basic admin handoff requirements for real repo protection.
+8. Regression tests for the `site` vs `dispatch` incident and preflight-before-mutation behavior.
 
 Phase 1 should be treated as urgent because generic GitHub setup failures directly undermine PP's trust claim. Phase 1.5 should follow immediately because `repo protection active` must become evidence-backed before we optimize more onboarding UI.
 
 ---
 
 ## 25. Test Plan
+
+Tests are the ship gate for this PRD. Implementation PRs must pass the relevant unit/integration/e2e regressions below; reviewer checklists are secondary and must not replace CI.
 
 ### 25.1 Unit tests
 
@@ -1730,13 +1599,6 @@ Phase 1 should be treated as urgent because generic GitHub setup failures direct
 
 ### 25.2 Integration tests
 
-- Receipt binds repo ID, PR number, head SHA, policy hash, signer authority, and signature key ID.
-- Revoked signer cannot approve new protected action.
-- Self-approval policy is enforced or flagged according to workspace policy.
-- Break-glass creates emergency audit record and expires.
-- Force-push after approval supersedes old approval and requires new approval.
-- Squash/rebase merge links resulting merge commit to approved PR head SHA.
-- Bot PR is classified and routed according to policy.
 - Repo not included in installation → `APP_NOT_INSTALLED_ON_REPO`.
 - Installation linked to different workspace → blocked cross-tenant state.
 - Missing Contents write → assisted test PR blocked, core protection not blocked.
@@ -1761,7 +1623,7 @@ Phase 1 should be treated as urgent because generic GitHub setup failures direct
 - Approval arrives after PR SHA changed and must not green old/new wrong SHA.
 - Webhook replay does not create duplicate signer requests.
 - GitHub API rate limit during verifier preserves state and exposes retry time.
-- PP API outage while required signal pending produces documented fail-closed/break-glass behavior.
+- PP API outage while required signal pending produces documented fail-closed state and repair guidance.
 - Two users selecting different repos concurrently cannot corrupt active target.
 - Load test repo sync/verifier path across many repos without exhausting rate budget.
 - Security tests cover tenant spoofing via forged companyId, repoFullName, installationId, and repo rename/transfer.
