@@ -12,7 +12,7 @@
 
 Dispatch is a simple daily cockpit for founder-led public engagement.
 
-Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For V1A-0, all personal-account posting is human-final-submit. Dispatch helps Rod post from whatever computer/browser he is currently using: every action card always shows the full draft, a visible copy box, a manual target link, and a checklist before any posting action. V1B may add X API posting only after account posture is confirmed. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
+Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 2-4 high-value V1A-0 actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For V1A-0, all personal-account posting is human-final-submit. Dispatch helps Rod post from whatever computer/browser he is currently using: every action card always shows the full draft, a visible copy box, a manual target link, and a checklist before any posting action. V1B may add X API posting only after account posture is confirmed. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
 
 The product exists to solve a specific recurring failure: we post/comment in bursts, then go quiet for weeks because the work is scattered across Discord, HN, LinkedIn, X, Reddit, docs, and memory. Discord notifications are not enough; they mix with everything else and get dropped. Dispatch gives the work a single-purpose home.
 
@@ -57,7 +57,7 @@ Dispatch should create a daily ritual that makes public engagement boringly reli
 - Increase PP surface area in relevant technical and enterprise conversations.
 - Build credibility without spammy cross-posting.
 - Convert high-signal content into outreach assets and future blog material.
-- Grow HN karma/account trust safely over time.
+- Protect HN account trust first; karma growth is secondary and should not be forced.
 
 ---
 
@@ -101,7 +101,7 @@ The right interface is not a notification feed and not an infinite dashboard.
 
 The right interface is a **daily batch run**:
 
-> Open once. Generate fresh. Clear 3-7 actions. Leave.
+> Open once. Generate fresh. Clear 2-4 V1A-0 actions. Leave.
 
 Content should be generated on demand from current signals. Background systems should collect signals, not create finished drafts that rot.
 
@@ -147,7 +147,7 @@ This preserves account safety, lets Rod use Dispatch from any computer where he 
 
 ### 7.4 Small capped batches
 
-Default daily batch cap: 3-7 total actions.
+Default V1A-0 daily batch cap: 2-4 total actions. Later V1 can expand to 3-7 once the ritual is proven.
 
 Suggested caps:
 
@@ -163,7 +163,11 @@ If there is no high-quality HN opportunity, Dispatch should say:
 
 > Skip HN today — nothing worth touching.
 
-This avoids forced thought leadership.
+If no platform has a high-quality action, Dispatch should say:
+
+> No good actions today. Come back tomorrow.
+
+That counts as a completed daily Dispatch run, not a product failure. This avoids forced thought leadership.
 
 ### 7.6 Two-runtime architecture
 
@@ -205,7 +209,7 @@ V1A-0 is a platform-agnostic manual posting cockpit for HN/X/LinkedIn, with HN i
 5. Draft review: approve, edit, skip, kill.
 6. Local posting assist for HN, X, and LinkedIn manual-submit actions: visible copy box, manual target link, optional Copy & Open helper, checklist.
 7. X API auto-posting only in V1B where safe.
-8. State tracking: draft, approved, ready_to_post, prepared_unconfirmed, submitted, submitted_unverified, verified, expired, skipped, killed, error.
+8. State tracking uses the canonical action state machine in Section 15.6.
 9. Staleness/expiry handling.
 10. Platform safety rules and cooldowns.
 11. Basic outcome logging.
@@ -241,7 +245,7 @@ V1A-0 is a platform-agnostic manual posting cockpit for HN/X/LinkedIn, with HN i
    - Button: **Generate Today's Batch**.
 3. Rod clicks button.
 4. Dispatch scans fresh inputs and saved signals.
-5. Dispatch returns 3-7 platform-grouped actions with estimated completion time.
+5. Dispatch returns 2-4 platform-grouped V1A-0 actions with estimated completion time.
 6. Rod reviews each action:
    - Edit draft if needed.
    - Skip if low-value.
@@ -301,12 +305,12 @@ V1A-0 is a platform-agnostic manual posting cockpit for HN/X/LinkedIn, with HN i
 - Comments only; no submissions until account trust stabilizes.
 - Max 1 HN comment/day in conservative mode.
 - HN lane may return `skip HN today` and still count the batch as successful.
-- Require at least one adjacent/non-PP HN suggestion before showing a PP-adjacent HN suggestion, unless Rod manually captures a thread.
+- If Dispatch suggests a PP-adjacent HN comment, it must also show an adjacent/non-PP HN alternative. The adjacent alternative is preferred by default. Manual capture may bypass adjacent ordering, but never bypasses account-health gates, cooldowns, or the 1/day HN cap.
 - Avoid single-topic campaign pattern.
 - Use shorter, specific, question-driven comments.
 - Add 30-40% adjacent/non-PP content over time.
 - Cooldown after flags.
-- Any new HN flag immediately moves HN to suggestion-only for 7 days.
+- Any new HN flag immediately moves HN to `suggestion_only` for 7 days. During `suggestion_only`, Dispatch may show HN ideas but must not allow Copy & Open for HN.
 
 **V1A-0 posting flow:**
 
@@ -452,11 +456,27 @@ V1 requirements:
 
 This mechanism is required for V1A-0. Without it, the content quality contract is not implemented.
 
+Seed files for V1A-0:
+
+- `style/hn-good.md` — 5 good HN comments
+- `style/hn-bad.md` — 3 rejected/too-AI HN-style comments
+- `style/x-good.md` — 5 good X posts/replies
+- `style/linkedin-good.md` — 3 founder/operator LinkedIn notes
+- `style/avoid.md` — phrases, angles, and patterns to avoid
+
+Judge pass architecture for V1A-0:
+
+- Use a separate judge prompt/context after draft generation.
+- Same model is acceptable initially, but it must not simply self-approve in the drafting prompt.
+- Store prompt version, style-anchor version, and judge result with every draft.
+
 ---
 
 ## 12. Signal Sources
 
-Dispatch should collect and index signals from:
+Dispatch should collect and index signals from the sources below. V1A-0 is honest about source coverage: X/LinkedIn are primarily manual-capture and Rod-curated/source-doc driven; no LinkedIn/X feed scraping is required. V1B may add safer platform-specific monitoring.
+
+Sources:
 
 1. HN Algolia API:
    - Trending/new threads.
@@ -481,7 +501,13 @@ Dispatch should collect and index signals from:
    - HN/OpenBSD/systems/security/devtools/infra/product threads Rod would plausibly comment on as a technical founder.
    - Rod-curated topics he cares about beyond PP.
    - Used to keep accounts human and avoid single-topic campaign behavior.
-7. Reply/follow-up signals:
+7. X/LinkedIn V1A-0 sources:
+   - manual capture URLs pasted by Rod
+   - Rod-curated topics
+   - approved workspace/Discord source material
+   - saved URLs or notes added by Rod
+   - no LinkedIn/X feed scraping in V1A-0
+8. Reply/follow-up signals:
    - HN replies where available from public profile/thread checks.
    - X replies where API access exists.
    - LinkedIn reply checks are manual/deferred unless a safe source exists.
@@ -600,7 +626,7 @@ Required fallback behavior:
 
 Fallback message format:
 
-> Generated from available sources only. HN unavailable. 3 actions found, 2 platforms skipped due to weak signal.
+> Generated from available sources only. HN unavailable. 2 actions found, 2 platforms skipped due to weak signal.
 
 ### 15.2.2 Manual Capture Fast Path
 
@@ -667,7 +693,7 @@ V1A-0 verification flow:
 2. Rod clicks **I posted it** in Dispatch.
 3. Dispatch marks the action `submitted`.
 4. If Rod can paste the resulting URL/permalink, Dispatch stores it and marks `verified`.
-5. If no URL is provided, Dispatch stores `submitted_unverified` or keeps `submitted` with `verification: manual`.
+5. If no URL is provided, Dispatch stores `submitted_unverified`.
 6. If an item remains `ready_to_post` for 45 minutes without confirmation, Dispatch shows one reminder and a **Still working** / **Mark skipped** / **I posted it** choice.
 
 V1B may add platform-specific verification where feasible, but it must be explicitly enumerated per platform.
@@ -686,32 +712,35 @@ Rules:
 - Log platform, target URL, action ID, final state, and timestamp for every posting-assist attempt. If screenshots are used in V1.5+, log only screenshot hashes and enforce screenshot retention limits.
 - If the page is not the expected compose/reply surface, return `forbidden_surface` or `platform_changed` instead of improvising.
 
-### 15.6 Completion Tracking
+### 15.6 Canonical Action State Machine
 
-Actions have explicit lifecycle states:
+All sections and implementation must use this canonical action status list. Do not restate partial local variants elsewhere.
 
-- `signal`
 - `draft`
 - `approved`
-- `scheduled`
 - `ready_to_post`
+- `deferred_to_desktop`
 - `prepared_unconfirmed`
 - `submitted`
+- `submitted_unverified`
 - `verified`
 - `skipped`
-- `expired`
 - `killed`
+- `expired`
 - `error`
 
 A ready-to-post item is not done. It is done only when submitted/verified or manually confirmed.
 
 State semantics:
 
-- `skipped` = not today; may be suggested again if a future signal warrants it.
-- `killed` = suppress this draft/angle/source pattern unless Rod manually revives it.
+- `skipped` = not today; suppress same source signal for 72 hours unless manually revived.
+- `killed` = suppress this draft/angle/source pattern for 30 days unless Rod manually revives it.
 - `ready_to_post` = Rod has approved and Dispatch has shown copy/link/checklist.
-- `prepared_unconfirmed` = Rod started the posting flow but has not confirmed completion.
-- `submitted_unverified` = Rod says it was posted, but Dispatch has no permalink or platform verification.
+- `deferred_to_desktop` = Rod reviewed on mobile or unsupported device and chose to finish later on desktop.
+- `prepared_unconfirmed` = Rod started the posting flow but has not confirmed completion. Reminder at 45 minutes; if ignored, auto-expire at end of local day unless Rod extends.
+- `submitted` = Rod confirmed the action was posted. Counts toward caps and weekly metrics.
+- `submitted_unverified` = Rod says it was posted, but Dispatch has no permalink or platform verification. Counts toward caps and safety/cooldown logic.
+- `verified` = Dispatch has a permalink/comment ID or platform-confirmed evidence.
 
 ### 15.7 Quality Gate Before Posting Assist
 
@@ -728,6 +757,16 @@ Dispatch must block **Copy & Open** unless the current draft passes all gates:
 - Topic/angle repetition check passes.
 
 If any gate fails, Dispatch shows a named blocker and recommended fix. Posting assist should not be the place where obvious errors surface.
+
+### 15.7.1 Concrete V1A-0 Defaults
+
+- Why-now freshness windows: HN 4 hours, X 2 hours, LinkedIn 7 days. If older, re-check before Copy & Open.
+- Topic repetition detection: V1A-0 uses judge-model semantic check plus simple lexical overlap; V1B may add embeddings.
+- Killed scope: suppress same source signal, same draft, and same detected argument angle for 30 days.
+- HN action type gate: `post` is blocked in V1A-0; only `comment`/`reply` are allowed.
+- Concurrent generation: one active batch per local day. Generate is idempotent; repeat clicks update/regenerate the active batch instead of creating competing batches.
+- Ready-to-post expiry: reminder at 45 minutes, auto-expire end of local day unless extended.
+- Cost/latency budget: p95 batch generation under 60 seconds; max 4 actions; max 2 model calls per action. If judge/fallback fails, show warning rather than blocking the entire batch.
 
 ### 15.8 Portfolio Mix Rules
 
@@ -774,12 +813,12 @@ V1 must close the loop after posting enough to prevent drive-by engagement.
 V1A-0 minimum:
 
 - Every submitted action can have a follow-up reminder time.
-- HN actions can be checked via public thread/profile where available.
+- HN actions can be checked only when Dispatch has a permalink/comment ID. V1A-0 uses best-effort HN profile/thread checks; no permalink/comment ID means no automated reply tracking.
 - If replies are detected, Dispatch creates a follow-up signal, not an automatic reply draft.
 - Doorbell copy: `Your HN comment has 3 replies — review in Dispatch`.
 - Rod can mark replies as `ignore`, `draft response`, or `handled`.
 
-V1B may add X API reply checks and safer LinkedIn/manual reply capture.
+Breaking-opportunity outcomes only monitor replies where that platform support exists. V1A-0 reply monitoring is HN-only and permalink-gated. V1B may add X API reply checks and safer LinkedIn/manual reply capture.
 
 ---
 
@@ -840,6 +879,7 @@ type DispatchAction = {
   batchId: string;
   identityId: string;
   platform: 'hn' | 'x' | 'linkedin' | 'reddit' | 'medium';
+  // HN `post` is blocked by quality gate in V1A-0 conservative mode.
   actionType: 'post' | 'comment' | 'reply' | 'draft_article';
   title?: string;
   body: string;
@@ -851,8 +891,8 @@ type DispatchAction = {
   status:
     | 'draft'
     | 'approved'
-    | 'scheduled'
     | 'ready_to_post'
+    | 'deferred_to_desktop'
     | 'prepared_unconfirmed'
     | 'submitted'
     | 'submitted_unverified'
@@ -904,7 +944,7 @@ type AccountHealth = {
   weeklyActionCount: number;
   flagsOrWarnings: number;
   cooldownUntil?: string;
-  mode: 'normal' | 'cooldown' | 'comments_only' | 'manual_only' | 'paused';
+  mode: 'normal' | 'conservative' | 'suggestion_only' | 'cooldown' | 'comments_only' | 'manual_only' | 'paused';
   notes: string[];
 };
 ```
@@ -961,11 +1001,11 @@ Account health rules must be concrete enough for implementation. Vague "be caref
 
 Rules apply per HN identity.
 
-- Any flagged HN comment → 7-day cooldown on PP-adjacent comments.
-- Any flagged HN submission → 14-day comments-only mode; no submissions.
-- Two flagged HN actions in 30 days → HN mode becomes `manual_only`; Dispatch may suggest but not prepare browser actions.
+- Any flagged HN comment → HN mode becomes `suggestion_only` for 7 days. This supersedes PP-adjacent-only cooldowns.
+- Any flagged HN submission → HN mode becomes `suggestion_only` for 14 days and submissions remain disabled.
+- Two flagged HN actions in 30 days → HN mode becomes `manual_only`; Dispatch may show HN ideas but no Copy & Open until Rod manually clears it.
 - Three consecutive HN comments with no upvotes/replies → recommend adjacent/non-PP topics for the next 3 HN actions.
-- Account karma decrease over a week → reduce HN cap to 1 action/day until trend stabilizes.
+- HN conservative mode does not auto-graduate. Optional review after 30 days with no flags; Rod must manually change mode.
 
 ### 18.2 LinkedIn
 
@@ -996,7 +1036,7 @@ First open must not be a blank dashboard.
 Required setup flow:
 
 - Confirm Rod's allowed Google account.
-- Configure platform identities/handles. V1A-0 defaults: HN = Rod personal, X = Rod personal, LinkedIn = Rod personal. PP company/page identities are V1B unless manually enabled.
+- Configure platform identities/handles. V1A-0 defaults: HN = Rod personal, X = Rod personal, LinkedIn = Rod personal. PP company/page identities are V1B. If manually enabled during V1A-0, they are added by admin/config, not an end-user UI.
 - Select approved signal sources and their default source classes.
 - Seed Rod-curated adjacent topics.
 - Seed style-anchor examples.
@@ -1038,6 +1078,7 @@ Each card shows:
 - Manual target link.
 - Buttons: Approve, Edit, Skip, Kill, Copy, Open, Copy & Open, Defer to desktop, I posted it.
 - Device capability status: clipboard available, popup/open available, extension installed yes/no, platform login unknown.
+- Platform-specific helper: X character counter, LinkedIn line-break preview, HN markdown/plaintext caveat.
 
 ### 19.3 End Screen
 
@@ -1126,7 +1167,7 @@ Recommended V1 stack:
 
 - 3+ meaningful public actions/week.
 - At least 30% non-direct-PP/adjacent content mix.
-- HN karma stable or increasing; no new flags from obvious campaign behavior.
+- HN karma stable when possible; primary target is no new HN flags from obvious campaign behavior.
 
 ### Operational
 
@@ -1195,7 +1236,7 @@ Week-4 pass criteria:
 - Copy & Open/checklist, no remote form fill, no extension, no API posting.
 - Manual confirmation verification: Rod clicks **I posted it**.
 - Minimal reply/follow-up signal for HN when permalink/comment ID exists.
-- Completion states: draft, approved, ready_to_post, submitted, submitted_unverified, verified, skipped, killed, expired, error.
+- Completion states use the canonical action state machine in Section 15.6.
 - Quality gate before posting assist.
 - Mobile review + defer-to-desktop path.
 - No weekly review yet.
@@ -1229,7 +1270,7 @@ Week-4 pass criteria:
 ## 25. Open Questions
 
 1. For V1B, should PP company/page identities be enabled alongside Rod personal identities?
-2. Should Dispatch live inside the PP app repo or as a standalone internal app?
+2. Build location is decided for V1A-0: standalone internal app at `dispatch.permissionprotocol.com`; do not embed in core PP app. Open question only: exact hosting/runtime.
 3. Which Discord channels are approved signal sources beyond `#hackernews` and `#1479273617689809097`?
 4. Should `dispatch.permissionprotocol.com` be private behind Google auth or Tailscale-only?
 5. Should V1.5 local form-fill use a Chrome extension, bookmarklet, or native browser share target?
@@ -1245,7 +1286,7 @@ The strongest version is:
 
 - On-demand generation.
 - Background signal collection.
-- 3-7 capped daily actions.
+- 2-4 capped V1A-0 daily actions.
 - Human final-submit via Rod's current local browser session.
 - Explicit states and cooldowns.
 - Discord only for doorbell alerts.
@@ -1273,6 +1314,7 @@ V1A-0 implementation is complete when:
 - Daily ritual reminder is phrased as "time to open Dispatch," not "batch ready".
 - V1A-0 never hides the draft behind automation; Rod can always inspect/copy/open manually first.
 - A minimal HN reply/follow-up signal can be surfaced after a submitted action.
+- Implementation is not pushed until checked against the PRD acceptance criteria, especially canonical states, visible copy box, no hidden posting automation, and HN conservative gates.
 
 ---
 
