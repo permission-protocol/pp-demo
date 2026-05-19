@@ -1146,7 +1146,7 @@ Recommended V1 stack:
 ### 21.2 Behavioral Edge Cases
 
 - Rod ignores Dispatch for 3 days → no pile of old drafts; generate fresh next time.
-- Batch too large → hard cap to 7 actions.
+- Batch too large → hard cap to 4 actions in V1A-0; later V1 may expand to 7.
 - Too much PP topic repetition → warn and insert adjacent/personal-founder topics.
 - HN flagged account → enforce cooldown and recommend unrelated comments.
 - Discord alert ignored → no repeated nag loops; one reminder max.
