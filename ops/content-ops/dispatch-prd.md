@@ -12,7 +12,7 @@
 
 Dispatch is a simple daily cockpit for founder-led public engagement.
 
-Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For V1A, all personal-account posting is human-final-submit. Dispatch helps Rod post from whatever computer/browser he is currently using: every action card always shows the full draft, a visible copy box, a manual target link, and a checklist before any posting action. V1B may add X API posting only after account posture is confirmed. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
+Rod opens Dispatch once per day, clicks **Generate Today's Batch**, reviews 3-7 high-value actions across platforms, and clears them in one focused session. Charles generates drafts on demand from fresh signals. For V1A-0, all personal-account posting is human-final-submit. Dispatch helps Rod post from whatever computer/browser he is currently using: every action card always shows the full draft, a visible copy box, a manual target link, and a checklist before any posting action. V1B may add X API posting only after account posture is confirmed. Reddit and Blog/Medium may appear as suggestions in V1, but they are not first-class execution paths until the daily ritual proves itself.
 
 The product exists to solve a specific recurring failure: we post/comment in bursts, then go quiet for weeks because the work is scattered across Discord, HN, LinkedIn, X, Reddit, docs, and memory. Discord notifications are not enough; they mix with everything else and get dropped. Dispatch gives the work a single-purpose home.
 
@@ -124,14 +124,14 @@ Instead:
 Discord is only the doorbell:
 
 - "Time to open Dispatch — generate today's batch when ready."
-- "Breaking HN opportunity expires in 42 minutes."
+- "Breaking opportunity expires soon."
 - "Posting action is ready — review the visible draft, open the target, submit yourself."
 
 The actual queue, drafts, states, and history live in the Dispatch UI.
 
 ### 7.3 Human final-submit for risky platforms
 
-For HN and LinkedIn personal in V1:
+For HN, X, and LinkedIn personal in V1A-0:
 
 - Dispatch runs generation and scoring server-side.
 - Posting assist runs in the browser/device Rod is currently using.
@@ -141,7 +141,7 @@ For HN and LinkedIn personal in V1:
 - Rod pastes/reviews/submits from his own logged-in session.
 - Dispatch never clicks final submit on restricted platforms.
 
-Reddit and Blog/Medium can be surfaced as draft suggestions, but V1 should not invest in full local posting-assist execution for them until HN + LinkedIn prove the daily ritual.
+Reddit and Blog/Medium can be surfaced as draft suggestions, but V1 should not invest in first-class execution for them until the HN/X/LinkedIn daily ritual proves itself.
 
 This preserves account safety, lets Rod use Dispatch from any computer where he is logged into the relevant platform, and avoids non-human login patterns.
 
@@ -151,9 +151,9 @@ Default daily batch cap: 3-7 total actions.
 
 Suggested caps:
 
-- HN: 0-2 actions/day
-- X: 1-2 actions/day
-- LinkedIn: 0-1 action/day, 2-3x/week max
+- HN: 0-1 action/day while account health is conservative; comments only; never required for batch success
+- X: 1-2 manual Copy & Open actions/day in V1A-0
+- LinkedIn: 0-1 manual Copy & Open action/day, 2-3x/week max
 - Reddit: suggestion-only in V1; execute manually outside Dispatch if genuinely native
 - Blog/Medium: suggestion-only in V1; usually derived from a winning prior idea
 
@@ -179,7 +179,7 @@ V1 should default to local browser assistance: visible copy box, manual target l
 Mobile is a first-class review surface but not a guaranteed posting surface.
 
 - Rod can open Dispatch on mobile, review drafts, edit, approve, skip, kill, and defer.
-- V1A mobile posting path is **copy + manual open**, with platform-specific caveats shown in the UI.
+- V1A-0 mobile posting path is **copy + manual open**, with platform-specific caveats shown in the UI.
 - If the mobile browser opens a native app or clipboard/open fails, Dispatch keeps the draft visible and offers **Defer to desktop**.
 - Deferred items stay in the batch and show `deferred_to_desktop` until Rod clears them on a desktop browser.
 - Mobile must not silently pretend posting assist worked.
@@ -195,6 +195,8 @@ Every action card must let Rod inspect exactly what he is about to post before c
 ## 8. V1 Scope
 
 ### Included
+
+V1A-0 is a platform-agnostic manual posting cockpit for HN/X/LinkedIn, with HN in conservative mode.
 
 1. Web UI: Today's Dispatch batch view.
 2. On-demand **Generate Today's Batch** action.
@@ -219,7 +221,7 @@ Every action card must let Rod inspect exactly what he is about to post before c
 - First-class Reddit execution workflow.
 - First-class Blog/Medium publishing workflow.
 - Remote server-side posting from Rod's personal accounts.
-- Browser extension form-fill automation in V1A.
+- Browser extension form-fill automation in V1A-0.
 - Multi-user roles.
 - Team approval flow.
 - Long-form editor for blog posts beyond draft suggestion + copy/open.
@@ -244,7 +246,7 @@ Every action card must let Rod inspect exactly what he is about to post before c
    - Edit draft if needed.
    - Skip if low-value.
    - Approve if good.
-7. For X in V1A:
+7. For X in V1A-0:
    - Dispatch uses the same visible copy/open/manual-submit flow.
    - API posting is deferred to V1B.
 8. For HN/LinkedIn:
@@ -260,9 +262,9 @@ Every action card must let Rod inspect exactly what he is about to post before c
    - Expired/missed.
    - Follow-up opportunities.
 
-### 9.2 Breaking HN Opportunity
+### 9.2 Breaking Opportunity
 
-1. Background signal collector sees relevant HN thread cross threshold.
+1. Background signal collector sees a relevant HN/X/LinkedIn opportunity cross threshold.
 2. Dispatch creates a signal, not a draft.
 3. If the signal is high-confidence and time-sensitive, Discord doorbell pings Rod.
 4. Rod opens Dispatch.
@@ -289,19 +291,24 @@ Every action card must let Rod inspect exactly what he is about to post before c
 
 ### 10.1 Hacker News
 
-**Goal:** Build karma/account trust and participate in high-signal technical conversations.
+**Goal:** Build karma/account trust and participate in high-signal technical conversations without worsening account-health risk.
+
+**V1A-0 posture:** conservative mode by default. HN is valuable but not required for daily success.
 
 **Rules:**
 
 - No automated posting.
-- Prefer comments over submissions until account trust stabilizes.
-- Max 2 HN actions/day.
+- Comments only; no submissions until account trust stabilizes.
+- Max 1 HN comment/day in conservative mode.
+- HN lane may return `skip HN today` and still count the batch as successful.
+- Require at least one adjacent/non-PP HN suggestion before showing a PP-adjacent HN suggestion, unless Rod manually captures a thread.
 - Avoid single-topic campaign pattern.
 - Use shorter, specific, question-driven comments.
 - Add 30-40% adjacent/non-PP content over time.
 - Cooldown after flags.
+- Any new HN flag immediately moves HN to suggestion-only for 7 days.
 
-**V1A posting flow:**
+**V1A-0 posting flow:**
 
 - Show full HN draft in a visible copy box.
 - Show source, why-now, score, and safety warnings.
@@ -311,19 +318,19 @@ Every action card must let Rod inspect exactly what he is about to post before c
 
 ### 10.2 X
 
-**Goal:** Maintain public pulse and create fast observations.
+**Goal:** Maintain public pulse and create fast observations on a safer daily habit surface than HN.
 
 **Rules:**
 
-- V1A uses manual copy/open posting assist.
+- V1A-0 uses visible copy box + manual target link + Copy & Open only.
 - API auto-posting is V1B only, and only where keys/account posture are safe.
 - Avoid burst posting.
-- 1-2 posts/replies per day max in V1.
-- Schedule rather than posting everything immediately after batch approval.
+- 1-2 posts/replies per day max in V1A-0.
+- Daily batch success can be achieved with X + LinkedIn even when HN is skipped.
 
 ### 10.3 LinkedIn
 
-**Goal:** Enterprise/founder credibility, not technical comment wars.
+**Goal:** Enterprise/founder credibility and a lower-risk cadence surface than HN, not technical comment wars.
 
 **Rules:**
 
@@ -443,7 +450,7 @@ V1 requirements:
 - Rod can mark a draft `too AI`, `too long`, `too pitchy`, `good voice`, or `save as style anchor`.
 - Feedback updates future generation prompts and the style-anchor set.
 
-This mechanism is required for V1A. Without it, the content quality contract is not implemented.
+This mechanism is required for V1A-0. Without it, the content quality contract is not implemented.
 
 ---
 
@@ -632,7 +639,7 @@ Convenience helpers must be user-gesture driven:
 
 ### 15.3 Local Posting Assist
 
-System can assist posting from Rod's current browser/device on supported platforms. In V1A, this means visible copy box + manual open link + checklist, with optional one-click clipboard/open helpers. The visible copy box and manual link are always present, never just fallback. V1A does not use remote browser control or automated form fill. In V1.5, a browser extension may fill forms locally, but must still stop before final submit.
+System can assist posting from Rod's current browser/device on supported platforms. In V1A-0, this means visible copy box + manual open link + checklist, with optional one-click clipboard/open helpers. The visible copy box and manual link are always present, never just fallback. V1A-0 does not use remote browser control or automated form fill. In V1.5, a browser extension may fill forms locally, but must still stop before final submit.
 
 Posting assist must return a visible state:
 
@@ -646,15 +653,15 @@ Posting assist must return a visible state:
 - `forbidden_surface`
 - `unknown_error`
 
-Each state must include clear user-facing instructions. Screenshots are optional and should be avoided in V1A unless strictly needed for debugging.
+Each state must include clear user-facing instructions. Screenshots are optional and should be avoided in V1A-0 unless strictly needed for debugging.
 
 ### 15.4 Manual Submit Verification
 
 Dispatch must not treat local posting preparation as completion.
 
-V1A truth: without a browser extension, Dispatch usually cannot see what happened in the platform tab it opened. Verification is therefore manual by default.
+V1A-0 truth: without a browser extension, Dispatch usually cannot see what happened in the platform tab it opened. Verification is therefore manual by default.
 
-V1A verification flow:
+V1A-0 verification flow:
 
 1. Rod submits on the platform.
 2. Rod clicks **I posted it** in Dispatch.
@@ -675,7 +682,7 @@ Rules:
 - Never enter credentials or handle 2FA.
 - Never interact with DMs, inboxes, account settings, payments, ad managers, or security pages.
 - Stop immediately on login walls, identity challenges, CAPTCHA, permission prompts, or unexpected modals.
-- V1A should avoid screenshots by default; if screenshots are later used, capture/crop only the active composer area and avoid unrelated tabs or personal content.
+- V1A-0 should avoid screenshots by default; if screenshots are later used, capture/crop only the active composer area and avoid unrelated tabs or personal content.
 - Log platform, target URL, action ID, final state, and timestamp for every posting-assist attempt. If screenshots are used in V1.5+, log only screenshot hashes and enforce screenshot retention limits.
 - If the page is not the expected compose/reply surface, return `forbidden_surface` or `platform_changed` instead of improvising.
 
@@ -764,7 +771,7 @@ No full draft dumps into Discord by default.
 
 V1 must close the loop after posting enough to prevent drive-by engagement.
 
-V1A minimum:
+V1A-0 minimum:
 
 - Every submitted action can have a follow-up reminder time.
 - HN actions can be checked via public thread/profile where available.
@@ -912,7 +919,7 @@ Requirements:
 
 - Store minimal source snippets, not full Discord threads, unless explicitly needed.
 - Do not store `private_sensitive` raw excerpts by default.
-- Screenshot retention: default 7 days, then delete. V1A should avoid screenshots entirely unless debugging requires them.
+- Screenshot retention: default 7 days, then delete. V1A-0 should avoid screenshots entirely unless debugging requires them.
 - Draft/action retention: keep by default for weekly review and learning, but allow manual deletion.
 - Signals can be deleted individually.
 - Raw source excerpts can be redacted without deleting the derived action history.
@@ -989,7 +996,7 @@ First open must not be a blank dashboard.
 Required setup flow:
 
 - Confirm Rod's allowed Google account.
-- Configure platform identities/handles: HN, X, LinkedIn, Reddit/Medium optional.
+- Configure platform identities/handles. V1A-0 defaults: HN = Rod personal, X = Rod personal, LinkedIn = Rod personal. PP company/page identities are V1B unless manually enabled.
 - Select approved signal sources and their default source classes.
 - Seed Rod-curated adjacent topics.
 - Seed style-anchor examples.
@@ -1062,7 +1069,7 @@ Recommended V1 stack:
 - **Auth:** Google SSO restricted to Rod.
 - **Database:** Firebase Firestore.
 - **Functions:** Firebase Cloud Functions or OpenClaw cron-backed API endpoints for generation and signal collection.
-- **Posting assist V1A:** client-side copy/open/checklist in Rod's current browser. Works from any authenticated computer where Rod is logged into the target platform.
+- **Posting assist V1A-0:** client-side copy/open/checklist in Rod's current browser. Works from any authenticated computer where Rod is logged into the target platform.
 - **Posting assist V1.5:** optional Chrome extension for local form-fill only. Extension never clicks final submit.
 - **OpenClaw browser control:** optional internal fallback for Rod's Mac, not the default product architecture.
 - **Signal collection:** scheduled background jobs writing signals, not drafts.
@@ -1088,7 +1095,7 @@ Recommended V1 stack:
 - Platform UI changed → show `platform_changed`; do not retry blindly.
 - Target thread deleted → mark `target_missing` and expire action.
 - Content too long → block prepare until edited.
-- Platform reformats content → Rod reviews final rendered text before submit; V1A does not assume pasted text equals posted text.
+- Platform reformats content → Rod reviews final rendered text before submit; V1A-0 does not assume pasted text equals posted text.
 - Clipboard write fails → visible copy box remains usable.
 - Open target blocked by popup policy → manual target link remains usable.
 - Native app handoff on mobile is unreliable → offer Defer to desktop.
@@ -1138,16 +1145,17 @@ Recommended V1 stack:
 
 ### 23.1 First Real Usage Test
 
-Before calling V1A shippable, Rod should complete this concrete test:
+Before calling V1A-0 shippable, Rod should complete this concrete test:
 
 1. Open Dispatch from a non-primary computer or browser session.
 2. Generate a batch.
-3. Produce one HN comment and one LinkedIn/X action from fresh signals.
-4. Inspect the always-visible copy boxes before using any helper action.
-5. Use Copy & Open for at least one HN action.
-6. Submit manually from Rod's logged-in platform session.
-7. Click **I posted it** and confirm Dispatch logs the result.
-8. Return the next day and generate a fresh batch without stale backlog guilt.
+3. Produce either one safe HN adjacent comment or explicitly skip HN due to account-health gating.
+4. Produce one X or LinkedIn action from fresh signals.
+5. Inspect the always-visible copy boxes before using any helper action.
+6. Use Copy & Open for at least one action.
+7. Submit manually from Rod's logged-in platform session.
+8. Click **I posted it** and confirm Dispatch logs the result.
+9. Return the next day and generate a fresh batch without stale backlog guilt.
 
 Pass condition:
 
@@ -1176,24 +1184,25 @@ Week-4 pass criteria:
 - Manually generate one batch in chat.
 - Validate action caps and platform grouping.
 
-### V1A — First Shippable Slice
+### V1A-0 — First Shippable Slice
 
 - Web UI with Google auth.
-- On-demand batch generation from manual capture, HN signals, adjacent/general-interest signals, and approved workspace/source docs.
-- HN/X/LinkedIn only as core lanes.
+- On-demand batch generation from manual capture, HN signals, X/LinkedIn manual targets, adjacent/general-interest signals, and approved workspace/source docs.
+- HN/X/LinkedIn as core lanes using one shared manual posting workflow.
+- HN starts in conservative mode: comments only, max 1/day, no submissions, not required for batch success.
 - Review/edit/skip/kill with explicit skipped vs killed semantics.
 - Always-visible copy box + manual target link for every action.
-- HN local posting assist: Copy & Open/checklist, no remote form fill.
+- Copy & Open/checklist, no remote form fill, no extension, no API posting.
 - Manual confirmation verification: Rod clicks **I posted it**.
-- Minimal reply/follow-up signal for HN.
-- Completion states: draft, approved, ready_to_post, submitted, submitted_unverified, verified, skipped, expired, error.
+- Minimal reply/follow-up signal for HN when permalink/comment ID exists.
+- Completion states: draft, approved, ready_to_post, submitted, submitted_unverified, verified, skipped, killed, expired, error.
 - Quality gate before posting assist.
 - Mobile review + defer-to-desktop path.
 - No weekly review yet.
 
 ### V1B — Full Internal Daily Dispatch
 
-- LinkedIn local posting assist.
+- Deeper LinkedIn/X source and reply handling.
 - Discord source ingestion.
 - Doorbell alerts plus email/push fallback.
 - X API posting if keys/account posture are confirmed.
@@ -1219,7 +1228,7 @@ Week-4 pass criteria:
 
 ## 25. Open Questions
 
-1. Which identities should V1A track per platform: Rod personal, PP company/page, or both?
+1. For V1B, should PP company/page identities be enabled alongside Rod personal identities?
 2. Should Dispatch live inside the PP app repo or as a standalone internal app?
 3. Which Discord channels are approved signal sources beyond `#hackernews` and `#1479273617689809097`?
 4. Should `dispatch.permissionprotocol.com` be private behind Google auth or Tailscale-only?
@@ -1247,20 +1256,22 @@ This directly addresses the recurring failure pattern without creating a content
 
 ## 27. Implementation Acceptance Criteria
 
-V1A implementation is complete when:
+V1A-0 implementation is complete when:
 
 - Rod can authenticate into Dispatch from more than one device/browser.
 - Rod can click **Generate Today's Batch**.
 - Dispatch returns capped grouped actions with source attribution, source class, why-now timestamp, signal score, and visible copy box.
 - Rod can approve/edit/skip/kill each action.
 - Any edit after approval requires re-approval.
-- Rod can complete one HN action using the always-visible copy box + manual target link from the current browser/device.
+- Rod can complete one X or LinkedIn action using the always-visible copy box + manual target link from the current browser/device.
+- HN can be skipped due to account health and the batch still counts as successful.
+- If HN is used, it is comments-only, max 1/day, and conservative-mode gated.
 - Copy & Open stops before submit and returns a clear state/checklist.
 - Rod confirms **I posted it** and Dispatch records submitted/submitted_unverified/verified correctly.
 - Dispatch tracks skipped/killed semantics and suppresses killed angles.
 - Background collector writes signals but not finished drafts.
 - Daily ritual reminder is phrased as "time to open Dispatch," not "batch ready".
-- V1A never hides the draft behind automation; Rod can always inspect/copy/open manually first.
+- V1A-0 never hides the draft behind automation; Rod can always inspect/copy/open manually first.
 - A minimal HN reply/follow-up signal can be surfaced after a submitted action.
 
 ---
